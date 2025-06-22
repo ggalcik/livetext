@@ -1,0 +1,10 @@
+@import "tailwindcss";
+
+:root {
+  --chromakey-color: #0f0;
+  --scene-width: calc(var(--spacing) * 80)
+}
+
+a, a:hover, a:link, a:visited {
+  color: blue;
+}

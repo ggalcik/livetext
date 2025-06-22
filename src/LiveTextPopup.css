@@ -1,0 +1,5 @@
+body.popup {
+  height: 100vh;
+  margin: 0;
+  background-color: var(--chromakey-color);
+}

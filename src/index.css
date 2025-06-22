@@ -1,0 +1,18 @@
+@import "tailwindcss";
+
+/* Usage: text-stroke-2/white */
+ 
+@utility text-stroke-* {
+  -webkit-text-stroke-width: --value(integer)px;
+  -webkit-text-stroke-width: --value([*]);
+  -webkit-text-stroke-color: --value(--color-*, [color]);
+  -webkit-text-stroke-color: --modifier(--color-*, [color]);
+}
+
+body {
+  min-height: 100vh;
+}
+
+#root {
+  min-height: 100vh;
+}
