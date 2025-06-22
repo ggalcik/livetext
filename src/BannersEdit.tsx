@@ -1,6 +1,5 @@
 import { useLiveData } from "./context/LiveData";
 import LiveTextFormat from "./LiveTextFormat";
-import { initialLiveDataState } from "./context/LiveData/LiveDataReducer";
 import type { PopupState } from "./context/LiveData/types";
 
 export default function BannersEdit({ popupState }: { popupState: PopupState }) {
@@ -46,6 +45,7 @@ export default function BannersEdit({ popupState }: { popupState: PopupState }) 
                     bannerCSS={state.banners[idx].bannerCSS}
                     dispatch={dispatch}
                     defaultCSS={state.bannerCSS}
+                    hideThis={() => popupState.setVisiblePopup(null)}
                   />
                 )}
               </div>

@@ -51,6 +51,7 @@ export default function LiveText({ popupState }: { popupState: PopupState }) {
             bannerCSS={state.bannerCSS}
             dispatch={dispatch}
             defaultCSS={initialLiveDataState.bannerCSS}
+             hideThis={() => popupState.setVisiblePopup(null)}
       
           />
         )}

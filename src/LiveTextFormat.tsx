@@ -3,14 +3,15 @@ import type {
   BannerCSS,
   LiveDataAction,
   LiveDataState,
-  PopupState,
 } from "./context/LiveData/types";
+import { useEffect, useRef } from "react";
 
 interface LiveTextFormatOpts {
   banner: "default" | number;
   dispatch: React.Dispatch<LiveDataAction>;
   bannerCSS: BannerCSS;
   defaultCSS: BannerCSS;
+  hideThis: () => void;
 }
 
 export default function LiveTextFormat({
@@ -18,9 +19,22 @@ export default function LiveTextFormat({
   dispatch,
   bannerCSS,
   defaultCSS,
+  hideThis,
 }: LiveTextFormatOpts) {
+const ref = useRef<HTMLDivElement>(null);
+
   type CSSField = keyof LiveDataState["bannerCSS"];
   type CSSValue<K extends CSSField> = LiveDataState["bannerCSS"][K];
+
+    useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (ref.current && !ref.current.contains(event.target as Node)) {
+        hideThis();
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [hideThis]);
 
   function dispatchChange<K extends CSSField>(key: K, value: CSSValue<K>) {
     dispatch({
@@ -35,7 +49,7 @@ export default function LiveTextFormat({
   }
 
   return (
-    <div className="absolute border bg-white m-2 p-2 drop-shadow-2xl">
+    <div ref={ref} className="absolute border bg-white m-2 p-2 drop-shadow-2xl">
       <div className="grid grid-cols-[auto_auto] gap-2">
         <div className="text-right self-center">padding</div>
         <div>
