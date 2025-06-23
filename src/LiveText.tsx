@@ -2,15 +2,33 @@ import clsx from "clsx";
 import { NO_ACTIVE_BANNER } from "./context/LiveData/types";
 import type { LiveDataState } from "./context/LiveData/types";
 import { initialLiveDataState } from "./context/LiveData/LiveDataReducer";
+import { useEffect, useState } from "react";
 
 export default function LiveText({ state }: { state: LiveDataState }) {
+  const [slideIn, setSlideIn] = useState(false);
+
+useEffect(() => {
+  setSlideIn(false);
+
+  // Delay the re-enable just enough to allow DOM to update
+  const timeout = setTimeout(() => {
+    setSlideIn(true);
+  }, 50); // you can also try 10ms if needed
+
+  return () => clearTimeout(timeout);
+}, [state.activeBanner]);
+
   function liveTextDisplay(text: string) {
     if (!text.trim()) return "[no text]";
     return text.replace(/(?:\r\n|\r|\n)/g, "<br>");
   }
   if (state.activeBanner === null) return "[no banner]";
 
-  const thisCSS = {...initialLiveDataState.bannerCSS, ...state.bannerCSS, ...state.banners[state.activeBanner].bannerCSS};
+  const thisCSS = {
+    ...initialLiveDataState.bannerCSS,
+    ...state.bannerCSS,
+    ...state.banners[state.activeBanner].bannerCSS,
+  };
 
   function getVal<K extends keyof LiveDataState["bannerCSS"]>(field: K): string {
     return thisCSS[field] || "";
@@ -23,7 +41,7 @@ export default function LiveText({ state }: { state: LiveDataState }) {
 
   return (
     <div
-      className={clsx("min-h-full", {
+      className={clsx("min-h-full overflow-hidden", {
         "bg-(--chromakey-color)": state.backgroundOn,
       })}
     >
@@ -38,6 +56,10 @@ export default function LiveText({ state }: { state: LiveDataState }) {
               padding: getVal("padding"),
               textAlign: getVal("textAlign") as React.CSSProperties["textAlign"],
             }}
+            className={clsx(
+              "transition-transform",
+              slideIn ? "translate-x-[0%]" : "translate-x-[120%]"
+            )}
           >
             <mark
               style={{

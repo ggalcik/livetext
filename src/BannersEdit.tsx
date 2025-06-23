@@ -35,18 +35,23 @@ export default function BannersEdit({ popupState }: { popupState: PopupState }) 
                 X
               </button>
               <div></div>
-              <div>
+              <div className="flex">
                 <button className="text-blue-400 cursor-pointer text-left"
                 onClick={() => popupState.setVisiblePopup((p) => (p === idx ? null : idx))}
                 >[format]</button>
                 {popupState.visiblePopup === idx && (
+                  <div className="relative">
+
+                  <div className="absolute top-1/2 -translate-y-1/2">
                   <LiveTextFormat
                     banner={idx}
                     bannerCSS={state.banners[idx].bannerCSS}
                     dispatch={dispatch}
                     defaultCSS={state.bannerCSS}
                     hideThis={() => popupState.setVisiblePopup(null)}
-                  />
+                    />
+                  </div>
+                    </div>
                 )}
               </div>
             </div>

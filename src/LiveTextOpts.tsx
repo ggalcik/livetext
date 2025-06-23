@@ -36,24 +36,24 @@ export default function LiveText({ popupState }: { popupState: PopupState }) {
         </div>
       </div>
 
-      <div className=" relative">
+      <div className="flex">
         <button
-          className="text-blue-400 cursor-pointer"
-          onClick={() => popupState.setVisiblePopup((p) => (p === "default" ? null : "default"))}
+          className="text-blue-400 cursor-pointer self-start"
+          onClick={() => {if (popupState.visiblePopup !== "default") popupState.setVisiblePopup("default")}}
         >
           [format]
         </button>
 
-
         {popupState.visiblePopup === "default" && (
-          <LiveTextFormat
-            banner="default"
-            bannerCSS={state.bannerCSS}
-            dispatch={dispatch}
-            defaultCSS={initialLiveDataState.bannerCSS}
-             hideThis={() => popupState.setVisiblePopup(null)}
-      
-          />
+          <div className="inline-block">
+            <LiveTextFormat
+              banner="default"
+              bannerCSS={state.bannerCSS}
+              dispatch={dispatch}
+              defaultCSS={initialLiveDataState.bannerCSS}
+              hideThis={() => popupState.setVisiblePopup(null)}
+            />
+          </div>
         )}
       </div>
     </div>

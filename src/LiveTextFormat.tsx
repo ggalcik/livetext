@@ -1,9 +1,5 @@
 import clsx from "clsx";
-import type {
-  BannerCSS,
-  LiveDataAction,
-  LiveDataState,
-} from "./context/LiveData/types";
+import type { BannerCSS, LiveDataAction, LiveDataState } from "./context/LiveData/types";
 import { useEffect, useRef } from "react";
 
 interface LiveTextFormatOpts {
@@ -21,12 +17,12 @@ export default function LiveTextFormat({
   defaultCSS,
   hideThis,
 }: LiveTextFormatOpts) {
-const ref = useRef<HTMLDivElement>(null);
+  const ref = useRef<HTMLDivElement>(null);
 
   type CSSField = keyof LiveDataState["bannerCSS"];
   type CSSValue<K extends CSSField> = LiveDataState["bannerCSS"][K];
 
-    useEffect(() => {
+  useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (ref.current && !ref.current.contains(event.target as Node)) {
         hideThis();
@@ -36,7 +32,7 @@ const ref = useRef<HTMLDivElement>(null);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [hideThis]);
 
-  function dispatchChange<K extends CSSField>(key: K, value: CSSValue<K>) {
+  function dispatchChange<K extends CSSField>(key: K, value: CSSValue<K>|undefined) {
     dispatch({
       type: "bannerCSS",
       payload: {
@@ -49,7 +45,7 @@ const ref = useRef<HTMLDivElement>(null);
   }
 
   return (
-    <div ref={ref} className="absolute border bg-white m-2 p-2 drop-shadow-2xl">
+    <div ref={ref} className="relative z-10 border bg-white m-2 p-2 drop-shadow-2xl">
       <div className="grid grid-cols-[auto_auto] gap-2">
         <div className="text-right self-center">padding</div>
         <div>
@@ -79,12 +75,12 @@ const ref = useRef<HTMLDivElement>(null);
           {(["left", "center", "right"] as const).map((align) => (
             <button
               key={align}
-              className={clsx(
-                "px-3 py-1 rounded border cursor-pointer",
-                bannerCSS.textAlign === align
-                  ? "bg-blue-600 text-white border-blue-600"
-                  : "bg-white text-gray-800 border-gray-400 hover:bg-gray-100"
-              )}
+              className={clsx("px-3 py-1 rounded border cursor-pointer", {
+                "bg-blue-600 text-white border-blue-600": bannerCSS.textAlign === align,
+                "bg-blue-100 border-blue-600": !bannerCSS.textAlign && defaultCSS.textAlign === align,
+                "bg-white text-gray-800 border-gray-400 hover:bg-gray-100":
+                  bannerCSS.textAlign && bannerCSS.textAlign !== align,
+              })}
               onClick={() => dispatchChange("textAlign", align)}
             >
               {align[0].toUpperCase()}
