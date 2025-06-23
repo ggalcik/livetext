@@ -17,7 +17,7 @@ function App() {
     window.open(
       "/popup",
       "LiveTextPopup",
-      "width=320,height=600,menubar=no,toolbar=no,location=no,status=no"
+      "width=600,height=320,menubar=no,toolbar=no,location=no,status=no"
     );
   };
 

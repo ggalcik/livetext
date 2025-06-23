@@ -21,7 +21,7 @@ export default function LiveTextPopup({initialState}:{initialState:LiveDataState
     };
 
     window.addEventListener("storage", handleStorage);
-
+document.title = "Live text popup";
     // Clean up
     return () => {
       document.body.classList.remove("popup");
