@@ -1,10 +1,15 @@
-import { createBanner, NO_ACTIVE_BANNER } from "./types";
+import { createBanner, createSpot, NO_ACTIVE_BANNER, NO_ACTIVE_SPOT } from "./types";
 import type { LiveDataState, LiveDataAction } from "./types";
 
 export const initialLiveDataState: LiveDataState = {
   backgroundOn: true,
+  dateMark: "",
   banners: [],
+  spots: [],
+  displayBanners: true,
+  displaySpots: false,
   activeBanner: NO_ACTIVE_BANNER,
+  activeSpot: NO_ACTIVE_SPOT,
   timer: {
     on: false,
     interval: null,
@@ -12,6 +17,15 @@ export const initialLiveDataState: LiveDataState = {
   },
   saveToStorage: true,
   bannerCSS: {
+    padding: "10px",
+    font: "bold 20px/1 sans-serif",
+    textAlign: "right",
+    color: "white",
+    backgroundColor: "#ff6467",
+    onBox: false,
+    textShadow: "4px 4px #444",
+  },
+  spotCSS: {
     padding: "10px",
     font: "bold 20px/1 sans-serif",
     textAlign: "center",
@@ -94,6 +108,41 @@ export function liveDataReducer(state: LiveDataState, action: LiveDataAction): L
         ...state,
         activeBanner: (state.activeBanner + 1) % state.banners.length,
       };
+
+    case "spot/add": {
+      const activeSpot = state.activeSpot ?? 0;
+      return {
+        ...state,
+        spots: [...state.spots, createSpot()],
+        activeSpot,
+      };
+    }
+    case "spot/change":
+      return {
+        ...state,
+        spots: state.spots.map((spot, idx) =>
+          idx === action.payload.idx ? { ...spot, ...action.payload } : spot
+        ),
+      };
+    case "spot/delete": {
+      const spots = state.spots.filter((_, i) => i !== action.payload.idx);
+
+      let activeSpot = state.activeSpot;
+      if (activeSpot !== null && activeSpot >= spots.length) activeSpot = spots.length - 1;
+      if (activeSpot !== null && spots.length == 0) activeSpot = NO_ACTIVE_BANNER;
+
+      return {
+        ...state,
+        spots,
+        activeSpot,
+      };
+    }
+    case "spot/setActive":
+      return {
+        ...state,
+        activeSpot: action.payload.idx,
+      };
+
     case "timer/toggle":
       if (!state.timer.on && !state.timer.interval) return state;
       return {
@@ -137,6 +186,9 @@ export function liveDataReducer(state: LiveDataState, action: LiveDataAction): L
         banners: updatedBanners,
       };
     }
+    case "dateMark":
+      return { ...state, ...action.payload };
+
     default:
       return state;
   }

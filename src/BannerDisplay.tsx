@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import clsx from "clsx";
-import type { LiveDataState } from "./context/LiveData/types";
+import type { BannerCSS, LiveDataState } from "./context/LiveData/types";
 
 interface BannerSlideProps {
   banner: LiveDataState["banners"][number];
@@ -8,7 +8,7 @@ interface BannerSlideProps {
   initialCSS: LiveDataState["bannerCSS"];
 }
 
-export default function LiveTextSlide({ banner, defaultCSS, initialCSS }: BannerSlideProps) {
+export default function BannerDisplay({ banner, defaultCSS, initialCSS }: BannerSlideProps) {
   const [slideIn, setSlideIn] = useState(false);
   // console.log("defaultCSS %o, banner.bannerCSS %o", defaultCSS, banner.bannerCSS);
   const logSetSlideIn = (which: boolean) => {
@@ -22,13 +22,17 @@ export default function LiveTextSlide({ banner, defaultCSS, initialCSS }: Banner
     });
   }, [banner]);
 
-  // console.log("defaultCSS %o, banner.bannerCSS %o", defaultCSS, banner.bannerCSS);
-  
-  function getVal<K extends keyof LiveDataState["bannerCSS"]>(field: K): string {
-    const val = banner.bannerCSS[field] || defaultCSS[field] || initialCSS[field];
-    if (!val) return field === 'textAlign' ? 'left' : '';
-    return val;
+
+  function getVal<K extends keyof BannerCSS>(field: K): BannerCSS[K] {
+  const val = banner.bannerCSS[field] || defaultCSS[field] || initialCSS[field];
+
+  if (val === undefined) {
+    if (field === "textAlign") return "left" as BannerCSS[K];
+    if (field === "onBox") return false as BannerCSS[K];
+    return "" as BannerCSS[K];
   }
+  return val;
+}
 
   function liveTextDisplay(text: string) {
     if (!text.trim()) return "[no text]";
@@ -44,6 +48,7 @@ export default function LiveTextSlide({ banner, defaultCSS, initialCSS }: Banner
       }}
       className={clsx(
         "transition-transform  duration-300 ease-in-out ",
+        // slideIn ? " scale-100" : "scale-50"
         slideIn ? " translate-x-[0%]" : "translate-x-[120%]"
       )}
     >
@@ -55,6 +60,8 @@ export default function LiveTextSlide({ banner, defaultCSS, initialCSS }: Banner
           color: getVal("color"),
           font: getVal("font"),
           backgroundColor: getVal("backgroundColor"),
+          boxDecorationBreak: "clone",
+          padding: "5px 10px",
         }}
         dangerouslySetInnerHTML={{ __html: liveTextDisplay(banner.text) }}
       />
