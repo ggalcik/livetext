@@ -30,8 +30,8 @@ export default function SpotsOpts({ popupState }: { popupState: PopupState }) {
         {thisOptsPopupIsActive(visiblePopup, { spot: "default" }) && (
           <div className="inline-block">
             <LiveTextFormat
-              banner="default"
-              bannerCSS={state.spotCSS}
+              spot="default"
+              css={state.spotCSS}
               dispatch={dispatch}
               defaultCSS={initialLiveDataState.spotCSS}
               hideThis={() => showOptsPopup(setVisiblePopup, null)}

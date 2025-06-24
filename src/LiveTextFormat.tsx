@@ -1,26 +1,33 @@
 import clsx from "clsx";
-import type { BannerCSS, LiveDataAction, LiveDataState } from "./context/LiveData/types";
+import type { BannerCSS, LiveDataAction, SpotCSS } from "./context/LiveData/types";
 import { useEffect, useRef } from "react";
 
-interface LiveTextFormatOpts {
-  banner: "default" | number;
-  dispatch: React.Dispatch<LiveDataAction>;
-  bannerCSS: BannerCSS;
-  defaultCSS: BannerCSS;
-  hideThis: () => void;
-}
+type LiveTextFormatOpts =
+  | {
+      banner: "default" | number;
+      dispatch: React.Dispatch<LiveDataAction>;
+      css: Partial<BannerCSS>;
+      defaultCSS: BannerCSS;
+      hideThis: () => void;
+    }
+  | {
+      spot: "default" | number;
+      dispatch: React.Dispatch<LiveDataAction>;
+      css: Partial<SpotCSS>;
+      defaultCSS: SpotCSS;
+      hideThis: () => void;
+    };
 
-export default function LiveTextFormat({
-  banner,
-  dispatch,
-  bannerCSS,
-  defaultCSS,
-  hideThis,
-}: LiveTextFormatOpts) {
+export default function LiveTextFormat(props: LiveTextFormatOpts) {
   const ref = useRef<HTMLDivElement>(null);
 
-  type CSSField = keyof LiveDataState["bannerCSS"];
-  type CSSValue<K extends CSSField> = LiveDataState["bannerCSS"][K];
+  const { dispatch, css, defaultCSS, hideThis } = props;
+
+  const isBanner = "banner" in props;
+  const index = isBanner ? props.banner : props.spot;
+
+  type CSSField = keyof typeof css;
+  type CSSValue<K extends CSSField> = (typeof css)[K];
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -33,17 +40,25 @@ export default function LiveTextFormat({
   }, [hideThis]);
 
   function dispatchChange<K extends CSSField>(key: K, value: CSSValue<K> | undefined) {
-    dispatch({
-      type: "bannerCSS",
-      payload: {
-        banner,
-        cssPayload: {
-          [key]: value,
+    if (isBanner) {
+      dispatch({
+        type: "bannerCSS",
+        payload: {
+          banner: index,
+          cssPayload: { [key]: value },
         },
-      },
-    });
+      });
+    } else {
+      dispatch({
+        type: "spotCSS",
+        payload: {
+          spot: index,
+          cssPayload: { [key]: value },
+        },
+      });
+    }
   }
-
+console.log("css: ", css); 
   return (
     <div ref={ref} className="relative z-10 border bg-white m-2 p-2 drop-shadow-2xl text-sm">
       <div className="grid grid-cols-[auto_auto] gap-2">
@@ -51,7 +66,7 @@ export default function LiveTextFormat({
         <div>
           <input
             className="w-40 border p-2"
-            value={bannerCSS.padding}
+            value={css.padding ?? ''}
             placeholder={defaultCSS.padding}
             onChange={(e) => dispatchChange("padding", e.target.value)}
           />
@@ -64,7 +79,7 @@ export default function LiveTextFormat({
         <div>
           <input
             className="w-40 border p-2"
-            value={bannerCSS.font}
+            value={css.font}
             placeholder={defaultCSS.font}
             onChange={(e) => dispatchChange("font", e.target.value)}
           />
@@ -76,11 +91,11 @@ export default function LiveTextFormat({
             <button
               key={align}
               className={clsx("px-3 py-1 rounded border cursor-pointer", {
-                "bg-blue-600 text-white border-blue-600": bannerCSS.textAlign === align,
+                "bg-blue-600 text-white border-blue-600": css.textAlign === align,
                 "bg-blue-100 border-blue-600":
-                  !bannerCSS.textAlign && defaultCSS.textAlign === align,
+                  !css.textAlign && defaultCSS.textAlign === align,
                 "bg-white text-gray-800 border-gray-400 hover:bg-gray-100":
-                  bannerCSS.textAlign && bannerCSS.textAlign !== align,
+                  css.textAlign && css.textAlign !== align,
               })}
               onClick={() => dispatchChange("textAlign", align)}
             >
@@ -92,7 +107,7 @@ export default function LiveTextFormat({
         <div>
           <input
             className="w-40 border p-2"
-            value={bannerCSS.color}
+            value={css.color}
             placeholder={defaultCSS.color}
             onChange={(e) => dispatchChange("color", e.target.value)}
           />
@@ -101,14 +116,14 @@ export default function LiveTextFormat({
         <div className="flex items-center gap-2">
           <input
             className="w-20 border p-2"
-            value={bannerCSS.backgroundColor}
+            value={css.backgroundColor}
             placeholder={defaultCSS.backgroundColor}
             onChange={(e) => dispatchChange("backgroundColor", e.target.value)}
           />
           <input
             type="checkbox"
             className="h-6 w-6"
-            checked={bannerCSS.onBox}
+            checked={css.onBox}
             onChange={(e) => dispatchChange("onBox", e.target.checked)}
           />
           <div>box</div>
@@ -117,7 +132,7 @@ export default function LiveTextFormat({
         <div>
           <input
             className="w-40 border p-2"
-            value={bannerCSS.textShadow}
+            value={css.textShadow}
             placeholder={defaultCSS.textShadow}
             onChange={(e) => dispatchChange("textShadow", e.target.value)}
           />

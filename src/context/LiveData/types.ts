@@ -74,6 +74,7 @@ export type LiveDataAction =
   | { type: "timer/setCountdown" }
   | { type: "localStorage/toggle" }
   | { type: "bannerCSS"; payload: { banner: "default" | number; cssPayload: Partial<BannerCSS> } }
+  | { type: "spotCSS"; payload: { spot: "default" | number; cssPayload: Partial<SpotCSS> } }
   | { type: "dateMark"; payload: { dateMark: string } };
 
  export  type VisiblePopup = 

@@ -49,7 +49,7 @@ export default function BannersEdit({ popupState }: { popupState: PopupState }) 
                   <div className="absolute top-1/2 -translate-y-1/2">
                   <LiveTextFormat
                     banner={idx}
-                    bannerCSS={state.banners[idx].bannerCSS}
+                    css={state.banners[idx].bannerCSS}
                     dispatch={dispatch}
                     defaultCSS={state.bannerCSS}
                     hideThis={() => popupState.setVisiblePopup(null)}

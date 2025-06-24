@@ -180,12 +180,41 @@ export function liveDataReducer(state: LiveDataState, action: LiveDataAction): L
           },
         };
       });
-
+      
       return {
         ...state,
         banners: updatedBanners,
       };
     }
+
+    case "spotCSS": {
+      if (action.payload.spot === "default") {
+        return {
+          ...state,
+          spotCSS: {
+            ...state.spotCSS,
+            ...action.payload.cssPayload,
+          },
+        };
+      }
+
+      const updatedSpots = state.spots.map((spot, index) => {
+        if (index !== action.payload.spot) return spot;
+        return {
+          ...spot,
+          spotCSS: {
+            ...spot.spotCSS,
+            ...action.payload.cssPayload,
+          },
+        };
+      });
+      
+      return {
+        ...state,
+        spots: updatedSpots,
+      };
+    }
+
     case "dateMark":
       return { ...state, ...action.payload };
 

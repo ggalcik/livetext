@@ -8,7 +8,7 @@ import { showOptsPopup, thisOptsPopupIsActive } from "./components/util";
 
 export default function LiveText({ popupState }: { popupState: PopupState }) {
   const { state, dispatch } = useLiveData();
-  const {visiblePopup, setVisiblePopup} = popupState;
+  const { visiblePopup, setVisiblePopup } = popupState;
 
   const rotate = false;
   const openPopup = () => {
@@ -26,9 +26,6 @@ export default function LiveText({ popupState }: { popupState: PopupState }) {
       );
     }
   };
-
-
-
 
   return (
     <div>
@@ -58,7 +55,6 @@ export default function LiveText({ popupState }: { popupState: PopupState }) {
         </div>
       </div>
 
-
       <div className="flex gap-4">
         <button className="text-blue-600 cursor-pointer self-start" onClick={openPopup}>
           [pop]
@@ -66,21 +62,20 @@ export default function LiveText({ popupState }: { popupState: PopupState }) {
         <button
           className="text-blue-400 cursor-pointer self-start"
           onClick={() => {
-            showOptsPopup(setVisiblePopup, {"banner": "default"});
-           
+            showOptsPopup(setVisiblePopup, { banner: "default" });
           }}
         >
           [format]
         </button>
 
-        {thisOptsPopupIsActive(visiblePopup, {"banner": "default"}) && (
+        {thisOptsPopupIsActive(visiblePopup, { banner: "default" }) && (
           <div className="inline-block">
             <LiveTextFormat
               banner="default"
-              bannerCSS={state.bannerCSS}
+              css={state.bannerCSS}
               dispatch={dispatch}
               defaultCSS={initialLiveDataState.bannerCSS}
-              hideThis={() =>  showOptsPopup(setVisiblePopup, null)}
+              hideThis={() => showOptsPopup(setVisiblePopup, null)}
             />
           </div>
         )}
