@@ -1,6 +1,6 @@
 import { useLiveData } from "../../context/LiveData";
 import LiveTextFormat from "../../LiveTextFormat";
-import type { PopupState, Spot, SpotCSS } from "../../context/LiveData/types";
+import type { PopupState, Spot } from "../../context/LiveData/types";
 import { showOptsPopup, thisOptsPopupIsActive } from "../../components/util";
 
 export default function SpotsEdit({ popupState }: { popupState: PopupState }) {
@@ -38,15 +38,15 @@ const { visiblePopup, setVisiblePopup } = popupState;
               <div></div>
               <div className="flex">
                 <button className="text-blue-400 cursor-pointer text-left"
-                onClick={() => showOptsPopup(setVisiblePopup, { spot: "default" })}
+                onClick={() => showOptsPopup(setVisiblePopup, { spot: idx })}
                 >[format]</button>
-                {thisOptsPopupIsActive(visiblePopup, { spot: "default" }) && (
+                {thisOptsPopupIsActive(visiblePopup, { spot: idx }) && (
                   <div className="relative">
 
                   <div className="absolute top-1/2 -translate-y-1/2">
                   <LiveTextFormat
                     spot={idx}
-                    spotCSS={state.spots[idx].spotCSS}
+                    css={state.spots[idx].spotCSS}
                     dispatch={dispatch}
                     defaultCSS={state.spotCSS}
                     hideThis={() => popupState.setVisiblePopup(null)}
