@@ -32,7 +32,7 @@ export default function LiveTextFormat({
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [hideThis]);
 
-  function dispatchChange<K extends CSSField>(key: K, value: CSSValue<K>|undefined) {
+  function dispatchChange<K extends CSSField>(key: K, value: CSSValue<K> | undefined) {
     dispatch({
       type: "bannerCSS",
       payload: {
@@ -45,7 +45,7 @@ export default function LiveTextFormat({
   }
 
   return (
-    <div ref={ref} className="relative z-10 border bg-white m-2 p-2 drop-shadow-2xl">
+    <div ref={ref} className="relative z-10 border bg-white m-2 p-2 drop-shadow-2xl text-sm">
       <div className="grid grid-cols-[auto_auto] gap-2">
         <div className="text-right self-center">padding</div>
         <div>
@@ -63,7 +63,7 @@ export default function LiveTextFormat({
         </div>
         <div>
           <input
-            className="w-60 border p-2"
+            className="w-40 border p-2"
             value={bannerCSS.font}
             placeholder={defaultCSS.font}
             onChange={(e) => dispatchChange("font", e.target.value)}
@@ -77,7 +77,8 @@ export default function LiveTextFormat({
               key={align}
               className={clsx("px-3 py-1 rounded border cursor-pointer", {
                 "bg-blue-600 text-white border-blue-600": bannerCSS.textAlign === align,
-                "bg-blue-100 border-blue-600": !bannerCSS.textAlign && defaultCSS.textAlign === align,
+                "bg-blue-100 border-blue-600":
+                  !bannerCSS.textAlign && defaultCSS.textAlign === align,
                 "bg-white text-gray-800 border-gray-400 hover:bg-gray-100":
                   bannerCSS.textAlign && bannerCSS.textAlign !== align,
               })}
@@ -97,12 +98,28 @@ export default function LiveTextFormat({
           />
         </div>
         <div className="text-right self-center">backgroundColor</div>
-        <div>
+        <div className="flex items-center gap-2">
           <input
-            className="w-40 border p-2"
+            className="w-20 border p-2"
             value={bannerCSS.backgroundColor}
             placeholder={defaultCSS.backgroundColor}
             onChange={(e) => dispatchChange("backgroundColor", e.target.value)}
+          />
+          <input
+            type="checkbox"
+            className="h-6 w-6"
+            checked={bannerCSS.onBox}
+            onChange={(e) => dispatchChange("onBox", e.target.checked)}
+          />
+          <div>box</div>
+        </div>
+        <div className="text-right self-center">textShadow</div>
+        <div>
+          <input
+            className="w-40 border p-2"
+            value={bannerCSS.textShadow}
+            placeholder={defaultCSS.textShadow}
+            onChange={(e) => dispatchChange("textShadow", e.target.value)}
           />
         </div>
       </div>

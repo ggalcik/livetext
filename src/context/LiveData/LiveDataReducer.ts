@@ -17,6 +17,8 @@ export const initialLiveDataState: LiveDataState = {
     textAlign: "center",
     color: "white",
     backgroundColor: "#ff6467",
+    onBox: false,
+    textShadow: "4px 4px #444",
   },
 };
 

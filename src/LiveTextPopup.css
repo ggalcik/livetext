@@ -1,9 +1,14 @@
 body.popup {
-  height: 99vw;
-  width: 99vh;
+  height: 99vh;
+  width: 99vw;
   margin: 0;
   background-color: var(--chromakey-color);
-  transform: rotate(270deg);
-  transform-origin: 50% 27%;
+
   position: absolute;
+}
+
+body.popup.rotate {
+  height: 99vw;
+  width: 99vh;    transform: rotate(270deg);
+  transform-origin: 50% 27%;
 }

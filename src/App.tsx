@@ -27,44 +27,15 @@ function App() {
         <Route
           path="/"
           element={
-            <div className="grid h-[100vh] grid-cols-[var(--scene-width)_auto] grid-rows-[10vh_auto] gap-4">
-              <div className="p-2">
-                <div>
-                  <input
-                    className="w-4 cursor-pointer"
-                    type="checkbox"
-                    id="background/toggle"
-                    checked={state.backgroundOn}
-                    onChange={() => dispatch({ type: "background/toggle" })}
-                  />{" "}
-                  <label htmlFor="background/toggle" className="cursor-pointer">
-                    bg -{" "}
-                  </label>
-                  <button className="text-blue-600 cursor-pointer" onClick={openPopup}>
-                    [pop]
-                  </button>
-                  {" "} -
+            <div className="grid h-[100vh] grid-cols-1 grid-rows-[10vh_auto] gap-4">
 
-                  <input
-                    className="w-4 cursor-pointer"
-                    type="checkbox"
-                    id="localStorage/toggle"
-                    checked={state.saveToStorage}
-                    onChange={() => dispatch({ type: "localStorage/toggle" })}
-                  />{" "}
-                  <label htmlFor="localStorage/toggle" className="cursor-pointer">
-                    update pop
-                  </label>
 
-                </div>
-              </div>
+        
               <div className="p-2">
                 <LiveTextOpts popupState={{visiblePopup, setVisiblePopup}}/>
               </div>
 
-              <div className={clsx("p-4", { "bg-(--chromakey-color)": state.backgroundOn })}>
-                <LiveText state={state} />
-              </div>
+
 
               <div className="p-4">
                 <BannersEdit popupState={{visiblePopup, setVisiblePopup}} />

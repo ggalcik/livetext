@@ -20,7 +20,9 @@ export interface LiveDataState {
     textAlign: "left"| "center"| "right";
     color: string;
     backgroundColor: string;
-    lineHeight?: string;
+    onBox?: boolean;
+    textShadow: string;
+
   }
 }
 export type BannerCSS = LiveDataState["bannerCSS"];

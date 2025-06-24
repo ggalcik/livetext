@@ -7,6 +7,22 @@ import type { PopupState } from "./context/LiveData/types";
 
 export default function LiveText({ popupState }: { popupState: PopupState }) {
   const { state, dispatch } = useLiveData();
+  const rotate = false;
+  const openPopup = () => {
+    if (rotate) {
+      window.open(
+        "/popup",
+        "LiveTextPopup",
+        "width=800,height=600,menubar=no,toolbar=no,location=no,status=no"
+      );
+    } else {
+      window.open(
+        "/popup",
+        "LiveTextPopup",
+        "width=600,height=800,menubar=no,toolbar=no,location=no,status=no"
+      );
+    }
+  };
 
   return (
     <div>
@@ -36,10 +52,15 @@ export default function LiveText({ popupState }: { popupState: PopupState }) {
         </div>
       </div>
 
-      <div className="flex">
+      <div className="flex gap-4">
+        <button className="text-blue-600 cursor-pointer self-start" onClick={openPopup}>
+          [pop]
+        </button>
         <button
           className="text-blue-400 cursor-pointer self-start"
-          onClick={() => {if (popupState.visiblePopup !== "default") popupState.setVisiblePopup("default")}}
+          onClick={() => {
+            if (popupState.visiblePopup !== "default") popupState.setVisiblePopup("default");
+          }}
         >
           [format]
         </button>

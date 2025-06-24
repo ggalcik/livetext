@@ -27,6 +27,7 @@ export default function LiveText({ state }: { state: LiveDataState }) {
         key={state.activeBanner}
           banner={activeBanner}
           defaultCSS={defaultCSS}
+          initialCSS={initialLiveDataState.bannerCSS}
 
         />
       )}
