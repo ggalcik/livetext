@@ -65,10 +65,12 @@ export type LiveDataAction =
   | { type: "banner/delete"; payload: { idx: number } }
   | { type: "banner/setActive"; payload: { idx: number } }
   | { type: "banner/setNextActive" }
+  | { type: "banner/toggle" }
   | { type: "spot/add" }
   | { type: "spot/change"; payload: { idx: number; text: string } }
   | { type: "spot/delete"; payload: { idx: number } }
   | { type: "spot/setActive"; payload: { idx: number } }
+  | { type: "spot/toggle" }
   | { type: "timer/toggle" }
   | { type: "timer/setInterval"; payload: { interval: number | null } }
   | { type: "timer/setCountdown" }

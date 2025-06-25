@@ -9,6 +9,8 @@ export default function SpotsOpts({ popupState }: { popupState: PopupState }) {
   const { state, dispatch } = useLiveData();
   const { visiblePopup, setVisiblePopup } = popupState;
 
+
+
   return (
     <div>
       <div className="flex gap-4">

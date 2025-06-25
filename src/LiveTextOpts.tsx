@@ -31,6 +31,7 @@ export default function LiveText({ popupState }: { popupState: PopupState }) {
     <div>
       <div className={clsx("gap-2 inline-flex px-2", { "bg-amber-100": state.timer.on })}>
         <input
+        className="h-8 w-8"
           type="checkbox"
           checked={state.timer.on}
           onChange={() => dispatch({ type: "timer/toggle" })}
@@ -41,7 +42,7 @@ export default function LiveText({ popupState }: { popupState: PopupState }) {
         </label>
         <input
           type="number"
-          className="border border-gray-400 w-16"
+          className="border border-gray-400 w-16 px-2"
           value={state.timer.interval ?? ""}
           onChange={(e) =>
             dispatch({

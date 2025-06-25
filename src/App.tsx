@@ -11,9 +11,10 @@ import { useState } from "react";
 import SpotsOpts from "./features/Spots/SpotsOpts";
 import SpotsEdit from "./features/Spots/SpotsEdit";
 import type { PopupState } from "./context/LiveData/types";
+import clsx from "clsx";
 
 function App() {
-  const { state } = useLiveData();
+  const { state, dispatch } = useLiveData();
   const [visiblePopup, setVisiblePopup] = useState<PopupState["visiblePopup"]>(null);
   // const [visiblePopup, setVisiblePopup] = useState<null | Record<"banner"|"spot", "default" | number>>(null);
   return (
@@ -22,10 +23,53 @@ function App() {
         <Route
           path="/"
           element={
-            <div className="grid h-[100vh] grid-cols-2 grid-rows-[10vh_10vh_auto] gap-4 p-4">
-              <div className="">banners</div>
-              <div className="">spots</div>
+            <div className=" grid h-[100vh] grid-cols-2 grid-rows-[10vh_10vh_auto] gap-4 p-4">
+              <div className="grid  grid-cols-[6fr_1fr] gap-2">
+                <button
+                  className={clsx("px-3 py-1 rounded-2xl border cursor-pointer", {
+                    "bg-blue-600 text-white border-blue-600": state.displayBanners,
 
+                    "bg-white text-gray-800 border-gray-400 hover:bg-gray-100":
+                      !state.displayBanners,
+                  })}
+                  onClick={() => dispatch({ type: "banner/toggle" })}
+                >
+                  banners
+                </button>
+                <button
+                  className={clsx(
+                    "px-3 py-1 rounded-2xl border cursor-pointer",
+
+                    "bg-white text-gray-800 border-gray-400 hover:bg-gray-100"
+                  )}
+                  onClick={() => dispatch({ type: "banner/solo" })}
+                >
+                  solo
+                </button>
+              </div>
+
+              <div className="grid  grid-cols-[6fr_1fr] gap-2">
+                <button
+                  className={clsx("px-3 py-1 rounded-2xl border cursor-pointer", {
+                    "bg-blue-600 text-white border-blue-600": state.displaySpots,
+
+                    "bg-white text-gray-800 border-gray-400 hover:bg-gray-100": !state.displaySpots,
+                  })}
+                  onClick={() => dispatch({ type: "spot/toggle" })}
+                >
+                  spots
+                </button>
+                <button
+                  className={clsx(
+                    "px-3 py-1 rounded-2xl border cursor-pointer",
+
+                    "bg-white text-gray-800 border-gray-400 hover:bg-gray-100"
+                  )}
+                  onClick={() => dispatch({ type: "spot/solo" })}
+                >
+                  solo
+                </button>
+              </div>
               <div className="">
                 <LiveTextOpts popupState={{ visiblePopup, setVisiblePopup }} />
               </div>

@@ -108,7 +108,17 @@ export function liveDataReducer(state: LiveDataState, action: LiveDataAction): L
         ...state,
         activeBanner: (state.activeBanner + 1) % state.banners.length,
       };
-
+    case "banner/toggle":
+      return {
+        ...state,
+        displayBanners: !state.displayBanners,
+      };
+    case "banner/solo":
+      return {
+        ...state,
+        displaySpots: false,
+        displayBanners: true,
+      };
     case "spot/add": {
       const activeSpot = state.activeSpot ?? 0;
       return {
@@ -142,7 +152,17 @@ export function liveDataReducer(state: LiveDataState, action: LiveDataAction): L
         ...state,
         activeSpot: action.payload.idx,
       };
-
+    case "spot/toggle":
+      return {
+        ...state,
+        displaySpots: !state.displaySpots,
+      };
+    case "spot/solo":
+      return {
+        ...state,
+        displaySpots: true,
+        displayBanners: false,
+      };
     case "timer/toggle":
       if (!state.timer.on && !state.timer.interval) return state;
       return {
@@ -180,7 +200,7 @@ export function liveDataReducer(state: LiveDataState, action: LiveDataAction): L
           },
         };
       });
-      
+
       return {
         ...state,
         banners: updatedBanners,
@@ -208,7 +228,7 @@ export function liveDataReducer(state: LiveDataState, action: LiveDataAction): L
           },
         };
       });
-      
+
       return {
         ...state,
         spots: updatedSpots,
