@@ -35,6 +35,8 @@ export interface LiveDataState {
     on: boolean;
     interval: number | null;
     countdown: number | null;
+    interimInterval?: number | null;
+    interimCountdown?:  number | null;
   };
   saveToStorage: boolean;
   bannerCSS: BannerCSS;
@@ -60,17 +62,19 @@ export function createSpot(): Spot {
 
 export type LiveDataAction =
   | { type: "background/toggle" }
-  | { type: "banner/add" }
+  | { type: "banner/add";payload: { idx: number } }
   | { type: "banner/change"; payload: { idx: number; text: string } }
   | { type: "banner/delete"; payload: { idx: number } }
   | { type: "banner/setActive"; payload: { idx: number } }
   | { type: "banner/setNextActive" }
   | { type: "banner/toggle" }
+  | { type: "banner/solo" }
   | { type: "spot/add" }
   | { type: "spot/change"; payload: { idx: number; text: string } }
   | { type: "spot/delete"; payload: { idx: number } }
   | { type: "spot/setActive"; payload: { idx: number } }
   | { type: "spot/toggle" }
+  | { type: "spot/solo" }
   | { type: "timer/toggle" }
   | { type: "timer/setInterval"; payload: { interval: number | null } }
   | { type: "timer/setCountdown" }

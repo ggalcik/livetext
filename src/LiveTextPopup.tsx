@@ -30,7 +30,8 @@ document.title = "Live text popup";
   }, []);
 
   return (
-    <div className="bg-(--chromakey-color) h-full">
+    // <div className="bg-(--chromakey-color) h-full">
+    <div className=" h-full">
       
         <LiveText state={state} />
      

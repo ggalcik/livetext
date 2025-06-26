@@ -62,6 +62,7 @@ export function liveDataReducerPersistence(
 }
 
 export function liveDataReducer(state: LiveDataState, action: LiveDataAction): LiveDataState {
+   console.log("banners %o, action %o", state.banners, action);
   switch (action.type) {
     case "background/toggle":
       return {
@@ -70,9 +71,17 @@ export function liveDataReducer(state: LiveDataState, action: LiveDataAction): L
       };
     case "banner/add": {
       const activeBanner = state.activeBanner ?? 0;
+      const addAtIdx = action.payload.idx;
+      console.log("banners %o, addAtIdx %s", state.banners, addAtIdx);
+
+      const newBanners = [
+        ...state.banners.slice(0, addAtIdx),
+        createBanner(),
+        ...state.banners.slice(addAtIdx),
+      ];
       return {
         ...state,
-        banners: [...state.banners, createBanner()],
+        banners: newBanners,
         activeBanner,
       };
     }

@@ -5,10 +5,12 @@ import { initialLiveDataState } from "./context/LiveData/LiveDataReducer";
 import LiveTextFormat from "./LiveTextFormat";
 import { type PopupState } from "./context/LiveData/types";
 import { showOptsPopup, thisOptsPopupIsActive } from "./components/util";
+import { useState } from "react";
 
 export default function LiveText({ popupState }: { popupState: PopupState }) {
   const { state, dispatch } = useLiveData();
   const { visiblePopup, setVisiblePopup } = popupState;
+  const [showRawState, setShowRawState] = useState(false);
 
   const rotate = false;
   const openPopup = () => {
@@ -22,7 +24,7 @@ export default function LiveText({ popupState }: { popupState: PopupState }) {
       window.open(
         "/popup",
         "LiveTextPopup",
-        "width=600,height=800,menubar=no,toolbar=no,location=no,status=no"
+        "width=600,height=450,menubar=no,toolbar=no,location=no,status=no"
       );
     }
   };
@@ -31,7 +33,7 @@ export default function LiveText({ popupState }: { popupState: PopupState }) {
     <div>
       <div className={clsx("gap-2 inline-flex px-2", { "bg-amber-100": state.timer.on })}>
         <input
-        className="h-8 w-8"
+          className="h-8 w-8"
           type="checkbox"
           checked={state.timer.on}
           onChange={() => dispatch({ type: "timer/toggle" })}
@@ -51,6 +53,7 @@ export default function LiveText({ popupState }: { popupState: PopupState }) {
             })
           }
         />
+
         <div>
           <RotateCountdown />
         </div>
@@ -78,6 +81,22 @@ export default function LiveText({ popupState }: { popupState: PopupState }) {
               defaultCSS={initialLiveDataState.bannerCSS}
               hideThis={() => showOptsPopup(setVisiblePopup, null)}
             />
+          </div>
+        )}
+
+        <button
+          className="text-blue-400 cursor-pointer self-start"
+          onClick={() =>
+            setShowRawState((p) => !p)
+          }
+
+        >
+          [raw state]
+        </button>
+
+           {showRawState && (
+          <div className="inline-block bg-white drop-shadow-2xl p-2 ">
+           <textarea className="p-2 border w-80" rows={4} value={JSON.stringify(state)}></textarea>
           </div>
         )}
       </div>
