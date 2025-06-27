@@ -3,9 +3,9 @@ import LiveText from "./LiveText";
 import "./LiveTextPopup.css";
 import type { LiveDataState } from "./context/LiveData/types";
 
-export default function LiveTextPopup({initialState}:{initialState:LiveDataState}) {
+export default function LiveTextPopup({ initialState }: { initialState: LiveDataState }) {
   const [state, setState] = useState<LiveDataState>(initialState);
- 
+
   useEffect(() => {
     // Add class on mount
     document.body.classList.add("popup");
@@ -21,7 +21,7 @@ export default function LiveTextPopup({initialState}:{initialState:LiveDataState
     };
 
     window.addEventListener("storage", handleStorage);
-document.title = "Live text popup";
+    document.title = "Live text popup";
     // Clean up
     return () => {
       document.body.classList.remove("popup");
@@ -31,10 +31,8 @@ document.title = "Live text popup";
 
   return (
     // <div className="bg-(--chromakey-color) h-full">
-    <div className=" h-full">
-      
-        <LiveText state={state} />
-     
+    <div className="h-full">
+      <LiveText state={state} />
     </div>
   );
 }

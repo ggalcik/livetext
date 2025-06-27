@@ -40,7 +40,7 @@ export default function SpotDisplay({ spot, defaultCSS, initialCSS }: SpotSlideP
         backgroundColor: getVal("onBox") ? getVal("backgroundColor") : "transparent",
       }}
       className={clsx(
-        "  transition-transform duration-500 ease-in-out",
+        " absolute transition-transform duration-500 ease-in-out",
         slideIn ? "scale-100" : "scale-30"
       )}
     >

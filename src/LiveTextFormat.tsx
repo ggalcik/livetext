@@ -58,7 +58,7 @@ export default function LiveTextFormat(props: LiveTextFormatOpts) {
       });
     }
   }
-console.log("css: ", css); 
+
   return (
     <div ref={ref} className="relative z-10 border bg-white m-2 p-2 drop-shadow-2xl text-sm">
       <div className="grid grid-cols-[auto_auto] gap-2">

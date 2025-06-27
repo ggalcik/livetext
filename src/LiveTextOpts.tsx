@@ -31,32 +31,67 @@ export default function LiveText({ popupState }: { popupState: PopupState }) {
 
   return (
     <div>
-      <div className={clsx("gap-2 inline-flex px-2", { "bg-amber-100": state.timer.on })}>
-        <input
-          className="h-8 w-8"
-          type="checkbox"
-          checked={state.timer.on}
-          onChange={() => dispatch({ type: "timer/toggle" })}
-          id="bannerTimer"
-        />
-        <label htmlFor="bannerTimer" className="cursor-pointer">
-          timer
-        </label>
-        <input
-          type="number"
-          className="border border-gray-400 w-16 px-2"
-          value={state.timer.interval ?? ""}
-          onChange={(e) =>
-            dispatch({
-              type: "timer/setInterval",
-              payload: { interval: parseInt(e.target.value) || null },
-            })
-          }
-        />
+      <div className="flex justify-between">
+        <div className={clsx("gap-2 inline-flex px-2", { "bg-amber-100": state.timer.on })}>
+          <input
+            className="h-8 w-8"
+            type="checkbox"
+            checked={state.timer.on}
+            onChange={() => {
+              dispatch({ type: "timer/toggle", payload: { which: "timer" } });
+            }}
+            id="bannerTimer"
+          />
+          <label htmlFor="bannerTimer" className="cursor-pointer">
+            timer
+          </label>
+          <input
+            type="number"
+            className="border border-gray-400 w-16 px-2"
+            value={state.timer.interval ?? ""}
+            onChange={(e) =>
+              dispatch({
+                type: "timer/params",
+                payload: { interval: parseInt(e.target.value) || null, which: "timer" },
+              })
+            }
+          />
 
-        <div>
-          <RotateCountdown />
+          <div>
+            <RotateCountdown timerKey="timer" nextTimerKey="breakTimer" />
+          </div>
         </div>
+        {state.breakTimer && (
+          <div className={clsx("gap-2 inline-flex px-2", { "bg-amber-100": state.breakTimer.on })}>
+            <input
+              className="h-8 w-8"
+              type="checkbox"
+              checked={state.breakTimer.on}
+              onChange={() => {
+                dispatch({ type: "timer/toggle", payload: { which: "breakTimer" } });
+              }}
+              id="breakTimer"
+            />
+            <label htmlFor="breakTimer" className="cursor-pointer">
+              break timer
+            </label>
+            <input
+              type="number"
+              className="border border-gray-400 w-16 px-2"
+              value={state.breakTimer.interval ?? ""}
+              onChange={(e) =>
+                dispatch({
+                  type: "timer/params",
+                  payload: { interval: parseInt(e.target.value) || null, which: "breakTimer" },
+                })
+              }
+            />
+
+            <div>
+              <RotateCountdown timerKey="breakTimer" nextTimerKey="timer" />
+            </div>
+          </div>
+        )}
       </div>
 
       <div className="flex gap-4">
@@ -86,17 +121,14 @@ export default function LiveText({ popupState }: { popupState: PopupState }) {
 
         <button
           className="text-blue-400 cursor-pointer self-start"
-          onClick={() =>
-            setShowRawState((p) => !p)
-          }
-
+          onClick={() => setShowRawState((p) => !p)}
         >
           [raw state]
         </button>
 
-           {showRawState && (
+        {showRawState && (
           <div className="inline-block bg-white drop-shadow-2xl p-2 ">
-           <textarea className="p-2 border w-80" rows={4} value={JSON.stringify(state)}></textarea>
+            <textarea className="p-2 border w-80" rows={4} value={JSON.stringify(state)}></textarea>
           </div>
         )}
       </div>

@@ -12,11 +12,12 @@ import SpotsOpts from "./features/Spots/SpotsOpts";
 import SpotsEdit from "./features/Spots/SpotsEdit";
 import type { PopupState } from "./context/LiveData/types";
 import clsx from "clsx";
+import RotateCountdownTest from "./t1x";
 
 function App() {
   const { state, dispatch } = useLiveData();
   const [visiblePopup, setVisiblePopup] = useState<PopupState["visiblePopup"]>(null);
-  // const [visiblePopup, setVisiblePopup] = useState<null | Record<"banner"|"spot", "default" | number>>(null);
+  
   return (
     <BrowserRouter>
       <Routes>
@@ -87,6 +88,7 @@ function App() {
           }
         />
         <Route path="/popup" element={<LiveTextPopup initialState={state} />} />
+        <Route path="/t1x" element={<RotateCountdownTest  />} />
       </Routes>
     </BrowserRouter>
   );

@@ -21,6 +21,12 @@ export interface BannerCSS {
 }
 
 export type SpotCSS = BannerCSS;
+export type Timer =  {
+    on: boolean;
+    interval: number | null;
+    countdown: number | null;
+    paused: boolean
+  };
 
 export interface LiveDataState {
   backgroundOn: boolean;
@@ -31,13 +37,8 @@ export interface LiveDataState {
   spots: Spot[];
   displaySpots: boolean;
   activeSpot: number | null;
-  timer: {
-    on: boolean;
-    interval: number | null;
-    countdown: number | null;
-    interimInterval?: number | null;
-    interimCountdown?:  number | null;
-  };
+  timer: Timer;
+  breakTimer: Timer;
   saveToStorage: boolean;
   bannerCSS: BannerCSS;
   spotCSS: SpotCSS;
@@ -60,24 +61,25 @@ export function createSpot(): Spot {
   };
 }
 
+type TimerKey = "timer" | "breakTimer";
+
 export type LiveDataAction =
-  | { type: "background/toggle" }
-  | { type: "banner/add";payload: { idx: number } }
-  | { type: "banner/change"; payload: { idx: number; text: string } }
-  | { type: "banner/delete"; payload: { idx: number } }
-  | { type: "banner/setActive"; payload: { idx: number } }
-  | { type: "banner/setNextActive" }
-  | { type: "banner/toggle" }
-  | { type: "banner/solo" }
-  | { type: "spot/add" }
-  | { type: "spot/change"; payload: { idx: number; text: string } }
-  | { type: "spot/delete"; payload: { idx: number } }
-  | { type: "spot/setActive"; payload: { idx: number } }
+| { type: "background/toggle" }
+| { type: "banner/add";payload: { idx: number } }
+| { type: "banner/change"; payload: { idx: number; text: string } }
+| { type: "banner/delete"; payload: { idx: number } }
+| { type: "banner/setActive"; payload: { idx: number } }
+| { type: "banner/setNextActive" }
+| { type: "banner/toggle" }
+| { type: "banner/solo" }
+| { type: "spot/add" }
+| { type: "spot/change"; payload: { idx: number; text: string } }
+| { type: "spot/delete"; payload: { idx: number } }
+| { type: "spot/setActive"; payload: { idx: number } }
   | { type: "spot/toggle" }
   | { type: "spot/solo" }
-  | { type: "timer/toggle" }
-  | { type: "timer/setInterval"; payload: { interval: number | null } }
-  | { type: "timer/setCountdown" }
+  | { type: "timer/params"; payload:  Partial<Timer> & { which: TimerKey } }
+  | { type: "timer/toggle"; payload: {which: TimerKey } }
   | { type: "localStorage/toggle" }
   | { type: "bannerCSS"; payload: { banner: "default" | number; cssPayload: Partial<BannerCSS> } }
   | { type: "spotCSS"; payload: { spot: "default" | number; cssPayload: Partial<SpotCSS> } }

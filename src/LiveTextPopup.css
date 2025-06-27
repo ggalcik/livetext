@@ -4,6 +4,7 @@ body.popup {
   margin: 0;
   background-color: black;
   /* background-color: var(--chromakey-color); */
+  overflow: hidden;
 
   position: absolute;
 }

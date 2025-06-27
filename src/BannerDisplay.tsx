@@ -12,7 +12,7 @@ export default function BannerDisplay({ banner, defaultCSS, initialCSS }: Banner
   const [slideIn, setSlideIn] = useState(false);
   // console.log("defaultCSS %o, banner.bannerCSS %o", defaultCSS, banner.bannerCSS);
   const logSetSlideIn = (which: boolean) => {
-    console.log("setSlideIn: ", which);
+    // console.log("setSlideIn: ", which);
     setSlideIn(which);
   };
 

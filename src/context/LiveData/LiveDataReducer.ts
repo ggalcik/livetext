@@ -12,8 +12,15 @@ export const initialLiveDataState: LiveDataState = {
   activeSpot: NO_ACTIVE_SPOT,
   timer: {
     on: false,
-    interval: null,
+    interval: 10,
     countdown: null,
+    paused: false,
+  },
+  breakTimer: {
+    on: false,
+    interval: 4,
+    countdown: null,
+    paused: true,
   },
   saveToStorage: true,
   bannerCSS: {
@@ -62,7 +69,7 @@ export function liveDataReducerPersistence(
 }
 
 export function liveDataReducer(state: LiveDataState, action: LiveDataAction): LiveDataState {
-   console.log("banners %o, action %o", state.banners, action);
+  //  console.log("banners %o, action %o", state.banners, action);
   switch (action.type) {
     case "background/toggle":
       return {
@@ -72,7 +79,7 @@ export function liveDataReducer(state: LiveDataState, action: LiveDataAction): L
     case "banner/add": {
       const activeBanner = state.activeBanner ?? 0;
       const addAtIdx = action.payload.idx;
-      console.log("banners %o, addAtIdx %s", state.banners, addAtIdx);
+      console.log("banners %o, addAtIdx %s, state.banners.slice(0, addAtIdx) %o, state.banners.slice(addAtIdx) %o", state.banners, addAtIdx, state.banners.slice(0, addAtIdx), state.banners.slice(addAtIdx));
 
       const newBanners = [
         ...state.banners.slice(0, addAtIdx),
@@ -172,22 +179,28 @@ export function liveDataReducer(state: LiveDataState, action: LiveDataAction): L
         displaySpots: true,
         displayBanners: false,
       };
-    case "timer/toggle":
-      if (!state.timer.on && !state.timer.interval) return state;
+    case "timer/toggle": {
+      const which = action.payload.which;
+      if (!state[which].interval) return state;
+      // console.log("state %o", state);
       return {
         ...state,
-        timer: { ...state.timer, on: !state.timer.on },
+        [which]: { ...state[which], on: !state[which].on },
       };
+    }
+    case "timer/params": {
+      const {which, ...rest} = action.payload;
+      return {
+        ...state,
+        [which]: { ...state[which],  ...rest },
+      };
+    }
     case "localStorage/toggle":
       return {
         ...state,
         saveToStorage: !state.saveToStorage,
       };
-    case "timer/setInterval":
-      return {
-        ...state,
-        timer: { ...state.timer, ...action.payload },
-      };
+
     case "bannerCSS": {
       if (action.payload.banner === "default") {
         return {
