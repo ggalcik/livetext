@@ -11,7 +11,8 @@ import Background from "./Background";
 export default function LiveText({ state }: { state: LiveDataState }) {
   // if (state.activeBanner === null) return "[no banner]";
 
-  const activeBanner = state.activeBanner === NO_ACTIVE_BANNER ? null : state.banners[state.activeBanner] ;
+  const activeBanner =
+    state.activeBanner === NO_ACTIVE_BANNER ? null : state.banners[state.activeBanner];
   const defaultCSS = {
     ...initialLiveDataState.bannerCSS,
     ...state.bannerCSS,
@@ -24,16 +25,14 @@ export default function LiveText({ state }: { state: LiveDataState }) {
     !state.timer.paused;
   const showSpot = state.activeSpot !== null && state.spots[state.activeSpot] && state.displaySpots;
 
+
   return (
     // main container
     <div className={clsx(`h-[100vh] overflow-hidden relative]`)}>
-
-
       {/* safety container - regular bounds for display capture area */}
       <div className="flex items-center justify-center absolute w-full h-full p-18 ">
         <div className="absolute ">
-          <Background which={state.backgroundImage}/>
-          
+          <Background which={state.backgroundImage} />
         </div>{" "}
         {!state.banners.length && "[no banners]"}
         {state.activeBanner !== NO_ACTIVE_BANNER &&
@@ -49,15 +48,15 @@ export default function LiveText({ state }: { state: LiveDataState }) {
           />
         )}
         {!state.spots.length && state.displaySpots && "[no spots]"}
-        {showSpot && state.activeSpot && (
-          // <div className="absolute top-0 w-full h-full ">
+        {showSpot && state.activeSpot !== null && (
+          
           <SpotDisplay
             key={`spot-${state.activeSpot}`}
             spot={state.spots[state.activeSpot]}
             defaultCSS={state.spotCSS ?? initialLiveDataState.spotCSS}
             initialCSS={initialLiveDataState.spotCSS}
           />
-          // </div>
+       
         )}
         {showBanner && (
           <div className="absolute bottom-0 left-0 w-full px-18">
