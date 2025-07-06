@@ -2,6 +2,7 @@ import { useLiveData } from "./context/LiveData";
 import LiveTextFormat from "./LiveTextFormat";
 import type { PopupState } from "./context/LiveData/types";
 import { showOptsPopup, thisOptsPopupIsActive } from "./components/util";
+import clsx from "clsx";
 
 export default function BannersEdit({ popupState }: { popupState: PopupState }) {
   const { state, dispatch } = useLiveData();
@@ -9,26 +10,39 @@ export default function BannersEdit({ popupState }: { popupState: PopupState }) 
 
   return (
     <div>
-            <button
+      <button
         type="button"
         className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-        onClick={() => dispatch({ type: "banner/add" , payload: {idx: 0}})}
+        onClick={() => dispatch({ type: "banner/add", payload: { idx: 0 } })}
       >
         Add
       </button>
 
       {state.banners.length > 0 &&
         state.banners.map((item, idx) => (
-          <div key={`bannerForm_${idx}`} className="p-2 mb-2 border-b">
+          <div key={`bannerForm_${idx}`} className={clsx("p-2 mb-2 border-b",
+                {"bg-gray-200":!item.on})}>
             <div className="grid grid-cols-[30px_auto] grid-rows-[auto_50px] gap-2">
+              <div className={clsx("grid content-start gap-2 w-8",
+                {"bg-gray-200":!item.on})}>
+
               <input
                 type="radio"
                 name="activeBanner"
                 value={idx}
-                className=" justify-center"
+                className=" justify-center w-8 h-8"
                 checked={state.activeBanner === idx}
+                disabled={!item.on}
                 onChange={() => dispatch({ type: "banner/setActive", payload: { idx } })}
               />
+              <input
+                type="checkbox"
+                name={`bannerOn_${idx}`}
+                className=" justify-center w-8 h-8"
+                checked={item.on === undefined ? false : item.on}
+                onChange={() => dispatch({ type: "banner/toggleOneOn", payload: { idx } })}
+                />
+                </div>
               <textarea
                 className="border  p-2"
                 rows={4}
@@ -61,7 +75,7 @@ export default function BannersEdit({ popupState }: { popupState: PopupState }) 
                 )}
                 <button
                   type="button"
-                  className="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 px-5 py-2.5 me-2 mb-2 font-medium rounded-lg text-sm    mb-1 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900 cursor-pointer"
+                  className="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 px-5 py-2.5 me-2 mb-2 font-medium rounded-lg text-sm   dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900 cursor-pointer"
                   onClick={() => dispatch({ type: "banner/delete", payload: { idx } })}
                 >
                   Delete
@@ -70,7 +84,7 @@ export default function BannersEdit({ popupState }: { popupState: PopupState }) 
                 <button
                   type="button"
                   className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 cursor-pointer"
-                  onClick={() => dispatch({ type: "banner/add", payload: {idx:idx+1} })}
+                  onClick={() => dispatch({ type: "banner/add", payload: { idx: idx + 1 } })}
                 >
                   Add
                 </button>
@@ -78,8 +92,6 @@ export default function BannersEdit({ popupState }: { popupState: PopupState }) 
             </div>
           </div>
         ))}
-
-
     </div>
   );
 }

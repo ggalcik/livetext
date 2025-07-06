@@ -1,8 +1,10 @@
+
 import { createBanner, createSpot, NO_ACTIVE_BANNER, NO_ACTIVE_SPOT } from "./types";
-import type { LiveDataState, LiveDataAction } from "./types";
+import type { LiveDataState, LiveDataAction} from "./types";
 
 export const initialLiveDataState: LiveDataState = {
   backgroundOn: true,
+  backgroundImage: '',
   dateMark: "",
   banners: [],
   spots: [],
@@ -70,16 +72,42 @@ export function liveDataReducerPersistence(
 
 export function liveDataReducer(state: LiveDataState, action: LiveDataAction): LiveDataState {
   //  console.log("banners %o, action %o", state.banners, action);
+
+  function getNextActiveBannerIdx(): number | null {
+    const startIdx = state.activeBanner;
+    const bannersLength = state.banners.length;
+    if (startIdx === null || bannersLength <= 1) return null;
+
+    let nextIdx = (startIdx + 1) % bannersLength;
+    while (nextIdx != startIdx) {
+      const nextBanner = state.banners[nextIdx];
+      if (nextBanner && nextBanner.on) return nextIdx;
+      nextIdx = (nextIdx + 1) % bannersLength;
+    }
+    return null;
+  }
+
   switch (action.type) {
     case "background/toggle":
       return {
         ...state,
         backgroundOn: !state.backgroundOn,
       };
+    case "background/change":{ console.log(action.payload.which);
+      return {
+        ...state,
+        backgroundImage: action.payload.which,
+      };}
     case "banner/add": {
       const activeBanner = state.activeBanner ?? 0;
       const addAtIdx = action.payload.idx;
-      console.log("banners %o, addAtIdx %s, state.banners.slice(0, addAtIdx) %o, state.banners.slice(addAtIdx) %o", state.banners, addAtIdx, state.banners.slice(0, addAtIdx), state.banners.slice(addAtIdx));
+      // console.log(
+      //   "banners %o, addAtIdx %s, state.banners.slice(0, addAtIdx) %o, state.banners.slice(addAtIdx) %o",
+      //   state.banners,
+      //   addAtIdx,
+      //   state.banners.slice(0, addAtIdx),
+      //   state.banners.slice(addAtIdx)
+      // );
 
       const newBanners = [
         ...state.banners.slice(0, addAtIdx),
@@ -118,17 +146,36 @@ export function liveDataReducer(state: LiveDataState, action: LiveDataAction): L
         ...state,
         activeBanner: action.payload.idx,
       };
-    case "banner/setNextActive":
-      if (state.activeBanner === null || state.banners.length <= 1) return state;
+    case "banner/setNextActive": {
+      if (state.activeBanner == null) return state;
+      const nextActive = getNextActiveBannerIdx();
+      if (nextActive == null) return state;
       return {
         ...state,
-        activeBanner: (state.activeBanner + 1) % state.banners.length,
+        activeBanner: nextActive,
       };
+    }
     case "banner/toggle":
       return {
         ...state,
         displayBanners: !state.displayBanners,
       };
+    case "banner/toggleOneOn": {
+      const thisBannerIdx = action.payload.idx;
+      let newActiveBanner = state.activeBanner;
+      if (state.activeBanner === thisBannerIdx && state.banners[thisBannerIdx].on)
+        newActiveBanner = getNextActiveBannerIdx();
+      if (state.activeBanner === null && !state.banners[thisBannerIdx].on)
+        newActiveBanner = thisBannerIdx;
+
+      return {
+        ...state,
+        activeBanner: newActiveBanner,
+        banners: state.banners.map((banner, idx) =>
+          idx === action.payload.idx ? { ...banner, on: !banner.on } : banner
+        ),
+      };
+    }
     case "banner/solo":
       return {
         ...state,
@@ -189,10 +236,10 @@ export function liveDataReducer(state: LiveDataState, action: LiveDataAction): L
       };
     }
     case "timer/params": {
-      const {which, ...rest} = action.payload;
+      const { which, ...rest } = action.payload;
       return {
         ...state,
-        [which]: { ...state[which],  ...rest },
+        [which]: { ...state[which], ...rest },
       };
     }
     case "localStorage/toggle":

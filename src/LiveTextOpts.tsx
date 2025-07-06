@@ -77,7 +77,7 @@ export default function LiveText({ popupState }: { popupState: PopupState }) {
             </label>
             <input
               type="number"
-              className="border border-gray-400 w-16 px-2"
+              className="border border-gray-400 w-12 px-2"
               value={state.breakTimer.interval ?? ""}
               onChange={(e) =>
                 dispatch({
@@ -127,7 +127,7 @@ export default function LiveText({ popupState }: { popupState: PopupState }) {
         </button>
 
         {showRawState && (
-          <div className="inline-block bg-white drop-shadow-2xl p-2 ">
+          <div className="flex flex-col bg-white drop-shadow-2xl p-2 ">
             <textarea className="p-2 border w-80" rows={4} value={JSON.stringify(state)}></textarea>
           </div>
         )}

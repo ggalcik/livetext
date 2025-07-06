@@ -10,7 +10,6 @@ interface ProgressDotsOpts {
 export default function ProgressDots({ state, timerKey }:ProgressDotsOpts) {
  
   const timer = state[timerKey];
-  console.log("state: %o, timer: %o", state, timer);
   if (!timer || !timer.on || timer.interval == null || timer.countdown == null) {
     return <div></div>;
   }

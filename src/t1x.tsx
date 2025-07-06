@@ -1,33 +1,45 @@
 import { useReducer } from "react";
 import { LiveDataContext } from "./context/LiveData/LiveDataContext";
 import RotateCountdown from "./RotateCountdown";
+import {initialLiveDataState} from './context/LiveData/LiveDataReducer';
+import type { LiveDataState } from "./context/LiveData/types";
 
-type Timer = { on: boolean; paused: boolean };
+
 type TimerKey = "timer" | "breakTimer";
 
-interface TestState {
-  timer: Timer;
-  breakTimer: Timer;
-}
+
 
 type Action =
-  | { type: `${TimerKey}/setPaused`; payload: { paused: boolean } };
+  | { type: `${TimerKey}/setPaused`; payload:  boolean  };
 
-const reducer = (state: TestState, action: Action): TestState => {
-  const key = action.type.split("/")[0] as TimerKey;
-  if (action.type.endsWith("/setPaused")) {
-    return {
-      ...state,
-      [key]: { ...state[key], paused: action.payload.paused },
-    };
-  }
-  return state;
+const reducer = (state: LiveDataState, action: Action): LiveDataState => {
+switch (action.type) {
+    case "timer/setPaused":
+  return {
+    ...state,
+    timer: {
+      ...state.timer,
+      paused: action.payload,
+    },
+  };
+
+case "breakTimer/setPaused":
+  return {
+    ...state,
+    breakTimer: {
+      ...state.breakTimer,
+      paused: action.payload,
+    },
+  };
+default:
+  return state;}
 };
 
-const initialState: TestState = {
-  timer: { on: true, paused: false },
-  breakTimer: { on: true, paused: true },
-};
+
+const initialState = {...initialLiveDataState, ...{
+  timer: { on: true, interval:10, countdown: null, paused: false },
+  breakTimer: { on: true, interval:10, countdown: null,paused: true },
+}};
 
 export default function RotateCountdownTest() {
   const [state, dispatch] = useReducer(reducer, initialState);
