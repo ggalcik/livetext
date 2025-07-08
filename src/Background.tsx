@@ -7,6 +7,8 @@ import DullTheQuestion from "./assets/dull_the_question.jpg";
 import DullUncaused from "./assets/dull_uncaused.jpg";
 import DullWatchmaker from "./assets/dull_watchmaker.jpg";
 import DullAsleep from "./assets/dull_asleep.jpg";
+import IntoJesus from "./assets/into_jesus.jpg";
+import Trolley from "./assets/trolley.jpg";
 
 import type { BackgroundType } from "./context/LiveData/types";
 import clsx from "clsx";
@@ -22,6 +24,8 @@ const backgroundMap: Record<BackgroundType, string> = {
   "Dull uncaused cause": DullUncaused,
   "Dull watchmaker": DullWatchmaker,
   "Dull asleep": DullAsleep,
+  "Into Jesus": IntoJesus,
+  "Trolley problem": Trolley
 };
 
 interface BackgroundProps {

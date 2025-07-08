@@ -30,7 +30,7 @@ export default function LiveText({ state }: { state: LiveDataState }) {
     // main container
     <div className={clsx(`h-[100vh] overflow-hidden relative]`)}>
       {/* safety container - regular bounds for display capture area */}
-      <div className="flex items-center justify-center absolute w-full h-full p-18 ">
+      <div className="flex items-center justify-center absolute w-full h-full p-18 pt-48 ">
         <div className="absolute ">
           <Background which={state.backgroundImage} />
         </div>{" "}

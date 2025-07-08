@@ -41,6 +41,8 @@ export const backgroundOptions = [
   "Dull uncaused cause",
   "Dull watchmaker",
   "Dull asleep",
+    "Into Jesus",
+  "Trolley problem",
 ] as const;
 
 
