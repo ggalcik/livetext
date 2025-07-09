@@ -1,10 +1,10 @@
 import clsx from "clsx";
-import { useLiveData } from "./context/LiveData";
-import RotateCountdown from "./RotateCountdown";
-import { initialLiveDataState } from "./context/LiveData/LiveDataReducer";
+import { useLiveData } from "../../context/LiveData";
+import RotateCountdown from "../../RotateCountdown";
+import { initialLiveDataState } from "../../context/LiveData/LiveDataReducer";
 import LiveTextFormat from "./LiveTextFormat";
-import { type PopupState } from "./context/LiveData/types";
-import { showOptsPopup, thisOptsPopupIsActive } from "./components/util";
+import { type PopupState } from "../../context/LiveData/types";
+import { showOptsPopup, thisOptsPopupIsActive } from "../../components/util";
 import { useState } from "react";
 
 export default function LiveText({ popupState }: { popupState: PopupState }) {

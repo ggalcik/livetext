@@ -1,5 +1,5 @@
 import { useLiveData } from "../../context/LiveData";
-import LiveTextFormat from "../../LiveTextFormat";
+import LiveTextFormat from "../../features/LiveDisplay/LiveTextFormat";
 import type { PopupState, Spot } from "../../context/LiveData/types";
 import { showOptsPopup, thisOptsPopupIsActive } from "../../components/util";
 

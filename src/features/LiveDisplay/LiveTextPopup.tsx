@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import LiveText from "./LiveText";
 import "./LiveTextPopup.css";
-import type { LiveDataState } from "./context/LiveData/types";
+import type { LiveDataState } from "../../context/LiveData/types";
 
 export default function LiveTextPopup({ initialState }: { initialState: LiveDataState }) {
   const [state, setState] = useState<LiveDataState>(initialState);

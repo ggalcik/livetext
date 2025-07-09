@@ -1,12 +1,12 @@
 import clsx from "clsx";
-import { NO_ACTIVE_BANNER } from "./context/LiveData/types";
-import type { LiveDataState } from "./context/LiveData/types";
-import BannerDisplay from "./BannerDisplay";
-import { initialLiveDataState } from "./context/LiveData/LiveDataReducer";
-import SpotDisplay from "./features/Spots/SpotDisplay";
+import { NO_ACTIVE_BANNER } from "../../context/LiveData/types";
+import type { LiveDataState } from "../../context/LiveData/types";
+import BannerDisplay from "../../BannerDisplay";
+import { initialLiveDataState } from "../../context/LiveData/LiveDataReducer";
+import SpotDisplay from "../../features/Spots/SpotDisplay";
 
-import ProgressDots from "./ProgressDots";
-import Background from "./Background";
+import ProgressDots from "../../ProgressDots";
+import Background from "../../Background";
 
 export default function LiveText({ state }: { state: LiveDataState }) {
   // if (state.activeBanner === null) return "[no banner]";

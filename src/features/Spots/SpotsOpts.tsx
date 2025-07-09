@@ -2,7 +2,7 @@ import clsx from "clsx";
 import { useLiveData } from "../../context/LiveData";
 import type { PopupState } from "../../context/LiveData/types";
 import { dateStr, showOptsPopup, thisOptsPopupIsActive } from "../../components/util";
-import LiveTextFormat from "../../LiveTextFormat";
+import LiveTextFormat from "../../features/LiveDisplay/LiveTextFormat";
 import { initialLiveDataState } from "../../context/LiveData/LiveDataReducer";
 
 export default function SpotsOpts({ popupState }: { popupState: PopupState }) {

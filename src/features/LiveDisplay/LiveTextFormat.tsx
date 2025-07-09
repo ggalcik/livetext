@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import type { BannerCSS, LiveDataAction, SpotCSS } from "./context/LiveData/types";
+import type { BannerCSS, LiveDataAction, SpotCSS } from "../../context/LiveData/types";
 import { useEffect, useRef } from "react";
 
 type LiveTextFormatOpts =

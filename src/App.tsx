@@ -5,8 +5,8 @@ import "./App.css";
 import BannersEdit from "./BannersEdit";
 import { useLiveData } from "./context/LiveData/LiveDataContext";
 
-import LiveTextOpts from "./LiveTextOpts";
-import LiveTextPopup from "./LiveTextPopup";
+import LiveTextOpts from "./features/LiveDisplay/LiveTextOpts";
+import LiveTextPopup from "./features/LiveDisplay/LiveTextPopup";
 import { useState } from "react";
 import SpotsOpts from "./features/Spots/SpotsOpts";
 import SpotsEdit from "./features/Spots/SpotsEdit";
