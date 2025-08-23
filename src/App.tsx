@@ -30,7 +30,7 @@ function App() {
                 isActive ? (
                   <div className=" grid h-[100vh] grid-cols-1 md:grid-cols-2 grid-rows-[10vh_10vh_auto] gap-4 p-4">
                     <TopOpts />
-                    <div className="">
+                    <div className="h-32">
                       <LiveTextOpts popupState={{ visiblePopup, setVisiblePopup }} />
                     </div>
                     <div className="">

@@ -43,6 +43,7 @@ export const backgroundOptions = [
   "Dull asleep",
     "Into Jesus",
   "Trolley problem",
+  "Quadrant"
 ] as const;
 
 

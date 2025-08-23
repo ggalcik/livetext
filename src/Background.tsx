@@ -9,6 +9,7 @@ import DullWatchmaker from "./assets/dull_watchmaker.jpg";
 import DullAsleep from "./assets/dull_asleep.jpg";
 import IntoJesus from "./assets/into_jesus.jpg";
 import Trolley from "./assets/trolley.jpg";
+import Quadrant from "./assets/quadrant.png";
 
 import type { BackgroundType } from "./context/LiveData/types";
 import clsx from "clsx";
@@ -25,7 +26,8 @@ const backgroundMap: Record<BackgroundType, string> = {
   "Dull watchmaker": DullWatchmaker,
   "Dull asleep": DullAsleep,
   "Into Jesus": IntoJesus,
-  "Trolley problem": Trolley
+  "Trolley problem": Trolley,
+  "Quadrant": Quadrant
 };
 
 interface BackgroundProps {
