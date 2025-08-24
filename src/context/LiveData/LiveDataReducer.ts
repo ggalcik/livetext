@@ -1,49 +1,52 @@
 
 import { createBanner, createSpot, NO_ACTIVE_BANNER, NO_ACTIVE_SPOT } from "./types";
-import type { LiveDataState, LiveDataAction} from "./types";
+import type { LiveDataState, LiveDataAction } from "./types";
+import workingData from "./workingData.json";
 
-export const initialLiveDataState: LiveDataState = {
-  backgroundOn: true,
-  backgroundImage: '',
-  dateMark: "",
-  banners: [],
-  spots: [],
-  displayBanners: true,
-  displaySpots: false,
-  activeBanner: NO_ACTIVE_BANNER,
-  activeSpot: NO_ACTIVE_SPOT,
-  timer: {
-    on: false,
-    interval: 10,
-    countdown: null,
-    paused: false,
-  },
-  breakTimer: {
-    on: false,
-    interval: 4,
-    countdown: null,
-    paused: true,
-  },
-  saveToStorage: true,
-  bannerCSS: {
-    padding: "10px",
-    font: "bold 20px/1 sans-serif",
-    textAlign: "right",
-    color: "white",
-    backgroundColor: "#ff6467",
-    onBox: false,
-    textShadow: "4px 4px #444",
-  },
-  spotCSS: {
-    padding: "10px",
-    font: "bold 20px/1 sans-serif",
-    textAlign: "center",
-    color: "white",
-    backgroundColor: "#ff6467",
-    onBox: false,
-    textShadow: "4px 4px #444",
-  },
-};
+export const initialLiveDataState: LiveDataState = workingData as LiveDataState;
+
+// export const initialLiveDataState: LiveDataState = {
+//   backgroundOn: true,
+//   backgroundImage: '',
+//   dateMark: "",
+//   banners: [],
+//   spots: [],
+//   displayBanners: true,
+//   displaySpots: false,
+//   activeBanner: NO_ACTIVE_BANNER,
+//   activeSpot: NO_ACTIVE_SPOT,
+//   timer: {
+//     on: false,
+//     interval: 10,
+//     countdown: null,
+//     paused: false,
+//   },
+//   breakTimer: {
+//     on: false,
+//     interval: 4,
+//     countdown: null,
+//     paused: true,
+//   },
+//   saveToStorage: true,
+//   bannerCSS: {
+//     padding: "10px",
+//     font: "bold 20px/1 sans-serif",
+//     textAlign: "right",
+//     color: "white",
+//     backgroundColor: "#ff6467",
+//     onBox: false,
+//     textShadow: "4px 4px #444",
+//   },
+//   spotCSS: {
+//     padding: "10px",
+//     font: "bold 20px/1 sans-serif",
+//     textAlign: "center",
+//     color: "white",
+//     backgroundColor: "#ff6467",
+//     onBox: false,
+//     textShadow: "4px 4px #444",
+//   },
+// };
 
 export function loadInitialState(): LiveDataState {
   try {
@@ -93,11 +96,13 @@ export function liveDataReducer(state: LiveDataState, action: LiveDataAction): L
         ...state,
         backgroundOn: !state.backgroundOn,
       };
-    case "background/change":{ console.log(action.payload.which);
+    case "background/change": {
+      console.log(action.payload.which);
       return {
         ...state,
         backgroundImage: action.payload.which,
-      };}
+      };
+    }
     case "banner/add": {
       const activeBanner = state.activeBanner ?? 0;
       const addAtIdx = action.payload.idx;
@@ -229,11 +234,22 @@ export function liveDataReducer(state: LiveDataState, action: LiveDataAction): L
     case "timer/toggle": {
       const which = action.payload.which;
       if (!state[which].interval) return state;
-      // console.log("state %o", state);
-      return {
+
+      const isOn = state[which].on;
+      const newState = {
         ...state,
-        [which]: { ...state[which], on: !state[which].on },
+        [which]: { ...state[which], on: !isOn },
       };
+
+      // If we're turning OFF the main timer, also force breaktimer off
+      if (which === "timer" && isOn) {
+        return {
+          ...newState,
+          breakTimer: { ...state.breakTimer, on: false },
+        };
+      }
+
+      return newState;
     }
     case "timer/params": {
       const { which, ...rest } = action.payload;

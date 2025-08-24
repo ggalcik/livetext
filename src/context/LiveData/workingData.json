@@ -1,0 +1,206 @@
+{
+  "backgroundOn": true,
+  "backgroundImage": "Angry",
+  "dateMark": "",
+  "banners": [
+    {
+      "text": "Jesus sacrificed the ability to meet up for one Sunday brunch, and that's about it",
+      "bannerCSS": {
+        "color": "#ff8",
+        "onBox": true,
+        "textAlign": "center",
+        "padding": "",
+        "backgroundColor": "#88f",
+        "font": "40px/1.6 Cooper",
+        "textShadow": "2px 4px black"
+      },
+      "idx": 0,
+      "on": true
+    },
+    {
+      "text": "GOD FARTS THROUGH ME!",
+      "bannerCSS": {
+        "font": "bold 80px/1.3 \"Calibri\"",
+        "textShadow": "2px 2px black",
+        "onBox": true,
+        "textAlign": "center",
+        "backgroundColor": "#400"
+      },
+      "idx": 1,
+      "on": false
+    },
+    {
+      "text": "Your gifts add time to the timer and force me to endure more of this nonsense",
+      "bannerCSS": {
+        "textAlign": "center",
+        "backgroundColor": "green",
+        "font": "50px/1.3 Ariel",
+        "onBox": true
+      },
+      "on": false,
+      "idx": 2
+    },
+    {
+      "text": "P1:  Morality depends on a mind\nP2:  Every mind is subjective\nC:  All morality is subjective",
+      "bannerCSS": {
+        "font": "bold 35px/1.3 sans-serif",
+        "onBox": true,
+        "backgroundColor": "#88f",
+        "textShadow": "2px 2px black",
+        "textAlign": "left",
+        "padding": ""
+      },
+      "idx": 3,
+      "on": true
+    },
+    {
+      "text": "It takes more faith to have faith than to not have faith\n<span style=\"font-size: 70%\">and you can quote me on that</span>",
+      "bannerCSS": {
+        "textAlign": "center",
+        "onBox": true,
+        "font": "40px/1.3 \"Comic Sans MS\"",
+        "textShadow": "2px 2px black"
+      },
+      "on": false,
+      "idx": 3
+    },
+    {
+      "text": "<span style=\"font-size: 80%\">Slavery is bad</span>\nWE ALL AGREE\n<span style=\"font-size: 70%\">God doesn't, though</span>",
+      "bannerCSS": {
+        "textAlign": "center",
+        "font": "bold 60px/1.3 'Berlin Sans FB'",
+        "onBox": true,
+        "backgroundColor": "#040",
+        "padding": "40px"
+      },
+      "on": true,
+      "idx": 5
+    },
+    {
+      "text": "If God's rampage wasn't in the bible, you'd think he was a villain in a bad action movie",
+      "bannerCSS": {
+        "font": "bold 50px/1.3 \"Agency FB\"",
+        "backgroundColor": "#88f",
+        "textShadow": "2px 2px black",
+        "onBox": true,
+        "textAlign": "center",
+        "color": "#ff8"
+      },
+      "on": false,
+      "idx": 6
+    }
+  ],
+  "spots": [
+    {
+      "text": "Sat Aug 23\n-------------\n\"Agnostic Atheist?!\": 3\nWatchmaker: 0",
+      "spotCSS": {
+        "font": "40px/1.3 \"Bahnschrift\"",
+        "textAlign": "left"
+      },
+      "idx": 0
+    },
+    {
+      "text": "I am, in fact, an agnostic atheist.\nThis is not a contradiction.\nPlease refer to your local Google searching contraption for more details.\n",
+      "spotCSS": {
+        "padding": "20px 60px"
+      },
+      "idx": 1
+    },
+    {
+      "text": "My favorite names today:\n\neepeeskeepee\nMcSlob\nRichie Gunner Get Ya\n",
+      "spotCSS": {},
+      "idx": 2
+    },
+    {
+      "text": "no guests, leaving soon",
+      "spotCSS": {
+        "padding": "40px",
+        "onBox": true
+      },
+      "idx": 3
+    },
+    {
+      "text": "Back in 5 minutes",
+      "spotCSS": {
+        "padding": "80px"
+      },
+      "idx": 5
+    },
+    {
+      "text": "The worst theist arguments:\n1. What year is it?\n2. You can't see air\n3. Satan believes in God\n4. Atheists only exist with God",
+      "spotCSS": {
+        "backgroundColor": "#282"
+      },
+      "idx": 5
+    },
+    {
+      "text": "I am 127.3% angry!!!@!",
+      "spotCSS": {
+        "backgroundColor": "red",
+        "padding": "40px",
+        "font": "bold 70px/1.3  \"Agency FB\""
+      },
+      "idx": 6
+    },
+    {
+      "text": "Shroudenfreude (/SHROW-den-froy'-da/) n. 1. The amusement you feel at someone defending the Shroud of Turin.",
+      "spotCSS": {
+        "padding": "60px",
+        "font": "bold 40px/1.4 serif",
+        "color": "#444",
+        "backgroundColor": "#f8f8f8",
+        "textShadow": "0 0 "
+      },
+      "idx": 7
+    },
+    {
+      "text": "chookie: \"You bait cause lame.\"\nwarptlake: \"If continues lame bait casting cause master.\"\nPax: \"Fibber notsee.\"",
+      "spotCSS": {
+        "textAlign": "left",
+        "padding": "60px"
+      },
+      "idx": 8
+    }
+  ],
+  "displayBanners": true,
+  "displaySpots": false,
+  "activeBanner": 3,
+  "activeSpot": 6,
+  "timer": {
+    "on": true,
+    "interval": 7,
+    "countdown": 2,
+    "paused": false
+  },
+  "breakTimer": {
+    "on": true,
+    "interval": 10,
+    "countdown": 1,
+    "paused": true
+  },
+  "saveToStorage": true,
+  "bannerCSS": {
+    "padding": "20px ",
+    "font": "50px/1.3 impact",
+    "textAlign": "right",
+    "color": "white",
+    "bgColor": "red",
+    "backgroundColor": "#f89",
+    "lineHeight": "1.3",
+    "banner": "default",
+    "cssPayload": {
+      "padding": "0"
+    },
+    "textShadow": "4px 4px black",
+    "onBox": false
+  },
+  "spotCSS": {
+    "padding": "40px 10px",
+    "font": "bold 30px/1.4 sans-serif",
+    "textAlign": "center",
+    "color": "white",
+    "backgroundColor": "blue",
+    "onBox": true,
+    "textShadow": "4px 4px #444"
+  }
+}
