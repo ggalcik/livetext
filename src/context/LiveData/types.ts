@@ -1,35 +1,34 @@
-export interface Banner {
-  text: string;
-  bannerCSS: Partial<BannerCSS>;
-  on?: boolean;
-}
+import { z } from "zod";
 
-export interface Spot {
-  text: string;
-  spotCSS: Partial<SpotCSS>;
-  counter?: number;
-  addl?: string;
-}
 
-export interface BannerCSS {
-  padding: string;
-  font: string;
-  textAlign: "left" | "center" | "right";
-  color: string;
-  backgroundColor: string;
-  onBox?: boolean;
-  textShadow: string;
-}
+export const BannerCSSSchema = z.object({
+  padding: z.string(),
+  font: z.string(),
+  textAlign: z.enum(["left", "center", "right"]),
+  color: z.string(),
+  backgroundColor: z.string(),
+  onBox: z.boolean().optional(),
+  textShadow: z.string(),
+});
+export type BannerCSS = z.infer<typeof BannerCSSSchema>;
 
-export type SpotCSS = BannerCSS;
-export type Timer = {
-  on: boolean;
-  interval: number | null;
-  countdown: number | null;
-  paused: boolean;
-};
+export const BannerSchema = z.object({
+  text: z.string(),
+  bannerCSS: BannerCSSSchema.partial(), // matches Partial<BannerCSS>
+  on: z.boolean().optional(),
+});
+export type Banner = z.infer<typeof BannerSchema>;
 
-// 1. Single source of truth — the array
+
+export const TimerSchema = z.object({
+  on: z.boolean(),
+  interval: z.number().nullable(),
+  countdown: z.number().nullable(),
+  paused: z.boolean(),
+});
+export type Timer = z.infer<typeof TimerSchema>;
+
+
 export const backgroundOptions = [
   "",
   "Angry",
@@ -41,7 +40,7 @@ export const backgroundOptions = [
   "Dull uncaused cause",
   "Dull watchmaker",
   "Dull asleep",
-    "Into Jesus",
+  "Into Jesus",
   "Trolley problem",
   "Quadrant"
 ] as const;
@@ -49,25 +48,66 @@ export const backgroundOptions = [
 
 export type BackgroundType = typeof backgroundOptions[number];
 
+export const LiveDataStateSchema = z.object({
+  backgroundOn: z.boolean(),
+  backgroundImage: z.enum(backgroundOptions),
+  banners: z.array(BannerSchema),
+  defaultBannerCSS: BannerCSSSchema,
+  displayBanners: z.boolean(),
+  activeBanner: z.number().nullable(),
+  spots: z.array(BannerSchema), // reuses Banner since Spot = Banner in your shape
+  defaultSpotCSS: BannerCSSSchema,
+  displaySpots: z.boolean(),
+  activeSpot: z.number().nullable(),
+  timer: TimerSchema,
+  breakTimer: TimerSchema,
+  saveToStorage: z.boolean(),
+});
+export type LiveDataState = z.infer<typeof LiveDataStateSchema>;
 
-
-
-export interface LiveDataState {
-  backgroundOn: boolean;
-  backgroundImage: BackgroundType;
-  dateMark?: string;
-  banners: Banner[];
-  displayBanners: boolean;
-  activeBanner: number | null;
-  spots: Spot[];
-  displaySpots: boolean;
-  activeSpot: number | null;
-  timer: Timer;
-  breakTimer: Timer;
-  saveToStorage: boolean;
-  bannerCSS: BannerCSS;
-  spotCSS: SpotCSS;
-}
+export function makeInitialLiveDataState(): LiveDataState {
+  return {
+    backgroundOn: true,
+    backgroundImage: '',
+    banners: [],
+    spots: [],
+    displayBanners: true,
+    displaySpots: false,
+    activeBanner: NO_ACTIVE_BANNER,
+    activeSpot: NO_ACTIVE_SPOT,
+    timer: {
+      on: false,
+      interval: 10,
+      countdown: null,
+      paused: false,
+    },
+    breakTimer: {
+      on: false,
+      interval: 4,
+      countdown: null,
+      paused: true,
+    },
+    saveToStorage: true,
+    defaultBannerCSS: {
+      padding: "10px",
+      font: "bold 20px/1 sans-serif",
+      textAlign: "right",
+      color: "white",
+      backgroundColor: "#ff6467",
+      onBox: false,
+      textShadow: "4px 4px #444",
+    },
+    defaultSpotCSS: {
+      padding: "10px",
+      font: "bold 20px/1 sans-serif",
+      textAlign: "center",
+      color: "white",
+      backgroundColor: "#ff6467",
+      onBox: false,
+      textShadow: "4px 4px #444",
+    },
+  }
+};
 
 export const NO_ACTIVE_BANNER = null;
 export const NO_ACTIVE_SPOT = null;
@@ -80,10 +120,18 @@ export function createBanner(): Banner {
   };
 }
 
-export function createSpot(): Spot {
+export function createRotatingBanner(): Banner {
   return {
     text: "",
-    spotCSS: {},
+    bannerCSS: {},
+    on: false,
+  };
+}
+
+export function createSpot(): Banner {
+  return {
+    text: "",
+    bannerCSS: {},
   };
 }
 
@@ -110,7 +158,7 @@ export type LiveDataAction =
   | { type: "timer/toggle"; payload: { which: TimerKey } }
   | { type: "localStorage/toggle" }
   | { type: "bannerCSS"; payload: { banner: "default" | number; cssPayload: Partial<BannerCSS> } }
-  | { type: "spotCSS"; payload: { spot: "default" | number; cssPayload: Partial<SpotCSS> } }
+  | { type: "spotCSS"; payload: { spot: "default" | number; cssPayload: Partial<BannerCSS> } }
   | { type: "dateMark"; payload: { dateMark: string } };
 
 export type VisiblePopup = { banner: number | "default" } | { spot: number | "default" } | null;

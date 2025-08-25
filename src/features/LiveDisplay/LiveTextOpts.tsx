@@ -111,9 +111,9 @@ export default function LiveText({ popupState }: { popupState: PopupState }) {
           <div className="inline-block">
             <LiveTextFormat
               banner="default"
-              css={state.bannerCSS}
+              css={state.defaultBannerCSS}
               dispatch={dispatch}
-              defaultCSS={initialLiveDataState.bannerCSS}
+              defaultCSS={initialLiveDataState.defaultBannerCSS}
               hideThis={() => showOptsPopup(setVisiblePopup, null)}
             />
           </div>

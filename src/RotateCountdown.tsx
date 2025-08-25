@@ -12,7 +12,7 @@ interface RotateCountdownOpts {
 export default function RotateCountdown({ timerKey, nextTimerKey }: RotateCountdownOpts) {
   const { state, dispatch } = useLiveData();
   const [timer, nextTimer] = [state[timerKey], state[nextTimerKey]];
-          
+
   // dispatch({
   //           type: "timer/params",
   //           payload: {  paused: timerKey === 'breakTimer', which: timerKey },
@@ -88,7 +88,7 @@ export default function RotateCountdown({ timerKey, nextTimerKey }: RotateCountd
 
   return (
     <div className={clsx("gap-2 inline-flex px-2", { "bg-amber-100": timer.on })}>
-      { timer.paused ? "⏸️" : timer.countdown ??  "--"}
+      {timer.paused ? "⏸️" : timer.countdown ?? "--"}
     </div>
   );
 }

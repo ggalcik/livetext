@@ -4,8 +4,8 @@ import type { BannerCSS, LiveDataState } from "./context/LiveData/types";
 
 interface BannerSlideProps {
   banner: LiveDataState["banners"][number];
-  defaultCSS: LiveDataState["bannerCSS"];
-  initialCSS: LiveDataState["bannerCSS"];
+  defaultCSS: LiveDataState["defaultBannerCSS"];
+  initialCSS: LiveDataState["defaultBannerCSS"];
 }
 
 export default function BannerDisplay({ banner, defaultCSS, initialCSS }: BannerSlideProps) {

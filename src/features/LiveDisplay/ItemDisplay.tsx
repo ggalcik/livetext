@@ -1,57 +1,74 @@
 import React, { useEffect, useState } from "react";
 import clsx from "clsx";
+import type { Banner, BannerCSS } from "../../context/LiveData/types";
 
-type CSSDefaults = {
-  textAlign?: string;
-  onBox?: boolean;
-  [key: string]: unknown;
-};
-
-interface GenericDisplayProps<
-  TStyle extends CSSDefaults,
-  TItem extends Record<string, unknown>,
-  TKey extends keyof TItem = keyof TItem
-> {
-  item: TItem;
-  cssKey: TKey;
-  defaultCSS: TStyle;
-  initialCSS: TStyle;
+interface ItemDisplayProps {
+  banner: Banner;
+  defaultCSS: BannerCSS;
+  initialCSS: BannerCSS;
+  bannerType: "rotating" | "spot";
 }
 
-export function GenericDisplay<
-  TStyle extends CSSDefaults,
-  TItem extends Record<string, unknown>,
-  TKey extends keyof TItem & string
->({
-  item,
-  cssKey,
-  defaultCSS,
-  initialCSS,
-}: GenericDisplayProps<TStyle, TItem, TKey>) {
+export default function ItemDisplay({ banner, defaultCSS, initialCSS, bannerType }: ItemDisplayProps) {
   const [slideIn, setSlideIn] = useState(false);
 
   useEffect(() => {
     requestAnimationFrame(() => setSlideIn(true));
-  }, [item]);
+  }, [banner]);
 
-  function getVal<K extends keyof TStyle>(field: K): TStyle[K] {
-    const cssObj = item[cssKey] as Partial<TStyle> | undefined;
-    const val = cssObj?.[field] ?? defaultCSS?.[field] ?? initialCSS?.[field];
+  function getVal<K extends keyof BannerCSS>(field: K): BannerCSS[K] {
+    const val = banner.bannerCSS?.[field] ?? defaultCSS[field] ?? initialCSS[field];
 
-    if (val === undefined) {
-      if (field === "textAlign") return "left" as TStyle[K];
-      if (field === "onBox") return false as TStyle[K];
-      return "" as TStyle[K];
+    if (val !== undefined) {
+      return val as BannerCSS[K];
     }
 
-    return val;
+    if (field === "textAlign") return "left" as BannerCSS[K];
+    if (field === "onBox") return false as BannerCSS[K];
+
+    // fallback for string-like fields
+    return "" as BannerCSS[K];
+
+  }
+
+  function liveTextDisplay(text: string) {
+    if (!text.trim()) return "[no text]";
+    return text.replace(/(?:\r\n|\r|\n)/g, "<br>");
   }
 
   return (
-    <div className={clsx("transition", { "opacity-100": slideIn, "opacity-0": !slideIn })}>
-      {/* You can render something using getVal here */}
-      <div style={{ textAlign: getVal("textAlign" as keyof TStyle) as string }}>
-        Display using getVal
+    <div
+      style={{
+        padding: getVal("padding"),
+        textAlign: getVal("textAlign") as React.CSSProperties["textAlign"],
+        ...(bannerType === "spot"
+          ? { backgroundColor: getVal("onBox") ? getVal("backgroundColor") : "transparent" }
+          : {}),
+      }}
+      className={clsx(
+        " absolute transition-transform duration-500 ease-in-out",
+        slideIn && bannerType === 'spot' ? "scale-100" : "scale-30",
+        slideIn && bannerType === 'rotating' ? " translate-x-[0%]" : "translate-x-[120%]"
+      )}
+    >
+      <div
+        style={{
+          backgroundColor: getVal("onBox") ? getVal("backgroundColor") : "transparent",
+        }}
+      >
+
+        <mark
+          className=""
+          style={{
+            textShadow: getVal("textShadow"),
+            color: getVal("color"),
+            font: getVal("font"),
+            backgroundColor: getVal("backgroundColor"),
+            boxDecorationBreak: "clone",
+            padding: "5px 10px",
+          }}
+          dangerouslySetInnerHTML={{ __html: liveTextDisplay(banner.text) }}
+        />
       </div>
     </div>
   );

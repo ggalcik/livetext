@@ -7,15 +7,21 @@ import SpotDisplay from "../../features/Spots/SpotDisplay";
 
 import ProgressDots from "../../ProgressDots";
 import Background from "../../Background";
+import ItemDisplay from "./ItemDisplay";
 
 export default function LiveText({ state }: { state: LiveDataState }) {
   // if (state.activeBanner === null) return "[no banner]";
 
   const activeBanner =
     state.activeBanner === NO_ACTIVE_BANNER ? null : state.banners[state.activeBanner];
-  const defaultCSS = {
-    ...initialLiveDataState.bannerCSS,
-    ...state.bannerCSS,
+
+  const defaultBannerCSS = {
+    ...initialLiveDataState.defaultBannerCSS,
+    ...state.defaultBannerCSS,
+  };
+  const defaultSpotCSS = {
+    ...initialLiveDataState.defaultSpotCSS,
+    ...state.defaultSpotCSS,
   };
 
   const showBanner =
@@ -43,18 +49,20 @@ export default function LiveText({ state }: { state: LiveDataState }) {
           <BannerDisplay
             key={state.activeBanner}
             banner={activeBanner}
-            defaultCSS={defaultCSS}
-            initialCSS={initialLiveDataState.bannerCSS}
+            defaultCSS={defaultBannerCSS}
+            initialCSS={initialLiveDataState.defaultBannerCSS}
           />
         )}
         {!state.spots.length && state.displaySpots && "[no spots]"}
         {showSpot && state.activeSpot !== null && (
+          <ItemDisplay
           
-          <SpotDisplay
             key={`spot-${state.activeSpot}`}
-            spot={state.spots[state.activeSpot]}
-            defaultCSS={state.spotCSS ?? initialLiveDataState.spotCSS}
-            initialCSS={initialLiveDataState.spotCSS}
+            bannerType="spot"
+            banner={state.spots[state.activeSpot]}
+            defaultCSS={defaultSpotCSS}
+            initialCSS={initialLiveDataState.defaultSpotCSS}
+
           />
        
         )}

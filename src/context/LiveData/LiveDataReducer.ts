@@ -1,60 +1,41 @@
 
 import { createBanner, createSpot, NO_ACTIVE_BANNER, NO_ACTIVE_SPOT } from "./types";
 import type { LiveDataState, LiveDataAction } from "./types";
+import { LiveDataStateSchema, makeInitialLiveDataState } from './types';
 import workingData from "./workingData.json";
 
-export const initialLiveDataState: LiveDataState = workingData as LiveDataState;
-
-// export const initialLiveDataState: LiveDataState = {
-//   backgroundOn: true,
-//   backgroundImage: '',
-//   dateMark: "",
-//   banners: [],
-//   spots: [],
-//   displayBanners: true,
-//   displaySpots: false,
-//   activeBanner: NO_ACTIVE_BANNER,
-//   activeSpot: NO_ACTIVE_SPOT,
-//   timer: {
-//     on: false,
-//     interval: 10,
-//     countdown: null,
-//     paused: false,
-//   },
-//   breakTimer: {
-//     on: false,
-//     interval: 4,
-//     countdown: null,
-//     paused: true,
-//   },
-//   saveToStorage: true,
-//   bannerCSS: {
-//     padding: "10px",
-//     font: "bold 20px/1 sans-serif",
-//     textAlign: "right",
-//     color: "white",
-//     backgroundColor: "#ff6467",
-//     onBox: false,
-//     textShadow: "4px 4px #444",
-//   },
-//   spotCSS: {
-//     padding: "10px",
-//     font: "bold 20px/1 sans-serif",
-//     textAlign: "center",
-//     color: "white",
-//     backgroundColor: "#ff6467",
-//     onBox: false,
-//     textShadow: "4px 4px #444",
-//   },
-// };
+export const initialLiveDataState = makeInitialLiveDataState();
 
 export function loadInitialState(): LiveDataState {
+  // 1. Try localStorage
   try {
     const stored = localStorage.getItem("liveData");
-    if (stored) return { ...initialLiveDataState, ...JSON.parse(stored) };
+    if (stored) {
+      const parsed = JSON.parse(stored);
+      const result = LiveDataStateSchema.safeParse(parsed);
+      if (result.success) {
+        return result.data;
+      } else {
+        console.warn("Invalid localStorage data:", result.error.format());
+      }
+    }
   } catch (e) {
     console.warn("Unable to load from localStorage", e);
   }
+
+  // 2. Try workingData.json
+  try {
+    const result = LiveDataStateSchema.safeParse(workingData);
+    if (result.success) {
+      return result.data;
+    } else {
+      console.warn("Invalid workingData.json:", result.error.format());
+    }
+  } catch (e) {
+    console.warn("Unable to load workingData.json", e);
+  }
+
+  // 3. Fallback
   return initialLiveDataState;
 }
 
