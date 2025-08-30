@@ -1,7 +1,8 @@
 
 import { createBanner, createSpot, NO_ACTIVE_BANNER, NO_ACTIVE_SPOT } from "./types";
 import type { LiveDataState, LiveDataAction } from "./types";
-import { LiveDataStateSchema, makeInitialLiveDataState } from './types';
+import { LiveDataStateSchema, makeInitialLiveDataState, backgroundOptions } from './types';
+
 import workingData from "./workingData.json";
 
 export const initialLiveDataState = makeInitialLiveDataState();
@@ -249,8 +250,8 @@ export function liveDataReducer(state: LiveDataState, action: LiveDataAction): L
       if (action.payload.banner === "default") {
         return {
           ...state,
-          bannerCSS: {
-            ...state.bannerCSS,
+          defaultBannerCSS: {
+            ...state.defaultBannerCSS,
             ...action.payload.cssPayload,
           },
         };
@@ -277,8 +278,8 @@ export function liveDataReducer(state: LiveDataState, action: LiveDataAction): L
       if (action.payload.spot === "default") {
         return {
           ...state,
-          spotCSS: {
-            ...state.spotCSS,
+          defaultSpotCSS: {
+            ...state.defaultSpotCSS,
             ...action.payload.cssPayload,
           },
         };
@@ -289,7 +290,7 @@ export function liveDataReducer(state: LiveDataState, action: LiveDataAction): L
         return {
           ...spot,
           spotCSS: {
-            ...spot.spotCSS,
+            ...spot.bannerCSS,
             ...action.payload.cssPayload,
           },
         };

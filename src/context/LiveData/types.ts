@@ -1,5 +1,10 @@
 import { z } from "zod";
 
+export const MasterViewportCSSSchema = z.object({
+  padding: z.string(),
+});
+export type MasterViewportCSS = z.infer<typeof MasterViewportCSSSchema>;
+
 
 export const BannerCSSSchema = z.object({
   padding: z.string(),
@@ -139,7 +144,7 @@ type TimerKey = "timer" | "breakTimer";
 
 export type LiveDataAction =
   | { type: "background/toggle" }
-  | { type: "background/change"; payload: { which: string } }
+  | { type: "background/change"; payload: { which: BackgroundType } }
   | { type: "banner/add"; payload: { idx: number } }
   | { type: "banner/change"; payload: { idx: number; text: string } }
   | { type: "banner/delete"; payload: { idx: number } }

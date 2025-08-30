@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import type { BannerCSS, LiveDataAction, SpotCSS } from "../../context/LiveData/types";
+import type { BannerCSS, LiveDataAction } from "../../context/LiveData/types";
 import { useEffect, useRef } from "react";
 
 type LiveTextFormatOpts =
@@ -13,8 +13,8 @@ type LiveTextFormatOpts =
   | {
       spot: "default" | number;
       dispatch: React.Dispatch<LiveDataAction>;
-      css: Partial<SpotCSS>;
-      defaultCSS: SpotCSS;
+      css: Partial<BannerCSS>;
+      defaultCSS: BannerCSS;
       hideThis: () => void;
     };
 
@@ -45,7 +45,7 @@ export default function LiveTextFormat(props: LiveTextFormatOpts) {
         type: "bannerCSS",
         payload: {
           banner: index,
-          cssPayload: { [key]: value },
+          cssPayload: { [key]: value }, // TODO: is this cssPayload working how I expect?
         },
       });
     } else {

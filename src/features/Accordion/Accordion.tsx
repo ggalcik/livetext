@@ -1,0 +1,26 @@
+import clsx from "clsx";
+import { useState } from "react";
+
+interface IAccordion {
+    label: string;
+    children: React.ReactNode;
+    startOpen?: boolean;
+}
+
+export function Accordion({ label, children, startOpen = false }: IAccordion) {
+    const [isOpen, setIsOpen] = useState(startOpen);
+
+    return (
+        <div>
+            <div className={clsx("p-4 border-b cursor-pointer", { 
+                "bg-green-100": isOpen, 
+            "bg-green-50": !isOpen })}
+                onClick={() => setIsOpen(p => !p)}>
+                {label}
+            </div>
+            {isOpen &&
+                <div className="border-t-2 border-t-gray-200 border-b p-4">{children}</div>
+            }
+        </div>
+    )
+}

@@ -36,7 +36,8 @@ export default function ItemDisplay({ banner, defaultCSS, initialCSS, bannerType
     return text.replace(/(?:\r\n|\r|\n)/g, "<br>");
   }
 
-  return (
+  const returnItem = (
+
     <div
       style={{
         padding: getVal("padding"),
@@ -46,9 +47,11 @@ export default function ItemDisplay({ banner, defaultCSS, initialCSS, bannerType
           : {}),
       }}
       className={clsx(
-        " absolute transition-transform duration-500 ease-in-out",
-        slideIn && bannerType === 'spot' ? "scale-100" : "scale-30",
-        slideIn && bannerType === 'rotating' ? " translate-x-[0%]" : "translate-x-[120%]"
+        "absolute transition-transform duration-500 ease-in-out",
+        bannerType === 'spot'
+          ? (slideIn ? 'scale-100' : 'scale-10')
+          : (slideIn ? 'translate-x-[0%]' : 'translate-x-[120%]') // rotating
+           
       )}
     >
       <div
@@ -56,7 +59,6 @@ export default function ItemDisplay({ banner, defaultCSS, initialCSS, bannerType
           backgroundColor: getVal("onBox") ? getVal("backgroundColor") : "transparent",
         }}
       >
-
         <mark
           className=""
           style={{
@@ -72,4 +74,6 @@ export default function ItemDisplay({ banner, defaultCSS, initialCSS, bannerType
       </div>
     </div>
   );
+
+  return returnItem;
 }

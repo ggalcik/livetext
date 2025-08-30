@@ -1,6 +1,9 @@
 {
   "backgroundOn": true,
   "backgroundImage": "Angry",
+      "masterViewportCSS": {
+      "padding": "48px 0 0 0"
+    },
   "dateMark": "",
   "banners": [
     {
@@ -93,7 +96,7 @@
   "spots": [
     {
       "text": "Sat Aug 23\n-------------\n\"Agnostic Atheist?!\": 3\nWatchmaker: 0",
-      "spotCSS": {
+      "bannerCSS": {
         "font": "40px/1.3 \"Bahnschrift\"",
         "textAlign": "left"
       },
@@ -101,19 +104,19 @@
     },
     {
       "text": "I am, in fact, an agnostic atheist.\nThis is not a contradiction.\nPlease refer to your local Google searching contraption for more details.\n",
-      "spotCSS": {
+      "bannerCSS": {
         "padding": "20px 60px"
       },
       "idx": 1
     },
     {
       "text": "My favorite names today:\n\neepeeskeepee\nMcSlob\nRichie Gunner Get Ya\n",
-      "spotCSS": {},
+      "bannerCSS": {},
       "idx": 2
     },
     {
       "text": "no guests, leaving soon",
-      "spotCSS": {
+      "bannerCSS": {
         "padding": "40px",
         "onBox": true
       },
@@ -121,21 +124,21 @@
     },
     {
       "text": "Back in 5 minutes",
-      "spotCSS": {
+      "bannerCSS": {
         "padding": "80px"
       },
       "idx": 5
     },
     {
       "text": "The worst theist arguments:\n1. What year is it?\n2. You can't see air\n3. Satan believes in God\n4. Atheists only exist with God",
-      "spotCSS": {
+      "bannerCSS": {
         "backgroundColor": "#282"
       },
       "idx": 5
     },
     {
       "text": "I am 127.3% angry!!!@!",
-      "spotCSS": {
+      "bannerCSS": {
         "backgroundColor": "red",
         "padding": "40px",
         "font": "bold 70px/1.3  \"Agency FB\""
@@ -144,7 +147,7 @@
     },
     {
       "text": "Shroudenfreude (/SHROW-den-froy'-da/) n. 1. The amusement you feel at someone defending the Shroud of Turin.",
-      "spotCSS": {
+      "bannerCSS": {
         "padding": "60px",
         "font": "bold 40px/1.4 serif",
         "color": "#444",
@@ -155,7 +158,7 @@
     },
     {
       "text": "chookie: \"You bait cause lame.\"\nwarptlake: \"If continues lame bait casting cause master.\"\nPax: \"Fibber notsee.\"",
-      "spotCSS": {
+      "bannerCSS": {
         "textAlign": "left",
         "padding": "60px"
       },

@@ -3,11 +3,11 @@ import { NO_ACTIVE_BANNER } from "../../context/LiveData/types";
 import type { LiveDataState } from "../../context/LiveData/types";
 import BannerDisplay from "../../BannerDisplay";
 import { initialLiveDataState } from "../../context/LiveData/LiveDataReducer";
-import SpotDisplay from "../../features/Spots/SpotDisplay";
 
 import ProgressDots from "../../ProgressDots";
 import Background from "../../Background";
 import ItemDisplay from "./ItemDisplay";
+import { MasterViewport } from "./MasterViewport";
 
 export default function LiveText({ state }: { state: LiveDataState }) {
   // if (state.activeBanner === null) return "[no banner]";
@@ -36,7 +36,8 @@ export default function LiveText({ state }: { state: LiveDataState }) {
     // main container
     <div className={clsx(`h-[100vh] overflow-hidden relative]`)}>
       {/* safety container - regular bounds for display capture area */}
-      <div className="flex items-center justify-center absolute w-full h-full p-18 pt-48 ">
+      <MasterViewport>
+        
         <div className="absolute ">
           <Background which={state.backgroundImage} />
         </div>{" "}
@@ -47,24 +48,24 @@ export default function LiveText({ state }: { state: LiveDataState }) {
           "[something wrong]"}
         {showBanner && (
           <BannerDisplay
-            key={state.activeBanner}
-            banner={activeBanner}
-            defaultCSS={defaultBannerCSS}
-            initialCSS={initialLiveDataState.defaultBannerCSS}
+          key={state.activeBanner}
+          banner={activeBanner}
+          defaultCSS={defaultBannerCSS}
+          initialCSS={initialLiveDataState.defaultBannerCSS}
           />
         )}
         {!state.spots.length && state.displaySpots && "[no spots]"}
         {showSpot && state.activeSpot !== null && (
           <ItemDisplay
           
-            key={`spot-${state.activeSpot}`}
-            bannerType="spot"
-            banner={state.spots[state.activeSpot]}
-            defaultCSS={defaultSpotCSS}
-            initialCSS={initialLiveDataState.defaultSpotCSS}
-
+          key={`spot-${state.activeSpot}`}
+          bannerType="spot"
+          banner={state.spots[state.activeSpot]}
+          defaultCSS={defaultSpotCSS}
+          initialCSS={initialLiveDataState.defaultSpotCSS}
+          
           />
-       
+          
         )}
         {showBanner && (
           <div className="absolute bottom-0 left-0 w-full px-18">
@@ -76,7 +77,8 @@ export default function LiveText({ state }: { state: LiveDataState }) {
             <ProgressDots timer={state.breakTimer} alt={true} />
           </div>
         )}
-      </div>
+      </MasterViewport>
+
     </div>
   );
 }
