@@ -1,10 +1,10 @@
 import { z } from "zod";
 
 export const MasterViewportSchema = z.object({
-  vhTop: z.number(),
-  vh: z.number(),
-  vw: z.number(),
-  showBorder: z.boolean()
+  top: z.number(),
+  left: z.number(),
+  right: z.number(),
+  bottom: z.number(),
 });
 export type MasterViewport = z.infer<typeof MasterViewportSchema>;
 
@@ -79,10 +79,10 @@ export function makeInitialLiveDataState(): LiveDataState {
     backgroundOn: true,
     backgroundImage: '',
     masterViewport: {
-      vhTop: 50,
-      vh: 50,
-      vw: 100,
-      showBorder: false
+      top: 50,
+      bottom: 100,
+      left: 0,
+      right: 100
     },
     banners: [],
     spots: [],

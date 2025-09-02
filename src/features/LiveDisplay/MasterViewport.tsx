@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import { useState } from "react";
+import { useRef, useEffect, useCallback, useState } from 'react';
 import { useMeasure } from "react-use";
 
 
@@ -33,6 +33,8 @@ export function MasterViewport({ children }: IMasterViewport) {
     // define a tolerance distance, e.g. more than 10 pixels away, move the box instead of the edge
     // will need to put previous position in state, to compare to current position, then 
     // move edges accordingly
+
+    // TODO: save position to state on mouseup
     function doPanelMove(evt: React.MouseEvent) {
         evt.preventDefault();
         // 0-100 percent of screen
@@ -57,6 +59,8 @@ export function MasterViewport({ children }: IMasterViewport) {
 
     }
 
+
+
     return (
         <>
 
@@ -76,12 +80,17 @@ export function MasterViewport({ children }: IMasterViewport) {
                     className={clsx("flex items-center justify-center absolute w-full h-full  ",
 
                     )}>
-                    <div className={clsx("absolute w-full h-full ",
+                    <div className={clsx("absolute z-0 w-full h-full border-2 border-dashed border-red-300 ",
 
                         panelMoving
                             ? "block border-red-400"
                             : "hidden border-black"
-                    )}>          </div>
+                    )}>
+                        <div className="w-2 h-2 top-0 left-0 absolute bg-red-400"></div>
+                        <div className="w-2 h-2 top-0 right-0 absolute bg-red-400"></div>
+                        <div className="w-2 h-2 bottom-0 left-0 absolute bg-red-400"></div>
+                        <div className="w-2 h-2 bottom-0 right-0 absolute bg-red-400"></div>
+                    </div>
                     {children}
 
 
