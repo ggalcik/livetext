@@ -34,51 +34,50 @@ export default function LiveText({ state }: { state: LiveDataState }) {
 
   return (
     // main container
-    <div className={clsx(`h-[100vh] overflow-hidden relative]`)}>
-      {/* safety container - regular bounds for display capture area */}
-      <MasterViewport>
-        
-        <div className="absolute ">
-          <Background which={state.backgroundImage} />
-        </div>{" "}
-        {!state.banners.length && "[no banners]"}
-        {state.activeBanner !== NO_ACTIVE_BANNER &&
-          !activeBanner &&
-          state.displayBanners &&
-          "[something wrong]"}
-        {showBanner && (
-          <BannerDisplay
+
+
+    <MasterViewport >
+
+
+      <Background which={state.backgroundImage} />
+
+      {!state.banners.length && "[no banners]"}
+      {state.activeBanner !== NO_ACTIVE_BANNER &&
+        !activeBanner &&
+        state.displayBanners &&
+        "[something wrong]"}
+      {showBanner && (
+        <BannerDisplay
           key={state.activeBanner}
           banner={activeBanner}
           defaultCSS={defaultBannerCSS}
           initialCSS={initialLiveDataState.defaultBannerCSS}
-          />
-        )}
-        {!state.spots.length && state.displaySpots && "[no spots]"}
-        {showSpot && state.activeSpot !== null && (
-          <ItemDisplay
-          
+        />
+      )}
+      {!state.spots.length && state.displaySpots && "[no spots]"}
+      {showSpot && state.activeSpot !== null && (
+        <ItemDisplay
+
           key={`spot-${state.activeSpot}`}
           bannerType="spot"
           banner={state.spots[state.activeSpot]}
           defaultCSS={defaultSpotCSS}
           initialCSS={initialLiveDataState.defaultSpotCSS}
-          
-          />
-          
-        )}
-        {showBanner && (
-          <div className="absolute bottom-0 left-0 w-full px-18">
-            <ProgressDots timer={state.timer} />
-          </div>
-        )}
-        {state.breakTimer.on && !state.breakTimer.paused && state.displayBanners && (
-          <div className="absolute bottom-0 left-0 w-full px-18">
-            <ProgressDots timer={state.breakTimer} alt={true} />
-          </div>
-        )}
-      </MasterViewport>
 
-    </div>
+        />
+
+      )}
+      {showBanner && (
+        <div className="absolute bottom-0 left-0 w-full px-18">
+          <ProgressDots timer={state.timer} />
+        </div>
+      )}
+      {state.breakTimer.on && !state.breakTimer.paused && state.displayBanners && (
+        <div className="absolute bottom-0 left-0 w-full px-18">
+          <ProgressDots timer={state.breakTimer} alt={true} />
+        </div>
+      )}
+    </MasterViewport>
+
   );
 }

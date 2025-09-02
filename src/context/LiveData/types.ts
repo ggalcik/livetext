@@ -1,9 +1,12 @@
 import { z } from "zod";
 
-export const MasterViewportCSSSchema = z.object({
-  padding: z.string(),
+export const MasterViewportSchema = z.object({
+  vhTop: z.number(),
+  vh: z.number(),
+  vw: z.number(),
+  showBorder: z.boolean()
 });
-export type MasterViewportCSS = z.infer<typeof MasterViewportCSSSchema>;
+export type MasterViewport = z.infer<typeof MasterViewportSchema>;
 
 
 export const BannerCSSSchema = z.object({
@@ -56,6 +59,7 @@ export type BackgroundType = typeof backgroundOptions[number];
 export const LiveDataStateSchema = z.object({
   backgroundOn: z.boolean(),
   backgroundImage: z.enum(backgroundOptions),
+  masterViewport: MasterViewportSchema.optional(),
   banners: z.array(BannerSchema),
   defaultBannerCSS: BannerCSSSchema,
   displayBanners: z.boolean(),
@@ -74,6 +78,12 @@ export function makeInitialLiveDataState(): LiveDataState {
   return {
     backgroundOn: true,
     backgroundImage: '',
+    masterViewport: {
+      vhTop: 50,
+      vh: 50,
+      vw: 100,
+      showBorder: false
+    },
     banners: [],
     spots: [],
     displayBanners: true,
@@ -145,6 +155,7 @@ type TimerKey = "timer" | "breakTimer";
 export type LiveDataAction =
   | { type: "background/toggle" }
   | { type: "background/change"; payload: { which: BackgroundType } }
+  | { type: "masterViewportCSS/padding"; payload: { padding: string } }
   | { type: "banner/add"; payload: { idx: number } }
   | { type: "banner/change"; payload: { idx: number; text: string } }
   | { type: "banner/delete"; payload: { idx: number } }

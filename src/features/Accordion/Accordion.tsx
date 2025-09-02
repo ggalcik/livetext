@@ -12,9 +12,10 @@ export function Accordion({ label, children, startOpen = false }: IAccordion) {
 
     return (
         <div>
-            <div className={clsx("p-4 border-b cursor-pointer", { 
-                "bg-green-100": isOpen, 
-            "bg-green-50": !isOpen })}
+            <div className={clsx("p-2 pl-4 border-b cursor-pointer text-xs", {
+                "bg-green-100": isOpen,
+                "bg-green-50": !isOpen
+            })}
                 onClick={() => setIsOpen(p => !p)}>
                 {label}
             </div>

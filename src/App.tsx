@@ -15,6 +15,7 @@ import type { BackgroundType, PopupState } from "./context/LiveData/types";
 import TopOpts from "./TopOpts";
 import { SingleWindow } from "./SingleWindow";
 import { Accordion } from "./features/Accordion/Accordion";
+import { GlobalOpts } from "./features/GlobalOpts/GlobalOpts";
 
 function App() {
   const { state, dispatch } = useLiveData();
@@ -31,7 +32,7 @@ function App() {
                 isActive ? (
                   <>
                     <Accordion label="global">
-                      <div>whatever</div>
+                      <GlobalOpts/>
                     </Accordion>
                     <Accordion label="banners" startOpen={true}>
                       <div className=" grid h-[100vh] grid-cols-1 md:grid-cols-2 grid-rows-[10vh_10vh_auto] gap-4 p-4">

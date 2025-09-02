@@ -79,11 +79,21 @@ export function liveDataReducer(state: LiveDataState, action: LiveDataAction): L
         backgroundOn: !state.backgroundOn,
       };
     case "background/change": {
-      console.log(action.payload.which);
       return {
         ...state,
         backgroundImage: action.payload.which,
       };
+    }
+    case "masterViewportCSS/padding": {
+
+        return {
+          ...state,
+          masterViewportCSS: {
+            ...state.masterViewportCSS,
+            ...action.payload,
+          },
+        };
+
     }
     case "banner/add": {
       const activeBanner = state.activeBanner ?? 0;
