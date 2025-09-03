@@ -46,12 +46,21 @@ export default function LiveText({ state }: { state: LiveDataState }) {
         !activeBanner &&
         state.displayBanners &&
         "[something wrong]"}
-      {showBanner && (
-        <BannerDisplay
-          key={state.activeBanner}
-          banner={activeBanner}
+      {showBanner && state.activeBanner !== NO_ACTIVE_BANNER && (
+        // <BannerDisplay
+        //   key={state.activeBanner}
+        //   banner={activeBanner}
+        //   defaultCSS={defaultBannerCSS}
+        //   initialCSS={initialLiveDataState.defaultBannerCSS}
+        // />
+                <ItemDisplay
+
+          key={`banner-${state.activeSpot}`}
+          bannerType="rotating"
+          banner={state.banners[state.activeBanner]}
           defaultCSS={defaultBannerCSS}
           initialCSS={initialLiveDataState.defaultBannerCSS}
+
         />
       )}
       {!state.spots.length && state.displaySpots && "[no spots]"}

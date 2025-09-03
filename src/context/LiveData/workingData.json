@@ -1,149 +1,142 @@
 {
   "backgroundOn": true,
   "backgroundImage": "Angry",
-      "masterViewportCSS": {
-      "padding": "48px 0 0 0"
-    },
-  "dateMark": "",
   "banners": [
     {
       "text": "Jesus sacrificed the ability to meet up for one Sunday brunch, and that's about it",
       "bannerCSS": {
-        "color": "#ff8",
-        "onBox": true,
-        "textAlign": "center",
         "padding": "",
-        "backgroundColor": "#88f",
         "font": "40px/1.6 Cooper",
+        "textAlign": "center",
+        "color": "#ff8",
+        "backgroundColor": "#88f",
+        "onBox": true,
         "textShadow": "2px 4px black"
       },
-      "idx": 0,
       "on": true
     },
     {
       "text": "GOD FARTS THROUGH ME!",
       "bannerCSS": {
         "font": "bold 80px/1.3 \"Calibri\"",
-        "textShadow": "2px 2px black",
-        "onBox": true,
         "textAlign": "center",
-        "backgroundColor": "#400"
+        "backgroundColor": "#400",
+        "onBox": true,
+        "textShadow": "2px 2px black"
       },
-      "idx": 1,
       "on": false
     },
     {
       "text": "Your gifts add time to the timer and force me to endure more of this nonsense",
       "bannerCSS": {
+        "font": "50px/1.3 Ariel",
         "textAlign": "center",
         "backgroundColor": "green",
-        "font": "50px/1.3 Ariel",
         "onBox": true
       },
-      "on": false,
-      "idx": 2
+      "on": false
     },
     {
       "text": "P1:  Morality depends on a mind\nP2:  Every mind is subjective\nC:  All morality is subjective",
       "bannerCSS": {
+        "padding": "",
         "font": "bold 35px/1.3 sans-serif",
-        "onBox": true,
-        "backgroundColor": "#88f",
-        "textShadow": "2px 2px black",
         "textAlign": "left",
-        "padding": ""
+        "backgroundColor": "#88f",
+        "onBox": true,
+        "textShadow": "2px 2px black"
       },
-      "idx": 3,
       "on": true
     },
     {
       "text": "It takes more faith to have faith than to not have faith\n<span style=\"font-size: 70%\">and you can quote me on that</span>",
       "bannerCSS": {
+        "font": "40px/1.3 \"Comic Sans MS\"",
         "textAlign": "center",
         "onBox": true,
-        "font": "40px/1.3 \"Comic Sans MS\"",
         "textShadow": "2px 2px black"
       },
-      "on": false,
-      "idx": 3
+      "on": false
     },
     {
       "text": "<span style=\"font-size: 80%\">Slavery is bad</span>\nWE ALL AGREE\n<span style=\"font-size: 70%\">God doesn't, though</span>",
       "bannerCSS": {
-        "textAlign": "center",
+        "padding": "40px",
         "font": "bold 60px/1.3 'Berlin Sans FB'",
-        "onBox": true,
+        "textAlign": "center",
         "backgroundColor": "#040",
-        "padding": "40px"
+        "onBox": true
       },
-      "on": true,
-      "idx": 5
+      "on": true
     },
     {
       "text": "If God's rampage wasn't in the bible, you'd think he was a villain in a bad action movie",
       "bannerCSS": {
         "font": "bold 50px/1.3 \"Agency FB\"",
-        "backgroundColor": "#88f",
-        "textShadow": "2px 2px black",
-        "onBox": true,
         "textAlign": "center",
-        "color": "#ff8"
+        "color": "#ff8",
+        "backgroundColor": "#88f",
+        "onBox": true,
+        "textShadow": "2px 2px black"
       },
-      "on": false,
-      "idx": 6
+      "on": false
     }
   ],
+  "defaultBannerCSS": {
+    "padding": "20px ",
+    "font": "50px/1.3 impact",
+    "textAlign": "right",
+    "color": "white",
+    "backgroundColor": "#f89",
+    "onBox": false,
+    "textShadow": "4px 4px black"
+  },
+  "displayBanners": false,
+  "activeBanner": 3,
   "spots": [
     {
       "text": "Sat Aug 23\n-------------\n\"Agnostic Atheist?!\": 3\nWatchmaker: 0",
       "bannerCSS": {
         "font": "40px/1.3 \"Bahnschrift\"",
         "textAlign": "left"
-      },
-      "idx": 0
+      }
     },
     {
       "text": "I am, in fact, an agnostic atheist.\nThis is not a contradiction.\nPlease refer to your local Google searching contraption for more details.\n",
       "bannerCSS": {
         "padding": "20px 60px"
-      },
-      "idx": 1
+      }
     },
     {
       "text": "My favorite names today:\n\neepeeskeepee\nMcSlob\nRichie Gunner Get Ya\n",
-      "bannerCSS": {},
-      "idx": 2
+      "bannerCSS": {}
     },
     {
       "text": "no guests, leaving soon",
       "bannerCSS": {
         "padding": "40px",
         "onBox": true
-      },
-      "idx": 3
+      }
     },
     {
       "text": "Back in 5 minutes",
       "bannerCSS": {
         "padding": "80px"
-      },
-      "idx": 5
+      }
     },
     {
       "text": "The worst theist arguments:\n1. What year is it?\n2. You can't see air\n3. Satan believes in God\n4. Atheists only exist with God",
       "bannerCSS": {
         "backgroundColor": "#282"
-      },
-      "idx": 5
+      }
     },
     {
       "text": "I am 127.3% angry!!!@!",
       "bannerCSS": {
-        "backgroundColor": "red",
         "padding": "40px",
-        "font": "bold 70px/1.3  \"Agency FB\""
-      },
-      "idx": 6
+        "font": "bold 70px/1.3  \"Agency FB\"",
+        "backgroundColor": "red"
+      }
     },
     {
       "text": "Shroudenfreude (/SHROW-den-froy'-da/) n. 1. The amusement you feel at someone defending the Shroud of Turin.",
@@ -153,50 +146,16 @@
         "color": "#444",
         "backgroundColor": "#f8f8f8",
         "textShadow": "0 0 "
-      },
-      "idx": 7
+      }
     },
     {
       "text": "chookie: \"You bait cause lame.\"\nwarptlake: \"If continues lame bait casting cause master.\"\nPax: \"Fibber notsee.\"",
       "bannerCSS": {
-        "textAlign": "left",
-        "padding": "60px"
-      },
-      "idx": 8
+        "padding": "60px",
+        "textAlign": "left"
+      }
     }
   ],
-  "displayBanners": true,
-  "displaySpots": false,
-  "activeBanner": 3,
-  "activeSpot": 6,
-  "timer": {
-    "on": true,
-    "interval": 7,
-    "countdown": 2,
-    "paused": false
-  },
-  "breakTimer": {
-    "on": true,
-    "interval": 10,
-    "countdown": 1,
-    "paused": true
-  },
-  "saveToStorage": true,
-  "defaultBannerCSS": {
-    "padding": "20px ",
-    "font": "50px/1.3 impact",
-    "textAlign": "right",
-    "color": "white",
-    "bgColor": "red",
-    "backgroundColor": "#f89",
-    "lineHeight": "1.3",
-    "banner": "default",
-    "cssPayload": {
-      "padding": "0"
-    },
-    "textShadow": "4px 4px black",
-    "onBox": false
-  },
   "defaultSpotCSS": {
     "padding": "40px 10px",
     "font": "bold 30px/1.4 sans-serif",
@@ -205,5 +164,20 @@
     "backgroundColor": "blue",
     "onBox": true,
     "textShadow": "4px 4px #444"
-  }
+  },
+  "displaySpots": false,
+  "activeSpot": 5,
+  "timer": {
+    "on": true,
+    "interval": 7,
+    "countdown": 1,
+    "paused": true
+  },
+  "breakTimer": {
+    "on": true,
+    "interval": 10,
+    "countdown": 8,
+    "paused": false
+  },
+  "saveToStorage": true
 }

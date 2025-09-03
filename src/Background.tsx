@@ -39,8 +39,5 @@ export default function Background({ which }: BackgroundProps) {
     <div className="absolute bottom-0">
       <img className="" src={backgroundMap[which]} />
     </div>
-    // <div className="absolute ">
-    //   <img className={clsx({ "mt-[-50px]": which.startsWith("Dull") })} src={backgroundMap[which]} />
-    // </div>
   );
 }

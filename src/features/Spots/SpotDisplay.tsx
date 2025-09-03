@@ -1,3 +1,4 @@
+// deprecated
 import React, { useEffect, useState } from "react";
 import clsx from "clsx";
 import type { SpotCSS, LiveDataState } from "../../context/LiveData/types";
@@ -8,6 +9,9 @@ interface SpotSlideProps {
   initialCSS: SpotCSS;
 }
 
+/**
+ * @deprecated Use ItemDisplay instead
+ */
 export default function SpotDisplay({ spot, defaultCSS, initialCSS }: SpotSlideProps) {
   const [slideIn, setSlideIn] = useState(false);
 
