@@ -16,7 +16,7 @@ export function Accordion({ label, children, startOpen = false }: IAccordion) {
                 "bg-green-100": isOpen,
                 "bg-green-50": !isOpen
             })}
-                onClick={() => setIsOpen(p => !p)}>
+                onClick={(e) => {e.preventDefault(); setIsOpen(p => !p)}}>
                 {label}
             </div>
             {isOpen &&

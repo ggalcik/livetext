@@ -8,6 +8,8 @@ export const MasterViewportSchema = z.object({
 });
 export type MasterViewport = z.infer<typeof MasterViewportSchema>;
 
+export const BannerTypeSchema = z.enum(["rotating" , "spot"]);
+export type BannerType = z.infer<typeof BannerTypeSchema>;
 
 export const BannerCSSSchema = z.object({
   padding: z.string(),
@@ -22,7 +24,7 @@ export type BannerCSS = z.infer<typeof BannerCSSSchema>;
 
 export const BannerSchema = z.object({
   text: z.string(),
-  bannerCSS: BannerCSSSchema.partial(), // matches Partial<BannerCSS>
+  bannerCSS: BannerCSSSchema.partial(),
   on: z.boolean().optional(),
 });
 export type Banner = z.infer<typeof BannerSchema>;
@@ -64,7 +66,7 @@ export const LiveDataStateSchema = z.object({
   defaultBannerCSS: BannerCSSSchema,
   displayBanners: z.boolean(),
   activeBanner: z.number().nullable(),
-  spots: z.array(BannerSchema), // reuses Banner since Spot = Banner in your shape
+  spots: z.array(BannerSchema),
   defaultSpotCSS: BannerCSSSchema,
   displaySpots: z.boolean(),
   activeSpot: z.number().nullable(),

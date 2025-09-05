@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import clsx from "clsx";
-import type { Banner, BannerCSS } from "../../context/LiveData/types";
+import type { Banner, BannerCSS, BannerType } from "../../context/LiveData/types";
 
 interface ItemDisplayProps {
   banner: Banner;
   defaultCSS: BannerCSS;
   initialCSS: BannerCSS;
-  bannerType: "rotating" | "spot";
+  bannerType: BannerType;
 }
 
 export default function ItemDisplay({ banner, defaultCSS, initialCSS, bannerType }: ItemDisplayProps) {
@@ -16,8 +16,19 @@ export default function ItemDisplay({ banner, defaultCSS, initialCSS, bannerType
     requestAnimationFrame(() => setSlideIn(true));
   }, [banner]);
 
+  function fallback(...values: (string | boolean | null | undefined)[]): string | boolean | undefined {
+    return values.find(v => v != null && v !== "") ?? undefined;
+  }
+
+
+
   function getVal<K extends keyof BannerCSS>(field: K): BannerCSS[K] {
-    const val = banner.bannerCSS?.[field] ?? defaultCSS[field] ?? initialCSS[field];
+    const val =
+      fallback(banner.bannerCSS[field],
+        defaultCSS[field],
+        initialCSS[field]
+      );
+
 
     if (val !== undefined) {
       return val as BannerCSS[K];
@@ -51,7 +62,7 @@ export default function ItemDisplay({ banner, defaultCSS, initialCSS, bannerType
         bannerType === 'spot'
           ? (slideIn ? 'scale-100' : 'scale-10')
           : (slideIn ? 'translate-x-[0%]' : 'translate-x-[120%]') // rotating
-           
+
       )}
     >
       <div

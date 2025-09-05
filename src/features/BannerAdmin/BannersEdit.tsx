@@ -1,12 +1,13 @@
 import { useLiveData } from "../../context/LiveData";
-import LiveTextFormat from "../../features/LiveDisplay/LiveTextFormat";
 import type { PopupState } from "../../context/LiveData/types";
-import { showOptsPopup, thisOptsPopupIsActive } from "../../components/util";
 import clsx from "clsx";
+import ItemControls from "./ItemControls";
+import { useState } from "react";
 
 export default function BannersEdit({ popupState }: { popupState: PopupState }) {
   const { state, dispatch } = useLiveData();
   const { visiblePopup, setVisiblePopup } = popupState;
+  const [ isInTextarea, setIsInTextArea] = useState<number | null>(null);
 
   return (
     <div>
@@ -22,20 +23,26 @@ export default function BannersEdit({ popupState }: { popupState: PopupState }) 
         state.banners.map((item, idx) => (
           <div key={`bannerForm_${idx}`} className={clsx("p-2 mb-2 border-b",
             { "bg-gray-200": !item.on })}>
-            <div className="grid grid-cols-1 grid-rows-[auto_50px] gap-2">
+            <div className="">
+
+              <ItemControls item={item} idx={idx} popupState={popupState} />
 
               <textarea
-                className="border  p-2"
+                className={clsx("border p-2 w-full",
+                  isInTextarea === idx ? "h-30" : "h-8"
+                )}
                 rows={4}
                 onChange={(evt) =>
                   dispatch({ type: "banner/change", payload: { idx, text: evt.target.value } })
                 }
+                onFocus={() => setIsInTextArea(idx)}
+                onBlur={() => setIsInTextArea(null)}
                 value={item.text}
               ></textarea>
 
-<ItemControls />
 
-             
+
+
 
             </div>
           </div>
