@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import { NO_ACTIVE_BANNER } from "../../context/LiveData/types";
+import { NO_ACTIVE_BANNER, NO_ACTIVE_SPOT } from "../../context/LiveData/types";
 import type { LiveDataState } from "../../context/LiveData/types";
 import BannerDisplay from "../../BannerDisplay";
 import { initialLiveDataState } from "../../context/LiveData/LiveDataReducer";
@@ -29,7 +29,9 @@ export default function LiveText({ state }: { state: LiveDataState }) {
     activeBanner &&
     state.displayBanners &&
     !state.timer.paused;
-  const showSpot = state.activeSpot !== null && state.spots[state.activeSpot] && state.displaySpots;
+  const showSpot = state.activeSpot !== NO_ACTIVE_SPOT &&
+    state.spots[state.activeSpot] &&
+    state.displaySpots;
 
 
   return (
@@ -47,32 +49,24 @@ export default function LiveText({ state }: { state: LiveDataState }) {
         state.displayBanners &&
         "[something wrong]"}
       {showBanner && state.activeBanner !== NO_ACTIVE_BANNER && (
-        // <BannerDisplay
-        //   key={state.activeBanner}
-        //   banner={activeBanner}
-        //   defaultCSS={defaultBannerCSS}
-        //   initialCSS={initialLiveDataState.defaultBannerCSS}
-        // />
-                <ItemDisplay
 
-          key={`banner-${state.activeSpot}`}
+        <ItemDisplay
+          key={`banner-${state.activeBanner}`}
           bannerType="rotating"
           banner={state.banners[state.activeBanner]}
           defaultCSS={defaultBannerCSS}
           initialCSS={initialLiveDataState.defaultBannerCSS}
-
         />
       )}
-      {!state.spots.length && state.displaySpots && "[no spots]"}
-      {showSpot && state.activeSpot !== null && (
-        <ItemDisplay
 
+      {!state.spots.length && state.displaySpots && "[no spots]"}
+      {showSpot && state.activeSpot !== NO_ACTIVE_SPOT && (
+        <ItemDisplay
           key={`spot-${state.activeSpot}`}
           bannerType="spot"
           banner={state.spots[state.activeSpot]}
           defaultCSS={defaultSpotCSS}
           initialCSS={initialLiveDataState.defaultSpotCSS}
-
         />
 
       )}

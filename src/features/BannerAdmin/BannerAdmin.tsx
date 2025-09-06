@@ -4,7 +4,6 @@ import TopOpts from "../../TopOpts";
 import LiveTextOpts from "../LiveDisplay/LiveTextOpts";
 import SpotsOpts from "../Spots/SpotsOpts";
 import BannersEdit from "./BannersEdit";
-import SpotsEdit from "./SpotsEdit";
 import { useLiveData } from "../../context/LiveData";
 
 // import { dateStr, showOptsPopup, thisOptsPopupIsActive } from "../../components/util";
