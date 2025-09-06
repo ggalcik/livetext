@@ -53,9 +53,9 @@ export default function ItemDisplay({ banner, defaultCSS, initialCSS, bannerType
       style={{
         padding: getVal("padding"),
         textAlign: getVal("textAlign") as React.CSSProperties["textAlign"],
-        ...(bannerType === "spot"
-          ? { backgroundColor: getVal("onBox") ? getVal("backgroundColor") : "transparent" }
-          : {}),
+
+        backgroundColor: getVal("onBox") ? getVal("backgroundColor") : "transparent"
+
       }}
       className={clsx(
         "absolute transition-transform duration-500 ease-in-out",
