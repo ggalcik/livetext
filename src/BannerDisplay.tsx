@@ -4,8 +4,8 @@ import type { BannerCSS, LiveDataState } from "./context/LiveData/types";
 
 interface BannerSlideProps {
   banner: LiveDataState["banners"][number];
-  defaultCSS: LiveDataState["bannerCSS"];
-  initialCSS: LiveDataState["bannerCSS"];
+  defaultCSS: LiveDataState["defaultBannerCSS"];
+  initialCSS: LiveDataState["defaultBannerCSS"];
 }
 
 export default function BannerDisplay({ banner, defaultCSS, initialCSS }: BannerSlideProps) {
@@ -42,7 +42,7 @@ export default function BannerDisplay({ banner, defaultCSS, initialCSS }: Banner
         // backgroundColor: getVal("onBox") ? getVal("backgroundColor") : "transparent" ,
       }}
       className={clsx(
-        "transition-transform  duration-300 ease-in-out ",
+        "transition-transform duration-300 ease-in-out ",
         // slideIn ? " scale-100" : "scale-50"
         slideIn ? " translate-x-[0%]" : "translate-x-[120%]"
       )}

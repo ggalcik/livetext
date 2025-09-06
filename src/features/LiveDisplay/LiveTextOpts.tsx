@@ -2,9 +2,8 @@ import clsx from "clsx";
 import { useLiveData } from "../../context/LiveData";
 import RotateCountdown from "../../RotateCountdown";
 import { initialLiveDataState } from "../../context/LiveData/LiveDataReducer";
-import LiveTextFormat from "./LiveTextFormat";
+import BannerFormat from "../BannerAdmin/BannerFormat";
 import { type PopupState } from "../../context/LiveData/types";
-import { showOptsPopup, thisOptsPopupIsActive } from "../../components/util";
 import { useState } from "react";
 
 export default function LiveText({ popupState }: { popupState: PopupState }) {
@@ -101,20 +100,21 @@ export default function LiveText({ popupState }: { popupState: PopupState }) {
         <button
           className="text-blue-400 cursor-pointer self-start"
           onClick={() => {
-            showOptsPopup(setVisiblePopup, { banner: "default" });
+           setVisiblePopup(`banner_default`);
           }}
         >
           [format]
         </button>
 
-        {thisOptsPopupIsActive(visiblePopup, { banner: "default" }) && (
+        {visiblePopup === "banner_default" && (
           <div className="inline-block">
-            <LiveTextFormat
-              banner="default"
-              css={state.bannerCSS}
+            <BannerFormat
+              bannerType="rotating"
+              idx="default"
+              css={state.defaultBannerCSS}
               dispatch={dispatch}
-              defaultCSS={initialLiveDataState.bannerCSS}
-              hideThis={() => showOptsPopup(setVisiblePopup, null)}
+              defaultCSS={initialLiveDataState.defaultBannerCSS}
+              hideThis={() => setVisiblePopup(null)}
             />
           </div>
         )}

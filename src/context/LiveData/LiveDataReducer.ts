@@ -1,60 +1,42 @@
 
 import { createBanner, createSpot, NO_ACTIVE_BANNER, NO_ACTIVE_SPOT } from "./types";
-import type { LiveDataState, LiveDataAction } from "./types";
+import type { LiveDataState, LiveDataAction, Banner } from "./types";
+import { LiveDataStateSchema, makeInitialLiveDataState, backgroundOptions } from './types';
+
 import workingData from "./workingData.json";
 
-export const initialLiveDataState: LiveDataState = workingData as LiveDataState;
-
-// export const initialLiveDataState: LiveDataState = {
-//   backgroundOn: true,
-//   backgroundImage: '',
-//   dateMark: "",
-//   banners: [],
-//   spots: [],
-//   displayBanners: true,
-//   displaySpots: false,
-//   activeBanner: NO_ACTIVE_BANNER,
-//   activeSpot: NO_ACTIVE_SPOT,
-//   timer: {
-//     on: false,
-//     interval: 10,
-//     countdown: null,
-//     paused: false,
-//   },
-//   breakTimer: {
-//     on: false,
-//     interval: 4,
-//     countdown: null,
-//     paused: true,
-//   },
-//   saveToStorage: true,
-//   bannerCSS: {
-//     padding: "10px",
-//     font: "bold 20px/1 sans-serif",
-//     textAlign: "right",
-//     color: "white",
-//     backgroundColor: "#ff6467",
-//     onBox: false,
-//     textShadow: "4px 4px #444",
-//   },
-//   spotCSS: {
-//     padding: "10px",
-//     font: "bold 20px/1 sans-serif",
-//     textAlign: "center",
-//     color: "white",
-//     backgroundColor: "#ff6467",
-//     onBox: false,
-//     textShadow: "4px 4px #444",
-//   },
-// };
+export const initialLiveDataState = makeInitialLiveDataState();
 
 export function loadInitialState(): LiveDataState {
+  // 1. Try localStorage
   try {
     const stored = localStorage.getItem("liveData");
-    if (stored) return { ...initialLiveDataState, ...JSON.parse(stored) };
+    if (stored) {
+      const parsed = JSON.parse(stored);
+      const result = LiveDataStateSchema.safeParse(parsed);
+      if (result.success) {
+        return result.data;
+      } else {
+        console.warn("Invalid localStorage data:", result.error.format());
+      }
+    }
   } catch (e) {
     console.warn("Unable to load from localStorage", e);
   }
+
+  // 2. Try workingData.json
+  try {
+    const result = LiveDataStateSchema.safeParse(workingData);
+    if (result.success) {
+      return result.data;
+    } else {
+      console.warn("Invalid workingData.json:", result.error.format());
+    }
+  } catch (e) {
+    console.warn("Unable to load workingData.json", e);
+  }
+
+  // 3. Fallback
   return initialLiveDataState;
 }
 
@@ -84,7 +66,7 @@ export function liveDataReducer(state: LiveDataState, action: LiveDataAction): L
     let nextIdx = (startIdx + 1) % bannersLength;
     while (nextIdx != startIdx) {
       const nextBanner = state.banners[nextIdx];
-      if (nextBanner && nextBanner.on) return nextIdx;
+      if (nextBanner && nextBanner.type === 'rotating' && nextBanner.on) return nextIdx;
       nextIdx = (nextIdx + 1) % bannersLength;
     }
     return null;
@@ -97,60 +79,76 @@ export function liveDataReducer(state: LiveDataState, action: LiveDataAction): L
         backgroundOn: !state.backgroundOn,
       };
     case "background/change": {
-      console.log(action.payload.which);
       return {
         ...state,
         backgroundImage: action.payload.which,
       };
     }
+    // case "masterViewportCSS/padding": {
+
+    //     return {
+    //       ...state,
+    //       masterViewportCSS: {
+    //         ...state.masterViewportCSS,
+    //         ...action.payload,
+    //       },
+    //     };
+
+    // }
     case "banner/add": {
-      const activeBanner = state.activeBanner ?? 0;
+       const bannersKey = action.payload.type === 'rotating' ? 'banners' : 'spots';
+       const activeBanner = (bannersKey === 'banners' ? state.activeBanner : state.activeSpot) ?? 0;
+
       const addAtIdx = action.payload.idx;
-      // console.log(
-      //   "banners %o, addAtIdx %s, state.banners.slice(0, addAtIdx) %o, state.banners.slice(addAtIdx) %o",
-      //   state.banners,
-      //   addAtIdx,
-      //   state.banners.slice(0, addAtIdx),
-      //   state.banners.slice(addAtIdx)
-      // );
 
       const newBanners = [
-        ...state.banners.slice(0, addAtIdx),
-        createBanner(),
-        ...state.banners.slice(addAtIdx),
+        ...state[bannersKey].slice(0, addAtIdx),
+        bannersKey === 'banners' ? createBanner() : createSpot(),
+        ...state[bannersKey].slice(addAtIdx),
       ];
       return {
         ...state,
-        banners: newBanners,
+        [bannersKey]: newBanners,
         activeBanner,
       };
     }
-    case "banner/change":
+    case "banner/change": {
+      const key = action.payload.type === 'rotating' ? 'banners' : 'spots';
       return {
         ...state,
-        banners: state.banners.map((banner, idx) =>
-          idx === action.payload.idx ? { ...banner, ...action.payload } : banner
+        [key]: state[key].map((banner, idx) =>
+          idx === action.payload.idx ? { ...banner, ...action.payload } as Banner : banner
         ),
-      };
+      }
+
+    }
     case "banner/delete": {
-      const banners = state.banners.filter((_, i) => i !== action.payload.idx);
+      const bannerType = action.payload.type;
+      const key = action.payload.type === 'rotating' ? 'banners' : 'spots';
+      const banners = state[key].filter((_, i) => i !== action.payload.idx);
 
       let activeBanner = state.activeBanner;
-      if (activeBanner !== null && activeBanner >= banners.length)
-        activeBanner = banners.length - 1;
-      if (activeBanner !== null && banners.length == 0) activeBanner = NO_ACTIVE_BANNER;
-
+      if (bannerType === 'rotating') {
+        if (activeBanner !== null && activeBanner >= banners.length)
+          activeBanner = banners.length - 1;
+        if (activeBanner !== null && banners.length == 0) activeBanner = NO_ACTIVE_BANNER;
+      }
+        
       return {
         ...state,
-        banners,
+        [key]: banners,
         activeBanner,
       };
     }
-    case "banner/setActive":
-      return {
+    case "banner/setActive":{
+      const active = (action.payload.type === 'rotating' ? 'activeBanner' : 'activeSpot');
+      const newState =  {
         ...state,
-        activeBanner: action.payload.idx,
+        [active]: action.payload.idx,
       };
+// console.log(action.payload.idx, newState[active], newState);
+return newState;
+      ;}
     case "banner/setNextActive": {
       if (state.activeBanner == null) return state;
       const nextActive = getNextActiveBannerIdx();
@@ -165,9 +163,11 @@ export function liveDataReducer(state: LiveDataState, action: LiveDataAction): L
         ...state,
         displayBanners: !state.displayBanners,
       };
-    case "banner/toggleOneOn": {
+    case "banner/toggleOne": {
       const thisBannerIdx = action.payload.idx;
       let newActiveBanner = state.activeBanner;
+      if (state.banners[thisBannerIdx].type !== "rotating") return state;
+
       if (state.activeBanner === thisBannerIdx && state.banners[thisBannerIdx].on)
         newActiveBanner = getNextActiveBannerIdx();
       if (state.activeBanner === null && !state.banners[thisBannerIdx].on)
@@ -177,7 +177,7 @@ export function liveDataReducer(state: LiveDataState, action: LiveDataAction): L
         ...state,
         activeBanner: newActiveBanner,
         banners: state.banners.map((banner, idx) =>
-          idx === action.payload.idx ? { ...banner, on: !banner.on } : banner
+          banner.type === 'rotating' && idx === action.payload.idx ? { ...banner, on: !banner.on } : banner
         ),
       };
     }
@@ -187,39 +187,39 @@ export function liveDataReducer(state: LiveDataState, action: LiveDataAction): L
         displaySpots: false,
         displayBanners: true,
       };
-    case "spot/add": {
-      const activeSpot = state.activeSpot ?? 0;
-      return {
-        ...state,
-        spots: [...state.spots, createSpot()],
-        activeSpot,
-      };
-    }
-    case "spot/change":
-      return {
-        ...state,
-        spots: state.spots.map((spot, idx) =>
-          idx === action.payload.idx ? { ...spot, ...action.payload } : spot
-        ),
-      };
-    case "spot/delete": {
-      const spots = state.spots.filter((_, i) => i !== action.payload.idx);
+    // case "spot/add": {
+    //   const activeSpot = state.activeSpot ?? 0;
+    //   return {
+    //     ...state,
+    //     spots: [...state.spots, createSpot()],
+    //     activeSpot,
+    //   };
+    // }
+    // case "spot/change":
+    //   return {
+    //     ...state,
+    //     spots: state.spots.map((spot, idx) =>
+    //       idx === action.payload.idx ? { ...spot, ...action.payload } : spot
+    //     ),
+    //   };
+    // case "spot/delete": {
+    //   const spots = state.spots.filter((_, i) => i !== action.payload.idx);
 
-      let activeSpot = state.activeSpot;
-      if (activeSpot !== null && activeSpot >= spots.length) activeSpot = spots.length - 1;
-      if (activeSpot !== null && spots.length == 0) activeSpot = NO_ACTIVE_BANNER;
+    //   let activeSpot = state.activeSpot;
+    //   if (activeSpot !== null && activeSpot >= spots.length) activeSpot = spots.length - 1;
+    //   if (activeSpot !== null && spots.length == 0) activeSpot = NO_ACTIVE_BANNER;
 
-      return {
-        ...state,
-        spots,
-        activeSpot,
-      };
-    }
-    case "spot/setActive":
-      return {
-        ...state,
-        activeSpot: action.payload.idx,
-      };
+    //   return {
+    //     ...state,
+    //     spots,
+    //     activeSpot,
+    //   };
+    // }
+    // case "spot/setActive":
+    //   return {
+    //     ...state,
+    //     activeSpot: action.payload.idx,
+    //   };
     case "spot/toggle":
       return {
         ...state,
@@ -268,8 +268,8 @@ export function liveDataReducer(state: LiveDataState, action: LiveDataAction): L
       if (action.payload.banner === "default") {
         return {
           ...state,
-          bannerCSS: {
-            ...state.bannerCSS,
+          defaultBannerCSS: {
+            ...state.defaultBannerCSS,
             ...action.payload.cssPayload,
           },
         };
@@ -296,8 +296,8 @@ export function liveDataReducer(state: LiveDataState, action: LiveDataAction): L
       if (action.payload.spot === "default") {
         return {
           ...state,
-          spotCSS: {
-            ...state.spotCSS,
+          defaultSpotCSS: {
+            ...state.defaultSpotCSS,
             ...action.payload.cssPayload,
           },
         };
@@ -307,8 +307,8 @@ export function liveDataReducer(state: LiveDataState, action: LiveDataAction): L
         if (index !== action.payload.spot) return spot;
         return {
           ...spot,
-          spotCSS: {
-            ...spot.spotCSS,
+          bannerCSS: {
+            ...spot.bannerCSS,
             ...action.payload.cssPayload,
           },
         };

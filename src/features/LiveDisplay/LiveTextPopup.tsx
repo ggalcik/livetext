@@ -29,10 +29,6 @@ export default function LiveTextPopup({ initialState }: { initialState: LiveData
     };
   }, []);
 
-  return (
-    // <div className="bg-(--chromakey-color) h-full">
-    <div className="h-full">
-      <LiveText state={state} />
-    </div>
-  );
+  return  <LiveText state={state} />;
+
 }
