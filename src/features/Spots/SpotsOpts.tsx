@@ -2,7 +2,7 @@ import clsx from "clsx";
 import { useLiveData } from "../../context/LiveData";
 import type { PopupState } from "../../context/LiveData/types";
 import { dateStr } from "../../components/util";
-import LiveTextFormat from "../BannerAdmin/LiveTextFormat";
+import BannerFormat from "../BannerAdmin/BannerFormat";
 import { initialLiveDataState } from "../../context/LiveData/LiveDataReducer";
 
 export default function SpotsOpts({ popupState }: { popupState: PopupState }) {
@@ -31,7 +31,7 @@ export default function SpotsOpts({ popupState }: { popupState: PopupState }) {
         </button>
         {visiblePopup === "spot_default" && (
           <div className="inline-block">
-            <LiveTextFormat
+            <BannerFormat
               bannerType="spot"
               idx="default"
               css={state.defaultSpotCSS}

@@ -1,5 +1,5 @@
 import { useLiveData } from "../../context/LiveData";
-import LiveTextFormat from "./LiveTextFormat";
+import BannerFormat from "./BannerFormat";
 import type { PopupState, Spot } from "../../context/LiveData/types";
 
 export default function SpotsEdit({ popupState }: { popupState: PopupState }) {
@@ -49,7 +49,7 @@ export default function SpotsEdit({ popupState }: { popupState: PopupState }) {
                   {thisOptsPopupIsActive(visiblePopup, { spot: idx }) && (
                     <div className="relative">
                       <div className="absolute top-1/2 -translate-y-1/2">
-                        <LiveTextFormat
+                        <BannerFormat
                           spot={idx}
                           css={state.spots[idx].spotCSS}
                           dispatch={dispatch}

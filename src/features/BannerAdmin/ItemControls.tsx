@@ -1,5 +1,5 @@
 
-import LiveTextFormat from "./LiveTextFormat";
+import BannerFormat from "./BannerFormat";
 import type { Banner, PopupState } from "../../context/LiveData/types";
 import { useLiveData } from "../../context/LiveData";
 import { useState } from "react";
@@ -70,12 +70,14 @@ export default function ItemControls({ item, idx, popupState }: IItemControls) {
             {visiblePopup == `${item.type}_${idx}` && (
                 <div className="relative z-10">
                     <div className="absolute top-1/2 -translate-y-1/2">
-                        <LiveTextFormat
+                        <BannerFormat
                             bannerType={item.type}
                             idx={idx}
-                            css={state.banners[idx].bannerCSS}
+                            css={item.type === 'rotating' ?
+                                state.banners[idx].bannerCSS :
+                                state.spots[idx].bannerCSS}
                             dispatch={dispatch}
-                            defaultCSS={state.defaultBannerCSS}
+                            defaultCSS={item.type === 'rotating' ? state.defaultBannerCSS : state.defaultSpotCSS}
                             hideThis={() => setVisiblePopup(null)}
                         />
                     </div>

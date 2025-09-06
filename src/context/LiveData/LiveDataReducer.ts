@@ -307,7 +307,7 @@ return newState;
         if (index !== action.payload.spot) return spot;
         return {
           ...spot,
-          spotCSS: {
+          bannerCSS: {
             ...spot.bannerCSS,
             ...action.payload.cssPayload,
           },

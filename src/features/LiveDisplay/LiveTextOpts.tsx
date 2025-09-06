@@ -2,7 +2,7 @@ import clsx from "clsx";
 import { useLiveData } from "../../context/LiveData";
 import RotateCountdown from "../../RotateCountdown";
 import { initialLiveDataState } from "../../context/LiveData/LiveDataReducer";
-import LiveTextFormat from "../BannerAdmin/LiveTextFormat";
+import BannerFormat from "../BannerAdmin/BannerFormat";
 import { type PopupState } from "../../context/LiveData/types";
 import { useState } from "react";
 
@@ -108,7 +108,7 @@ export default function LiveText({ popupState }: { popupState: PopupState }) {
 
         {visiblePopup === "banner_default" && (
           <div className="inline-block">
-            <LiveTextFormat
+            <BannerFormat
               bannerType="rotating"
               idx="default"
               css={state.defaultBannerCSS}

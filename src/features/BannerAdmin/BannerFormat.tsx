@@ -41,21 +41,21 @@ function CssEditorBox() {
   );
 }
 
-interface LiveTextFormatOpts  {
-    bannerType: BannerType;
-    idx: number | 'default'
-    dispatch: React.Dispatch<LiveDataAction>;
-    css: Partial<BannerCSS>;
-    defaultCSS: BannerCSS;
-    hideThis: () => void;
-  };
+interface LiveTextFormatOpts {
+  bannerType: BannerType;
+  idx: number | 'default'
+  dispatch: React.Dispatch<LiveDataAction>;
+  css: Partial<BannerCSS>;
+  defaultCSS: BannerCSS;
+  hideThis: () => void;
+};
 
-export default function LiveTextFormat(props: LiveTextFormatOpts) {
+export default function BannerFormat(props: LiveTextFormatOpts) {
   const ref = useRef<HTMLDivElement>(null);
 
   const { bannerType, idx, dispatch, css, defaultCSS, hideThis } = props;
 
-  const isBanner = bannerType === "rotating"
+  const isBanner = bannerType === "rotating";
   const index = idx; // TODO: leftover redundancy, remove
 
   type CSSField = keyof typeof css;
@@ -73,21 +73,26 @@ export default function LiveTextFormat(props: LiveTextFormatOpts) {
 
   function dispatchChange<K extends CSSField>(key: K, value: CSSValue<K> | undefined) {
     if (isBanner) {
-      dispatch({
+      const obj: LiveDataAction = {
         type: "bannerCSS",
         payload: {
           banner: index,
           cssPayload: { [key]: value }, // TODO: is this cssPayload working how I expect?
         },
-      });
+      };
+      console.log(obj);
+      dispatch(obj);
+      
     } else {
-      dispatch({
+      const obj: LiveDataAction = {
         type: "spotCSS",
         payload: {
           spot: index,
           cssPayload: { [key]: value },
         },
-      });
+      };
+      console.log(obj);
+      dispatch(obj);
     }
   }
 
