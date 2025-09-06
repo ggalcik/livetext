@@ -1,4 +1,4 @@
-import { showOptsPopup, thisOptsPopupIsActive } from "../../components/util";
+
 import LiveTextFormat from "./LiveTextFormat";
 import type { Banner, PopupState } from "../../context/LiveData/types";
 import { useLiveData } from "../../context/LiveData";
@@ -17,10 +17,11 @@ export default function ItemControls({ item, idx, popupState }: IItemControls) {
     const { visiblePopup, setVisiblePopup } = popupState;
     const { state, dispatch } = useLiveData();
     const [confirmDelete, setConfirmDelete] = useState(false);
+    const activeType = item.type === 'rotating' ? 'activeBanner' : 'activeSpot';
 
     function handleDelete(idx: number) {
         if (confirmDelete) {
-            dispatch({ type: "banner/delete", payload: { idx } });
+            dispatch({ type: "banner/delete", payload: { type: item.type, idx } });
             setConfirmDelete(false);
             return;
         }
@@ -29,38 +30,35 @@ export default function ItemControls({ item, idx, popupState }: IItemControls) {
 
     return (<div className="flex gap-2 justify-between">
         <div className="flex gap-2">
-
-
             <input
                 type="radio"
-                name="activeBanner"
+                name={activeType}
                 value={idx}
                 className=" justify-center w-8 h-8"
-                checked={state.activeBanner === idx}
-                disabled={!item.on}
-                onChange={() => dispatch({ type: "banner/setActive", payload: { idx } })}
+                checked={state[activeType] === idx}
+                disabled={item.type === 'rotating' && !item.on}
+                onChange={() => dispatch({ type: "banner/setActive", payload: { type: item.type, idx } })}
             />
-            <input
-                type="checkbox"
-                name={`bannerOn_${idx}`}
-                className=" justify-center w-8 h-8"
-                checked={item.on === undefined ? false : item.on}
-                onChange={() => dispatch({ type: "banner/toggleOneOn", payload: { idx } })}
-            />
+            {item.type === 'rotating' &&
+                <input
+                    type="checkbox"
+                    name={`bannerOn_${idx}`}
+                    className=" justify-center w-8 h-8"
+                    checked={item.on === undefined ? false : item.on}
+                    onChange={() => dispatch({ type: "banner/toggleOne", payload: { idx } })}
+                />
+            }
         </div>
 
         <div className="flex gap-2">
             <button
                 className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 cursor-pointer"
                 onClick={(e) => {
-                    // TODO: make the format button toggle 
-                    // if (visiblePopup && visiblePopup.banner )
-                    // if (thisOptsPopupIsActive(visiblePopup, { banner: idx }))
-
-                    // {e.stopPropagation();showOptsPopup(setVisiblePopup, null) ;
-                    // }
-                    // else 
-                    showOptsPopup(setVisiblePopup, { banner: idx })
+                    if (visiblePopup === `${item.type}_${idx}`) {
+                        setVisiblePopup(null);
+                    } else {
+                        setVisiblePopup(`${item.type}_${idx}`);
+                    }
                 }
 
                 }
@@ -69,15 +67,16 @@ export default function ItemControls({ item, idx, popupState }: IItemControls) {
             </button>
             {/* // TODO: this relative box is causing formatting issues when active
         //  */}
-            {thisOptsPopupIsActive(visiblePopup, { banner: idx }) && (
+            {visiblePopup == `${item.type}_${idx}` && (
                 <div className="relative z-10">
                     <div className="absolute top-1/2 -translate-y-1/2">
                         <LiveTextFormat
-                            banner={idx}
+                            bannerType={item.type}
+                            idx={idx}
                             css={state.banners[idx].bannerCSS}
                             dispatch={dispatch}
                             defaultCSS={state.defaultBannerCSS}
-                            hideThis={() => popupState.setVisiblePopup(null)}
+                            hideThis={() => setVisiblePopup(null)}
                         />
                     </div>
                 </div>
@@ -86,7 +85,7 @@ export default function ItemControls({ item, idx, popupState }: IItemControls) {
             <button
                 type="button"
                 className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 cursor-pointer"
-                onClick={() => dispatch({ type: "banner/add", payload: { idx: idx + 1 } })}
+                onClick={() => dispatch({ type: "banner/add", payload: { type: item.type, idx: idx + 1 } })}
             >
                 Add
             </button>

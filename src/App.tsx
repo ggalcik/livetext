@@ -11,7 +11,7 @@ import BannerAdmin from "./features/BannerAdmin/BannerAdmin";
 
 function App() {
   const { state } = useLiveData();
-  const [visiblePopup, setVisiblePopup] = useState<PopupState["visiblePopup"]>(null);
+  const [visiblePopup, setVisiblePopup] = useState<string|null>(null);
 
   return (
     <BrowserRouter>

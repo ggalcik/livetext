@@ -1,7 +1,7 @@
 import clsx from "clsx";
 import { useLiveData } from "../../context/LiveData";
 import type { PopupState } from "../../context/LiveData/types";
-import { dateStr, showOptsPopup, thisOptsPopupIsActive } from "../../components/util";
+import { dateStr } from "../../components/util";
 import LiveTextFormat from "../BannerAdmin/LiveTextFormat";
 import { initialLiveDataState } from "../../context/LiveData/LiveDataReducer";
 
@@ -24,19 +24,20 @@ export default function SpotsOpts({ popupState }: { popupState: PopupState }) {
         <button
           className="text-blue-400 cursor-pointer self-start"
           onClick={() => {
-            showOptsPopup(setVisiblePopup, { spot: "default" });
+            setVisiblePopup(`spot_default`);
           }}
         >
           [format]
         </button>
-        {thisOptsPopupIsActive(visiblePopup, { spot: "default" }) && (
+        {visiblePopup === "spot_default" && (
           <div className="inline-block">
             <LiveTextFormat
-              spot="default"
-              css={state.spotCSS}
+              bannerType="spot"
+              idx="default"
+              css={state.defaultSpotCSS}
               dispatch={dispatch}
-              defaultCSS={initialLiveDataState.spotCSS}
-              hideThis={() => showOptsPopup(setVisiblePopup, null)}
+              defaultCSS={initialLiveDataState.defaultSpotCSS}
+              hideThis={() => setVisiblePopup(null)}
             />
           </div>
         )}

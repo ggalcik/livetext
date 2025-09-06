@@ -1,5 +1,5 @@
 // import clsx from "clsx";
-import { backgroundOptions, type PopupState } from "../../context/LiveData/types";
+import { backgroundOptions, type BackgroundType, type PopupState } from "../../context/LiveData/types";
 import TopOpts from "../../TopOpts";
 import LiveTextOpts from "../LiveDisplay/LiveTextOpts";
 import SpotsOpts from "../Spots/SpotsOpts";
@@ -25,41 +25,45 @@ export default function BannerAdmin({ popupState }: { popupState: PopupState }) 
             </div>
 
             <div className="">
-                <BannersEdit popupState={{ visiblePopup, setVisiblePopup }} />
-                <div>
-                    <div>Backgrounds:</div>
-                    <div className="columns-2">
-                        {backgroundOptions.map((item) => {
-                            const name = `background_image_${item}`;
-                            return (
-                                <div key={name} className="flex pb-2 gap-2">
-                                    <input
-                                        className="w-8 h-8"
-                                        type="radio"
-                                        id={name}
-                                        value={item}
-                                        checked={state.backgroundImage === item}
-                                        onChange={(e) => {
-                                            dispatch({
-                                                type: "background/change",
-                                                payload: { which: e.target.value as BackgroundType },
-                                            })
-                                        }
-                                        }
-                                    />{" "}
-                                    <label htmlFor={name} className="cursor-pointer">
-                                        {item}
-                                    </label>
-                                </div>
-                            );
-                        })}
-                    </div>
-                </div>
+                <BannersEdit type="rotating" popupState={{ visiblePopup, setVisiblePopup }} />
+
+                {BackgroundOpts()}
             </div>
             <div className="">
-                <SpotsEdit popupState={{ visiblePopup, setVisiblePopup }} />
+                {/* <SpotsEdit popupState={{ visiblePopup, setVisiblePopup }} /> */}
+                 <BannersEdit type="spot" popupState={{ visiblePopup, setVisiblePopup }} />
             </div>
         </div>
 
     );
+
+    function BackgroundOpts() {
+        return <div>
+            <div>Backgrounds:</div>
+            <div className="columns-2">
+                {backgroundOptions.map((item) => {
+                    const name = `background_image_${item}`;
+                    return (
+                        <div key={name} className="flex pb-2 gap-2">
+                            <input
+                                className="w-8 h-8"
+                                type="radio"
+                                id={name}
+                                value={item}
+                                checked={state.backgroundImage === item}
+                                onChange={(e) => {
+                                    dispatch({
+                                        type: "background/change",
+                                        payload: { which: e.target.value as BackgroundType },
+                                    });
+                                } } />{" "}
+                            <label htmlFor={name} className="cursor-pointer">
+                                {item}
+                            </label>
+                        </div>
+                    );
+                })}
+            </div>
+        </div>;
+    }
 }

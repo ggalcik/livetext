@@ -22,13 +22,29 @@ export const BannerCSSSchema = z.object({
 });
 export type BannerCSS = z.infer<typeof BannerCSSSchema>;
 
-export const BannerSchema = z.object({
+// Define your shared fields
+const bannerBase = z.object({
   text: z.string(),
   bannerCSS: BannerCSSSchema.partial(),
-  on: z.boolean().optional(),
 });
-export type Banner = z.infer<typeof BannerSchema>;
 
+// Define the rotating variant (includes `on`)
+const rotating = bannerBase.extend({
+  type: z.literal("rotating"),
+  on: z.boolean(),
+});
+
+// Define the spot variant (excludes `on`)
+const spot = bannerBase.extend({
+  type: z.literal("spot"),
+});
+
+// Combine into a discriminated union on the `type` field
+export const BannerSchema = z.discriminatedUnion("type", [
+  rotating,
+  spot,
+]);
+export type Banner = z.infer<typeof BannerSchema>;
 
 export const TimerSchema = z.object({
   on: z.boolean(),
@@ -86,12 +102,14 @@ export function makeInitialLiveDataState(): LiveDataState {
       left: 0,
       right: 100
     },
+
     banners: [],
     spots: [],
     displayBanners: true,
     displaySpots: false,
     activeBanner: NO_ACTIVE_BANNER,
     activeSpot: NO_ACTIVE_SPOT,
+
     timer: {
       on: false,
       interval: 10,
@@ -104,7 +122,9 @@ export function makeInitialLiveDataState(): LiveDataState {
       countdown: null,
       paused: true,
     },
+
     saveToStorage: true,
+
     defaultBannerCSS: {
       padding: "10px",
       font: "bold 20px/1 sans-serif",
@@ -131,6 +151,7 @@ export const NO_ACTIVE_SPOT = null;
 
 export function createBanner(): Banner {
   return {
+    type: "rotating",
     text: "",
     bannerCSS: {},
     on: false,
@@ -139,6 +160,7 @@ export function createBanner(): Banner {
 
 export function createRotatingBanner(): Banner {
   return {
+    type: "rotating",
     text: "",
     bannerCSS: {},
     on: false,
@@ -147,6 +169,7 @@ export function createRotatingBanner(): Banner {
 
 export function createSpot(): Banner {
   return {
+    type: "spot",
     text: "",
     bannerCSS: {},
   };
@@ -158,18 +181,15 @@ export type LiveDataAction =
   | { type: "background/toggle" }
   | { type: "background/change"; payload: { which: BackgroundType } }
   | { type: "masterViewportCSS/padding"; payload: { padding: string } }
-  | { type: "banner/add"; payload: { idx: number } }
-  | { type: "banner/change"; payload: { idx: number; text: string } }
-  | { type: "banner/delete"; payload: { idx: number } }
-  | { type: "banner/setActive"; payload: { idx: number } }
+  | { type: "banner/add"; payload: { type: BannerType; idx: number } }
+  | { type: "banner/change"; payload: { type: BannerType; idx: number; text: string } }
+  | { type: "banner/delete"; payload: { type: BannerType; idx: number } }
+  | { type: "banner/setActive"; payload: { type: BannerType; idx: number } }
   | { type: "banner/setNextActive" }
   | { type: "banner/toggle" }
-  | { type: "banner/toggleOneOn"; payload: { idx: number } }
+  | { type: "banner/toggleOne"; payload: { idx: number } }
   | { type: "banner/solo" }
   | { type: "spot/add" }
-  | { type: "spot/change"; payload: { idx: number; text: string } }
-  | { type: "spot/delete"; payload: { idx: number } }
-  | { type: "spot/setActive"; payload: { idx: number } }
   | { type: "spot/toggle" }
   | { type: "spot/solo" }
   | { type: "timer/params"; payload: Partial<Timer> & { which: TimerKey } }
@@ -179,8 +199,7 @@ export type LiveDataAction =
   | { type: "spotCSS"; payload: { spot: "default" | number; cssPayload: Partial<BannerCSS> } }
   | { type: "dateMark"; payload: { dateMark: string } };
 
-export type VisiblePopup = { banner: number | "default" } | { spot: number | "default" } | null;
 export interface PopupState {
-  visiblePopup: VisiblePopup;
-  setVisiblePopup: React.Dispatch<React.SetStateAction<VisiblePopup> | null>;
+  visiblePopup: string|null;
+  setVisiblePopup: React.Dispatch<React.SetStateAction<string|null>>;
 }

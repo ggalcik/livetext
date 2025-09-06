@@ -1,22 +1,7 @@
 import clsx from "clsx";
-import type { BannerCSS, LiveDataAction } from "../../context/LiveData/types";
+import type { BannerCSS, BannerType, LiveDataAction } from "../../context/LiveData/types";
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 
-type LiveTextFormatOpts =
-  | {
-    banner: "default" | number;
-    dispatch: React.Dispatch<LiveDataAction>;
-    css: Partial<BannerCSS>;
-    defaultCSS: BannerCSS;
-    hideThis: () => void;
-  }
-  | {
-    spot: "default" | number;
-    dispatch: React.Dispatch<LiveDataAction>;
-    css: Partial<BannerCSS>;
-    defaultCSS: BannerCSS;
-    hideThis: () => void;
-  };
 
 // when I want to put arbitrary css into a text box
 function parseStyleString(css: string): CSSProperties {
@@ -56,13 +41,22 @@ function CssEditorBox() {
   );
 }
 
+interface LiveTextFormatOpts  {
+    bannerType: BannerType;
+    idx: number | 'default'
+    dispatch: React.Dispatch<LiveDataAction>;
+    css: Partial<BannerCSS>;
+    defaultCSS: BannerCSS;
+    hideThis: () => void;
+  };
+
 export default function LiveTextFormat(props: LiveTextFormatOpts) {
   const ref = useRef<HTMLDivElement>(null);
 
-  const { dispatch, css, defaultCSS, hideThis } = props;
+  const { bannerType, idx, dispatch, css, defaultCSS, hideThis } = props;
 
-  const isBanner = "banner" in props;
-  const index = isBanner ? props.banner : props.spot;
+  const isBanner = bannerType === "rotating"
+  const index = idx; // TODO: leftover redundancy, remove
 
   type CSSField = keyof typeof css;
   type CSSValue<K extends CSSField> = (typeof css)[K];

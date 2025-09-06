@@ -1,7 +1,6 @@
 import { useLiveData } from "../../context/LiveData";
 import LiveTextFormat from "./LiveTextFormat";
 import type { PopupState, Spot } from "../../context/LiveData/types";
-import { showOptsPopup, thisOptsPopupIsActive } from "../../components/util";
 
 export default function SpotsEdit({ popupState }: { popupState: PopupState }) {
   const { state, dispatch } = useLiveData();

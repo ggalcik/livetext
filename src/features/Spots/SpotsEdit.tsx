@@ -1,6 +1,6 @@
 import { useLiveData } from "../../context/LiveData";
 import LiveTextFormat from "../BannerAdmin/LiveTextFormat";
-import type { PopupState, Spot } from "../../context/LiveData/types";
+import type { Banner, PopupState } from "../../context/LiveData/types";
 import { showOptsPopup, thisOptsPopupIsActive } from "../../components/util";
 
 export default function SpotsEdit({ popupState }: { popupState: PopupState }) {
@@ -9,7 +9,7 @@ export default function SpotsEdit({ popupState }: { popupState: PopupState }) {
   return (
     <div>
       {state.spots.length > 0 &&
-        state.spots.map((item: Spot, idx) => (
+        state.spots.map((item: Banner, idx) => (
           <div key={`spotForm_${idx}`} className="p-2 mb-2 border-b">
             <div className="grid grid-cols-[30px_auto] grid-rows-2 gap-2">
               <input
@@ -52,9 +52,9 @@ export default function SpotsEdit({ popupState }: { popupState: PopupState }) {
                       <div className="absolute top-1/2 -translate-y-1/2">
                         <LiveTextFormat
                           spot={idx}
-                          css={state.spots[idx].spotCSS}
+                          css={state.spots[idx].bannerCSS}
                           dispatch={dispatch}
-                          defaultCSS={state.spotCSS}
+                          defaultCSS={state.defaultSpotCSS}
                           hideThis={() => popupState.setVisiblePopup(null)}
                         />
                       </div>
