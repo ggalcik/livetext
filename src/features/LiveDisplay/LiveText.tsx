@@ -28,7 +28,7 @@ export default function LiveText({ state }: { state: LiveDataState }) {
     state.activeBanner !== NO_ACTIVE_BANNER &&
     activeBanner &&
     state.displayBanners &&
-    !state.timer.paused;
+    !state.timer.waiting;
   const showSpot = state.activeSpot !== NO_ACTIVE_SPOT &&
     state.spots[state.activeSpot] &&
     state.displaySpots;
@@ -75,7 +75,7 @@ export default function LiveText({ state }: { state: LiveDataState }) {
           <ProgressDots timer={state.timer} />
         </div>
       )}
-      {state.breakTimer.on && !state.breakTimer.paused && state.displayBanners && (
+      {state.breakTimer.on && !state.breakTimer.waiting && state.displayBanners && (
         <div className="absolute bottom-0 left-0 w-full px-18">
           <ProgressDots timer={state.breakTimer} alt={true} />
         </div>

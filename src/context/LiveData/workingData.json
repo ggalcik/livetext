@@ -3,7 +3,6 @@
     "backgroundImage": "Angry",
     "banners": [
         {
-            "type": "rotating",
             "text": "Jesus sacrificed the ability to meet up for one Sunday brunch, and that's about it",
             "bannerCSS": {
                 "padding": "",
@@ -14,10 +13,10 @@
                 "onBox": true,
                 "textShadow": "2px 4px black"
             },
+            "type": "rotating",
             "on": true
         },
         {
-            "type": "rotating",
             "text": "GOD FARTS THROUGH ME!",
             "bannerCSS": {
                 "font": "bold 80px/1.3 \"Calibri\"",
@@ -26,10 +25,10 @@
                 "onBox": true,
                 "textShadow": "2px 2px black"
             },
+            "type": "rotating",
             "on": false
         },
         {
-            "type": "rotating",
             "text": "Your gifts add time to the timer and force me to endure more of this nonsense",
             "bannerCSS": {
                 "font": "50px/1.3 Ariel",
@@ -37,10 +36,10 @@
                 "backgroundColor": "green",
                 "onBox": true
             },
+            "type": "rotating",
             "on": false
         },
         {
-            "type": "rotating",
             "text": "P1:  Morality depends on a mind\nP2:  Every mind is subjective\nC:  All morality is subjective",
             "bannerCSS": {
                 "padding": "",
@@ -50,10 +49,10 @@
                 "onBox": true,
                 "textShadow": "2px 2px black"
             },
+            "type": "rotating",
             "on": true
         },
         {
-            "type": "rotating",
             "text": "It takes more faith to have faith than to not have faith\n<span style=\"font-size: 70%\">and you can quote me on that</span>",
             "bannerCSS": {
                 "font": "40px/1.3 \"Comic Sans MS\"",
@@ -61,10 +60,10 @@
                 "onBox": true,
                 "textShadow": "2px 2px black"
             },
+            "type": "rotating",
             "on": false
         },
         {
-            "type": "rotating",
             "text": "<span style=\"font-size: 80%\">Slavery is bad</span>\nWE ALL AGREE\n<span style=\"font-size: 70%\">God doesn't, though</span>",
             "bannerCSS": {
                 "padding": "40px",
@@ -73,10 +72,10 @@
                 "backgroundColor": "#040",
                 "onBox": true
             },
+            "type": "rotating",
             "on": true
         },
         {
-            "type": "rotating",
             "text": "If God's rampage wasn't in the bible, you'd think he was a villain in a bad action movie",
             "bannerCSS": {
                 "font": "bold 50px/1.3 \"Agency FB\"",
@@ -86,6 +85,7 @@
                 "onBox": true,
                 "textShadow": "2px 2px black"
             },
+            "type": "rotating",
             "on": false
         }
     ],
@@ -102,58 +102,57 @@
     "activeBanner": 3,
     "spots": [
         {
-            "type": "spot",
             "text": "Sat Aug 23\n-------------\n\"Agnostic Atheist?!\": 3\nWatchmaker: 0",
             "bannerCSS": {
                 "font": "40px/1.3 \"Bahnschrift\"",
                 "textAlign": "left"
-            }
+            },
+            "type": "spot"
         },
         {
-            "type": "spot",
             "text": "I am, in fact, an agnostic atheist.\nThis is not a contradiction.\nPlease refer to your local Google searching contraption for more details.\n",
             "bannerCSS": {
                 "padding": "20px 60px"
-            }
+            },
+            "type": "spot"
         },
         {
-            "type": "spot",
             "text": "My favorite names today:\n\neepeeskeepee\nMcSlob\nRichie Gunner Get Ya\n",
-            "bannerCSS": {}
+            "bannerCSS": {},
+            "type": "spot"
         },
         {
-            "type": "spot",
             "text": "no guests, leaving soon",
             "bannerCSS": {
                 "padding": "40px",
                 "onBox": true
-            }
+            },
+            "type": "spot"
         },
         {
-            "type": "spot",
             "text": "Back in 5 minutes",
             "bannerCSS": {
                 "padding": "80px"
-            }
+            },
+            "type": "spot"
         },
         {
-            "type": "spot",
             "text": "The worst theist arguments:\n1. What year is it?\n2. You can't see air\n3. Satan believes in God\n4. Atheists only exist with God",
             "bannerCSS": {
                 "backgroundColor": "#282"
-            }
+            },
+            "type": "spot"
         },
         {
-            "type": "spot",
             "text": "I am 127.3% angry!!!@!",
             "bannerCSS": {
                 "padding": "40px",
                 "font": "bold 70px/1.3  \"Agency FB\"",
                 "backgroundColor": "red"
-            }
+            },
+            "type": "spot"
         },
         {
-            "type": "spot",
             "text": "Shroudenfreude (/SHROW-den-froy'-da/) n. 1. The amusement you feel at someone defending the Shroud of Turin.",
             "bannerCSS": {
                 "padding": "60px",
@@ -161,15 +160,16 @@
                 "color": "#444",
                 "backgroundColor": "#f8f8f8",
                 "textShadow": "0 0 "
-            }
+            },
+            "type": "spot"
         },
         {
-            "type": "spot",
             "text": "chookie: \"You bait cause lame.\"\nwarptlake: \"If continues lame bait casting cause master.\"\nPax: \"Fibber notsee.\"",
             "bannerCSS": {
                 "padding": "60px",
                 "textAlign": "left"
-            }
+            },
+            "type": "spot"
         }
     ],
     "defaultSpotCSS": {
@@ -187,13 +187,13 @@
         "on": true,
         "interval": 7,
         "countdown": 1,
-        "paused": true
+        "waiting": false
     },
     "breakTimer": {
         "on": true,
         "interval": 10,
         "countdown": 8,
-        "paused": false
+        "waiting": true
     },
     "saveToStorage": true
 }

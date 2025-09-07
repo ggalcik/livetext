@@ -50,7 +50,7 @@ export const TimerSchema = z.object({
   on: z.boolean(),
   interval: z.number().nullable(),
   countdown: z.number().nullable(),
-  paused: z.boolean(),
+  waiting: z.boolean(),
 });
 export type Timer = z.infer<typeof TimerSchema>;
 
@@ -114,13 +114,13 @@ export function makeInitialLiveDataState(): LiveDataState {
       on: false,
       interval: 10,
       countdown: null,
-      paused: false,
+      waiting: false,
     },
     breakTimer: {
       on: false,
       interval: 4,
       countdown: null,
-      paused: true,
+      waiting: true,
     },
 
     saveToStorage: true,

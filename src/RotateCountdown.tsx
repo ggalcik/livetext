@@ -2,6 +2,7 @@ import { useEffect, useRef } from "react";
 import clsx from "clsx";
 import { useLiveData } from "./context/LiveData";
 import type { Timer } from "./context/LiveData/types";
+import glog from "./components/glog";
 
 type TimerKey = "timer" | "breakTimer";
 interface RotateCountdownOpts {
@@ -15,7 +16,7 @@ export default function RotateCountdown({ timerKey, nextTimerKey }: RotateCountd
 
   // dispatch({
   //           type: "timer/params",
-  //           payload: {  paused: timerKey === 'breakTimer', which: timerKey },
+  //           payload: {  waiting: timerKey === 'breakTimer', which: timerKey },
   //         });
 
   // console.log("state %o", state);
@@ -32,10 +33,10 @@ export default function RotateCountdown({ timerKey, nextTimerKey }: RotateCountd
     displayBannersRef.current = state.displayBanners;
     nextTimerOnRef.current = nextTimer.on;
   }, [timer.countdown, nextTimer.on, state]);
-
+  
   useEffect(() => {
     if (!state.displayBanners) return;
-    if (timer.paused) return;
+    if (timer.waiting) return;
     if (!timer.on || timer.interval === null) {
       dispatch({ type: "timer/params", payload: { countdown: null, which: timerKey } });
       return;
@@ -44,7 +45,7 @@ export default function RotateCountdown({ timerKey, nextTimerKey }: RotateCountd
       type: "timer/params",
       payload: { countdown: timer.interval, which: timerKey },
     });
-
+    
     const clock = setInterval(() => {
       const currentCountdown = countdownRef.current;
       const nextTimerOn = nextTimerOnRef.current;
@@ -55,11 +56,11 @@ export default function RotateCountdown({ timerKey, nextTimerKey }: RotateCountd
         if (nextTimerOn) {
           dispatch({
             type: "timer/params",
-            payload: { paused: true, which: timerKey },
+            payload: { waiting: true, which: timerKey },
           });
           dispatch({
             type: "timer/params",
-            payload: { paused: false, which: nextTimerKey },
+            payload: { waiting: false, which: nextTimerKey },
           });
         } else {
           dispatch({
@@ -82,13 +83,13 @@ export default function RotateCountdown({ timerKey, nextTimerKey }: RotateCountd
     nextTimerKey,
     timer.on,
     timer.interval,
-    timer.paused,
+    timer.waiting,
     state.displayBanners,
   ]);
 
   return (
     <div className={clsx("gap-2 inline-flex px-2", { "bg-amber-100": timer.on })}>
-      {timer.paused ? "⏸️" : timer.countdown ?? "--"}
+      {timer.waiting ? "⏸️" : timer.countdown ?? "--"}
     </div>
   );
 }

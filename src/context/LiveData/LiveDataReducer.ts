@@ -1,4 +1,5 @@
 
+import glog from "../../components/glog";
 import { createBanner, createSpot, NO_ACTIVE_BANNER, NO_ACTIVE_SPOT } from "./types";
 import type { LiveDataState, LiveDataAction, Banner } from "./types";
 import { LiveDataStateSchema, makeInitialLiveDataState, backgroundOptions } from './types';
@@ -187,39 +188,6 @@ return newState;
         displaySpots: false,
         displayBanners: true,
       };
-    // case "spot/add": {
-    //   const activeSpot = state.activeSpot ?? 0;
-    //   return {
-    //     ...state,
-    //     spots: [...state.spots, createSpot()],
-    //     activeSpot,
-    //   };
-    // }
-    // case "spot/change":
-    //   return {
-    //     ...state,
-    //     spots: state.spots.map((spot, idx) =>
-    //       idx === action.payload.idx ? { ...spot, ...action.payload } : spot
-    //     ),
-    //   };
-    // case "spot/delete": {
-    //   const spots = state.spots.filter((_, i) => i !== action.payload.idx);
-
-    //   let activeSpot = state.activeSpot;
-    //   if (activeSpot !== null && activeSpot >= spots.length) activeSpot = spots.length - 1;
-    //   if (activeSpot !== null && spots.length == 0) activeSpot = NO_ACTIVE_BANNER;
-
-    //   return {
-    //     ...state,
-    //     spots,
-    //     activeSpot,
-    //   };
-    // }
-    // case "spot/setActive":
-    //   return {
-    //     ...state,
-    //     activeSpot: action.payload.idx,
-    //   };
     case "spot/toggle":
       return {
         ...state,
@@ -234,23 +202,43 @@ return newState;
     case "timer/toggle": {
       const which = action.payload.which;
       if (!state[which].interval) return state;
+      const other = which === 'timer' ? 'breakTimer' : 'timer';
+      
+      const [thisTimer, otherTimer] = [{...state[which]}, {...state[other]}];
 
-      const isOn = state[which].on;
-      const newState = {
-        ...state,
-        [which]: { ...state[which], on: !isOn },
-      };
-
-      // If we're turning OFF the main timer, also force breaktimer off
-      if (which === "timer" && isOn) {
-        return {
-          ...newState,
-          breakTimer: { ...state.breakTimer, on: false },
-        };
+      if (which === 'timer' && thisTimer.on && otherTimer.on) {
+        glog("this here");
+        thisTimer.waiting = false;
+        otherTimer.waiting = true;
+        otherTimer.on = false;
+      } else if (which === 'breakTimer' && thisTimer.on) {
+        thisTimer.waiting = true;
+        otherTimer.waiting = false;
       }
 
+      thisTimer.on = !thisTimer.on;
+
+
+      const newState = {
+        ...state,
+        [which]: thisTimer,
+        [other]: otherTimer,
+      };
+// console.log(newState);
       return newState;
     }
+    //     timer: {
+    //   on: false,
+    //   interval: 10,
+    //   countdown: null,
+    //   waiting: false,
+    // },
+    // breakTimer: {
+    //   on: false,
+    //   interval: 4,
+    //   countdown: null,
+    //   waiting: true,
+    // },
     case "timer/params": {
       const { which, ...rest } = action.payload;
       return {
