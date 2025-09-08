@@ -97,8 +97,8 @@ export function liveDataReducer(state: LiveDataState, action: LiveDataAction): L
 
     // }
     case "banner/add": {
-       const bannersKey = action.payload.type === 'rotating' ? 'banners' : 'spots';
-       const activeBanner = (bannersKey === 'banners' ? state.activeBanner : state.activeSpot) ?? 0;
+      const bannersKey = action.payload.type === 'rotating' ? 'banners' : 'spots';
+      const activeBanner = (bannersKey === 'banners' ? state.activeBanner : state.activeSpot) ?? 0;
 
       const addAtIdx = action.payload.idx;
 
@@ -134,22 +134,23 @@ export function liveDataReducer(state: LiveDataState, action: LiveDataAction): L
           activeBanner = banners.length - 1;
         if (activeBanner !== null && banners.length == 0) activeBanner = NO_ACTIVE_BANNER;
       }
-        
+
       return {
         ...state,
         [key]: banners,
         activeBanner,
       };
     }
-    case "banner/setActive":{
+    case "banner/setActive": {
       const active = (action.payload.type === 'rotating' ? 'activeBanner' : 'activeSpot');
-      const newState =  {
+      const newState = {
         ...state,
         [active]: action.payload.idx,
       };
-// console.log(action.payload.idx, newState[active], newState);
-return newState;
-      ;}
+      // console.log(action.payload.idx, newState[active], newState);
+      return newState;
+      ;
+    }
     case "banner/setNextActive": {
       if (state.activeBanner == null) return state;
       const nextActive = getNextActiveBannerIdx();
@@ -203,8 +204,8 @@ return newState;
       const which = action.payload.which;
       if (!state[which].interval) return state;
       const other = which === 'timer' ? 'breakTimer' : 'timer';
-      
-      const [thisTimer, otherTimer] = [{...state[which]}, {...state[other]}];
+
+      const [thisTimer, otherTimer] = [{ ...state[which] }, { ...state[other] }];
 
       if (which === 'timer' && thisTimer.on && otherTimer.on) {
         thisTimer.waiting = false;
@@ -223,7 +224,7 @@ return newState;
         [which]: thisTimer,
         [other]: otherTimer,
       };
-// console.log(newState);
+      // console.log(newState);
       return newState;
     }
     //     timer: {
@@ -238,6 +239,14 @@ return newState;
     //   countdown: null,
     //   waiting: true,
     // },
+    case "timer/off": {
+      const which = action.payload.which;
+      return {
+        ...state,
+        [which]: { ...state[which], on: false }
+      }
+
+    }
     case "timer/params": {
       const { which, ...rest } = action.payload;
       return {

@@ -194,6 +194,7 @@ export type LiveDataAction =
   | { type: "spot/solo" }
   | { type: "timer/params"; payload: Partial<Timer> & { which: TimerKey } }
   | { type: "timer/toggle"; payload: { which: TimerKey } }
+  | { type: "timer/off"; payload: { which: TimerKey } }
   | { type: "localStorage/toggle" }
   | { type: "bannerCSS"; payload: { banner: "default" | number; cssPayload: Partial<BannerCSS> } }
   | { type: "spotCSS"; payload: { spot: "default" | number; cssPayload: Partial<BannerCSS> } }

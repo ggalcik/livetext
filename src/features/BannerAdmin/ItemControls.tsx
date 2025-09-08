@@ -53,6 +53,7 @@ export default function ItemControls({ item, idx, popupState }: IItemControls) {
                         onClick={() => {
                             dispatch({ type: "banner/setActive", payload: { type: 'rotating', idx } });
                             dispatch({ type: "banner/solo" });
+                            dispatch({ type: "timer/off", payload: { which: 'timer'} });
                         }}>S</Button>
                 </>
             }
