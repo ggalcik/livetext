@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import clsx from "clsx";
 import type { Banner, BannerCSS, BannerType } from "../../context/LiveData/types";
+import { dateStr } from "../../components/util";
 
 interface ItemDisplayProps {
   banner: Banner;
@@ -40,7 +41,10 @@ export default function ItemDisplay({ banner, defaultCSS, initialCSS, bannerType
 
   function liveTextDisplay(text: string) {
     if (!text.trim()) return "[no text]";
-    return text.replace(/(?:\r\n|\r|\n)/g, "<br>");
+
+    let newText = text;
+    newText = newText.replace('[[d]]', dateStr('iii MMM d yyyy G'));
+    return newText.replace(/(?:\r\n|\r|\n)/g, "<br>");
   }
 
   const animStyle = bannerType === 'spot'

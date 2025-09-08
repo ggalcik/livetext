@@ -207,7 +207,6 @@ return newState;
       const [thisTimer, otherTimer] = [{...state[which]}, {...state[other]}];
 
       if (which === 'timer' && thisTimer.on && otherTimer.on) {
-        glog("this here");
         thisTimer.waiting = false;
         otherTimer.waiting = true;
         otherTimer.on = false;

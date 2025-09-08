@@ -4,6 +4,7 @@ import type { Banner, PopupState } from "../../context/LiveData/types";
 import { useLiveData } from "../../context/LiveData";
 import { useState } from "react";
 import clsx from "clsx";
+import { Button } from "../../components/Button";
 
 
 interface IItemControls {
@@ -40,31 +41,42 @@ export default function ItemControls({ item, idx, popupState }: IItemControls) {
                 onChange={() => dispatch({ type: "banner/setActive", payload: { type: item.type, idx } })}
             />
             {item.type === 'rotating' &&
-                <input
-                    type="checkbox"
-                    name={`bannerOn_${idx}`}
-                    className=" justify-center w-8 h-8"
-                    checked={item.on === undefined ? false : item.on}
-                    onChange={() => dispatch({ type: "banner/toggleOne", payload: { idx } })}
-                />
+                <>
+                    <input
+                        type="checkbox"
+                        name={`bannerOn_${idx}`}
+                        className=" justify-center w-8 h-8"
+                        checked={item.on === undefined ? false : item.on}
+                        onChange={() => dispatch({ type: "banner/toggleOne", payload: { idx } })}
+                    />
+                    <Button variant="b" size="sm"  disabled={!item.on}
+                        onClick={() => {
+                            dispatch({ type: "banner/setActive", payload: { type: 'rotating', idx } });
+                            dispatch({ type: "banner/solo" });
+                        }}>S</Button>
+                </>
+            }
+            {item.type === 'spot' &&
+                <Button variant="b" size="sm"
+                    onClick={() => {
+                        dispatch({ type: "banner/setActive", payload: { type: 'spot', idx } });
+                        dispatch({ type: "spot/solo" });
+                    }}>S</Button>
             }
         </div>
 
         <div className="flex gap-2">
-            <button
-                className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 cursor-pointer"
+            <Button
                 onClick={(e) => {
                     if (visiblePopup === `${item.type}_${idx}`) {
                         setVisiblePopup(null);
                     } else {
                         setVisiblePopup(`${item.type}_${idx}`);
                     }
-                }
-
-                }
+                }}
             >
                 Format
-            </button>
+            </Button>
             {/* // TODO: this relative box is causing formatting issues when active
         //  */}
             {visiblePopup == `${item.type}_${idx}` && (
@@ -84,13 +96,19 @@ export default function ItemControls({ item, idx, popupState }: IItemControls) {
                 </div>
             )}
 
-            <button
+            <Button
+                type="button"
+                onClick={() => dispatch({ type: "banner/add", payload: { type: item.type, idx: idx + 1 } })}
+            >
+                Add
+            </Button>
+            {/* <button
                 type="button"
                 className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 cursor-pointer"
                 onClick={() => dispatch({ type: "banner/add", payload: { type: item.type, idx: idx + 1 } })}
             >
                 Add
-            </button>
+            </button> */}
         </div>
 
         <div className="flex relative z-0">

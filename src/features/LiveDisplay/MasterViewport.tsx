@@ -1,6 +1,7 @@
 import clsx from "clsx";
 import { useRef, useEffect, useCallback, useState } from 'react';
 import { useMeasure } from "react-use";
+import glog from "../../components/glog";
 
 
 interface IMasterViewport {
@@ -17,7 +18,7 @@ function randomHexColor(): `#${string}` {
 export function MasterViewport({ children }: IMasterViewport) {
 
     const [panelMoving, setPanelMoving] = useState(false);
-    const [pointer, setPointer] = useState({ pxp: 0, pyp: 0 })
+    const [pointer, setPointer] = useState<{ pxp: number; pyp: number } | null>(null)
     const [edges, setEdges] = useState({
         top: 50,
         left: 0,
@@ -28,32 +29,41 @@ export function MasterViewport({ children }: IMasterViewport) {
     const [masterRef, { width: masterWidth, height: masterHeight }] = useMeasure<HTMLDivElement>();
 
 
-    // simple! now:
-    // TODO: make it move the box entire rather than just an edge
-    // define a tolerance distance, e.g. more than 10 pixels away, move the box instead of the edge
-    // will need to put previous position in state, to compare to current position, then 
-    // move edges accordingly
-
     // TODO: save position to state on mouseup
     function doPanelMove(evt: React.MouseEvent) {
-        evt.preventDefault();
-        // 0-100 percent of screen
+        evt.preventDefault()
+        const EDGE_NUDGE = 2; // edge will be positioned this percent outside pointer location
+        const EDGE_RANGE = 5; // this percent away, we're moving the box, not just an edge    
+        const newEdges = { ...edges };
+
+        // convert pixel location to 0-100 percent of window
         const pxp = parseFloat((evt.pageX / masterWidth * 100).toFixed(1));
         const pyp = parseFloat((evt.pageY / masterHeight * 100).toFixed(1));
+
+        const [fromTop, fromBottom] = [Math.abs(pyp - edges.top), Math.abs(pyp - edges.bottom)];
+        const [fromLeft, fromRight] = [Math.abs(pxp - edges.left), Math.abs(pxp - edges.right)];
+
+        if (Math.min(fromTop, fromBottom, fromLeft, fromRight) > EDGE_RANGE) {
+            // move box
+            if (pointer != null) {
+                const [moveX, moveY] = [pxp - pointer.pxp, pyp - pointer.pyp];
+                newEdges.left += moveX;
+                newEdges.right += moveX;
+                newEdges.top += moveY;
+                newEdges.bottom += moveY;
+            }
+        } else {
+            if (fromTop < fromBottom)
+                newEdges.top = pyp - EDGE_NUDGE;
+            else
+                newEdges.bottom = pyp + EDGE_NUDGE;
+
+            if (fromLeft < fromRight)
+                newEdges.left = pxp - EDGE_NUDGE;
+            else
+                newEdges.right = pxp + EDGE_NUDGE;
+        }
         setPointer({ pxp, pyp });
-        const newEdges = { ...edges };
-        const EDGE_NUDGE = 5;
-
-        if (Math.abs(pyp - newEdges.top) < Math.abs(pyp - newEdges.bottom))
-            newEdges.top = pyp - EDGE_NUDGE;
-        else
-            newEdges.bottom = pyp + EDGE_NUDGE;
-
-        if (Math.abs(pxp - newEdges.left) < Math.abs(pxp - newEdges.right))
-            newEdges.left = pxp - EDGE_NUDGE;
-        else
-            newEdges.right = pxp + EDGE_NUDGE;
-
         setEdges(newEdges);
 
 
@@ -67,7 +77,7 @@ export function MasterViewport({ children }: IMasterViewport) {
             <div ref={masterRef}
                 className={clsx(`h-full w-full overflow-hidden relative z-0`)}
                 onMouseDown={(e) => { setPanelMoving(true); doPanelMove(e) }}
-                onMouseUp={() => setPanelMoving(false)}
+                onMouseUp={() => { setPanelMoving(false), setPointer(null)}}
                 onMouseMove={(e) => { if (panelMoving) doPanelMove(e) }}
             >
 
@@ -105,7 +115,7 @@ export function MasterViewport({ children }: IMasterViewport) {
                 {panelMoving &&
                     <div className="top-0 left-0 p-4 text-white">
                         window: {`${masterWidth.toFixed(1)}, ${masterHeight.toFixed(1)}`}<br />
-                        pointer: {pointer.pxp},{pointer.pyp}<br />
+                        pointer: {pointer && `${pointer.pxp},${pointer.pyp}`}<br />
                     </div>
                 }
             </div>

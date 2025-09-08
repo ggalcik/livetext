@@ -15,7 +15,7 @@ export default function SpotsOpts({ popupState }: { popupState: PopupState }) {
     <div>
       <div className="flex gap-4">
         <div className={clsx("gap-2 inline-flex", {})}>
-          <div>[[dateMark]]</div>
+          <div>[[d]]</div>
           <div>{dateStr()}</div>
         </div>
       </div>
