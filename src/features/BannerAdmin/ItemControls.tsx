@@ -49,7 +49,7 @@ export default function ItemControls({ item, idx, popupState }: IItemControls) {
                         checked={item.on === undefined ? false : item.on}
                         onChange={() => dispatch({ type: "banner/toggleOne", payload: { idx } })}
                     />
-                    <Button variant="b" size="sm"  disabled={!item.on}
+                    <Button variant="b" size="sm" disabled={!item.on}
                         onClick={() => {
                             dispatch({ type: "banner/setActive", payload: { type: 'rotating', idx } });
                             dispatch({ type: "banner/solo" });
