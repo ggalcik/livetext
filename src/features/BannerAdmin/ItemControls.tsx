@@ -53,7 +53,7 @@ export default function ItemControls({ item, idx, popupState }: IItemControls) {
                         onClick={() => {
                             dispatch({ type: "banner/setActive", payload: { type: 'rotating', idx } });
                             dispatch({ type: "banner/solo" });
-                            dispatch({ type: "timer/off", payload: { which: 'timer'} });
+                            dispatch({ type: "timer/off", payload: { which: 'timer' } });
                         }}>S</Button>
                 </>
             }
@@ -103,34 +103,26 @@ export default function ItemControls({ item, idx, popupState }: IItemControls) {
             >
                 Add
             </Button>
-            {/* <button
-                type="button"
-                className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 cursor-pointer"
-                onClick={() => dispatch({ type: "banner/add", payload: { type: item.type, idx: idx + 1 } })}
-            >
-                Add
-            </button> */}
+{/* <Button variant="b" size="sm">⬆️</Button>
+<Button variant="b" size="sm">⬇️</Button> */}
         </div>
 
         <div className="flex relative z-0">
 
             <div className="w-8 -left-4">
-                {confirmDelete && <button className={clsx(` focus:outline-none text-white
-                focus:ring-4 focus:ring-red-300 px-2 py-1 me-2 mb-2 font-medium rounded-lg text-sm  
-                bg-red-500 hover:bg-red-500 cursor-pointer`)}
-                    onClick={() => setConfirmDelete(false)}>X</button>
+                {confirmDelete &&
+                    <Button
+                        variant="c"
+                        size="sm"
+                        onClick={() => setConfirmDelete(false)}>X</Button>
                 }
             </div>
-            <button
-                type="button"
-                className={clsx(`focus:outline-none text-white
-                focus:ring-4 focus:ring-red-300 px-4 py-2 me-2 mb-2 font-medium rounded-lg text-sm  
-                dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900 cursor-pointer`,
-                    confirmDelete ? ' bg-red-500 hover:bg-red-500' : '  bg-red-700 hover:bg-red-800 ')}
-                onClick={() => handleDelete(idx)}
-            >
+            <Button
+                variant="c"
+                mode={confirmDelete ? 'activated' : undefined}
+                onClick={() => handleDelete(idx)}>
                 {confirmDelete ? 'Sure?' : 'Delete'}
-            </button>
+            </Button>
 
         </div>
     </div>

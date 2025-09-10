@@ -3,6 +3,7 @@ import type { PopupState , BannerType} from "../../context/LiveData/types";
 import clsx from "clsx";
 import ItemControls from "./ItemControls";
 import { useState } from "react";
+import { Button } from "../../components/Button";
 
 interface IBannersEdit {
   popupState: PopupState;
@@ -16,14 +17,13 @@ export default function BannersEdit({ popupState, type }: IBannersEdit) {
   const banners = type === 'rotating' ? state.banners : state.spots;
 
   return (
-    <div>
-      <button
-        type="button"
-        className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+    <div className="pt-4">
+      <Button
+        variant="a"
         onClick={() => dispatch({ type: "banner/add", payload: { type, idx: 0 } })}
       >
         Add
-      </button>
+      </Button>
 
       {banners.length > 0 &&
         banners.map((item, idx) => (

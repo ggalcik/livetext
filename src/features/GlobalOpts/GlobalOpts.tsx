@@ -7,10 +7,10 @@ export function GlobalOpts() {
     return (
         <div className="flex items-center gap-4">
 
-no use for this yet
+            no use for this yet
 
 
-            </div>
-      
+        </div>
+
     );
 };
