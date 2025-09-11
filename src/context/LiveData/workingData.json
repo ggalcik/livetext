@@ -3,6 +3,9 @@
     "backgroundImage": "Angry",
     "banners": [
         {
+
+
+    "id": "lpokrtniy3",
             "text": "Jesus sacrificed the ability to meet up for one Sunday brunch, and that's about it",
             "bannerCSS": {
                 "padding": "",
@@ -17,6 +20,7 @@
             "on": true
         },
         {
+    "id": "sjdqh5awxl",
             "text": "GOD FARTS THROUGH ME!",
             "bannerCSS": {
                 "font": "bold 80px/1.3 \"Calibri\"",
@@ -29,6 +33,7 @@
             "on": false
         },
         {
+    "id": "qrn3yw970d",
             "text": "Your gifts add time to the timer and force me to endure more of this nonsense",
             "bannerCSS": {
                 "font": "50px/1.3 Ariel",
@@ -40,12 +45,11 @@
             "on": false
         },
         {
-            "text": "P1:  Morality depends on a mind\nP2:  Every mind is subjective\nC:  All morality is subjective",
+    "id": "extkdesg59",
+            "text": "It takes more faith to have faith than to not have faith\n<span style=\"font-size: 70%\">and you can quote me on that</span>",
             "bannerCSS": {
-                "padding": "",
-                "font": "bold 35px/1.3 sans-serif",
-                "textAlign": "left",
-                "backgroundColor": "#88f",
+                "font": "40px/1.3 sans-serif",
+                "textAlign": "center",
                 "onBox": true,
                 "textShadow": "2px 2px black"
             },
@@ -53,20 +57,10 @@
             "on": true
         },
         {
-            "text": "It takes more faith to have faith than to not have faith\n<span style=\"font-size: 70%\">and you can quote me on that</span>",
+"id": "1svu7nnxu8",
+            "text": "<span style=\"font-size: 80%\">Slavery is bad</span>\nWE ALL AGREE\n<span style=\"font-size: 70%\">God* doesn't, though</span>",
             "bannerCSS": {
-                "font": "40px/1.3 \"Comic Sans MS\"",
-                "textAlign": "center",
-                "onBox": true,
-                "textShadow": "2px 2px black"
-            },
-            "type": "rotating",
-            "on": false
-        },
-        {
-            "text": "<span style=\"font-size: 80%\">Slavery is bad</span>\nWE ALL AGREE\n<span style=\"font-size: 70%\">God doesn't, though</span>",
-            "bannerCSS": {
-                "padding": "40px",
+                "padding": "20px",
                 "font": "bold 60px/1.3 'Berlin Sans FB'",
                 "textAlign": "center",
                 "backgroundColor": "#040",
@@ -75,7 +69,7 @@
             "type": "rotating",
             "on": true
         },
-        {
+        {"id": "np2rjzecxd",
             "text": "If God's rampage wasn't in the bible, you'd think he was a villain in a bad action movie",
             "bannerCSS": {
                 "font": "bold 50px/1.3 \"Agency FB\"",
@@ -99,29 +93,29 @@
         "textShadow": "4px 4px black"
     },
     "displayBanners": false,
-    "activeBanner": 3,
+    "activeBanner": 4,
     "spots": [
-        {
-            "text": "Sat Aug 23\n-------------\n\"Agnostic Atheist?!\": 3\nWatchmaker: 0",
+        {"id": "07zi0x90bi",
+            "text": "[[d]]\n-------------\n\"Agnostic Atheist?!\": 2",
             "bannerCSS": {
                 "font": "40px/1.3 \"Bahnschrift\"",
                 "textAlign": "left"
             },
             "type": "spot"
         },
-        {
+       {"id": "f4vkkv1nvu",
             "text": "I am, in fact, an agnostic atheist.\nThis is not a contradiction.\nPlease refer to your local Google searching contraption for more details.\n",
             "bannerCSS": {
                 "padding": "20px 60px"
             },
             "type": "spot"
         },
-        {
-            "text": "My favorite names today:\n\neepeeskeepee\nMcSlob\nRichie Gunner Get Ya\n",
+       {"id": "jdrhx3cda8",
+            "text": "My favorite names today!\n\n𖤐🜏  NECROVOKER  🜏𖤐",
             "bannerCSS": {},
             "type": "spot"
         },
-        {
+        {"id": "o1r4bnmnqp",
             "text": "no guests, leaving soon",
             "bannerCSS": {
                 "padding": "40px",
@@ -129,44 +123,37 @@
             },
             "type": "spot"
         },
-        {
-            "text": "Back in 5 minutes",
-            "bannerCSS": {
-                "padding": "80px"
-            },
-            "type": "spot"
-        },
-        {
+       {"id": "8hzswknvgj",
             "text": "The worst theist arguments:\n1. What year is it?\n2. You can't see air\n3. Satan believes in God\n4. Atheists only exist with God",
             "bannerCSS": {
                 "backgroundColor": "#282"
             },
             "type": "spot"
         },
-        {
-            "text": "I am 127.3% angry!!!@!",
+        {"id": "6lymdetz1yf",
+            "text": "I am 129% angry!!!@!",
             "bannerCSS": {
                 "padding": "40px",
-                "font": "bold 70px/1.3  \"Agency FB\"",
+                "font": "bold 80px/1.3  \"Agency FB\"",
                 "backgroundColor": "red"
             },
             "type": "spot"
         },
-        {
+       {"id": "8oonsofz61",
             "text": "Shroudenfreude (/SHROW-den-froy'-da/) n. 1. The amusement you feel at someone defending the Shroud of Turin.",
             "bannerCSS": {
-                "padding": "60px",
-                "font": "bold 40px/1.4 serif",
+                "padding": "50px",
+                "font": "bold 30px/1.4 serif",
                 "color": "#444",
                 "backgroundColor": "#f8f8f8",
                 "textShadow": "0 0 "
             },
             "type": "spot"
         },
-        {
-            "text": "chookie: \"You bait cause lame.\"\nwarptlake: \"If continues lame bait casting cause master.\"\nPax: \"Fibber notsee.\"",
+       {"id": "9ji0kfqoij",
+            "text": "chookie: \"You bait cause lame.\"\nwarptlake: \"If continues lame bait casting cause master.\"\nPax: \"Fibber notsee.\"\nThe Clownism clan: \"Does sorry died.\"",
             "bannerCSS": {
-                "padding": "60px",
+                "padding": "20px",
                 "textAlign": "left"
             },
             "type": "spot"
@@ -181,19 +168,19 @@
         "onBox": true,
         "textShadow": "4px 4px #444"
     },
-    "displaySpots": false,
-    "activeSpot": 5,
+    "displaySpots": true,
+    "activeSpot": 4,
     "timer": {
         "on": true,
-        "interval": 7,
+        "interval": 6,
         "countdown": 1,
-        "waiting": false
+        "waiting": true
     },
     "breakTimer": {
         "on": true,
-        "interval": 10,
-        "countdown": 8,
-        "waiting": true
+        "interval": 6,
+        "countdown": 5,
+        "waiting": false
     },
     "saveToStorage": true
 }

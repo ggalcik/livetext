@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { someDumbID } from "../../components/util";
 
 export const MasterViewportSchema = z.object({
   top: z.number(),
@@ -24,6 +25,7 @@ export type BannerCSS = z.infer<typeof BannerCSSSchema>;
 
 // Define your shared fields
 const bannerBase = z.object({
+  id: z.string(),
   text: z.string(),
   bannerCSS: BannerCSSSchema.partial(),
 });
@@ -149,8 +151,10 @@ export function makeInitialLiveDataState(): LiveDataState {
 export const NO_ACTIVE_BANNER = null;
 export const NO_ACTIVE_SPOT = null;
 
+
 export function createBanner(): Banner {
   return {
+    id: someDumbID(),
     type: "rotating",
     text: "",
     bannerCSS: {},
@@ -160,6 +164,7 @@ export function createBanner(): Banner {
 
 export function createRotatingBanner(): Banner {
   return {
+    id: someDumbID(),
     type: "rotating",
     text: "",
     bannerCSS: {},
@@ -169,6 +174,7 @@ export function createRotatingBanner(): Banner {
 
 export function createSpot(): Banner {
   return {
+    id: someDumbID(),
     type: "spot",
     text: "",
     bannerCSS: {},
