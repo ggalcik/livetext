@@ -12,8 +12,6 @@ import "./ItemTransitions.css";
 import { useRef } from "react";
 
 export default function LiveText({ state }: { state: LiveDataState }) {
-  const bannerNodeRef = useRef<HTMLDivElement>(null);
-  const spotNodeRef = useRef<HTMLDivElement>(null);
   const activeBannerIndex = state.activeBanner;
   const activeSpotIndex = state.activeSpot;
 
@@ -39,22 +37,23 @@ export default function LiveText({ state }: { state: LiveDataState }) {
 
       {/* Banners */}
       <TransitionGroup component={null}>
-        {showBanner && state.banners.map((banner, i) => {
-          return activeBannerIndex === i ? (
+        { state.banners.map((banner, i) => {
+          const nodeRef = useRef(null);
+          return showBanner && activeBannerIndex === i ? (
             <CSSTransition
-              key={`banner-${i}`}
-              timeout={500}
-              classNames="rotating"
-              nodeRef={bannerNodeRef}
-              unmountOnExit
+            key={`banner-${i}`}
+            timeout={500}
+            classNames="rotating"
+            nodeRef={nodeRef}
+            unmountOnExit
             >
               <ItemDisplay
-                ref={bannerNodeRef}
+                ref={nodeRef}
                 bannerType="rotating"
                 banner={banner}
                 defaultCSS={defaultBannerCSS}
                 initialCSS={initialLiveDataState.defaultBannerCSS}
-              />
+                />
             </CSSTransition>
           ) : null;
         })}
@@ -62,17 +61,18 @@ export default function LiveText({ state }: { state: LiveDataState }) {
 
       {/* Spots */}
       <TransitionGroup component={null}>
-        {showSpot && state.spots.map((spot, i) => {
-          return activeSpotIndex === i ? (
+        {state.spots.map((spot, i) => {
+        const nodeRef = useRef(null);
+          return showSpot && activeSpotIndex === i ? (
             <CSSTransition
-              key={`spot-${i}`}
-              timeout={300}
+            key={`spot-${i}`}
+            timeout={300}
               classNames="spot"
-              nodeRef={spotNodeRef}
+              nodeRef={nodeRef}
               unmountOnExit
             >
               <ItemDisplay
-                ref={spotNodeRef}
+                ref={nodeRef}
                 bannerType="spot"
                 banner={spot}
                 defaultCSS={defaultSpotCSS}
