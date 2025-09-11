@@ -31,6 +31,7 @@ export default function LiveText({ state }: { state: LiveDataState }) {
 
   const showSpot = activeSpotIndex !== NO_ACTIVE_SPOT && state.displaySpots;
 
+
   return (
     <MasterViewport>
       <Background which={state.backgroundImage} />
@@ -43,7 +44,7 @@ export default function LiveText({ state }: { state: LiveDataState }) {
             <CSSTransition
             key={`banner-${i}`}
             timeout={500}
-            classNames="rotating"
+            classNames='rotating'
             nodeRef={nodeRef}
             unmountOnExit
             >

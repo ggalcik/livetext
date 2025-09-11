@@ -48,10 +48,6 @@ export default function ItemDisplay({ banner, defaultCSS, initialCSS, bannerType
     return newText.replace(/(?:\r\n|\r|\n)/g, "<br>");
   }
 
-  const animStyle = '';
-  // const animStyle = bannerType === 'spot'
-  //   ? (introAnim ? 'scale-100' : 'scale-10')
-  //   : (introAnim ? 'translate-x-[0%]' : 'translate-x-[120%]') // rotating
 
   const returnItem = (
 
@@ -65,9 +61,9 @@ export default function ItemDisplay({ banner, defaultCSS, initialCSS, bannerType
 
       }}
       className={clsx(
-        //   "absolute transition-transform duration-500 ease-in-out",
+
         "absolute",
-        // animStyle
+
 
       )}
     >
