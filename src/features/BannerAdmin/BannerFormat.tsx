@@ -80,7 +80,6 @@ export default function BannerFormat(props: LiveTextFormatOpts) {
           cssPayload: { [key]: value }, // TODO: is this cssPayload working how I expect?
         },
       };
-      console.log(obj);
       dispatch(obj);
       
     } else {
@@ -91,7 +90,6 @@ export default function BannerFormat(props: LiveTextFormatOpts) {
           cssPayload: { [key]: value },
         },
       };
-      console.log(obj);
       dispatch(obj);
     }
   }

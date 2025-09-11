@@ -1,7 +1,6 @@
-import clsx from "clsx";
+import { CSSTransition, TransitionGroup } from "react-transition-group";
 import { NO_ACTIVE_BANNER, NO_ACTIVE_SPOT } from "../../context/LiveData/types";
 import type { LiveDataState } from "../../context/LiveData/types";
-import BannerDisplay from "../../BannerDisplay";
 import { initialLiveDataState } from "../../context/LiveData/LiveDataReducer";
 
 import ProgressDots from "../../ProgressDots";
@@ -9,11 +8,14 @@ import Background from "../../Background";
 import ItemDisplay from "./ItemDisplay";
 import { MasterViewport } from "./MasterViewport";
 
-export default function LiveText({ state }: { state: LiveDataState }) {
-  // if (state.activeBanner === null) return "[no banner]";
+import "./ItemTransitions.css";
+import { useRef } from "react";
 
-  const activeBanner =
-    state.activeBanner === NO_ACTIVE_BANNER ? null : state.banners[state.activeBanner];
+export default function LiveText({ state }: { state: LiveDataState }) {
+  const bannerNodeRef = useRef<HTMLDivElement>(null);
+  const spotNodeRef = useRef<HTMLDivElement>(null);
+  const activeBannerIndex = state.activeBanner;
+  const activeSpotIndex = state.activeSpot;
 
   const defaultBannerCSS = {
     ...initialLiveDataState.defaultBannerCSS,
@@ -25,62 +27,75 @@ export default function LiveText({ state }: { state: LiveDataState }) {
   };
 
   const showBanner =
-    state.activeBanner !== NO_ACTIVE_BANNER &&
-    activeBanner &&
+    activeBannerIndex !== NO_ACTIVE_BANNER &&
     state.displayBanners &&
     !state.timer.waiting;
-  const showSpot = state.activeSpot !== NO_ACTIVE_SPOT &&
-    state.spots[state.activeSpot] &&
-    state.displaySpots;
 
+  const showSpot = activeSpotIndex !== NO_ACTIVE_SPOT && state.displaySpots;
 
   return (
-    // main container
-
-
-    <MasterViewport >
-
-
+    <MasterViewport>
       <Background which={state.backgroundImage} />
 
-      {!state.banners.length && "[no banners]"}
-      {state.activeBanner !== NO_ACTIVE_BANNER &&
-        !activeBanner &&
-        state.displayBanners &&
-        "[something wrong]"}
-      {showBanner && state.activeBanner !== NO_ACTIVE_BANNER && (
+      {/* Banners */}
+      <TransitionGroup component={null}>
+        {showBanner && state.banners.map((banner, i) => {
+          return activeBannerIndex === i ? (
+            <CSSTransition
+              key={`banner-${i}`}
+              timeout={500}
+              classNames="rotating"
+              nodeRef={bannerNodeRef}
+              unmountOnExit
+            >
+              <ItemDisplay
+                ref={bannerNodeRef}
+                bannerType="rotating"
+                banner={banner}
+                defaultCSS={defaultBannerCSS}
+                initialCSS={initialLiveDataState.defaultBannerCSS}
+              />
+            </CSSTransition>
+          ) : null;
+        })}
+      </TransitionGroup>
 
-        <ItemDisplay
-          key={`banner-${state.activeBanner}`}
-          bannerType="rotating"
-          banner={state.banners[state.activeBanner]}
-          defaultCSS={defaultBannerCSS}
-          initialCSS={initialLiveDataState.defaultBannerCSS}
-        />
-      )}
+      {/* Spots */}
+      <TransitionGroup component={null}>
+        {showSpot && state.spots.map((spot, i) => {
+          return activeSpotIndex === i ? (
+            <CSSTransition
+              key={`spot-${i}`}
+              timeout={300}
+              classNames="spot"
+              nodeRef={spotNodeRef}
+              unmountOnExit
+            >
+              <ItemDisplay
+                ref={spotNodeRef}
+                bannerType="spot"
+                banner={spot}
+                defaultCSS={defaultSpotCSS}
+                initialCSS={initialLiveDataState.defaultSpotCSS}
+              />
+            </CSSTransition>
+          ) : null
+        })}
+      </TransitionGroup>
 
-      {!state.spots.length && state.displaySpots && "[no spots]"}
-      {showSpot && state.activeSpot !== NO_ACTIVE_SPOT && (
-        <ItemDisplay
-          key={`spot-${state.activeSpot}`}
-          bannerType="spot"
-          banner={state.spots[state.activeSpot]}
-          defaultCSS={defaultSpotCSS}
-          initialCSS={initialLiveDataState.defaultSpotCSS}
-        />
-
-      )}
+      {/* Progress indicators */}
       {showBanner && (
         <div className="absolute bottom-0 left-0 w-full px-18">
           <ProgressDots timer={state.timer} />
         </div>
       )}
-      {state.breakTimer.on && !state.breakTimer.waiting && state.displayBanners && (
-        <div className="absolute bottom-0 left-0 w-full px-18">
-          <ProgressDots timer={state.breakTimer} alt={true} />
-        </div>
-      )}
+      {state.breakTimer.on &&
+        !state.breakTimer.waiting &&
+        state.displayBanners && (
+          <div className="absolute bottom-0 left-0 w-full px-18">
+            <ProgressDots timer={state.breakTimer} alt />
+          </div>
+        )}
     </MasterViewport>
-
   );
 }

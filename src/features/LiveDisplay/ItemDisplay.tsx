@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, forwardRef } from "react";
 import clsx from "clsx";
 import type { Banner, BannerCSS, BannerType } from "../../context/LiveData/types";
 import { dateStr } from "../../components/util";
@@ -8,13 +8,13 @@ interface ItemDisplayProps {
   defaultCSS: BannerCSS;
   initialCSS: BannerCSS;
   bannerType: BannerType;
+  ref: React.Ref<HTMLDivElement>;
 }
 
-export default function ItemDisplay({ banner, defaultCSS, initialCSS, bannerType }: ItemDisplayProps) {
+export default function ItemDisplay({ banner, defaultCSS, initialCSS, bannerType, ref }: ItemDisplayProps) {
   const [introAnim, setIntroAnim] = useState(false);
 
   useEffect(() => {
-    console.log('useEffect');
     requestAnimationFrame(() => setIntroAnim(true));
   }, [banner]);
 
@@ -43,17 +43,20 @@ export default function ItemDisplay({ banner, defaultCSS, initialCSS, bannerType
     if (!text.trim()) return "[no text]";
 
     let newText = text;
+    // let newText = `${extra} ${text}`;
     newText = newText.replace('[[d]]', dateStr('iii MMM d yyyy G'));
     return newText.replace(/(?:\r\n|\r|\n)/g, "<br>");
   }
 
-  const animStyle = bannerType === 'spot'
-    ? (introAnim ? 'scale-100' : 'scale-10')
-    : (introAnim ? 'translate-x-[0%]' : 'translate-x-[120%]') // rotating
+  const animStyle = '';
+  // const animStyle = bannerType === 'spot'
+  //   ? (introAnim ? 'scale-100' : 'scale-10')
+  //   : (introAnim ? 'translate-x-[0%]' : 'translate-x-[120%]') // rotating
 
   const returnItem = (
 
     <div
+      ref={ref}
       style={{
         padding: getVal("padding"),
         textAlign: getVal("textAlign") as React.CSSProperties["textAlign"],
@@ -62,8 +65,9 @@ export default function ItemDisplay({ banner, defaultCSS, initialCSS, bannerType
 
       }}
       className={clsx(
-        "absolute transition-transform duration-500 ease-in-out",
-       animStyle
+        //   "absolute transition-transform duration-500 ease-in-out",
+        "absolute",
+        // animStyle
 
       )}
     >
