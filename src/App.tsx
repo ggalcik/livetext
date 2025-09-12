@@ -7,6 +7,7 @@ import type { BackgroundType, PopupState } from "./context/LiveData/types";
 import { SingleWindow } from "./SingleWindow";
 import { Accordion } from "./features/Accordion/Accordion";
 import BannerAdmin from "./features/BannerAdmin/BannerAdmin";
+import FontReference from "./components/FontReference";
 
 
 function App() {
@@ -33,6 +34,9 @@ function App() {
           }
         />
         <Route path="/popup" element={<LiveTextPopup initialState={state} />} />
+        <Route path="/fonts" element={<FontReference/>}>
+          
+        </Route>
       </Routes>
     </BrowserRouter>
   );
