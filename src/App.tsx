@@ -7,7 +7,8 @@ import type { BackgroundType, PopupState } from "./context/LiveData/types";
 import { SingleWindow } from "./SingleWindow";
 import { Accordion } from "./features/Accordion/Accordion";
 import BannerAdmin from "./features/BannerAdmin/BannerAdmin";
-import FontReference from "./components/FontReference";
+import FontReference from "./components/FontReference/FontReference";
+import Soundboard from "./components/Soundboard/Soundboard";
 
 
 function App() {
@@ -24,8 +25,8 @@ function App() {
               render={(isActive) =>
                 isActive ? (
                   <>
-                  <Accordion label="fonts">
-                    <FontReference />
+                  <Accordion label="sounds">
+                    <Soundboard />
                   </Accordion>
                   <Accordion label="banners" startOpen={true}>
                     <BannerAdmin popupState={{ visiblePopup, setVisiblePopup }} />
