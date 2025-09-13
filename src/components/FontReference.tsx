@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 type LocalFont = {
   postscriptName: string;
@@ -9,36 +9,69 @@ type LocalFont = {
 
 export default function FontReference() {
   const [sampleText, setSampleText] = useState("The quick brown fox jumps over the lazy dog");
-  const [fontCSSPrefix, setFontCSSPrefix] = useState("40/1.3");
   const [fonts, setFonts] = useState<LocalFont[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [fontSize, setFontSize] = useState<number>(24);
   const [showAll, setShowAll] = useState<boolean>(false);
 
-  async function handleLoadFonts() {
-    try {
-      if ("queryLocalFonts" in window) {
-        // @ts-expect-error: experimental API
-        const localFonts: LocalFont[] = await window.queryLocalFonts();
-        setFonts(localFonts);
-      } else {
-        setError("Local Font Access API not supported in this browser.");
+  // Load from localStorage on mount
+  useEffect(() => {
+    const saved = localStorage.getItem("fontList");
+    if (saved) {
+      try {
+        const parsed: LocalFont[] = JSON.parse(saved);
+        setFonts(parsed);
+      } catch {
+        // ignore parse errors
       }
-    } catch (err: any) {
-      setError(err.message || "Unable to load local fonts");
     }
-  }
+  }, []);
 
-  // Collapse to one font per family if showAll = false
-  const displayedFonts = showAll
-    ? fonts
-    : Object.values(
-        fonts.reduce<Record<string, LocalFont>>((acc, font) => {
-          if (!acc[font.family]) acc[font.family] = font; // first style seen
-          if (font.style === 'Regular') acc[font.family] = font;
-          return acc;
-        }, {})
-      );
+async function handleUpdateFonts() {
+  try {
+    if ("queryLocalFonts" in window) {
+      // @ts-expect-error experimental API
+      const localFonts = await window.queryLocalFonts();
+
+      // Extract plain JSON-safe data
+      const cleanFonts = localFonts.map((f: any) => ({
+        postscriptName: f.postscriptName,
+        fullName: f.fullName,
+        family: f.family,
+        style: f.style,
+      }));
+
+      setFonts(cleanFonts);
+      localStorage.setItem("fontList", JSON.stringify(cleanFonts));
+    } else {
+      setError("Local Font Access API not supported in this browser.");
+    }
+  } catch (err: any) {
+    setError(err.message || "Unable to load local fonts");
+  }
+}
+
+
+  // Build firstFamilyFonts, preferring Regular
+  const firstFamilyFonts = Object.values(
+    fonts.reduce<Record<string, LocalFont>>((acc, font) => {
+      if (!acc[font.family]) acc[font.family] = font;
+      if (font.style === "Regular") acc[font.family] = font;
+      return acc;
+    }, {})
+  );
+
+  // Build map of family -> styles
+  const familyStyles = fonts.reduce<Record<string, string[]>>((acc, font) => {
+    if (!acc[font.family]) acc[font.family] = [];
+    if (!acc[font.family].includes(font.style)) {
+      acc[font.family].push(font.style);
+    }
+    return acc;
+  }, {});
+
+  // Decide which fonts to display
+  const displayFonts = showAll ? fonts : firstFamilyFonts;
 
   return (
     <div className="p-4 space-y-6">
@@ -79,15 +112,13 @@ export default function FontReference() {
         </label>
       </div>
 
-      {/* Load button */}
-      {fonts.length === 0 && (
-        <button
-          onClick={handleLoadFonts}
-          className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-        >
-          Load Local Fonts
-        </button>
-      )}
+      {/* Update button */}
+      <button
+        onClick={handleUpdateFonts}
+        className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+      >
+        Update list
+      </button>
 
       {error && <div className="text-red-600">{error}</div>}
 
@@ -101,14 +132,27 @@ export default function FontReference() {
             </tr>
           </thead>
           <tbody>
-            {displayedFonts.map((font) => (
-              <tr key={font.postscriptName} className="border-b">
+            {displayFonts.map((font) => (
+              <tr key={font.postscriptName} className="border-b align-top">
                 <td className="p-2">
-                  {font.fullName} ({font.style})
+                  {/* Font name, omit (Regular) */}
+                  {font.style === "Regular"
+                    ? font.fullName
+                    : `${font.fullName} (${font.style})`}
+
+                  {/* If showAll is off, show style list below */}
+                  {!showAll && familyStyles[font.family] && (
+                    <div className="text-xs text-gray-500 mt-1">
+                      {familyStyles[font.family].join(", ")}
+                    </div>
+                  )}
                 </td>
                 <td
                   className="p-2"
-                  style={{ fontFamily: `"${font.fullName}", ${font.family}`, fontSize }}
+                  style={{
+                    fontFamily: `"${font.fullName}", ${font.family}`,
+                    fontSize,
+                  }}
                 >
                   {sampleText}
                 </td>

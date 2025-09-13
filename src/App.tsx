@@ -23,9 +23,14 @@ function App() {
             <SingleWindow
               render={(isActive) =>
                 isActive ? (
+                  <>
+                  <Accordion label="fonts">
+                    <FontReference />
+                  </Accordion>
                   <Accordion label="banners" startOpen={true}>
                     <BannerAdmin popupState={{ visiblePopup, setVisiblePopup }} />
                   </Accordion>
+                  </>
                 ) : (
                   <div className="p-10">another window opened, reload to yoink</div>
                 )
