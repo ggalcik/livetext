@@ -3,7 +3,7 @@ import Controls from "./Controls";
 import ProgressBar from "./ProgressBar";
 
 // Auto-import all .mp3 files from /public/local/soundboard
-const soundModules = import.meta.glob("/public/local/soundboard/*.mp3", {
+const soundModules = import.meta.glob("/src/local/soundboard/*.mp3", {
     eager: true,
     import: "default",
 });
@@ -11,7 +11,7 @@ const soundModules = import.meta.glob("/public/local/soundboard/*.mp3", {
 const soundFiles = Object.keys(soundModules).map((path) => {
     const parts = path.split("/");
     const file = parts[parts.length - 1];
-    return { file, url: `/local/soundboard/${file}` };
+     return { file, url: (soundModules[path] as string) };
 });
 
 export default function Soundboard() {

@@ -9,11 +9,13 @@ import { Accordion } from "./features/Accordion/Accordion";
 import BannerAdmin from "./features/BannerAdmin/BannerAdmin";
 import FontReference from "./components/FontReference/FontReference";
 import Soundboard from "./components/Soundboard/Soundboard";
+import CaptionPlayer from "./components/Typography/CaptionPlayer";
+import CanvasCaptionPlayer from "./components/Typography/CanvasCaptionPlayer";
 
 
 function App() {
   const { state } = useLiveData();
-  const [visiblePopup, setVisiblePopup] = useState<string|null>(null);
+  const [visiblePopup, setVisiblePopup] = useState<string | null>(null);
 
   return (
     <BrowserRouter>
@@ -25,12 +27,19 @@ function App() {
               render={(isActive) =>
                 isActive ? (
                   <>
-                  <Accordion label="sounds">
-                    <Soundboard />
-                  </Accordion>
-                  <Accordion label="banners" startOpen={true}>
-                    <BannerAdmin popupState={{ visiblePopup, setVisiblePopup }} />
-                  </Accordion>
+                    <Accordion label="fonts">
+                      <FontReference />
+                    </Accordion>
+                    <Accordion label="typography">
+                      <CanvasCaptionPlayer />
+                    </Accordion>
+                    <Accordion label="sounds">
+                      <Soundboard />
+                    </Accordion>
+
+                    <Accordion label="banners" startOpen={true}>
+                      <BannerAdmin popupState={{ visiblePopup, setVisiblePopup }} />
+                    </Accordion>
                   </>
                 ) : (
                   <div className="p-10">another window opened, reload to yoink</div>
@@ -40,8 +49,8 @@ function App() {
           }
         />
         <Route path="/popup" element={<LiveTextPopup initialState={state} />} />
-        <Route path="/fonts" element={<FontReference/>}>
-          
+        <Route path="/fonts" element={<FontReference />}>
+
         </Route>
       </Routes>
     </BrowserRouter>
