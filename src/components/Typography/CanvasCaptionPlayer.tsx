@@ -10,7 +10,7 @@ import type { Caption } from "./types";
  * - Supports rotate, scale, fadeOut per caption
  */
 
-const BOX_SIZE = 600; // px
+const BOX_SIZE = 300; // px
 const FONT_BASIS = 300;
 const FONT_FAMILY = 'Elephant';
 const FONT_SIZE = 24; // px
@@ -91,7 +91,7 @@ export default function CanvasCaptionPlayer() {
     // clear
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     // bg
-    ctx.fillStyle = "#000";
+    ctx.fillStyle = "#404";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     // text settings
