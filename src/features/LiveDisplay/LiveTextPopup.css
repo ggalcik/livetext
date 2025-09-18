@@ -3,14 +3,6 @@ body.popup {
   width: 100vw;
   margin: 0;
   background-color: black;
-  /* background-color: var(--chromakey-color); */
   overflow: hidden;
-
   position: absolute;
-}
-
-body.popup.rotate {
-  height: 99vw;
-  width: 99vh;    transform: rotate(270deg);
-  transform-origin: 50% 27%;
 }

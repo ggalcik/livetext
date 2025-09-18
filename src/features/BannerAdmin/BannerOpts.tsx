@@ -2,7 +2,7 @@ import clsx from "clsx";
 import { useLiveData } from "../../context/LiveData";
 import RotateCountdown from "../../RotateCountdown";
 import { initialLiveDataState } from "../../context/LiveData/LiveDataReducer";
-import BannerFormat from "../BannerAdmin/BannerFormat";
+import BannerFormat from "./BannerFormat";
 import { type PopupState } from "../../context/LiveData/types";
 import { useState } from "react";
 
@@ -17,13 +17,13 @@ export default function LiveText({ popupState }: { popupState: PopupState }) {
       window.open(
         "/popup",
         "LiveTextPopup",
-        "width=800,height=600,menubar=no,toolbar=no,location=no,status=no"
+        "width=800,height=600,menubar=no,toolbar=no,location=yes,status=no"
       );
     } else {
       window.open(
         "/popup",
         "LiveTextPopup",
-        "width=600,height=450,menubar=no,toolbar=no,location=no,status=no"
+        "width=600,height=450,menubar=no,toolbar=no,location=yes,status=no"
       );
     }
   };

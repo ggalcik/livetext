@@ -91,7 +91,7 @@ export default function CanvasCaptionPlayer() {
     // clear
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     // bg
-    ctx.fillStyle = "#000";
+    ctx.fillStyle = "#303";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     // text settings

@@ -11,6 +11,7 @@ import FontReference from "./components/FontReference/FontReference";
 import Soundboard from "./components/Soundboard/Soundboard";
 import CaptionPlayer from "./components/Typography/CaptionPlayer";
 import CanvasCaptionPlayer from "./components/Typography/CanvasCaptionPlayer";
+import Popup from "./features/LiveDisplay/Popup";
 
 
 function App() {
@@ -48,7 +49,8 @@ function App() {
             />
           }
         />
-        <Route path="/popup" element={<LiveTextPopup initialState={state} />} />
+        <Route path="/popup/:name?" element={<Popup />} />
+        {/* <Route path="/popup" element={<LiveTextPopup initialState={state} />} /> */}
         <Route path="/fonts" element={<FontReference />}>
 
         </Route>
