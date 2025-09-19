@@ -10,7 +10,7 @@ import type { Caption } from "./types";
  * - Supports rotate, scale, fadeOut per caption
  */
 
-const BOX_SIZE = 300; // px
+const BOX_SIZE = 500; // px
 const FONT_BASIS = 300;
 const FONT_FAMILY = 'Elephant';
 const FONT_SIZE = 24; // px

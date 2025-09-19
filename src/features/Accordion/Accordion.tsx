@@ -20,7 +20,7 @@ export function Accordion({ label, children, startOpen = false }: IAccordion) {
                 {label}
             </div>
             {isOpen &&
-                <div className="border-t-2 border-t-gray-200 border-b p-4">{children}</div>
+                <div className="border-t-2 border-t-gray-200  p-4">{children}</div>
             }
         </div>
     )
