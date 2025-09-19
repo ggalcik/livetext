@@ -53,6 +53,7 @@ export function MasterViewport({ children, name }: IMasterViewport) {
     const [panelMoving, setPanelMoving] = useState(false);
     const [pointer, setPointer] = useState<Pointer | null>(null);
     const [edges, setEdges] = useState<Edges>(getNamedFromLocal(name));
+    const [movingWhich, setMovingWhich] = useState<'box' | 'edge' | null>(null);
 
     const [masterRef, { width: masterWidth, height: masterHeight }] = useMeasure<HTMLDivElement>();
 
@@ -79,6 +80,7 @@ export function MasterViewport({ children, name }: IMasterViewport) {
     function handlePointer(p: Pointer | null) {
         setPointer(p);
         if (!p) {
+            setMovingWhich(null);
             try {
                 const saved = localStorage.getItem("MasterViewports");
                 const parsed = saved ? JSON.parse(saved) : {};
@@ -107,13 +109,29 @@ export function MasterViewport({ children, name }: IMasterViewport) {
         const [fromTop, fromBottom] = [Math.abs(pyp - edges.top), Math.abs(pyp - edges.bottom)];
         const [fromLeft, fromRight] = [Math.abs(pxp - edges.left), Math.abs(pxp - edges.right)];
 
-        if (Math.min(fromTop, fromBottom, fromLeft, fromRight) > EDGE_RANGE) {
+        let newMovingWhich = movingWhich;
+
+        if (!movingWhich) {
+            if (Math.min(fromTop, fromBottom, fromLeft, fromRight) > EDGE_RANGE)
+                newMovingWhich = 'box';
+            else
+                newMovingWhich = 'edge';
+            setMovingWhich(newMovingWhich);
+        }
+
+        const BORDER_STOP = 2;
+
+        if (newMovingWhich === 'box') {
             if (pointer != null) {
                 const [moveX, moveY] = [pxp - pointer.pxp, pyp - pointer.pyp];
-                newEdges.left += moveX;
-                newEdges.right += moveX;
-                newEdges.top += moveY;
-                newEdges.bottom += moveY;
+                if (newEdges.right + moveX >BORDER_STOP && newEdges.left + moveX < (100-BORDER_STOP)) {
+                    newEdges.left += moveX;
+                    newEdges.right += moveX;
+                }
+                if (newEdges.bottom + moveY >BORDER_STOP && newEdges.top + moveY < (100-BORDER_STOP)) {
+                    newEdges.top += moveY;
+                    newEdges.bottom += moveY;
+                }
             }
         } else {
             if (fromTop < fromBottom) newEdges.top = pyp - EDGE_NUDGE;
