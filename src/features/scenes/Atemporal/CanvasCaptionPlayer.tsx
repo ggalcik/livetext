@@ -142,6 +142,7 @@ export default function CanvasCaptionPlayer({ controls }: { controls: boolean })
       canvas.height = BOX_SIZE;
       drawFrame(0);
     }
+    togglePlay();
     return () => cancelLoop();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

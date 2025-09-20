@@ -33,7 +33,7 @@ export default function BannersEdit({ popupState, type }: IBannersEdit) {
           <div
             key={`bannerForm_${idx}`}
             className={clsx(
-              "p-2 mb-2 border", 
+              "p-2 mb-4 border rounded-xl", 
               isActive
                 ? "border-green-400 bg-green-100"
                 : "border-gray-200 bg-gray-200"

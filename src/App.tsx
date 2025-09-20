@@ -9,6 +9,7 @@ import Soundboard from "./components/Soundboard/Soundboard";
 import Popup from "./features/Popup/Popup";
 
 import { version } from '../package.json';
+import ScenesAccordion from "./features/scenes/ScenesAccordion";
 
 function App() {
 
@@ -24,7 +25,7 @@ function App() {
               render={(isActive) =>
                 isActive ? (
                   <>
-                  <div className="absolute top-4 right-4 border bg-white px-2">{ version }</div>
+                    <div className="absolute top-4 right-4 border bg-white px-2">{version}</div>
                     <Accordion label="fonts">
                       <FontReference />
                     </Accordion>
@@ -33,9 +34,8 @@ function App() {
                       <Soundboard />
                     </Accordion>
 
-                    <Accordion label="banners" startOpen={true}>
-                      <BannerAdmin popupState={{ visiblePopup, setVisiblePopup }} />
-                    </Accordion>
+                    <ScenesAccordion popupState={{ visiblePopup, setVisiblePopup }} />
+
                   </>
                 ) : (
                   <div className="p-10">another window opened, reload to yoink</div>
@@ -44,7 +44,7 @@ function App() {
             />
           }
         />
-        <Route path="/popup/:name?" element={<Popup/>} />
+        <Route path="/popup/:name?" element={<Popup />} />
         {/* <Route path="/popup" element={<LiveTextPopup initialState={state} />} /> */}
         <Route path="/fonts" element={<FontReference />}>
 
