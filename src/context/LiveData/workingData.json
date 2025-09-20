@@ -4,7 +4,7 @@
     "banners": [
         {
             "id": "lpokrtniy3",
-            "text": "Jesus sacrificed the ability to meet up for one Sunday brunch, and that's about it...",
+            "text": "Jesus sacrificed the ability to meet up for one Sunday brunch, and that's about it",
             "bannerCSS": {
                 "padding": "",
                 "font": "40px/1.6 Cooper",
@@ -19,16 +19,16 @@
         },
         {
             "id": "sjdqh5awxl",
-            "text": "GOD FARTS THROUGH ME!",
+            "text": "Evolution has written on our hearts that there is no afterlife",
             "bannerCSS": {
-                "font": "bold 80px/1.3 \"Calibri\"",
+                "font": "bold 50px/1.3 \"Calibri\"",
                 "textAlign": "center",
                 "backgroundColor": "#400",
                 "onBox": true,
                 "textShadow": "2px 2px black"
             },
             "type": "rotating",
-            "on": false
+            "on": true
         },
         {
             "id": "qrn3yw970d",
@@ -52,7 +52,7 @@
                 "textShadow": "2px 2px black"
             },
             "type": "rotating",
-            "on": false
+            "on": true
         },
         {
             "id": "1svu7nnxu8",
@@ -65,7 +65,8 @@
                 "onBox": true
             },
             "type": "rotating",
-            "on": true
+            "on": true,
+            "idx": 4
         },
         {
             "id": "np2rjzecxd",
@@ -79,7 +80,7 @@
                 "textShadow": "2px 2px black"
             },
             "type": "rotating",
-            "on": true
+            "on": false
         }
     ],
     "defaultBannerCSS": {
@@ -96,12 +97,13 @@
     "spots": [
         {
             "id": "07zi0x90bi",
-            "text": "[[d]]\n-------------\n\"Agnostic Atheist?!\": 2",
+            "text": "[[d]]\n-------------\n\"Agnostic Atheist?!\": 2\nXTian mind readers: 0",
             "bannerCSS": {
                 "font": "40px/1.3 \"Bahnschrift\"",
                 "textAlign": "left"
             },
-            "type": "spot"
+            "type": "spot",
+            "idx": 0
         },
         {
             "id": "f4vkkv1nvu",
@@ -113,12 +115,13 @@
         },
         {
             "id": "jdrhx3cda8",
-            "text": "My favorite names today!\n\nHinglemcringleberry\nTIPUTIPU",
+            "text": "My favorite names today!\n\nShin Rogue Goblin",
             "bannerCSS": {
                 "color": "",
                 "backgroundColor": "#770077d0"
             },
-            "type": "spot"
+            "type": "spot",
+            "idx": 2
         },
         {
             "id": "o1r4bnmnqp",
@@ -139,7 +142,7 @@
         },
         {
             "id": "6lymdetz1yf",
-            "text": "I am 129% angry!!!@!",
+            "text": "I am 124% angry!!!@!",
             "bannerCSS": {
                 "padding": "40px",
                 "font": "bold 80px/1.3  \"Agency FB\"",
@@ -160,12 +163,9 @@
             "type": "spot"
         },
         {
-            "id": "9ji0kfqoij",
-            "text": "chookie: \"You bait cause lame.\"\nwarptlake: \"If continues lame bait casting cause master.\"\nPax: \"Fibber notsee.\"\nThe Clownism clan: \"Does sorry died.\"",
-            "bannerCSS": {
-                "padding": "20px",
-                "textAlign": "left"
-            },
+            "id": "9ufia7q4ph0k4h070eoy",
+            "text": "Deconstruct Sesquipedalian Loquaciousness",
+            "bannerCSS": {},
             "type": "spot"
         }
     ],
@@ -178,18 +178,18 @@
         "onBox": true,
         "textShadow": "4px 4px #444"
     },
-    "displaySpots": true,
+    "displaySpots": false,
     "activeSpot": 0,
     "timer": {
-        "on": false,
+        "on": true,
         "interval": 6,
-        "countdown": null,
+        "countdown": 5,
         "waiting": false
     },
     "breakTimer": {
-        "on": false,
+        "on": true,
         "interval": 10,
-        "countdown": 8,
+        "countdown": 1,
         "waiting": true
     },
     "saveToStorage": true
