@@ -5,28 +5,14 @@ import { initialLiveDataState } from "../../context/LiveData/LiveDataReducer";
 import BannerFormat from "./BannerFormat";
 import { type PopupState } from "../../context/LiveData/types";
 import { useState } from "react";
+import { openPopup } from "../Popup/Popup";
 
 export default function LiveText({ popupState }: { popupState: PopupState }) {
   const { state, dispatch } = useLiveData();
   const { visiblePopup, setVisiblePopup } = popupState;
   const [showRawState, setShowRawState] = useState(false);
 
-  const rotate = false;
-  const openPopup = () => {
-    if (rotate) {
-      window.open(
-        "/popup",
-        "LiveTextPopup",
-        "width=800,height=600,menubar=no,toolbar=no,location=yes,status=no"
-      );
-    } else {
-      window.open(
-        "/popup",
-        "LiveTextPopup",
-        "width=600,height=450,menubar=no,toolbar=no,location=yes,status=no"
-      );
-    }
-  };
+
 
   return (
     <div>
@@ -94,7 +80,7 @@ export default function LiveText({ popupState }: { popupState: PopupState }) {
       </div>
 
       <div className="flex gap-4">
-        <button className="text-blue-600 cursor-pointer self-start" onClick={openPopup}>
+        <button className="text-blue-600 cursor-pointer self-start" onClick={() => openPopup('livetext')}>
           [pop]
         </button>
         <button

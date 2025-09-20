@@ -1,17 +1,21 @@
 import { CSSTransition, TransitionGroup } from "react-transition-group";
-import { NO_ACTIVE_BANNER, NO_ACTIVE_SPOT } from "../../context/LiveData/types";
-import type { LiveDataState } from "../../context/LiveData/types";
-import { initialLiveDataState } from "../../context/LiveData/LiveDataReducer";
+import { NO_ACTIVE_BANNER, NO_ACTIVE_SPOT } from "../../../context/LiveData/types";
+import type { LiveDataState } from "../../../context/LiveData/types";
+import { initialLiveDataState } from "../../../context/LiveData/LiveDataReducer";
 
-import ProgressDots from "../../ProgressDots";
-import Background from "../../Background";
+import ProgressDots from "../../../ProgressDots";
+import Background from "../../../Background";
 import ItemDisplay from "./ItemDisplay";
-import { MasterViewport } from "./MasterViewport";
+import { MasterViewport } from "../../../components/MasterViewport/MasterViewport";
 
 import "./ItemTransitions.css";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
+import { useLiveData } from "../../../context/LiveData/LiveDataContext";
+import glog from "../../../components/glog";
 
-export default function LiveText({ state }: { state: LiveDataState }) {
+export default function LiveText() {
+  const { state } = useLiveData();
+  // glog(state);
   const activeBannerIndex = state.activeBanner;
   const activeSpotIndex = state.activeSpot;
 
@@ -31,22 +35,23 @@ export default function LiveText({ state }: { state: LiveDataState }) {
 
   const showSpot = activeSpotIndex !== NO_ACTIVE_SPOT && state.displaySpots;
 
+  useEffect(() => {}, [state]);
 
   return (
-    <MasterViewport>
+    <MasterViewport name="livetext">
       <Background which={state.backgroundImage} />
 
       {/* Banners */}
       <TransitionGroup component={null}>
-        { state.banners.map((banner, i) => {
+        {state.banners.map((banner, i) => {
           const nodeRef = useRef(null);
           return showBanner && activeBannerIndex === i ? (
             <CSSTransition
-            key={`banner-${i}`}
-            timeout={500}
-            classNames='rotating'
-            nodeRef={nodeRef}
-            unmountOnExit
+              key={`banner-${i}`}
+              timeout={500}
+              classNames='rotating'
+              nodeRef={nodeRef}
+              unmountOnExit
             >
               <ItemDisplay
                 ref={nodeRef}
@@ -54,7 +59,7 @@ export default function LiveText({ state }: { state: LiveDataState }) {
                 banner={banner}
                 defaultCSS={defaultBannerCSS}
                 initialCSS={initialLiveDataState.defaultBannerCSS}
-                />
+              />
             </CSSTransition>
           ) : null;
         })}
@@ -63,11 +68,11 @@ export default function LiveText({ state }: { state: LiveDataState }) {
       {/* Spots */}
       <TransitionGroup component={null}>
         {state.spots.map((spot, i) => {
-        const nodeRef = useRef(null);
+          const nodeRef = useRef(null);
           return showSpot && activeSpotIndex === i ? (
             <CSSTransition
-            key={`spot-${i}`}
-            timeout={300}
+              key={`spot-${i}`}
+              timeout={300}
               classNames="spot"
               nodeRef={nodeRef}
               unmountOnExit

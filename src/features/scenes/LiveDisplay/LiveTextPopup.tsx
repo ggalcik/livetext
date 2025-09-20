@@ -1,14 +1,11 @@
 import { useEffect, useState } from "react";
 import LiveText from "./LiveText";
-import "./LiveTextPopup.css";
-import type { LiveDataState } from "../../context/LiveData/types";
+import type { LiveDataState } from "../../../context/LiveData/types"; 
 
 export default function LiveTextPopup({ initialState }: { initialState: LiveDataState }) {
   const [state, setState] = useState<LiveDataState>(initialState);
 
   useEffect(() => {
-    // Add class on mount
-    document.body.classList.add("popup");
     // Listen for localStorage updates
     const handleStorage = (event: StorageEvent) => {
       if (event.key !== "liveData") return;
@@ -21,7 +18,7 @@ export default function LiveTextPopup({ initialState }: { initialState: LiveData
     };
 
     window.addEventListener("storage", handleStorage);
-    document.title = "Live text popup";
+    document.title = "Live text";
     // Clean up
     return () => {
       document.body.classList.remove("popup");

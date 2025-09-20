@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./App.css";
 import { useLiveData } from "./context/LiveData/LiveDataContext";
-import LiveTextPopup from "./features/LiveDisplay/LiveTextPopup";
+import LiveTextPopup from "./features/scenes/LiveDisplay/LiveTextPopup";
 import { useState } from "react";
 import type { BackgroundType, PopupState } from "./context/LiveData/types";
 import { SingleWindow } from "./SingleWindow";
@@ -11,7 +11,7 @@ import FontReference from "./components/FontReference/FontReference";
 import Soundboard from "./components/Soundboard/Soundboard";
 import CaptionPlayer from "./components/Typography/CaptionPlayer";
 import CanvasCaptionPlayer from "./components/Typography/CanvasCaptionPlayer";
-import Popup from "./features/LiveDisplay/Popup";
+import Popup from "./features/Popup/Popup";
 
 
 function App() {

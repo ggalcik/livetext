@@ -1,7 +1,7 @@
 import React, { useEffect, useState, forwardRef } from "react";
 import clsx from "clsx";
-import type { Banner, BannerCSS, BannerType } from "../../context/LiveData/types";
-import { dateStr } from "../../components/util";
+import type { Banner, BannerCSS, BannerType } from "../../../context/LiveData/types";
+import { dateStr } from "../../../components/util";
 
 interface ItemDisplayProps {
   banner: Banner;
