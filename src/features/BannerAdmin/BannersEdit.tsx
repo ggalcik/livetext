@@ -1,9 +1,10 @@
 import { useLiveData } from "../../context/LiveData";
-import type { PopupState , BannerType} from "../../context/LiveData/types";
+import type { PopupState, BannerType } from "../../context/LiveData/types";
 import clsx from "clsx";
 import ItemControls from "./ItemControls";
 import { useState } from "react";
 import { Button } from "../../components/Button";
+import { AutoResizeTextarea } from "../../components/AutoResizeTextarea";
 
 interface IBannersEdit {
   popupState: PopupState;
@@ -12,7 +13,7 @@ interface IBannersEdit {
 export default function BannersEdit({ popupState, type }: IBannersEdit) {
   const { state, dispatch } = useLiveData();
   // const { visiblePopup, setVisiblePopup } = popupState;
-  const [ isInTextarea, setIsInTextArea] = useState<number | null>(null);
+  const [isInTextarea, setIsInTextArea] = useState<number | null>(null);
 
   const banners = type === 'rotating' ? state.banners : state.spots;
 
@@ -33,18 +34,18 @@ export default function BannersEdit({ popupState, type }: IBannersEdit) {
 
               <ItemControls item={item} idx={idx} popupState={popupState} />
 
-              <textarea
-                className={clsx("border p-2 w-full",
-                  isInTextarea === idx ? "h-30" : "h-8"
-                )}
-                rows={4}
-                onChange={(evt) =>
-                  dispatch({ type: "banner/change", payload: { type, idx, text: evt.target.value } })
-                }
+              <AutoResizeTextarea
+                className="border p-2 w-full"
+                value={item.text}
                 onFocus={() => setIsInTextArea(idx)}
                 onBlur={() => setIsInTextArea(null)}
-                value={item.text}
-              ></textarea>
+                onChange={(evt) =>
+                  dispatch({
+                    type: "banner/change",
+                    payload: { type: item.type, idx, text: evt.target.value },
+                  })
+                }
+              />
 
             </div>
           </div>

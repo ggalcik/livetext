@@ -10,11 +10,12 @@ import { MasterViewport } from "../../../components/MasterViewport/MasterViewpor
 
 import "./ItemTransitions.css";
 import { useEffect, useRef } from "react";
-import { useLiveData } from "../../../context/LiveData/LiveDataContext";
 import glog from "../../../components/glog";
 
-export default function LiveText() {
-  const { state } = useLiveData();
+
+export default function LiveText({ state }: { state: LiveDataState }) {
+// export default function LiveText() {
+// const { state } = useLiveData();
   // glog(state);
   const activeBannerIndex = state.activeBanner;
   const activeSpotIndex = state.activeSpot;
@@ -35,7 +36,7 @@ export default function LiveText() {
 
   const showSpot = activeSpotIndex !== NO_ACTIVE_SPOT && state.displaySpots;
 
-  useEffect(() => {}, [state]);
+  useEffect(() => {glog("herestate: %o", state)}, [state]);
 
   return (
     <MasterViewport name="livetext">

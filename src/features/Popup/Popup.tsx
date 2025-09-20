@@ -1,8 +1,7 @@
 
 import { useParams } from "react-router-dom";
-import { MasterViewport } from "../../components/MasterViewport/MasterViewport";
 import { useEffect } from "react";
-import LiveText from "../scenes/LiveDisplay/LiveText";
+import LiveTextPopup from "../scenes/LiveDisplay/LiveTextPopup";
 
 
 export function openPopup(which?: string) {
@@ -20,7 +19,7 @@ export function openPopup(which?: string) {
 
 export default function Popup() {
   const { name } = useParams<{ name?: string }>();
-  const viewportName = name ?? "livetext"
+  const sceneName = name ?? "livetext"
 
   useEffect(() => {
     // Add class on mount
@@ -34,7 +33,7 @@ export default function Popup() {
         <div className="w-full h-full bg-white">nothing in viewport</div>
       </MasterViewport> */}
 
-      <LiveText/>
+      <LiveTextPopup/>
 
     </div>
   );

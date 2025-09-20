@@ -124,11 +124,11 @@ export function MasterViewport({ children, name }: IMasterViewport) {
         if (newMovingWhich === 'box') {
             if (pointer != null) {
                 const [moveX, moveY] = [pxp - pointer.pxp, pyp - pointer.pyp];
-                if (newEdges.right + moveX >BORDER_STOP && newEdges.left + moveX < (100-BORDER_STOP)) {
+                if (newEdges.right + moveX > BORDER_STOP && newEdges.left + moveX < (100 - BORDER_STOP)) {
                     newEdges.left += moveX;
                     newEdges.right += moveX;
                 }
-                if (newEdges.bottom + moveY >BORDER_STOP && newEdges.top + moveY < (100-BORDER_STOP)) {
+                if (newEdges.bottom + moveY > BORDER_STOP && newEdges.top + moveY < (100 - BORDER_STOP)) {
                     newEdges.top += moveY;
                     newEdges.bottom += moveY;
                 }
@@ -186,15 +186,15 @@ export function MasterViewport({ children, name }: IMasterViewport) {
                 </div>
             </div>
 
-            <div className="absolute top-6 left-3 ">
-                <div>master panel {name}</div>
-                {panelMoving && (
-                    <div className="top-0 left-0 p-4 text-white">
+            {panelMoving && (
+                <div className="absolute top-6 left-3 text-white ">
+                    <div>master panel {name}</div>
+                    <div className="top-0 left-0 p-4">
                         window: {`${masterWidth.toFixed(1)}, ${masterHeight.toFixed(1)}`}<br />
                         pointer: {pointer && `${pointer.pxp},${pointer.pyp}`}<br />
                     </div>
-                )}
-            </div>
+                </div>
+            )}
         </>
     );
 }

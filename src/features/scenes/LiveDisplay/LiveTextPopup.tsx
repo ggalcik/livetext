@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import LiveText from "./LiveText";
-import type { LiveDataState } from "../../../context/LiveData/types"; 
+import { makeInitialLiveDataState, type LiveDataState } from "../../../context/LiveData/types";
 
-export default function LiveTextPopup({ initialState }: { initialState: LiveDataState }) {
-  const [state, setState] = useState<LiveDataState>(initialState);
+export default function LiveTextPopup() {
+  const [state, setState] = useState<LiveDataState>(makeInitialLiveDataState());
 
   useEffect(() => {
     // Listen for localStorage updates

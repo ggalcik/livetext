@@ -15,7 +15,7 @@ import Popup from "./features/Popup/Popup";
 
 
 function App() {
-  const { state } = useLiveData();
+
   const [visiblePopup, setVisiblePopup] = useState<string | null>(null);
 
   return (
@@ -49,7 +49,7 @@ function App() {
             />
           }
         />
-        <Route path="/popup/:name?" element={<Popup />} />
+        <Route path="/popup/:name?" element={<Popup/>} />
         {/* <Route path="/popup" element={<LiveTextPopup initialState={state} />} /> */}
         <Route path="/fonts" element={<FontReference />}>
 
