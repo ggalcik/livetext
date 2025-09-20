@@ -1,18 +1,14 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./App.css";
-import { useLiveData } from "./context/LiveData/LiveDataContext";
-import LiveTextPopup from "./features/scenes/LiveDisplay/LiveTextPopup";
 import { useState } from "react";
-import type { BackgroundType, PopupState } from "./context/LiveData/types";
 import { SingleWindow } from "./SingleWindow";
 import { Accordion } from "./features/Accordion/Accordion";
 import BannerAdmin from "./features/BannerAdmin/BannerAdmin";
 import FontReference from "./components/FontReference/FontReference";
 import Soundboard from "./components/Soundboard/Soundboard";
-import CaptionPlayer from "./components/Typography/CaptionPlayer";
-import CanvasCaptionPlayer from "./components/Typography/CanvasCaptionPlayer";
 import Popup from "./features/Popup/Popup";
 
+import { version } from '../package.json';
 
 function App() {
 
@@ -28,12 +24,11 @@ function App() {
               render={(isActive) =>
                 isActive ? (
                   <>
+                  <div className="absolute top-4 right-4 border bg-white px-2">{ version }</div>
                     <Accordion label="fonts">
                       <FontReference />
                     </Accordion>
-                    <Accordion label="typography">
-                      <CanvasCaptionPlayer />
-                    </Accordion>
+
                     <Accordion label="sounds">
                       <Soundboard />
                     </Accordion>

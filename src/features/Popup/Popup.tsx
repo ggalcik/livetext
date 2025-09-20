@@ -2,6 +2,8 @@
 import { useParams } from "react-router-dom";
 import { useEffect } from "react";
 import LiveTextPopup from "../scenes/LiveDisplay/LiveTextPopup";
+import glog from "../../components/glog";
+import Atemporal from "../scenes/Atemporal/Atemporal";
 
 
 export function openPopup(which?: string) {
@@ -28,13 +30,8 @@ export default function Popup() {
 
   return (
     <div className="absolute w-full h-full bg-black">
-
-      {/* <MasterViewport name={viewportName}>
-        <div className="w-full h-full bg-white">nothing in viewport</div>
-      </MasterViewport> */}
-
-      <LiveTextPopup/>
-
+        { sceneName === 'livetext' &&  <LiveTextPopup/>}
+        { sceneName === 'atemporal' &&  <Atemporal controls={true}/>}
     </div>
   );
 }

@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import LiveText from "./LiveText";
-import { makeInitialLiveDataState, type LiveDataState } from "../../../context/LiveData/types";
+import {  type LiveDataState } from "../../../context/LiveData/types";
+import { loadInitialState } from "../../../context/LiveData/LiveDataReducer";
+import glog from "../../../components/glog";
 
 export default function LiveTextPopup() {
-  const [state, setState] = useState<LiveDataState>(makeInitialLiveDataState());
+  const [state, setState] = useState<LiveDataState>(loadInitialState());
 
   useEffect(() => {
     // Listen for localStorage updates
@@ -19,12 +21,14 @@ export default function LiveTextPopup() {
 
     window.addEventListener("storage", handleStorage);
     document.title = "Live text";
+   
     // Clean up
     return () => {
       document.body.classList.remove("popup");
       window.removeEventListener("storage", handleStorage);
     };
   }, []);
+
 
   return  <LiveText state={state} />;
 

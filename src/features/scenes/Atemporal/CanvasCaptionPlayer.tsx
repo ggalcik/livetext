@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import captions from "./captions.json";
 import type { Caption } from "./types";
+import { MasterViewport } from "../../../components/MasterViewport/MasterViewport";
 
 /**
  * Canvas-based caption player: renders timed text onto <canvas> for tighter timing (<= 100ms).
@@ -10,12 +11,13 @@ import type { Caption } from "./types";
  * - Supports rotate, scale, fadeOut per caption
  */
 
-const BOX_SIZE = 500; // px
+const BOX_SIZE = 400; // px
 const FONT_BASIS = 300;
 const FONT_FAMILY = 'Elephant';
 const FONT_SIZE = 24; // px
+const FONT_COLOR = "#FFF085";
 
-export default function CanvasCaptionPlayer() {
+export default function CanvasCaptionPlayer({ controls }: { controls: boolean }) {
   const [playing, setPlaying] = useState(false);
   const [elapsed, setElapsed] = useState(0);
   const [duration, setDuration] = useState(0);
@@ -97,7 +99,7 @@ export default function CanvasCaptionPlayer() {
     // text settings
     ctx.textBaseline = "top"; // align to top-left as requested
     ctx.font = `${FONT_SIZE}px ${FONT_FAMILY}`;
-    ctx.fillStyle = "#fff";
+    ctx.fillStyle = FONT_COLOR;
 
     (captions as Caption[])
       .filter((c) => time >= c.start && time <= (c.end + (c.fadeOut || 0)))
@@ -119,7 +121,7 @@ export default function CanvasCaptionPlayer() {
         const y = (c.top / 100) * canvas.height;
         const rotate = (c.rotate || 0) * (Math.PI / 180);
         // const scale = c.scale ;
-        const scale = c.scale * ( BOX_SIZE/ FONT_BASIS);
+        const scale = c.scale * (BOX_SIZE / FONT_BASIS);
         // const scale = c.scale * 2 ;
 
         ctx.save();
@@ -145,42 +147,49 @@ export default function CanvasCaptionPlayer() {
   }, []);
 
   return (
-    <div className="p-4 space-y-4">
-      {/* Play/Pause */}
-      <button
-        onClick={togglePlay}
-        className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-      >
-        {playing ? "Pause" : "Play"}
-      </button>
-
-      {/* Progress bar w/ tenths */}
-      <div className="flex items-center space-x-2">
-        <span className="text-xs text-gray-500 w-12 text-right">{elapsed.toFixed(1)}s</span>
-        <div
-          className="flex-1 bg-gray-300 h-2 rounded cursor-pointer relative"
-          onClick={(e) => {
-            if (!duration) return;
-            const rect = (e.currentTarget as HTMLDivElement).getBoundingClientRect();
-            const clickX = e.clientX - rect.left;
-            const percent = Math.min(Math.max(clickX / rect.width, 0), 1);
-            seek(percent * duration);
-          }}
-        >
-          <div
-            className="bg-blue-600 h-2 rounded"
-            style={{ width: duration ? `${(elapsed / duration) * 100}%` : "0%" }}
-          />
-          <div
-            className="absolute top-1/2 -translate-y-1/2 w-4 h-4 bg-blue-600 rounded-full shadow"
-            style={{ left: duration ? `calc(${(elapsed / duration) * 100}% - 0.5rem)` : "-9999px" }}
-          />
-        </div>
-        <span className="text-xs text-gray-500 w-12">{duration.toFixed(1)}s</span>
-      </div>
+    <div className="p-4 absolute w-full h-full bg-yellow-200">
 
       {/* Canvas render box */}
-      <canvas ref={canvasRef} className="block" />
+      <MasterViewport name="atemporal" needCtrl={true}>
+        <canvas ref={canvasRef} className="block" />
+      </MasterViewport>
+
+      {controls &&
+        <div className="absolute top-4 right-4 w-1/2 flex">
+
+          <div className="flex items-center w-60 gap-4">
+            <span className="text-xs text-gray-500 w-12 text-right">{elapsed.toFixed(1)}s</span>
+            <div
+              className="flex-1 bg-gray-300 h-2 rounded cursor-pointer relative"
+              onClick={(e) => {
+                if (!duration) return;
+                const rect = (e.currentTarget as HTMLDivElement).getBoundingClientRect();
+                const clickX = e.clientX - rect.left;
+                const percent = Math.min(Math.max(clickX / rect.width, 0), 1);
+                seek(percent * duration);
+              }}
+            >
+              <div
+                className="bg-blue-600 h-2 rounded"
+                style={{ width: duration ? `${(elapsed / duration) * 100}%` : "0%" }}
+              />
+              <div
+                className="absolute top-1/2 -translate-y-1/2 w-4 h-4 bg-blue-600 rounded-full shadow"
+                style={{ left: duration ? `calc(${(elapsed / duration) * 100}% - 0.5rem)` : "-9999px" }}
+              />
+            </div>
+            <span className="text-xs text-gray-500 w-12">{duration.toFixed(1)}s</span>
+          </div>
+
+          <button
+            onClick={togglePlay}
+            className="justify-end px-4 py-2 w-20 bg-blue-600 text-white rounded hover:bg-blue-700"
+          >
+            {playing ? "Pause" : "Play"}
+          </button>
+
+        </div>}
+
     </div>
   );
 }

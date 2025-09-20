@@ -5,6 +5,7 @@ import { useMeasure } from "react-use";
 interface IMasterViewport {
     children: React.ReactNode;
     name: string;
+    needCtrl?: boolean
 }
 
 interface Pointer {
@@ -49,7 +50,7 @@ function getNamedFromLocal(name: string): Edges {
     return defaultEdges;
 }
 
-export function MasterViewport({ children, name }: IMasterViewport) {
+export function MasterViewport({ children, name, needCtrl=false }: IMasterViewport) {
     const [panelMoving, setPanelMoving] = useState(false);
     const [pointer, setPointer] = useState<Pointer | null>(null);
     const [edges, setEdges] = useState<Edges>(getNamedFromLocal(name));
@@ -151,6 +152,8 @@ export function MasterViewport({ children, name }: IMasterViewport) {
                 ref={masterRef}
                 className={clsx("h-full w-full overflow-hidden relative z-0")}
                 onMouseDown={(e) => {
+                     if (e.button !== 0) return;
+                     if (needCtrl && !e.ctrlKey) return;
                     setPanelMoving(true);
                     doPanelMove(e);
                 }}

@@ -81,7 +81,10 @@ export default function LiveText({ popupState }: { popupState: PopupState }) {
 
       <div className="flex gap-4">
         <button className="text-blue-600 cursor-pointer self-start" onClick={() => openPopup('livetext')}>
-          [pop]
+          [p1]
+        </button>
+        <button className="text-blue-600 cursor-pointer self-start" onClick={() => openPopup('atemporal')}>
+          [p2]
         </button>
         <button
           className="text-blue-400 cursor-pointer self-start"
