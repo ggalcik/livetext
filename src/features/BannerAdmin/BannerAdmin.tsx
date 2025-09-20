@@ -1,7 +1,7 @@
 // import clsx from "clsx";
 import { backgroundOptions, type BackgroundType, type PopupState } from "../../context/LiveData/types";
 import TopOpts from "../../TopOpts";
-import LiveTextOpts from "../LiveDisplay/LiveTextOpts";
+import BannerOpts from "./BannerOpts";
 import SpotsOpts from "../Spots/SpotsOpts";
 import BannersEdit from "./BannersEdit";
 import { useLiveData } from "../../context/LiveData";
@@ -17,7 +17,7 @@ export default function BannerAdmin({ popupState }: { popupState: PopupState }) 
         <div className=" grid h-[100vh] grid-cols-1 md:grid-cols-2 grid-rows-[10vh_10vh_auto] gap-4 p-4">
             <TopOpts />
             <div className="h-32">
-                <LiveTextOpts popupState={{ visiblePopup, setVisiblePopup }} />
+                <BannerOpts popupState={{ visiblePopup, setVisiblePopup }} />
             </div>
             <div className="">
                 <SpotsOpts popupState={{ visiblePopup, setVisiblePopup }} />

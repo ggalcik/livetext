@@ -1,9 +1,10 @@
 import { useLiveData } from "../../context/LiveData";
-import type { PopupState , BannerType} from "../../context/LiveData/types";
+import type { PopupState, BannerType } from "../../context/LiveData/types";
 import clsx from "clsx";
 import ItemControls from "./ItemControls";
 import { useState } from "react";
 import { Button } from "../../components/Button";
+import { AutoResizeTextarea } from "../../components/AutoResizeTextarea";
 
 interface IBannersEdit {
   popupState: PopupState;
@@ -12,7 +13,7 @@ interface IBannersEdit {
 export default function BannersEdit({ popupState, type }: IBannersEdit) {
   const { state, dispatch } = useLiveData();
   // const { visiblePopup, setVisiblePopup } = popupState;
-  const [ isInTextarea, setIsInTextArea] = useState<number | null>(null);
+  const [isInTextarea, setIsInTextArea] = useState<number | null>(null);
 
   const banners = type === 'rotating' ? state.banners : state.spots;
 
@@ -26,29 +27,40 @@ export default function BannersEdit({ popupState, type }: IBannersEdit) {
       </Button>
 
       {banners.length > 0 &&
-        banners.map((item, idx) => (
-          <div key={`bannerForm_${idx}`} className={clsx("p-2 mb-2 border-b",
-            { "bg-gray-200": item.type === 'rotating' && !item.on })}>
-            <div className="">
+        banners.map((item, idx) => {
+          const isActive = !(item.type === "rotating" && !item.on);
+          return  (
+          <div
+            key={`bannerForm_${idx}`}
+            className={clsx(
+              "p-2 mb-4 border rounded-xl", 
+              isActive
+                ? "border-green-400 bg-green-100"
+                : "border-gray-200 bg-gray-200"
+            )}
+          >
+          
 
-              <ItemControls item={item} idx={idx} popupState={popupState} />
+              <ItemControls item={item} idx={idx} popupState={popupState} isActive={isActive} />
 
-              <textarea
-                className={clsx("border p-2 w-full",
-                  isInTextarea === idx ? "h-30" : "h-8"
-                )}
-                rows={4}
-                onChange={(evt) =>
-                  dispatch({ type: "banner/change", payload: { type, idx, text: evt.target.value } })
-                }
+              <AutoResizeTextarea
+                className="border p-2 w-full overflow-hidden bg-white"
+                value={item.text}
                 onFocus={() => setIsInTextArea(idx)}
                 onBlur={() => setIsInTextArea(null)}
-                value={item.text}
-              ></textarea>
+                onChange={(evt) =>
+                  dispatch({
+                    type: "banner/change",
+                    payload: { type: item.type, idx, text: evt.target.value },
+                  })
+                }
+              />
 
-            </div>
+         
           </div>
-        ))}
+        )}
+        
+        )}
     </div>
   );
 }

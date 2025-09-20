@@ -11,10 +11,11 @@ interface IItemControls {
     item: Banner;
     idx: number;
     popupState: PopupState;
+    isActive?: boolean;
 }
 
 
-export default function ItemControls({ item, idx, popupState }: IItemControls) {
+export default function ItemControls({ item, idx, popupState, isActive = true }: IItemControls) {
     const { visiblePopup, setVisiblePopup } = popupState;
     const { state, dispatch } = useLiveData();
     const [confirmDelete, setConfirmDelete] = useState(false);
@@ -37,7 +38,7 @@ export default function ItemControls({ item, idx, popupState }: IItemControls) {
                 value={idx}
                 className=" justify-center w-8 h-8"
                 checked={state[activeType] === idx}
-                disabled={item.type === 'rotating' && !item.on}
+                disabled={!isActive}
                 onChange={() => dispatch({ type: "banner/setActive", payload: { type: item.type, idx } })}
             />
             {item.type === 'rotating' &&
@@ -49,7 +50,8 @@ export default function ItemControls({ item, idx, popupState }: IItemControls) {
                         checked={item.on === undefined ? false : item.on}
                         onChange={() => dispatch({ type: "banner/toggleOne", payload: { idx } })}
                     />
-                    <Button variant="b" size="sm" disabled={!item.on}
+                    <Button variant="b" size="sm" disabled={!isActive}
+                    
                         onClick={() => {
                             dispatch({ type: "banner/setActive", payload: { type: 'rotating', idx } });
                             dispatch({ type: "banner/solo" });
