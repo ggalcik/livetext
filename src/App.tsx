@@ -10,6 +10,7 @@ import Popup from "./features/Popup/Popup";
 
 import { version } from '../package.json';
 import ScenesAccordion from "./features/scenes/ScenesAccordion";
+import PopupScene from "./features/Popup/PopupScene";
 
 function App() {
 
@@ -44,7 +45,7 @@ function App() {
             />
           }
         />
-        <Route path="/popup/:name?" element={<Popup />} />
+        <Route path="/popup/:name?" element={<PopupScene />} />
         {/* <Route path="/popup" element={<LiveTextPopup initialState={state} />} /> */}
         <Route path="/fonts" element={<FontReference />}>
 

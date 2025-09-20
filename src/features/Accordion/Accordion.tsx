@@ -1,6 +1,7 @@
 import clsx from "clsx";
 import { useState } from "react";
 import type { SceneType } from "../scenes/types";
+import PopupScene, { openPopup } from "../Popup/PopupScene";
 
 interface IAccordion<T extends string> {
     label: string;
@@ -12,7 +13,13 @@ interface IAccordion<T extends string> {
 
 }
 
-export function Accordion<T extends string>({ label, children, links, selectedLink, setSelectedLink, startOpen = false }: IAccordion<T>) {
+export function Accordion<T extends string>({
+    label,
+    children,
+    links,
+    selectedLink,
+    setSelectedLink,
+    startOpen = false }: IAccordion<T>) {
     const [isOpen, setIsOpen] = useState(startOpen);
 
     function handleSceneClick(evt: React.MouseEvent, scene: T) {
@@ -20,9 +27,16 @@ export function Accordion<T extends string>({ label, children, links, selectedLi
         evt.stopPropagation();
         setSelectedLink && setSelectedLink(scene);
         if (!isOpen) {
-             setIsOpen(true);
+            setIsOpen(true);
         }
     }
+    // TODO: ugh doesn't apply to accordion, but is there a point to generalizing
+    function handleSceneSelect(evt: React.MouseEvent, scene: T) {
+        evt.stopPropagation();
+        openPopup(scene);
+        setSelectedLink && setSelectedLink(scene);
+    }
+
 
     return (
         <div className="">
@@ -34,12 +48,19 @@ export function Accordion<T extends string>({ label, children, links, selectedLi
                 <div className={clsx("p-2 pl-4", label === 'scenes' && 'border-r')}>
                     {label}
                 </div>
-                {links && setSelectedLink && 
+                {links && setSelectedLink &&
                     links.map(item =>
-                        <div className={clsx("p-2 border-r",
+                        <div className={clsx("flex gap-2 px-2 border-r items-center",
                             selectedLink === item && links && isOpen && "bg-green-300",
-                            selectedLink === item && "bg-green-200")}
-                            onClick={(e) => handleSceneClick(e, item)}>{item}</div>
+                            selectedLink === item && "bg-green-200")}>
+                            <input type="radio"
+                                className="w-6 h-6"
+                                name={`accordion_${label}`}
+                                value={item}
+                                onClick={(e) => handleSceneSelect(e, item)} />
+                            <div className=''
+                                onClick={(e) => handleSceneClick(e, item)}>{item}</div>
+                        </div>
                     )
                 }
             </div>
