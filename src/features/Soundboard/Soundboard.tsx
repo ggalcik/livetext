@@ -11,7 +11,7 @@ const soundModules = import.meta.glob("/src/local/soundboard/*.mp3", {
 const soundFiles = Object.keys(soundModules).map((path) => {
     const parts = path.split("/");
     const file = parts[parts.length - 1];
-     return { file, url: (soundModules[path] as string) };
+    return { file, url: (soundModules[path] as string) };
 });
 
 export default function Soundboard() {

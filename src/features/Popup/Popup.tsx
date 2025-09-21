@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import LiveTextPopup from "../scenes/LiveDisplay/LiveTextPopup";
 import glog from "../../components/glog";
 import Atemporal from "../scenes/Atemporal/Atemporal";
+import Video from "../scenes/Video/Video";
 
 
 export function openPopup(which?: string) {
@@ -29,9 +30,11 @@ export default function Popup() {
   }, []);
 
   return (
-    <div className="absolute w-full h-full bg-black">
+    <div className="absolute w-full h-full bg-black text-white">
+        sceneName: {sceneName}
         { sceneName === 'livetext' &&  <LiveTextPopup/>}
         { sceneName === 'atemporal' &&  <Atemporal controls={true}/>}
+        { sceneName === 'video' &&  <div className="text-white">video</div>}
     </div>
   );
 }

@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { useEffect } from "react";
 import LiveTextPopup from "../scenes/LiveDisplay/LiveTextPopup";
 import Atemporal from "../scenes/Atemporal/Atemporal";
+import Video from "../scenes/Video/Video";
 
 
 export function openPopup(which?: string) {
@@ -31,6 +32,7 @@ export default function PopupScene() {
     <div className="absolute w-full h-full bg-black">
         { sceneName === 'banners' &&  <LiveTextPopup/>}
         { sceneName === 'atemporal' &&  <Atemporal controls={true}/>}
+   { sceneName === 'video' &&  <Video/>}
     </div>
   );
 }

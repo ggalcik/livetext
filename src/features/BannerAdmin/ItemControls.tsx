@@ -70,7 +70,7 @@ export default function ItemControls({ item, idx, popupState, isActive = true }:
 
         <div className="flex gap-2">
             <Button
-                onClick={(e) => {
+                onClick={() => {
                     if (visiblePopup === `${item.type}_${idx}`) {
                         setVisiblePopup(null);
                     } else {

@@ -5,7 +5,7 @@ import { SingleWindow } from "./SingleWindow";
 import { Accordion } from "./features/Accordion/Accordion";
 import BannerAdmin from "./features/BannerAdmin/BannerAdmin";
 import FontReference from "./components/FontReference/FontReference";
-import Soundboard from "./components/Soundboard/Soundboard";
+import Soundboard from "./features/Soundboard/Soundboard";
 import Popup from "./features/Popup/Popup";
 
 import { version } from '../package.json';
