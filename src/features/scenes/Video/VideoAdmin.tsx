@@ -13,24 +13,11 @@ const videoFiles = Object.keys(videoModules).map((path) => {
   return { file, url: videoModules[path] as string };
 });
 
-
 const STORAGE_KEY = "videoScene";
 
 export default function VideoSelector() {
-  const [sceneData, setSceneData] = useState<VideoSceneDataType>({
-    preview: null,
-    live: null,
-    opts: {
-      loop: false,
-      autoplay: false,
-    },
-    files: [],
-  });
-  const [muted, setMuted] = useState(false);
-  const videoRef = useRef<HTMLVideoElement>(null);
-
-  // 3) initialize + reconcile with videoFiles
-  useEffect(() => {
+  // initialize + reconcile inside useState
+  const [sceneData, setSceneData] = useState<VideoSceneDataType>(() => {
     let loaded: VideoSceneDataType = {
       preview: null,
       live: null,
@@ -47,15 +34,29 @@ export default function VideoSelector() {
       }
     }
 
-    // Add any missing files
-    const newFiles = videoFiles.map(({ file }) => {
+    // reconcile: keep only existing files, add new ones
+    const reconciledFiles = videoFiles.map(({ file }) => {
       const existing = loaded.files?.find((f) => f.name === file);
       return existing ?? { name: file };
     });
 
-    loaded.files = newFiles;
-    setSceneData(loaded);
-  }, []);
+    // null out preview/live if file is gone
+    const fileNames = reconciledFiles.map((f) => f.name);
+    if (loaded.preview && !fileNames.includes(loaded.preview)) {
+      loaded.preview = null;
+    }
+    if (loaded.live && !fileNames.includes(loaded.live)) {
+      loaded.live = null;
+    }
+
+    return {
+      ...loaded,
+      files: reconciledFiles,
+    };
+  });
+
+  const [muted, setMuted] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
 
   // persist to localStorage whenever sceneData changes
   useEffect(() => {
@@ -92,7 +93,7 @@ export default function VideoSelector() {
     );
   }
 
-  // 5) when preview video loads, jump to start if valid
+  // seek to start value on load
   useEffect(() => {
     const video = videoRef.current;
     if (!video || !sceneData.preview) return;
@@ -109,6 +110,11 @@ export default function VideoSelector() {
         }
       }
     };
+
+    video.addEventListener("loadedmetadata", trySeek);
+    return () => video.removeEventListener("loadedmetadata", trySeek);
+  }, [sceneData.preview, sceneData.files]);
+
     const timeCode = (): string => {
         const video = videoRef.current;
         if (!video || !video.currentTime) return "";
@@ -118,10 +124,6 @@ export default function VideoSelector() {
             .padStart(2, "0");
         return `${min}:${sec}`;
     }
-
-    video.addEventListener("loadedmetadata", trySeek);
-    return () => video.removeEventListener("loadedmetadata", trySeek);
-  }, [sceneData.preview, sceneData.files]);
 
   return (
     <div className="p-4 space-y-4">
@@ -193,6 +195,7 @@ export default function VideoSelector() {
             >
               {muted ? "Unmute" : "Mute"}
             </button>
+
            
           </div>
 

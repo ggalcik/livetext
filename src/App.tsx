@@ -4,13 +4,14 @@ import { useState } from "react";
 import { SingleWindow } from "./SingleWindow";
 import { Accordion } from "./features/Accordion/Accordion";
 import BannerAdmin from "./features/BannerAdmin/BannerAdmin";
-import FontReference from "./components/FontReference/FontReference";
+import FontReference from "./features/FontReference/FontReference";
 import Soundboard from "./features/Soundboard/Soundboard";
 import Popup from "./features/Popup/Popup";
 
 import { version } from '../package.json';
 import ScenesAccordion from "./features/scenes/ScenesAccordion";
 import PopupScene from "./features/Popup/PopupScene";
+import { Data } from "./features/Data/Data";
 
 function App() {
 
@@ -29,6 +30,10 @@ function App() {
                     <div className="absolute top-4 right-4 border bg-white px-2">{version}</div>
                     <Accordion label="fonts">
                       <FontReference />
+                    </Accordion>
+
+                    <Accordion label="data">
+                      <Data />
                     </Accordion>
 
                     <Accordion label="sounds">

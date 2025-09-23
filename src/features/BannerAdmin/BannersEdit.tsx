@@ -31,7 +31,7 @@ export default function BannersEdit({ popupState, type }: IBannersEdit) {
           const isActive = !(item.type === "rotating" && !item.on);
           return  (
           <div
-            key={`bannerForm_${idx}`}
+            key={`bannerForm_${item.id}`}
             className={clsx(
               "p-2 mb-4 border rounded-xl", 
               isActive

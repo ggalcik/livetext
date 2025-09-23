@@ -98,6 +98,7 @@ export function liveDataReducer(state: LiveDataState, action: LiveDataAction): L
     // }
     case "banner/add": {
       const bannersKey = action.payload.type === 'rotating' ? 'banners' : 'spots';
+      const activeKey = action.payload.type === 'rotating' ? 'activeBanner' : 'activeSpot';
       const activeBanner = (bannersKey === 'banners' ? state.activeBanner : state.activeSpot) ?? 0;
 
       const addAtIdx = action.payload.idx;
@@ -110,7 +111,7 @@ export function liveDataReducer(state: LiveDataState, action: LiveDataAction): L
       return {
         ...state,
         [bannersKey]: newBanners,
-        activeBanner,
+        [activeKey]: activeBanner,
       };
     }
     case "banner/change": {

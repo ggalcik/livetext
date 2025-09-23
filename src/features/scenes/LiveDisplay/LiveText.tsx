@@ -11,6 +11,7 @@ import { MasterViewport } from "../../../components/MasterViewport/MasterViewpor
 import "./ItemTransitions.css";
 import { useEffect, useRef } from "react";
 import glog from "../../../components/glog";
+import { ItemTransition } from "./ItemTransition";
 
 
 export default function LiveText({ state }: { state: LiveDataState }) {
@@ -36,59 +37,36 @@ export default function LiveText({ state }: { state: LiveDataState }) {
 
   const showSpot = activeSpotIndex !== NO_ACTIVE_SPOT && state.displaySpots;
 
-  useEffect(() => {}, [state]);
+  useEffect(() => { }, [state]);
 
   return (
     <MasterViewport name="livetext">
       <Background which={state.backgroundImage} />
 
-      {/* Banners */}
       <TransitionGroup component={null}>
-        {state.banners.map((banner, i) => {
-          const nodeRef = useRef(null);
-          return showBanner && activeBannerIndex === i ? (
-            <CSSTransition
-              key={`banner-${i}`}
-              timeout={500}
-              classNames='rotating'
-              nodeRef={nodeRef}
-              unmountOnExit
-            >
-              <ItemDisplay
-                ref={nodeRef}
-                bannerType="rotating"
-                banner={banner}
-                defaultCSS={defaultBannerCSS}
-                initialCSS={initialLiveDataState.defaultBannerCSS}
-              />
-            </CSSTransition>
-          ) : null;
-        })}
+        {state.banners.map((banner, i) => (
+          <ItemTransition
+            key={`banner-${banner.id}-${banner.type}`}
+            kind="rotating"
+            item={banner}
+            isActive={showBanner && state.activeBanner === i}
+            defaultCSS={defaultBannerCSS}
+          />
+        ))}
       </TransitionGroup>
 
-      {/* Spots */}
       <TransitionGroup component={null}>
-        {state.spots.map((spot, i) => {
-          const nodeRef = useRef(null);
-          return showSpot && activeSpotIndex === i ? (
-            <CSSTransition
-              key={`spot-${i}`}
-              timeout={300}
-              classNames="spot"
-              nodeRef={nodeRef}
-              unmountOnExit
-            >
-              <ItemDisplay
-                ref={nodeRef}
-                bannerType="spot"
-                banner={spot}
-                defaultCSS={defaultSpotCSS}
-                initialCSS={initialLiveDataState.defaultSpotCSS}
-              />
-            </CSSTransition>
-          ) : null
-        })}
+        {state.spots.map((spot, i) => (
+          <ItemTransition
+            key={`spot-${i}`}
+            kind="spot"
+            item={spot}
+            isActive={showSpot && state.activeSpot === i}
+            defaultCSS={defaultSpotCSS}
+          />
+        ))}
       </TransitionGroup>
+
 
       {/* Progress indicators */}
       {showBanner && (

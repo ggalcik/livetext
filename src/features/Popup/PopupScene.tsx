@@ -4,6 +4,8 @@ import { useEffect } from "react";
 import LiveTextPopup from "../scenes/LiveDisplay/LiveTextPopup";
 import Atemporal from "../scenes/Atemporal/Atemporal";
 import Video from "../scenes/Video/Video";
+import Evolution from "../scenes/Evolution/Evolution";
+import type { SceneType } from "../scenes/types";
 
 
 export function openPopup(which?: string) {
@@ -20,7 +22,7 @@ export function openPopup(which?: string) {
 };
 
 export default function PopupScene() {
-  const { name } = useParams<{ name?: string }>();
+  const { name } = useParams<{ name?: SceneType }>();
   const sceneName = name ?? "livetext"
 
   useEffect(() => {
@@ -30,9 +32,10 @@ export default function PopupScene() {
 
   return (
     <div className="absolute w-full h-full bg-black">
-        { sceneName === 'banners' &&  <LiveTextPopup/>}
-        { sceneName === 'atemporal' &&  <Atemporal controls={true}/>}
-   { sceneName === 'video' &&  <Video/>}
+      {sceneName === 'banners' && <LiveTextPopup />}
+      {sceneName === 'atemporal' && <Atemporal controls={true} />}
+      {sceneName === 'video' && <Video />}
+      {sceneName === 'evolution' && <Evolution />}
     </div>
   );
 }
