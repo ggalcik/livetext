@@ -6,6 +6,7 @@ import Atemporal from "../scenes/Atemporal/Atemporal";
 import Video from "../scenes/Video/Video";
 import Evolution from "../scenes/Evolution/Evolution";
 import type { SceneType } from "../scenes/types";
+import Counter from "../scenes/Counter/Counter";
 
 
 export function openPopup(which?: string) {
@@ -36,6 +37,7 @@ export default function PopupScene() {
       {sceneName === 'atemporal' && <Atemporal controls={true} />}
       {sceneName === 'video' && <Video />}
       {sceneName === 'evolution' && <Evolution />}
+      {sceneName === 'counter' && <Counter />}
     </div>
   );
 }

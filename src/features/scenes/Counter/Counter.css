@@ -1,0 +1,15 @@
+@import "tailwindcss";
+
+@theme {
+    --animate-tada: tada 0.5s ease-in-out;
+    @keyframes tada {
+        0% {
+        transform: scale(1); color: black;
+        }
+        5% {
+        transform: scale(2); color: red;
+        }        100% {
+        transform: scale(1); color: black;
+        }
+    }
+}

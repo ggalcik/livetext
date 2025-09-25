@@ -80,12 +80,12 @@ export default function LiveText({ popupState }: { popupState: PopupState }) {
       </div>
 
       <div className="flex gap-4">
-        <button className="text-blue-600 cursor-pointer self-start" onClick={() => openPopup('livetext')}>
+        {/* <button className="text-blue-600 cursor-pointer self-start" onClick={() => openPopup('livetext')}>
           [p1]
         </button>
         <button className="text-blue-600 cursor-pointer self-start" onClick={() => openPopup('atemporal')}>
           [p2]
-        </button>
+        </button> */}
         <button
           className="text-blue-400 cursor-pointer self-start"
           onClick={() => {
@@ -108,12 +108,12 @@ export default function LiveText({ popupState }: { popupState: PopupState }) {
           </div>
         )}
 
-        <button
+        {/* <button
           className="text-blue-400 cursor-pointer self-start"
           onClick={() => setShowRawState((p) => !p)}
         >
           [raw state]
-        </button>
+        </button> */}
 
         {showRawState && (
           <div className="flex flex-col bg-white drop-shadow-2xl p-2 ">

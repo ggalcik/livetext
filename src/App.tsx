@@ -11,7 +11,7 @@ import Popup from "./features/Popup/Popup";
 import { version } from '../package.json';
 import ScenesAccordion from "./features/scenes/ScenesAccordion";
 import PopupScene from "./features/Popup/PopupScene";
-import { Data } from "./features/Data/Data";
+import Data from "./features/Data/Data";
 
 function App() {
 
