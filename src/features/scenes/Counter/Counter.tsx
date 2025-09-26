@@ -47,22 +47,25 @@ export default function Counter() {
         <div className="absolute w-full h-full bg-amber-900">
 
             <MasterViewport name="counter">
-                <>
+                <div className="absolute w-full h-full">
+
                     <div className={`absolute w-200 h-200 -left-30 top-0 bg-cover`}
                         style={{ backgroundImage: `url(${notebook})` }}>
 
                     </div>
 
                     <div className="p-4 relative">
-                        <div className="text-lg text-white text-center">The Same Old Same Old counters for</div>
-                        <div className="text-lg font-bold mb-4 text-white text-center">{dateStr()} A.D.</div>
-                        <div className="grid gap-2">
+                        <div className="absolute ">
+                            <div className="text-lg font-[Ink_Free] -rotate-6 mt-4 text-black ">The Same Old Same Old counters for</div>
+                            <div className="text-lg font-[Ink_Free] -rotate-4  font-bold -mt-4 ml-60 text-black ">{dateStr()} A.D.</div>
+                        </div>
+                        <div className="grid gap-2 text-blue-800 mt-20">
                             {activeCounters.map((c) => (
                                 <CounterRow key={c.id} counter={c} playSound={playSound} />
                             ))}
                         </div>
                     </div>
-                </>
+                </div>
             </MasterViewport>
         </div>
     );
@@ -93,7 +96,7 @@ function CounterRow({ counter, playSound }: ICounterRow) {
 
     return (
         <div
-            className={`flex w-100 text-3xl font-[Gabriola] font-bold leading-[34px] justify-between p-2 gap-4 `}
+            className={`flex w-100 text-4xl font-[Gabriola] font-bold leading-[34px] justify-between p-2 gap-4 `}
             onAnimationEnd={() => setAnimating(false)}
         >
             <span

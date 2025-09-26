@@ -4,12 +4,12 @@
     --animate-tada: tada 0.5s ease-in-out;
     @keyframes tada {
         0% {
-        transform: scale(1); color: black;
+        transform: scale(1); color: #193cb8;
         }
-        5% {
-        transform: scale(2); color: red;
+        20% {
+        transform: scale(3); color: red;
         }        100% {
-        transform: scale(1); color: black;
+        transform: scale(1); color: #193cb8;
         }
     }
 }
