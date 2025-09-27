@@ -5,7 +5,8 @@ import { useMeasure } from "react-use";
 interface IMasterViewport {
     children: React.ReactNode;
     name: string;
-    needCtrl?: boolean
+    needCtrl?: boolean;
+    noResize?: boolean;
 }
 
 interface Pointer {
@@ -50,7 +51,7 @@ function getNamedFromLocal(name: string): Edges {
     return defaultEdges;
 }
 
-export function MasterViewport({ children, name, needCtrl=false }: IMasterViewport) {
+export function MasterViewport({ children, name, needCtrl=false, noResize=false }: IMasterViewport) {
     const [panelMoving, setPanelMoving] = useState(false);
     const [pointer, setPointer] = useState<Pointer | null>(null);
     const [edges, setEdges] = useState<Edges>(getNamedFromLocal(name));
@@ -112,7 +113,9 @@ export function MasterViewport({ children, name, needCtrl=false }: IMasterViewpo
 
         let newMovingWhich = movingWhich;
 
-        if (!movingWhich) {
+        if (noResize) {
+            newMovingWhich = 'box';
+        } else if (!movingWhich) {
             if (Math.min(fromTop, fromBottom, fromLeft, fromRight) > EDGE_RANGE)
                 newMovingWhich = 'box';
             else
@@ -174,6 +177,7 @@ export function MasterViewport({ children, name, needCtrl=false }: IMasterViewpo
                     }}
                     className={clsx("flex items-center justify-center absolute w-full h-full")}
                 >
+                    {children}
                     <div
                         className={clsx(
                             "absolute z-0 w-full h-full border-2 border-dashed border-red-300",
@@ -185,7 +189,6 @@ export function MasterViewport({ children, name, needCtrl=false }: IMasterViewpo
                         <div className="w-2 h-2 bottom-0 left-0 absolute bg-red-400"></div>
                         <div className="w-2 h-2 bottom-0 right-0 absolute bg-red-400"></div>
                     </div>
-                    {children}
                 </div>
             </div>
 

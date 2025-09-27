@@ -1,7 +1,7 @@
 import { useState } from "react";
 import type { Counter } from "./types";
 
-export default function CounterRow({
+export default function CounterAdminRow({
   counter,
   onUpdate,
   onDelete,

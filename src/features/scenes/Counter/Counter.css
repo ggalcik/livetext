@@ -12,4 +12,39 @@
         transform: scale(1); color: #193cb8;
         }
     }
+
+    --animate-tada-color: tada-color 0.5s ease-in-out;
+    @keyframes tada-color {
+        0% {
+         color: #193cb8;
+        }
+        20% {
+         color: red;
+        }        
+        100% {
+         color: #193cb8;
+        }
+    }
+
+    --animate-burst: burst 0.5s ease-out forwards ;
+    @keyframes burst {
+        0% {
+            transform:  rotate(-4deg) scale(1.8);  
+            opacity: 1; 
+        }        
+        20% {
+            transform:  rotate(4deg) scale(2.1) ;  
+            opacity: 0.8; 
+        }
+        100% {
+            transform:  rotate(40deg) scale(3) ;  
+            opacity: 0; 
+        }
+    }
+}
+
+.counter-triangle {
+  @apply absolute left-1/2 top-1/2 -ml-1 -mt-2 w-0 h-0
+    border-l-[6px] border-r-[6px] border-b-[12px] border-transparent
+    border-b-red-500;
 }
