@@ -40,7 +40,12 @@ export default function Counter() {
 
     const activeCounters = scene.counters.filter((c) => c.show);
 
-
+// TODO: display history banners
+    //     const showingHistory = !!(scene.showDate && scene.history && scene.history[scene.showDate].length > 0);
+    // const showingDate = scene.showDate || format(new Date(), 'yyyyMMdd');
+    // const countersToShow = showingHistory && scene.showDate && scene.history
+    //     ? scene.history[scene.showDate]
+    //     : scene.counters.filter((c) => c.show);
 
 
     return (
@@ -78,7 +83,6 @@ interface ICounterRow {
 
 function CounterRow({ counter, playSound }: ICounterRow) {
     const [animating, setAnimating] = useState(false);
-    const [burstAnim, setBurstAnim] = useState(false);
     const prevIncrement = useRef<number | null>(null);
 
     useEffect(() => {

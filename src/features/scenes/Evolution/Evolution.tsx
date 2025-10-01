@@ -5,6 +5,8 @@ const STEPS = 256;
 
 export default function Evolution() {
     const [value, setValue] = useState(1);
+    const [showPanelNumber, setShowPanelNumber] = useState(true);
+    const [showCodeNumber, setShowCodeNumber] = useState(true);
     const thisColor = value === 1 ? 'red' :
         (value === STEPS ? 'blue' : '');
 
@@ -32,17 +34,19 @@ export default function Evolution() {
                         style={{ backgroundColor: hexColor }}
                         className="absolute aspect-square w-full max-w-full  font-[OCR_A]"
                     >
-                        <div className="absolute text-white w-full -top-20 text-center text-[50px] ">
+                        <div className={`absolute ${showPanelNumber?'text-white':'text-black'} w-full -top-20 text-center text-[50px] cursor-pointer`}>
                             #{value}
                         </div>
                         {thisColor != '' &&
-                        <div className="absolute text-white w-full top-30 text-center text-[50px] ">
-                            {thisColor}
-                        </div>
-}
+                            <div className="absolute text-white w-full top-30 text-center text-[50px] ">
+                                {thisColor}
+                            </div>
+                        }
+                        { showCodeNumber &&
                         <div className="absolute text-3xl text-white w-full top-4 text-center  ">
                             {hexColor}
                         </div>
+}
                     </div>
                 </div>
 
@@ -52,24 +56,39 @@ export default function Evolution() {
             <div className="absolute top-4 right-4 w-1/2  text-white">
                 {/* 1) Slider */}
                 <input
-                className="w-full"
+                    className="w-full"
                     type="range"
                     min={1}
                     max={256}
                     value={value}
                     onChange={handleChange}
                 />
+                <div className="flex text-white justify-between ">
+<div className="flex gap-2">
 
-                {/* 2) Back/forward buttons */}
-                <div className="flex gap-2 justify-end">
-                    <button onClick={handleBack} className="px-2 py-1 border rounded">
-                        Back
-                    </button>
-                    <button onClick={handleForward} className="px-2 py-1 border rounded">
-                        Forward
-                    </button>
+                    <div 
+                        className={`px-2 py-1 border rounded ${showPanelNumber && 'bg-blue-700'} cursor-pointer`}
+                        onClick={() => setShowPanelNumber(p => !p)}>
+                        number
+                    </div>
+                    <div 
+                        className={`px-2 py-1 border rounded ${showCodeNumber && 'bg-blue-700'} cursor-pointer`}
+                        onClick={() => setShowCodeNumber(p => !p)}>
+                        code
+                    </div>
+                            </div>
+
+                    {/* 2) Back/forward buttons */}
+                    <div className="flex gap-2 justify-end">
+                        <button onClick={handleBack} className="px-2 py-1 border rounded">
+                            Back
+                        </button>
+                        <button onClick={handleForward} className="px-2 py-1 border rounded">
+                            Forward
+                        </button>
+                    </div>
+
                 </div>
-
                 {/* <div>Current value: {value}</div>
 
                 <div>{value === 1 && "red"}</div>

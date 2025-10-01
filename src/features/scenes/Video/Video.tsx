@@ -1,10 +1,22 @@
 import { useEffect, useRef, useState } from "react";
 import { MasterViewport } from "../../../components/MasterViewport/MasterViewport";
 import type { VideoSceneDataType } from "./types";
-
+import noVideo from "../../../assets/media-player-svgrepo-com.png";
 
 
 const STORAGE_KEY = "videoScene";
+
+const NoVideo = () => {
+    return (
+        <MasterViewport name="video" needCtrl={true}>
+            <div className="absolute w-full h-full bg-center bg-no-repeat scale-50"
+            style={{ backgroundImage: `url(${noVideo})` }}>
+
+            </div>
+        </MasterViewport>
+    )
+
+}
 
 export default function LiveVideoPlayer() {
     const [sceneData, setSceneData] = useState<VideoSceneDataType | null>(null);
@@ -45,30 +57,30 @@ export default function LiveVideoPlayer() {
         return () => video.removeEventListener("timeupdate", update);
     }, [sceneData?.live]);
 
-      // Jump to file start time if provided
-  useEffect(() => {
-    const video = videoRef.current;
-    if (!video || !sceneData?.live) return;
+    // Jump to file start time if provided
+    useEffect(() => {
+        const video = videoRef.current;
+        if (!video || !sceneData?.live) return;
 
-    const fileMeta = sceneData.files.find((f) => f.name === sceneData.live);
-    if (!fileMeta?.start) return;
+        const fileMeta = sceneData.files.find((f) => f.name === sceneData.live);
+        if (!fileMeta?.start) return;
 
-    const trySeek = () => {
-      const parts = fileMeta.start!.split(":").map(Number);
-      if (parts.length === 2) {
-        const seconds = parts[0] * 60 + parts[1];
-        if (!isNaN(seconds) && video.duration > seconds) {
-          video.currentTime = seconds;
-        }
-      }
-    };
+        const trySeek = () => {
+            const parts = fileMeta.start!.split(":").map(Number);
+            if (parts.length === 2) {
+                const seconds = parts[0] * 60 + parts[1];
+                if (!isNaN(seconds) && video.duration > seconds) {
+                    video.currentTime = seconds;
+                }
+            }
+        };
 
-    video.addEventListener("loadedmetadata", trySeek);
-    return () => video.removeEventListener("loadedmetadata", trySeek);
-  }, [sceneData?.live, sceneData?.files]);
+        video.addEventListener("loadedmetadata", trySeek);
+        return () => video.removeEventListener("loadedmetadata", trySeek);
+    }, [sceneData?.live, sceneData?.files]);
 
 
-    if (!sceneData?.live) return null;
+    if (!sceneData?.live) return <NoVideo/>;
 
     const videoUrl = `/src/local/video/${sceneData.live}`; // adjust to your file import scheme
 
@@ -113,6 +125,8 @@ export default function LiveVideoPlayer() {
                     ref={videoRef}
                     src={videoUrl}
                     loop={sceneData.opts.loop}
+                    autoPlay={sceneData.opts.autoplay}
+
                     className="max-w-full border max-h-full"
                 />
             </MasterViewport>

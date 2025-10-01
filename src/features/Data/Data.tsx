@@ -33,7 +33,7 @@ export default function Data() {
         if (!raw) return `// no data for ${key}\n`;
         try {
             const parsed = JSON.parse(raw);
-            return `data.${key} = ${JSON.stringify(parsed, null, 2)};\n`;
+            return `workingData.${key} = ${JSON.stringify(parsed, null, 2)};\n`;
         } catch {
             return `// invalid JSON in ${key}\n`;
         }
