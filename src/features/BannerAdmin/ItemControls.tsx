@@ -5,17 +5,20 @@ import { useLiveData } from "../../context/LiveData";
 import { useState } from "react";
 import clsx from "clsx";
 import { Button } from "../../components/Button";
+import glog from "../../components/glog";
 
 
 interface IItemControls {
     item: Banner;
     idx: number;
+    total: number;
     popupState: PopupState;
     isActive?: boolean;
+    moveAnim: (dir: string) => void
 }
 
 
-export default function ItemControls({ item, idx, popupState, isActive = true }: IItemControls) {
+export default function ItemControls({ item, idx, total, popupState, isActive = true, moveAnim }: IItemControls) {
     const { visiblePopup, setVisiblePopup } = popupState;
     const { state, dispatch } = useLiveData();
     const [confirmDelete, setConfirmDelete] = useState(false);
@@ -66,6 +69,15 @@ export default function ItemControls({ item, idx, popupState, isActive = true }:
                         dispatch({ type: "spot/solo" });
                     }}>S</Button>
             }
+
+             <Button variant="b" size="sm" disabled={idx===0} 
+                    onClick={() => {glog('up');moveAnim('up');
+                        dispatch({ type: "banner/move", payload: { type: item.type, dir: -1, idx } });
+                    }}>🡡</Button>
+             <Button variant="b" size="sm"  disabled={idx===total-1} 
+                    onClick={() => {glog('down');moveAnim('down');
+                        dispatch({ type: "banner/move", payload: { type: item.type, dir: 1, idx } });
+                    }}>🡣</Button>
         </div>
 
         <div className="flex gap-2">

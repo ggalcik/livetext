@@ -5,6 +5,7 @@ import ItemControls from "./ItemControls";
 import { useState } from "react";
 import { Button } from "../../components/Button";
 import { AutoResizeTextarea } from "../../components/AutoResizeTextarea";
+import './BannersEdit.css';
 
 interface IBannersEdit {
   popupState: PopupState;
@@ -14,6 +15,7 @@ export default function BannersEdit({ popupState, type }: IBannersEdit) {
   const { state, dispatch } = useLiveData();
   // const { visiblePopup, setVisiblePopup } = popupState;
   const [isInTextarea, setIsInTextArea] = useState<number | null>(null);
+  const [moveAnim, setMoveAnim] = useState<[string, string] | null>(null);
 
   const banners = type === 'rotating' ? state.banners : state.spots;
 
@@ -29,19 +31,30 @@ export default function BannersEdit({ popupState, type }: IBannersEdit) {
       {banners.length > 0 &&
         banners.map((item, idx) => {
           const isActive = !(item.type === "rotating" && !item.on);
-          return  (
-          <div
-            key={`bannerForm_${item.id}`}
-            className={clsx(
-              "p-2 mb-4 border rounded-xl", 
-              isActive
-                ? "border-green-400 bg-green-100"
-                : "border-gray-200 bg-gray-200"
-            )}
-          >
-          
+          const isAnimating = moveAnim && moveAnim[0] === item.id;
 
-              <ItemControls item={item} idx={idx} popupState={popupState} isActive={isActive} />
+          return (
+            <div
+              key={`bannerForm_${item.id}`}
+              onAnimationEnd={() => isAnimating && setMoveAnim(null)}
+              className={clsx(
+                "p-2 mb-4 border rounded-xl transition duration-500",
+                isActive
+                  ? "border-green-400 bg-green-100"
+                  : "border-gray-200 bg-gray-200",
+                isAnimating && moveAnim[1] === 'up' && `animate-banner-move-up`,
+                isAnimating && moveAnim[1] === 'down' &&  `animate-banner-move-down`
+              )}
+            >
+
+
+              <ItemControls
+                item={item}
+                idx={idx}
+                total={banners.length}
+                popupState={popupState}
+                isActive={isActive}
+                moveAnim={(dir) => setMoveAnim([item.id, dir])} />
 
               <AutoResizeTextarea
                 className="border p-2 w-full overflow-hidden bg-white"
@@ -56,10 +69,11 @@ export default function BannersEdit({ popupState, type }: IBannersEdit) {
                 }
               />
 
-         
-          </div>
-        )}
-        
+
+            </div>
+          )
+        }
+
         )}
     </div>
   );

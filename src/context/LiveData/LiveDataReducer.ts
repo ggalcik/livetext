@@ -161,6 +161,39 @@ export function liveDataReducer(state: LiveDataState, action: LiveDataAction): L
         activeBanner: nextActive,
       };
     }
+    case "banner/move": {
+      const { type, dir, idx } = action.payload;
+      const key = type === "rotating" ? "banners" : "spots";
+      const activeKey = type === "rotating" ? "activeBanner" : "activeSpot";
+      const items = [...state[key]];
+      
+      const newIdx = idx + dir;
+      glog("idx, newIdx, key, activeKey", idx, newIdx, key, activeKey);
+
+      // Guard: if out of range, no change
+      if (newIdx < 0 || newIdx >= items.length) {
+        return state;
+      }
+
+      // Swap the elements
+      const [moved] = items.splice(idx, 1);
+      items.splice(newIdx, 0, moved);
+
+      let newActive = state[activeKey];
+
+
+      if (state[activeKey] === idx) {
+        newActive = newIdx;
+      } else if (state[activeKey] === newIdx) {
+        newActive = idx;
+      }
+
+      return {
+        ...state,
+        [key]: items,
+        [activeKey]: newActive,
+      };
+    }
     case "banner/toggle":
       return {
         ...state,

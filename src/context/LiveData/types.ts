@@ -195,6 +195,7 @@ export type LiveDataAction =
   | { type: "banner/toggle" }
   | { type: "banner/toggleOne"; payload: { idx: number } }
   | { type: "banner/solo" }
+  | { type: "banner/move"; payload: { type: BannerType; dir: number; idx: number } }
   | { type: "spot/add" }
   | { type: "spot/toggle" }
   | { type: "spot/solo" }

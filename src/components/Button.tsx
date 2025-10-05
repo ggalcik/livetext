@@ -4,7 +4,7 @@ import React from 'react';
 
 
 const buttonVariants = cva(
-    ' rounded-lg me-2 mb-2  cursor-pointer',
+    ' rounded-lg mb-2  cursor-pointer',
     {
         variants: {
             variant: {
@@ -19,13 +19,18 @@ const buttonVariants = cva(
             },
             mode: {
                 normal: '',
-                activated: 'ring-4'
-            }
+                activated: 'ring-4',
+            },
+            disabled: {
+                true: 'opacity-50 cursor-not-allowed pointer-events-none',
+                false: '',
+            },
         },
         defaultVariants: {
             variant: 'a',
             size: 'med',
             mode: 'normal',
+            disabled: false,
         },
         compoundVariants: [
             {
@@ -38,18 +43,36 @@ const buttonVariants = cva(
 );
 
 
-interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement>, VariantProps<typeof buttonVariants> { }
+type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> &
+  VariantProps<typeof buttonVariants>;
 
 export const Button: React.FC<ButtonProps> = React.forwardRef<HTMLButtonElement, ButtonProps>(
-    ({ variant, size, mode, className, children, ...rest }, ref) => (
+    ({ variant, size, mode, disabled, className, children, ...rest }, ref) => (
         <button
-            className={`${twMerge(buttonVariants({ variant, size, mode }))} ${className ?? ''}`}
             ref={ref}
+            disabled={disabled}
+            className={`${twMerge(buttonVariants({ variant, size, mode, disabled }))} ${className ?? ''}`}
             {...rest}
         >
             {children}
         </button>
     )
 );
+// interface ButtonProps extends
+//     React.ButtonHTMLAttributes<HTMLButtonElement>,
+//     VariantProps<typeof buttonVariants> { }
+
+// export const Button: React.FC<ButtonProps> = React.forwardRef<HTMLButtonElement, ButtonProps>(
+//     ({ variant, size, mode, disabled, className, children, ...rest }, ref) => (
+//         <button
+//             ref={ref}
+//             disabled={disabled}
+//             className={`${twMerge(buttonVariants({ variant, size, mode }))} ${className ?? ''}`}
+//             {...rest}
+//         >
+//             {children}
+//         </button>
+//     )
+// );
 
 Button.displayName = 'Button';

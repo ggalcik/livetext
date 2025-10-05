@@ -1,4 +1,4 @@
-{
+ {
   "backgroundOn": true,
   "backgroundImage": "Angry",
   "banners": [
@@ -18,6 +18,17 @@
       "on": true
     },
     {
+      "id": "552duy9zmpjesk5xhtgok",
+      "text": "When did Jesus give his followers the power to read minds?",
+      "bannerCSS": {
+        "font": "50px/1.3 Eras",
+        "backgroundColor": "#004",
+        "onBox": true
+      },
+      "type": "rotating",
+      "on": true
+    },
+    {
       "id": "sjdqh5awxl",
       "text": "Evolution has written on our hearts that there is no afterlife",
       "bannerCSS": {
@@ -28,7 +39,7 @@
         "textShadow": "2px 2px black"
       },
       "type": "rotating",
-      "on": true
+      "on": false
     },
     {
       "id": "qrn3yw970d",
@@ -83,8 +94,11 @@
     },
     {
       "id": "z8pu0pnk2bql1x5d2xrk",
-      "text": "",
-      "bannerCSS": {},
+      "text": "Maybe Jesus existed? I don't know and it's irrelevant anyway",
+      "bannerCSS": {
+        "font": "60px/1.3 Impact",
+        "backgroundColor": "#222"
+      },
       "type": "rotating",
       "on": false
     }
@@ -98,55 +112,31 @@
     "onBox": false,
     "textShadow": "4px 4px black"
   },
-  "displayBanners": true,
-  "activeBanner": 0,
+  "displayBanners": false,
+  "activeBanner": 5,
   "spots": [
     {
-      "id": "07zi0x90bi",
-      "text": "[[d]]\n-------------\n\"Agnostic Atheist?!\": 2\nXTian mind readers: 0",
-      "bannerCSS": {
-        "font": "40px/1.3 \"Bahnschrift\"",
-        "textAlign": "left"
-      },
-      "type": "spot"
-    },
-    {
-      "id": "f4vkkv1nvu",
-      "text": "I am, in fact, an agnostic atheist.\nThis is not a contradiction.\nPlease refer to your local Google searching contraption for more details.",
-      "bannerCSS": {
-        "padding": "20px 60px"
-      },
-      "type": "spot"
-    },
-    {
       "id": "jdrhx3cda8",
-      "text": "My favorite names today!\n\nShin Rogue Goblin",
+      "text": "My favorite names today!\n\ngoob.schmoogler\nAutumn 🍁\nJoe Mammi\nSchleptococcus\nGrandma destroyer",
       "bannerCSS": {
         "color": "",
         "backgroundColor": "#770077d0"
       },
-      "type": "spot"
-    },
-    {
-      "id": "o1r4bnmnqp",
-      "text": "no guests, leaving soon",
-      "bannerCSS": {
-        "padding": "40px",
-        "onBox": true
-      },
-      "type": "spot"
+      "type": "spot",
+      "idx": 0
     },
     {
       "id": "8hzswknvgj",
-      "text": "The worst theist arguments:\n1. What year is it?\n2. You can't see air\n3. Satan believes in God\n4. Atheists only exist with God",
+      "text": "The worst theist arguments:\n1. What year is it?\n2. You can't see air \n3. Satan believes in God\n4. Atheists only exist with God",
       "bannerCSS": {
+        "textAlign": "left",
         "backgroundColor": "#282"
       },
       "type": "spot"
     },
     {
       "id": "6lymdetz1yf",
-      "text": "I am 124% angry!!!@!",
+      "text": "<div style=\"line-height:1\">I am 115% angry!!!@!<div style=\"font-size: 40%; transform: translate(10%)\">stats don't lie!</div>\n</div>",
       "bannerCSS": {
         "padding": "40px",
         "font": "bold 80px/1.3  \"Agency FB\"",
@@ -167,8 +157,8 @@
       "type": "spot"
     },
     {
-      "id": "9ufia7q4ph0k4h070eoy",
-      "text": "Deconstruct Sesquipedalian Loquaciousness",
+      "id": "kgggs3adazort5pt61kq",
+      "text": "I am, in fact, an agnostic atheist.\nThis is not a contradiction.\nPlease refer to your local Google searching contraption for more details.",
       "bannerCSS": {},
       "type": "spot"
     }
@@ -186,15 +176,15 @@
   "activeSpot": 0,
   "timer": {
     "on": true,
-    "interval": 15,
-    "countdown": 10,
-    "waiting": false
-  },
-  "breakTimer": {
-    "on": true,
     "interval": 10,
     "countdown": 1,
     "waiting": true
+  },
+  "breakTimer": {
+    "on": true,
+    "interval": 20,
+    "countdown": 20,
+    "waiting": false
   },
   "saveToStorage": true
 }
