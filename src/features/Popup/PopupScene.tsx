@@ -2,7 +2,7 @@
 import { useParams } from "react-router-dom";
 import { useEffect } from "react";
 import LiveTextPopup from "../scenes/LiveDisplay/LiveTextPopup";
-import Atemporal from "../scenes/Atemporal/Atemporal";
+import Philbronium from "../scenes/Philbronium/Philbronium";
 import Video from "../scenes/Video/Video";
 import Evolution from "../scenes/Evolution/Evolution";
 import type { SceneType } from "../scenes/types";
@@ -34,7 +34,7 @@ export default function PopupScene() {
   return (
     <div className="absolute w-full h-full bg-black">
       {sceneName === 'banners' && <LiveTextPopup />}
-      {sceneName === 'atemporal' && <Atemporal controls={true} />}
+      {sceneName === 'philbronium' && <Philbronium controls={true} />}
       {sceneName === 'video' && <Video />}
       {sceneName === 'evolution' && <Evolution />}
       {sceneName === 'counter' && <Counter />}

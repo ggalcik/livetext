@@ -1,2 +1,2 @@
-export const scenes = ['banners', 'atemporal', 'video', 'evolution', 'counter'] as const;
+export const scenes = ['banners', 'philbronium', 'video', 'evolution', 'counter'] as const;
 export type SceneType = typeof scenes[number];

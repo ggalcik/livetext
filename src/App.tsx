@@ -3,10 +3,8 @@ import "./App.css";
 import { useState } from "react";
 import { SingleWindow } from "./SingleWindow";
 import { Accordion } from "./features/Accordion/Accordion";
-import BannerAdmin from "./features/BannerAdmin/BannerAdmin";
 import FontReference from "./features/FontReference/FontReference";
 import Soundboard from "./features/Soundboard/Soundboard";
-import Popup from "./features/Popup/Popup";
 
 import { version } from '../package.json';
 import ScenesAccordion from "./features/scenes/ScenesAccordion";

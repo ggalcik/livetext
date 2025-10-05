@@ -5,7 +5,6 @@ import { initialLiveDataState } from "../../context/LiveData/LiveDataReducer";
 import BannerFormat from "./BannerFormat";
 import { type PopupState } from "../../context/LiveData/types";
 import { useState } from "react";
-import { openPopup } from "../Popup/Popup";
 
 export default function LiveText({ popupState }: { popupState: PopupState }) {
   const { state, dispatch } = useLiveData();
@@ -80,12 +79,6 @@ export default function LiveText({ popupState }: { popupState: PopupState }) {
       </div>
 
       <div className="flex gap-4">
-        {/* <button className="text-blue-600 cursor-pointer self-start" onClick={() => openPopup('livetext')}>
-          [p1]
-        </button>
-        <button className="text-blue-600 cursor-pointer self-start" onClick={() => openPopup('atemporal')}>
-          [p2]
-        </button> */}
         <button
           className="text-blue-400 cursor-pointer self-start"
           onClick={() => {

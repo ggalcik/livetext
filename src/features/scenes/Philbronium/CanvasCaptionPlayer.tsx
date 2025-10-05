@@ -17,7 +17,12 @@ const FONT_FAMILY = 'Elephant';
 const FONT_SIZE = 24; // px
 const FONT_COLOR = "#FFF085";
 
-export default function CanvasCaptionPlayer({ controls }: { controls: boolean }) {
+interface ICanvasCaptionPlayer {
+  which: 'atemporal'
+  controls: boolean; 
+}
+
+export default function CanvasCaptionPlayer({ which, controls }:ICanvasCaptionPlayer) {
   const [playing, setPlaying] = useState(false);
   const [elapsed, setElapsed] = useState(0);
   const [duration, setDuration] = useState(0);
@@ -101,7 +106,7 @@ export default function CanvasCaptionPlayer({ controls }: { controls: boolean })
     ctx.font = `${FONT_SIZE}px ${FONT_FAMILY}`;
     ctx.fillStyle = FONT_COLOR;
 
-    (captions as Caption[])
+    (captions[which] as Caption[])
       .filter((c) => time >= c.start && time <= (c.end + (c.fadeOut || 0)))
       .forEach((c) => {
         // compute opacity with optional fadeOut
@@ -151,7 +156,7 @@ export default function CanvasCaptionPlayer({ controls }: { controls: boolean })
     <div className="p-4 absolute w-full h-full bg-yellow-200">
 
       {/* Canvas render box */}
-      <MasterViewport name="atemporal" needCtrl={true}>
+      <MasterViewport name="philbronium" needCtrl={true}>
         <canvas ref={canvasRef} className="block" />
       </MasterViewport>
 

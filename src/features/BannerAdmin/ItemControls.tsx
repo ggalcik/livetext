@@ -53,7 +53,7 @@ export default function ItemControls({ item, idx, total, popupState, isActive = 
                         checked={item.on === undefined ? false : item.on}
                         onChange={() => dispatch({ type: "banner/toggleOne", payload: { idx } })}
                     />
-                    <Button variant="b" size="sm" disabled={!isActive}
+                    <Button variant="b"  disabled={!isActive}
                     
                         onClick={() => {
                             dispatch({ type: "banner/setActive", payload: { type: 'rotating', idx } });
@@ -63,7 +63,7 @@ export default function ItemControls({ item, idx, total, popupState, isActive = 
                 </>
             }
             {item.type === 'spot' &&
-                <Button variant="b" size="sm"
+                <Button variant="b"
                     onClick={() => {
                         dispatch({ type: "banner/setActive", payload: { type: 'spot', idx } });
                         dispatch({ type: "spot/solo" });

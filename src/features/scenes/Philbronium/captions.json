@@ -1,4 +1,4 @@
-[
+{ "atemporal": [
   { "text": "So", "start": 0.2, "end": 0.85, "top": 22, "left": 5, "scale": 4, "rotate": -25, "fadeOut": 0.5},
   { "text": "anyways,", "start": 0.34 , "end": 0.85, "top": 50, "left": 8, "scale": 2.5, "rotate": -25, "fadeOut": 0.5},
   { "text": "can you", "start": 0.65, "end": 1.35, "top": 55, "left": 45, "scale": 1.4 },
@@ -32,3 +32,4 @@
   { "text": "world", "start": 8.83, "end": 10, "top": 66, "right": 10, "scale": 1.4 },
   { "text": "view?", "start": 9, "end": 10, "top": 78, "right": 4, "scale": 1.4}
 ]
+}

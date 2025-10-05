@@ -50,7 +50,8 @@ export function Accordion<T extends string>({
                 </div>
                 {links && setSelectedLink &&
                     links.map(item =>
-                        <div className={clsx("flex gap-2 px-2 border-r items-center",
+                        <div key={`accordion_link_${item}`} 
+                        className={clsx("flex gap-2 px-2 border-r items-center",
                             selectedLink === item && links && isOpen && "bg-green-300",
                             selectedLink === item && "bg-green-200")}>
                             <input type="radio"
