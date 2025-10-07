@@ -18,7 +18,7 @@ const FONT_SIZE = 24; // px
 const FONT_COLOR = "#FFF085";
 
 interface ICanvasCaptionPlayer {
-  which: 'atemporal'
+  which: 'atemporal';
   controls: boolean; 
 }
 

@@ -12,6 +12,7 @@ import "./ItemTransitions.css";
 import { useEffect, useRef } from "react";
 import glog from "../../../components/glog";
 import { ItemTransition } from "./ItemTransition";
+import { ProgressPie } from "../../../components/ProgressPie";
 
 
 export default function LiveText({ state }: { state: LiveDataState }) {
@@ -67,9 +68,21 @@ export default function LiveText({ state }: { state: LiveDataState }) {
         ))}
       </TransitionGroup>
 
+      {showBanner && state.timer.on && state.timer.interval && (
+        <div className="absolute -top-24 left-0">
+          <ProgressPie timer={state.timer} size={90}/>
+        </div>
+      )}
+
+      {!state.breakTimer.waiting &&
+        state.displayBanners && (
+        <div className="absolute bottom-0 right-20">
+          <ProgressPie timer={state.breakTimer} size={90} alt/>
+        </div>
+      )}
 
       {/* Progress indicators */}
-      {showBanner && (
+      {/* {showBanner && (
         <div className="absolute bottom-0 left-0 w-full px-18">
           <ProgressDots timer={state.timer} />
         </div>
@@ -80,7 +93,7 @@ export default function LiveText({ state }: { state: LiveDataState }) {
           <div className="absolute bottom-0 left-0 w-full px-18">
             <ProgressDots timer={state.breakTimer} alt />
           </div>
-        )}
+        )} */}
     </MasterViewport>
   );
 }

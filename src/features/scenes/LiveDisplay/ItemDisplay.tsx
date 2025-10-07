@@ -60,7 +60,7 @@ export default function ItemDisplay({ banner, defaultCSS, initialCSS, bannerType
         backgroundColor: getVal("onBox") ? getVal("backgroundColor") : "transparent"
 
       }}
-      className={clsx('opacity-95',
+      className={clsx('opacity-100',
 
         "absolute",
 

@@ -53,8 +53,8 @@ export default function ItemControls({ item, idx, total, popupState, isActive = 
                         checked={item.on === undefined ? false : item.on}
                         onChange={() => dispatch({ type: "banner/toggleOne", payload: { idx } })}
                     />
-                    <Button variant="b"  disabled={!isActive}
-                    
+                    <Button variant="b" disabled={!isActive}
+
                         onClick={() => {
                             dispatch({ type: "banner/setActive", payload: { type: 'rotating', idx } });
                             dispatch({ type: "banner/solo" });
@@ -69,18 +69,6 @@ export default function ItemControls({ item, idx, total, popupState, isActive = 
                         dispatch({ type: "spot/solo" });
                     }}>S</Button>
             }
-
-             <Button variant="b" size="sm" disabled={idx===0} 
-                    onClick={() => {glog('up');moveAnim('up');
-                        dispatch({ type: "banner/move", payload: { type: item.type, dir: -1, idx } });
-                    }}>🡡</Button>
-             <Button variant="b" size="sm"  disabled={idx===total-1} 
-                    onClick={() => {glog('down');moveAnim('down');
-                        dispatch({ type: "banner/move", payload: { type: item.type, dir: 1, idx } });
-                    }}>🡣</Button>
-        </div>
-
-        <div className="flex gap-2">
             <Button
                 onClick={() => {
                     if (visiblePopup === `${item.type}_${idx}`) {
@@ -117,8 +105,22 @@ export default function ItemControls({ item, idx, total, popupState, isActive = 
             >
                 Add
             </Button>
-{/* <Button variant="b" size="sm">⬆️</Button>
-<Button variant="b" size="sm">⬇️</Button> */}
+
+        </div>
+
+        <div className="flex gap-2">
+            <Button variant="b" size="sm" disabled={idx === 0}
+                onClick={() => {
+                     moveAnim('up');
+                    dispatch({ type: "banner/move", payload: { type: item.type, dir: -1, idx } });
+                }}>🡡</Button>
+            <Button variant="b" size="sm" disabled={idx === total - 1}
+                onClick={() => {
+                     moveAnim('down');
+                    dispatch({ type: "banner/move", payload: { type: item.type, dir: 1, idx } });
+                }}>🡣</Button>
+
+
         </div>
 
         <div className="flex relative z-0">
