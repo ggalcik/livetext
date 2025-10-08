@@ -27,10 +27,14 @@ export function ProgressPie({
 
         const largeArc = stepAngle > 180 ? 1 : 0;
 
-        const x1 = cx + radius * Math.cos((startAngle * Math.PI) / 180);
-        const y1 = cy + radius * Math.sin((startAngle * Math.PI) / 180);
-        const x2 = cx + radius * Math.cos((endAngle * Math.PI) / 180);
-        const y2 = cy + radius * Math.sin((endAngle * Math.PI) / 180);
+        const radiusMod1 = radius + 3;
+        const radiusMod2 = radius - 5;
+
+
+        const x1 = cx + radiusMod1 * Math.cos((startAngle * Math.PI) / 180);
+        const y1 = cy + radiusMod1 * Math.sin((startAngle * Math.PI) / 180);
+        const x2 = cx + radiusMod2 * Math.cos((endAngle * Math.PI) / 180);
+        const y2 = cy + radiusMod2 * Math.sin((endAngle * Math.PI) / 180);
 
         const pathData = `
       M ${cx} ${cy}
@@ -49,7 +53,7 @@ export function ProgressPie({
                 key={i}
                 d={pathData}
                 stroke={fill}
-                strokeWidth={3}
+                strokeWidth={1}
                 fill={fill}
                 style={{
                     transition: "fill 0.5s ease",
@@ -60,6 +64,8 @@ export function ProgressPie({
             />)
         // <path key={i} d={pathData} fill={fill} />;
     });
+
+    const animSliceInterval = Math.floor((timer.countdown - 1) / 3) % 3 + 1;
 
     return (
         <div
@@ -82,6 +88,15 @@ export function ProgressPie({
             >
                 {timer.countdown}
             </div>
+            {alt  && animSliceInterval === 1 &&
+                <div className="absolute bottom-6 -left-24 rotate-20 font-[Impact] text-red-600 text-2xl animate-pulse">So angry!!</div>
+            }
+            {alt  && animSliceInterval === 2 &&
+                <div className="absolute top-0 -right-10 -rotate-20 font-[Impact] text-red-600 text-2xl animate-pulse">Grr!!</div>
+            }
+            {alt  && animSliceInterval === 3 &&
+                <div className="absolute bottom-0 -right-16 -rotate-20 font-[Impact] text-red-600 text-2xl animate-pulse">Anger!!</div>
+            }
         </div>
     );
 }

@@ -74,7 +74,7 @@ export default function LiveText({ state }: { state: LiveDataState }) {
 
       {!state.breakTimer.waiting &&
         state.displayBanners && (
-        <div className="absolute bottom-0 right-20">
+        <div className="absolute bottom-0 right-24">
           <ProgressPie timer={state.breakTimer} size={90} alt/>
         </div>
       )}
