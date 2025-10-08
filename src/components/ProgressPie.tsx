@@ -49,7 +49,7 @@ export function ProgressPie({
                 key={i}
                 d={pathData}
                 stroke={fill}
-                strokeWidth={1}
+                strokeWidth={3}
                 fill={fill}
                 style={{
                     transition: "fill 0.5s ease",

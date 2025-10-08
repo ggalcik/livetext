@@ -3,9 +3,7 @@ import { NO_ACTIVE_BANNER, NO_ACTIVE_SPOT } from "../../../context/LiveData/type
 import type { LiveDataState } from "../../../context/LiveData/types";
 import { initialLiveDataState } from "../../../context/LiveData/LiveDataReducer";
 
-import ProgressDots from "../../../ProgressDots";
 import Background from "./Background";
-import ItemDisplay from "./ItemDisplay";
 import { MasterViewport } from "../../../components/MasterViewport/MasterViewport";
 
 import "./ItemTransitions.css";
@@ -41,7 +39,7 @@ export default function LiveText({ state }: { state: LiveDataState }) {
   useEffect(() => { }, [state]);
 
   return (
-    <MasterViewport name="livetext">
+    <MasterViewport name="livetext" needCtrl>
       <Background which={state.backgroundImage} />
 
       <TransitionGroup component={null}>

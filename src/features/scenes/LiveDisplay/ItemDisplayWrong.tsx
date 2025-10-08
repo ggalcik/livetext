@@ -1,4 +1,4 @@
-import React, { useEffect, useState, forwardRef, type JSX } from "react";
+import React, { useEffect, useState, forwardRef } from "react";
 import clsx from "clsx";
 import type { Banner, BannerCSS, BannerType } from "../../../context/LiveData/types";
 import { dateStr } from "../../../components/util";
@@ -11,8 +11,6 @@ interface ItemDisplayProps {
 
   ref: React.Ref<HTMLDivElement>;
 }
-
-
 
 export default function ItemDisplay({ banner, defaultCSS, initialCSS, ref }: ItemDisplayProps) {
 
@@ -38,43 +36,9 @@ export default function ItemDisplay({ banner, defaultCSS, initialCSS, ref }: Ite
     return "" as BannerCSS[K];
   }
 
-function DisplayTextDivs(text: string): JSX.Element[] {
-  return text.split(/\r\n|\r|\n/).map((line, idx) => {
-    // Replace empty line with non-breaking space
-    let newLine = line.replace(/^\s*$/, "\u00A0");
-    newLine = newLine.replace('[[d]]', dateStr('iii MMM d yyyy G'));
-
-    // Detect inline style markers like [[font-size: 70%; background-color: green]]
-    const styleMatch = newLine.match(/\[\[(.+)\]\]$/);
-    let style: React.CSSProperties = {};
-
-    if (styleMatch) {
-      const styleString = styleMatch[1];
-      // Remove style part from text
-      newLine = newLine.replace(/\[\[.+\]\]$/, '').trim();
-
-      styleString.split(';').forEach(pair => {
-        const [key, value] = pair.split(':').map(s => s?.trim());
-        if (key && value) {
-          // Convert kebab-case to camelCase for React
-          const camelKey = key.replace(/-([a-z])/g, (_, c) => c.toUpperCase());
-          (style as any)[camelKey] = value;
-        }
-      });
-    }
-
-    return (
-      <div key={idx} style={style}>
-        {newLine}
-      </div>
-    );
-  });
-}
-
-
   function liveTextDisplay(text: string) {
     if (!text.trim()) return "[no text]";
-    // return (textToDisplayIncorrect(text));
+    return (textToDisplayIncorrect(text));
 
 
     let newText = text;
@@ -83,9 +47,26 @@ function DisplayTextDivs(text: string): JSX.Element[] {
     return newText.replace(/(?:\r\n|\r|\n)/g, "<br>");
   }
 
+  function getTextLines(text: string): string[] {
+    return text.split(/\r\n|\r|\n/);
+  }
 
+  function textToDisplay(text: string): string {
+    const lines = getTextLines(text);
+    const newLines = lines.map((line, idx) => {
+        <div key={idx}>{line}</div>
+      }
+    )
 
+    return newLines.join('');
+  }
 
+  function textToDisplayIncorrect(text: string): string {
+    const lines = getTextLines(text);
+    const newLines = lines.map((line, idx) => <div key={idx}>{line}</div>)
+
+    return newLines.join('');
+  }
   const returnItem = (
 
     <div
@@ -106,14 +87,21 @@ function DisplayTextDivs(text: string): JSX.Element[] {
     >
       <div
         style={{
-          backgroundColor: getVal("backgroundColor"),
-          textShadow: getVal("textShadow"),
-          color: getVal("color"),
-          font: getVal("font"),
-          // backgroundColor: getVal("onBox") ? getVal("backgroundColor") : "transparent",
+          backgroundColor: getVal("onBox") ? getVal("backgroundColor") : "transparent",
         }}
       >
-        {DisplayTextDivs(banner.text)}
+        <mark
+          className=""
+          style={{
+            textShadow: getVal("textShadow"),
+            color: getVal("color"),
+            font: getVal("font"),
+            backgroundColor: getVal("backgroundColor"),
+            boxDecorationBreak: "clone",
+            padding: "5px 10px",
+          }}
+          dangerouslySetInnerHTML={{ __html: liveTextDisplay(banner.text) }}
+        />
       </div>
     </div>
   );
