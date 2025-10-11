@@ -52,7 +52,7 @@ export default function Counter() {
         <div className="absolute w-full h-full bg-amber-900">
 
             <MasterViewport name="counter" noResize>
-                <div className="absolute w-full h-full">
+                <div className="absolute w-full h-full scale-75">
 
                     <div className={`absolute w-200 h-200 -left-30 top-0 bg-cover`}
                         style={{ backgroundImage: `url(${notebook})` }}>

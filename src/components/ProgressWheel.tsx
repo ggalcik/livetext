@@ -1,16 +1,16 @@
 import type { Timer } from "../context/LiveData/types";
 
-interface IProgressPie {
+interface IProgressWheel {
     timer: Timer
     size?: number;
     alt?: boolean
 }
 
-export function ProgressPie({
+export function ProgressWheel({
     timer,
     size = 120,
     alt = false,
-}: IProgressPie) {
+}: IProgressWheel) {
   if (!timer || !timer.on || timer.interval == null || timer.countdown == null) {
     return <div></div>;
   }
@@ -27,8 +27,8 @@ export function ProgressPie({
 
         const largeArc = stepAngle > 180 ? 1 : 0;
 
-        const radiusMod1 = radius + 3;
-        const radiusMod2 = radius - 5;
+        const radiusMod1 = radius + (i%2==0?3:-3);
+        const radiusMod2 = radius -  (i%2==1?3:-3);
 
 
         const x1 = cx + radiusMod1 * Math.cos((startAngle * Math.PI) / 180);
@@ -89,10 +89,10 @@ export function ProgressPie({
                 {timer.countdown}
             </div>
             {alt  && animSliceInterval === 1 &&
-                <div className="absolute bottom-6 -left-24 rotate-20 font-[Impact] text-red-600 text-2xl animate-pulse">So angry!!</div>
+                <div className="absolute bottom-6 -left-24 rotate-20 font-[Impact] text-red-300 text-2xl animate-pulse">So angry!!</div>
             }
             {alt  && animSliceInterval === 2 &&
-                <div className="absolute top-0 -right-10 -rotate-20 font-[Impact] text-red-600 text-2xl animate-pulse">Grr!!</div>
+                <div className="absolute top-0 -right-10 -rotate-20 font-[Impact] text-red-300 text-2xl animate-pulse">Grr!!</div>
             }
             {alt  && animSliceInterval === 3 &&
                 <div className="absolute bottom-0 -right-16 -rotate-20 font-[Impact] text-red-600 text-2xl animate-pulse">Anger!!</div>

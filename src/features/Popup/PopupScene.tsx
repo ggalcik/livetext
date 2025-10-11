@@ -15,7 +15,7 @@ export function openPopup(which?: string) {
   window.open(
     "/popup" + appendURL,
     "LiveTextPopup",
-    "width=600,height=450,menubar=no,toolbar=no,location=yes,status=no"
+    // "width=600,height=450,menubar=no,toolbar=no,location=yes,status=no"
   );
 
   // rotate options if I ever need them again

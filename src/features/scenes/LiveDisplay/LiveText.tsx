@@ -10,7 +10,7 @@ import "./ItemTransitions.css";
 import { useEffect, useRef } from "react";
 import glog from "../../../components/glog";
 import { ItemTransition } from "./ItemTransition";
-import { ProgressPie } from "../../../components/ProgressPie";
+import { ProgressWheel } from "../../../components/ProgressWheel";
 
 
 export default function LiveText({ state }: { state: LiveDataState }) {
@@ -40,7 +40,7 @@ export default function LiveText({ state }: { state: LiveDataState }) {
 
   return (
     <MasterViewport name="livetext" needCtrl>
-      <Background which={state.backgroundImage} />
+      <Background which={state.backgroundImage} showAngerBits={state.backgroundImage === 'Angry' && !state.breakTimer.on} />
 
       <TransitionGroup component={null}>
         {state.banners.map((banner, i) => (
@@ -67,15 +67,15 @@ export default function LiveText({ state }: { state: LiveDataState }) {
       </TransitionGroup>
 
       {showBanner && state.timer.on && state.timer.interval && (
-        <div className="absolute -top-24 left-0">
-          <ProgressPie timer={state.timer} size={90}/>
+        <div className="absolute -top-1/6 left-0 scale-80">
+          <ProgressWheel timer={state.timer} size={90}/>
         </div>
       )}
 
       {!state.breakTimer.waiting &&
         state.displayBanners && (
-        <div className="absolute bottom-0 right-24">
-          <ProgressPie timer={state.breakTimer} size={90} alt/>
+        <div className="absolute bottom-0 right-1/12 scale-80">
+          <ProgressWheel timer={state.breakTimer} size={90} alt/>
         </div>
       )}
 
