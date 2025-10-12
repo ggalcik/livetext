@@ -3,12 +3,12 @@
 @theme {
     --animate-banner-move-up: bannerUp .3s ease-in-out;
     @keyframes bannerUp {
-        0%   { opacity: 0.1; transform: translateY(100%); background-color: #000}
-        100% { opacity: 1; transform: translateY(0); }
+        0%   { opacity: 0.1; transform: translateY(100%) scale(0.8); background-color: #000; }
+        100% { opacity: 1; transform: translateY(0) scale(1); }
     }    
     --animate-banner-move-down: bannerDown .3s ease-in-out;
     @keyframes bannerDown {
-        0%   { opacity: 0.1; transform: translateY(-100%); background-color: #000}
-        100% { opacity: 1; transform: translateY(0);  }
+        0%   { opacity: 0.1; transform: translateY(-100%) scale(0.8); background-color: #000}
+        100% { opacity: 1; transform: translateY(0) scale(1);  }
     }    
 }

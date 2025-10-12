@@ -6,6 +6,8 @@ interface IProgressWheel {
     alt?: boolean
 }
 
+const SHOW_SPARKLES = true;
+
 export function ProgressWheel({
     timer,
     size = 120,
@@ -88,13 +90,13 @@ export function ProgressWheel({
             >
                 {timer.countdown}
             </div>
-            {alt  && animSliceInterval === 1 &&
+            {alt && SHOW_SPARKLES && animSliceInterval === 1 &&
                 <div className="absolute bottom-6 -left-24 rotate-20 font-[Impact] text-red-300 text-2xl animate-pulse">So angry!!</div>
             }
-            {alt  && animSliceInterval === 2 &&
+            {alt && SHOW_SPARKLES && animSliceInterval === 2 &&
                 <div className="absolute top-0 -right-10 -rotate-20 font-[Impact] text-red-300 text-2xl animate-pulse">Grr!!</div>
             }
-            {alt  && animSliceInterval === 3 &&
+            {alt && SHOW_SPARKLES && animSliceInterval === 3 &&
                 <div className="absolute bottom-0 -right-16 -rotate-20 font-[Impact] text-red-600 text-2xl animate-pulse">Anger!!</div>
             }
         </div>

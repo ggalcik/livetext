@@ -3,40 +3,96 @@
   "backgroundImage": "Angry",
   "banners": [
     {
-      "id": "lpokrtniy3",
-      "text": "If you think Jesus sacrificed anything, what do you think sacrifice is?",
+      "id": "lj1fgnhok49ay20hmxgn",
+      "text": "I AM AN ATHEIST\nchange my mind[[font-size: 70%]]",
       "bannerCSS": {
-        "padding": "",
-        "font": "40px/1.6 Cooper",
+        "padding": "40px",
+        "font": "bold 50px \"arial rounded mt\"",
         "textAlign": "center",
-        "color": "#ff8",
-        "backgroundColor": "#88f",
+        "backgroundColor": "#82e",
         "onBox": true,
-        "textShadow": "2px 4px black"
+        "textShadow": "2px 2px black"
       },
       "type": "rotating",
       "on": true
     },
     {
-      "id": "552duy9zmpjesk5xhtgok",
-      "text": "When did Jesus give his followers the power to read minds?",
+      "id": "don42klcnx21w3erkxpi",
+      "text": "DON'T PRAY FOR ME\nIf you think prayer works,[[font-size:70%]]\nTAKE THE TIME TO PRAY FOR SOMEONE WHO REALLY NEEDS IT, DAMNIT",
       "bannerCSS": {
-        "font": "50px/1.3 Eras",
-        "backgroundColor": "#004",
+        "font": "34px/1.3 Arial black",
+        "textAlign": "center",
+        "color": "#ffc",
+        "backgroundColor": "#f00",
+        "onBox": true,
+        "textShadow": "4px 4px black"
+      },
+      "type": "rotating",
+      "on": true
+    },
+    {
+      "id": "lpokrtniy3",
+      "text": "P1: Jesus is eternal and unchanging\nP2: Sacrifice requires change\n\nC: Jesus sacrificed nothing",
+      "bannerCSS": {
+        "padding": "40px 30px",
+        "font": "30px/1.3 Trebuchet MS",
+        "textAlign": "left",
+        "color": "#ff8",
+        "backgroundColor": "#88f",
+        "onBox": true,
+        "textShadow": "2px 2px black"
+      },
+      "type": "rotating",
+      "on": true
+    },
+    {
+      "id": "pd3a0sa8scwegy140878",
+      "text": "The worst theist arguments:[[font-size: 120%;text-decoration: underline]]\n\n1. What year is it?\n2. You can't see air \n3. Satan believes in God\n4. Atheists only exist with God",
+      "bannerCSS": {
+        "padding": "40px",
+        "font": "bold 24px/1.4 'Segoe Print',sans-serif",
+        "textAlign": "left",
+        "backgroundColor": "#282",
+        "onBox": true,
+        "textShadow": "1px 1px black"
+      },
+      "type": "rotating",
+      "on": true
+    },
+    {
+      "id": "1svu7nnxu8",
+      "text": "Slavery is bad[[font-size: 80%]]\nWE ALL* AGREE\nGod* doesn't, though[[font-size: 70%]]",
+      "bannerCSS": {
+        "padding": "40px",
+        "font": "bold 50px/1.3 'Berlin Sans FB'",
+        "textAlign": "center",
+        "backgroundColor": "#040",
         "onBox": true
       },
       "type": "rotating",
       "on": true
     },
     {
-      "id": "sjdqh5awxl",
-      "text": "Evolution has written on our hearts that there is no afterlife",
+      "id": "z8pu0pnk2bql1x5d2xrk",
+      "text": "If God knows everything then he doesn't have free will",
       "bannerCSS": {
-        "font": "bold 50px/1.3 \"Calibri\"",
+        "padding": "30px",
+        "font": "46px/1.3 Impact",
+        "backgroundColor": "#222",
+        "onBox": true
+      },
+      "type": "rotating",
+      "on": true
+    },
+    {
+      "id": "puxg1uk3xrj7n2999fcl",
+      "text": "Show Me Your God Gives You An Objective Morality\nand he will give you one dollar[[font-size:60%]]",
+      "bannerCSS": {
+        "padding": "40px",
+        "font": "50px/1.3 Cooper",
         "textAlign": "center",
-        "backgroundColor": "#400",
         "onBox": true,
-        "textShadow": "2px 2px black"
+        "textShadow": "1px 1px black"
       },
       "type": "rotating",
       "on": false
@@ -55,28 +111,16 @@
     },
     {
       "id": "extkdesg59",
-      "text": "It takes more faith to have faith than to not have faith\n<span style=\"font-size: 70%\">and you can quote me on that</span>",
+      "text": "It takes more faith to have faith than to not have faith\nand you can quote me on that[[font-size: 70%]]",
       "bannerCSS": {
+        "padding": "40px",
         "font": "40px/1.3 sans-serif",
         "textAlign": "center",
         "onBox": true,
         "textShadow": "2px 2px black"
       },
       "type": "rotating",
-      "on": true
-    },
-    {
-      "id": "1svu7nnxu8",
-      "text": "<span style=\"font-size: 80%\">Slavery is bad</span>\nWE ALL AGREE\n<span style=\"font-size: 70%\">God* doesn't, though</span>",
-      "bannerCSS": {
-        "padding": "20px",
-        "font": "bold 60px/1.3 'Berlin Sans FB'",
-        "textAlign": "center",
-        "backgroundColor": "#040",
-        "onBox": true
-      },
-      "type": "rotating",
-      "on": true
+      "on": false
     },
     {
       "id": "np2rjzecxd",
@@ -93,11 +137,14 @@
       "on": false
     },
     {
-      "id": "z8pu0pnk2bql1x5d2xrk",
-      "text": "Maybe Jesus existed? I don't know and it's irrelevant anyway",
+      "id": "sjdqh5awxl",
+      "text": "Evolution has written on our hearts that there is no afterlife",
       "bannerCSS": {
-        "font": "60px/1.3 Impact",
-        "backgroundColor": "#222"
+        "font": "bold 50px/1.3 \"Calibri\"",
+        "textAlign": "center",
+        "backgroundColor": "#400",
+        "onBox": true,
+        "textShadow": "2px 2px black"
       },
       "type": "rotating",
       "on": false
@@ -113,17 +160,28 @@
     "textShadow": "4px 4px black"
   },
   "displayBanners": false,
-  "activeBanner": 5,
+  "activeBanner": 1,
   "spots": [
     {
+      "id": "6lymdetz1yf",
+      "text": "I am 130 % angry!!!@![[line-height:1]]\nstats don't lie![[font-size: 40%; transform: translate(10%)]]",
+      "bannerCSS": {
+        "padding": "60px 20px",
+        "font": "bold 70px/1.3  \"Agency FB\"",
+        "backgroundColor": "red",
+        "onBox": true
+      },
+      "type": "spot"
+    },
+    {
       "id": "jdrhx3cda8",
-      "text": "My favorite names today!\n\ngoob.schmoogler\nAutumn 🍁\nJoe Mammi\nSchleptococcus\nGrandma destroyer",
+      "text": "My favorite names today!\n\nFartnickle33\nAnniwoozle",
       "bannerCSS": {
         "color": "",
-        "backgroundColor": "#770077d0"
+        "backgroundColor": "#770077",
+        "onBox": true
       },
-      "type": "spot",
-      "idx": 0
+      "type": "spot"
     },
     {
       "id": "8hzswknvgj",
@@ -135,12 +193,10 @@
       "type": "spot"
     },
     {
-      "id": "6lymdetz1yf",
-      "text": "<div style=\"line-height:1\">I am 115% angry!!!@!<div style=\"font-size: 40%; transform: translate(10%)\">stats don't lie!</div>\n</div>",
+      "id": "fy8ix4pfughvowunnv6na",
+      "text": "Sulfur.",
       "bannerCSS": {
-        "padding": "40px",
-        "font": "bold 80px/1.3  \"Agency FB\"",
-        "backgroundColor": "red"
+        "padding": "100px"
       },
       "type": "spot"
     },
@@ -149,9 +205,10 @@
       "text": "Shroudenfreude (/SHROW-den-froy'-da/) n. 1. The amusement you feel at someone defending the Shroud of Turin.",
       "bannerCSS": {
         "padding": "50px",
-        "font": "bold 30px/1.4 serif",
+        "font": "30px/1.4 serif",
         "color": "#444",
         "backgroundColor": "#f8f8f8",
+        "onBox": true,
         "textShadow": "0 0 "
       },
       "type": "spot"
@@ -172,19 +229,19 @@
     "onBox": true,
     "textShadow": "4px 4px #444"
   },
-  "displaySpots": false,
-  "activeSpot": 0,
+  "displaySpots": true,
+  "activeSpot": 2,
   "timer": {
-    "on": true,
-    "interval": 10,
-    "countdown": 1,
-    "waiting": true
+    "on": false,
+    "interval": 11,
+    "countdown": null,
+    "waiting": false
   },
   "breakTimer": {
     "on": true,
-    "interval": 20,
-    "countdown": 20,
-    "waiting": false
+    "interval": 21,
+    "countdown": 1,
+    "waiting": true
   },
   "saveToStorage": true
 }

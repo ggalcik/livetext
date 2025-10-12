@@ -33,8 +33,8 @@ export default function ItemControls({ item, idx, total, popupState, isActive = 
         setConfirmDelete(true);
     }
 
-    return (<div className="flex gap-2 justify-between">
-        <div className="flex gap-2">
+    return (<div className="flex flex-wrap lg:flex-nowrap gap-2 justify-between">
+        <div className="flex gap-2 flex-grow basis-full lg:basis-0  ">
             <input
                 type="radio"
                 name={activeType}
@@ -56,17 +56,14 @@ export default function ItemControls({ item, idx, total, popupState, isActive = 
                     <Button variant="b" disabled={!isActive}
 
                         onClick={() => {
-                            dispatch({ type: "banner/setActive", payload: { type: 'rotating', idx } });
-                            dispatch({ type: "banner/solo" });
-                            dispatch({ type: "timer/off", payload: { which: 'timer' } });
+                            dispatch({ type: "banner/soloOne", payload: { type: 'rotating', idx } });
                         }}>S</Button>
                 </>
             }
             {item.type === 'spot' &&
                 <Button variant="b"
                     onClick={() => {
-                        dispatch({ type: "banner/setActive", payload: { type: 'spot', idx } });
-                        dispatch({ type: "spot/solo" });
+                        dispatch({ type: "banner/soloOne", payload: { type: 'spot', idx } });
                     }}>S</Button>
             }
             <Button
@@ -108,7 +105,7 @@ export default function ItemControls({ item, idx, total, popupState, isActive = 
 
         </div>
 
-        <div className="flex gap-2">
+        <div className="flex gap-2 basis-1/3 ">
             <Button variant="b" size="sm" disabled={idx === 0}
                 onClick={() => {
                      moveAnim('up');
@@ -123,9 +120,9 @@ export default function ItemControls({ item, idx, total, popupState, isActive = 
 
         </div>
 
-        <div className="flex relative z-0">
+        <div className="flex relative basis-1/3 z-0 justify-end">
 
-            <div className="w-8 -left-4">
+            <div className="w-8">
                 {confirmDelete &&
                     <Button
                         variant="c"
@@ -144,3 +141,4 @@ export default function ItemControls({ item, idx, total, popupState, isActive = 
     </div>
     );
 }
+

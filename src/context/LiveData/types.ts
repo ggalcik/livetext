@@ -181,7 +181,7 @@ export function createSpot(): Banner {
   };
 }
 
-type TimerKey = "timer" | "breakTimer";
+export type TimerKey = "timer" | "breakTimer";
 
 export type LiveDataAction =
   | { type: "background/toggle" }
@@ -194,11 +194,12 @@ export type LiveDataAction =
   | { type: "banner/setNextActive" }
   | { type: "banner/toggle" }
   | { type: "banner/toggleOne"; payload: { idx: number } }
-  | { type: "banner/solo" }
+  | { type: "banner/solo", payload: { type: BannerType }  }
+  | { type: "banner/soloOne", payload: { type: BannerType; idx: number }  }
   | { type: "banner/move"; payload: { type: BannerType; dir: number; idx: number } }
   | { type: "spot/add" }
   | { type: "spot/toggle" }
-  | { type: "spot/solo" }
+  | { type: "spot/solo", payload: { type: BannerType; idx: number } }
   | { type: "timer/params"; payload: Partial<Timer> & { which: TimerKey } }
   | { type: "timer/toggle"; payload: { which: TimerKey } }
   | { type: "timer/off"; payload: { which: TimerKey } }

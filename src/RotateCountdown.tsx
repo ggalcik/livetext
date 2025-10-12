@@ -88,7 +88,7 @@ export default function RotateCountdown({ timerKey, nextTimerKey }: RotateCountd
   ]);
 
   return (
-    <div className={clsx("gap-2 inline-flex px-2", { "bg-amber-100": timer.on })}>
+    <div className={clsx("w-8 h-8 text-2xl")}>
       {timer.waiting ? "⏸️" : timer.countdown ?? "--"}
     </div>
   );

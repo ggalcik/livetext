@@ -1,6 +1,6 @@
 // import clsx from "clsx";
 import { backgroundOptions, type BackgroundType, type PopupState } from "../../context/LiveData/types";
-import TopOpts from "../../TopOpts";
+import TopOpts from "./TopOpts";
 import BannerOpts from "./BannerOpts";
 import SpotsOpts from "../Spots/SpotsOpts";
 import BannersEdit from "./BannersEdit";

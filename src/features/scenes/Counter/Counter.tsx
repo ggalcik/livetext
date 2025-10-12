@@ -40,7 +40,7 @@ export default function Counter() {
 
     const activeCounters = scene.counters.filter((c) => c.show);
 
-// TODO: display history banners
+// TODO: display history counters
     //     const showingHistory = !!(scene.showDate && scene.history && scene.history[scene.showDate].length > 0);
     // const showingDate = scene.showDate || format(new Date(), 'yyyyMMdd');
     // const countersToShow = showingHistory && scene.showDate && scene.history

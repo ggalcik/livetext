@@ -73,6 +73,19 @@ export function liveDataReducer(state: LiveDataState, action: LiveDataAction): L
     return null;
   }
 
+  type SetActivePayload = Extract<LiveDataAction, { type: "banner/setActive" }>["payload"];
+
+  function applySetActive(payload: SetActivePayload, state: LiveDataState) {
+    const active = (payload.type === 'rotating' ? 'activeBanner' : 'activeSpot');
+    const newState = {
+      ...state,
+      [active]: payload.idx,
+    };
+
+    return newState;
+    ;
+  }
+
   switch (action.type) {
     case "background/toggle":
       return {
@@ -85,18 +98,9 @@ export function liveDataReducer(state: LiveDataState, action: LiveDataAction): L
         backgroundImage: action.payload.which,
       };
     }
-    // case "masterViewportCSS/padding": {
 
-    //     return {
-    //       ...state,
-    //       masterViewportCSS: {
-    //         ...state.masterViewportCSS,
-    //         ...action.payload,
-    //       },
-    //     };
-
-    // }
     case "banner/add": {
+      //TODO: object with these keys n such to lookup instead of logic each time
       const bannersKey = action.payload.type === 'rotating' ? 'banners' : 'spots';
       const activeKey = action.payload.type === 'rotating' ? 'activeBanner' : 'activeSpot';
       const activeBanner = (bannersKey === 'banners' ? state.activeBanner : state.activeSpot) ?? 0;
@@ -143,14 +147,7 @@ export function liveDataReducer(state: LiveDataState, action: LiveDataAction): L
       };
     }
     case "banner/setActive": {
-      const active = (action.payload.type === 'rotating' ? 'activeBanner' : 'activeSpot');
-      const newState = {
-        ...state,
-        [active]: action.payload.idx,
-      };
-      // console.log(action.payload.idx, newState[active], newState);
-      return newState;
-      ;
+      return applySetActive(action.payload, state);
     }
     case "banner/setNextActive": {
       if (state.activeBanner == null) return state;
@@ -166,7 +163,7 @@ export function liveDataReducer(state: LiveDataState, action: LiveDataAction): L
       const key = type === "rotating" ? "banners" : "spots";
       const activeKey = type === "rotating" ? "activeBanner" : "activeSpot";
       const items = [...state[key]];
-      
+
       const newIdx = idx + dir;
       glog("idx, newIdx, key, activeKey", idx, newIdx, key, activeKey);
 
@@ -217,12 +214,44 @@ export function liveDataReducer(state: LiveDataState, action: LiveDataAction): L
         ),
       };
     }
-    case "banner/solo":
-      return {
-        ...state,
-        displaySpots: false,
-        displayBanners: true,
+      case "banner/solo": {
+        const displayKey = action.payload.type === "rotating" ? "displayBanners" : "displaySpots";
+        const otherDisplayKey = action.payload.type === "rotating" ? "displaySpots" : "displayBanners";
+        return {
+          ...state,
+        [displayKey]: true,
+        [otherDisplayKey]: false,
+        }
+      }
+
+    case "banner/soloOne": {
+      const newState = applySetActive(action.payload, state);
+      const displayKey = action.payload.type === "rotating" ? "displayBanners" : "displaySpots";
+      const otherDisplayKey = action.payload.type === "rotating" ? "displaySpots" : "displayBanners";
+      const activeKey = action.payload.type === "rotating" ? "activeBanner" : "activeSpot";
+      // const otherActiveKey = action.payload.type === "rotating" ? "activeSpot" : "activeBanner";
+
+      // common display toggle
+      let finalState = {
+        ...newState,
+        [activeKey]: action.payload.idx,
+        [displayKey]: true,
+        [otherDisplayKey]: false,
       };
+
+      // extra timer handling for rotating
+      if (action.payload.type === "rotating") {
+        finalState = {
+          ...finalState,
+          timer: { ...finalState.timer, on: false, waiting: false },
+          breakTimer: { ...finalState.breakTimer, on: false, waiting: true },
+        };
+      }
+      return finalState;
+    }
+
+
+
     case "spot/toggle":
       return {
         ...state,
@@ -261,18 +290,6 @@ export function liveDataReducer(state: LiveDataState, action: LiveDataAction): L
       // console.log(newState);
       return newState;
     }
-    //     timer: {
-    //   on: false,
-    //   interval: 10,
-    //   countdown: null,
-    //   waiting: false,
-    // },
-    // breakTimer: {
-    //   on: false,
-    //   interval: 4,
-    //   countdown: null,
-    //   waiting: true,
-    // },
     case "timer/off": {
       const which = action.payload.which;
       return {

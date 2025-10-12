@@ -40,7 +40,10 @@ export default function LiveText({ state }: { state: LiveDataState }) {
 
   return (
     <MasterViewport name="livetext" needCtrl>
-      <Background which={state.backgroundImage} showAngerBits={state.backgroundImage === 'Angry' && !state.breakTimer.on} />
+      <Background which={state.backgroundImage}
+       showAngerBits={state.backgroundImage === 'Angry' && 
+        !(state.displayBanners || state.displaySpots)
+       } />
 
       <TransitionGroup component={null}>
         {state.banners.map((banner, i) => (

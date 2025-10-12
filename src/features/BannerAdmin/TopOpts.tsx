@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import { useLiveData } from "./context/LiveData";
+import { useLiveData } from "../../context/LiveData";
 
 export default function TopOpts() {
   const { state, dispatch } = useLiveData();
@@ -23,7 +23,7 @@ export default function TopOpts() {
 
             "bg-white text-gray-800 border-gray-400 hover:bg-gray-100"
           )}
-          onClick={() => dispatch({ type: "banner/solo" })}
+          onClick={() => dispatch({ type: "banner/solo", payload: {type: 'rotating'} })}
         >
           solo
         </button>
@@ -46,7 +46,7 @@ export default function TopOpts() {
 
             "bg-white text-gray-800 border-gray-400 hover:bg-gray-100"
           )}
-          onClick={() => dispatch({ type: "spot/solo" })}
+          onClick={() => dispatch({ type: "banner/solo", payload: {type: 'spot'}})}
         >
           solo
         </button>
