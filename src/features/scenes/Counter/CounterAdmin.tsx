@@ -55,7 +55,7 @@ export default function CounterAdmin() {
     const [scene, setScene] = usePersistentState({
         storageKey: 'counterScene',
         schema: CounterSceneSchema,
-        fallback: { counters: [] }
+        fallback: { counters: [], currentDate: todayKey() }
     })
 
     const [confirmReset, setConfirmReset] = useState(false);
@@ -84,12 +84,15 @@ export default function CounterAdmin() {
         setNewValue("");
     }
 
+    function moveCurrentToHistory {}
+
+    // TODO: only move to history when day reset is clicked. or maybe have it occasionally check date and block updates if off? or do automatically?
     function updateScene(counters: Counter[]) {
         const date = todayKey();
         const active = counters.filter((c) => c.show && c.value !== 0 && c.name)
             .map((c) => ({ name: c.name, value: c.value }));
         const history = { ...scene.history, [date]: active };
-        setScene({ counters, history });
+        setScene({ ...scene, counters });
     }
 
     function updateCounter(id: string, update: Partial<Counter>) {

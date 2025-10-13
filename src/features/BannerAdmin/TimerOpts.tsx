@@ -1,6 +1,6 @@
 import clsx from "clsx";
 import type { LiveDataAction, Timer, TimerKey } from "../../context/LiveData/types";
-import RotateCountdown from "../../RotateCountdown";
+import RotateCountdown from "./RotateCountdown";
 
 interface ITimerOptsProps {
     timer: Timer;
@@ -18,8 +18,8 @@ export default function TimerOpts({ timer, timerKey, dispatch }: ITimerOptsProps
         timer.on ? "border-gray-500" : " border-gray-200")}
         onClick={() => dispatch({ type: "timer/toggle", payload: { which: timerKey } })}>
 
-        <div>
-            {timerKey === 'timer' ? 'timer' : 'breakTimer'}
+        <div className="leading-[2]">
+            {timerKey }
         </div>
         <input
             type="number"

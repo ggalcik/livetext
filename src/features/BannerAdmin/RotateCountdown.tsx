@@ -1,8 +1,8 @@
 import { useEffect, useRef } from "react";
 import clsx from "clsx";
-import { useLiveData } from "./context/LiveData";
-import type { Timer } from "./context/LiveData/types";
-import glog from "./components/glog";
+import { useLiveData } from "../../context/LiveData";
+import type { Timer } from "../../context/LiveData/types";
+import glog from "../../components/glog";
 
 type TimerKey = "timer" | "breakTimer";
 interface RotateCountdownOpts {
@@ -88,7 +88,7 @@ export default function RotateCountdown({ timerKey, nextTimerKey }: RotateCountd
   ]);
 
   return (
-    <div className={clsx("w-8 h-8 text-2xl")}>
+    <div className={clsx("w-8 h-8 text-2xl text-center")}>
       {timer.waiting ? "⏸️" : timer.countdown ?? "--"}
     </div>
   );
