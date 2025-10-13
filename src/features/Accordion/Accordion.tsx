@@ -8,7 +8,9 @@ interface IAccordion<T extends string> {
     children: React.ReactNode;
     links?: readonly T[];
     selectedLink?: T;
-    setSelectedLink?: React.Dispatch<React.SetStateAction<T>>;
+    setSelectedLink?: (scene: SceneType) => void;
+    selectedRadio?: T;
+    setSelectedRadio?: (scene: SceneType) => void;
     startOpen?: boolean;
 
 }
@@ -19,6 +21,8 @@ export function Accordion<T extends string>({
     links,
     selectedLink,
     setSelectedLink,
+    selectedRadio,
+    setSelectedRadio,
     startOpen = false }: IAccordion<T>) {
     const [isOpen, setIsOpen] = useState(startOpen);
 
@@ -34,7 +38,7 @@ export function Accordion<T extends string>({
     function handleSceneSelect(evt: React.MouseEvent, scene: T) {
         evt.stopPropagation();
         openPopup(scene);
-        setSelectedLink && setSelectedLink(scene);
+        setSelectedRadio && setSelectedRadio(scene);
     }
 
 
@@ -58,6 +62,7 @@ export function Accordion<T extends string>({
                                 className="w-6 h-6"
                                 name={`accordion_${label}`}
                                 value={item}
+                                checked={selectedRadio && selectedRadio === item}
                                 onClick={(e) => handleSceneSelect(e, item)} />
                             <div className=''
                                 onClick={(e) => handleSceneClick(e, item)}>{item}</div>

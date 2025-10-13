@@ -3,50 +3,45 @@ import { CounterSchema, CounterSceneSchema, type Counter, type CounterScene } fr
 import CounterAdminRow from "./CounterAdminRow";
 import { Button } from "../../../components/Button";
 import { usePersistentState } from "../../../hooks/usePersistentState";
-import { format } from "date-fns/format";
+import { parse, format } from "date-fns";
 
 function todayKey(): string {
     return format(new Date(), 'yyyyMMdd');
-    // const d = new Date();
-    // const yyyy = d.getFullYear();
-    // const mm = String(d.getMonth() + 1).padStart(2, "0");
-    // const dd = String(d.getDate()).padStart(2, "0");
-    // return `${yyyy}${mm}${dd}`;
 }
 
 function DateSelector({
-  scene,
-  setScene,
+    scene,
+    setScene,
 }: {
-  scene: CounterScene;
-  setScene: React.Dispatch<React.SetStateAction<CounterScene>>;
+    scene: CounterScene;
+    setScene: React.Dispatch<React.SetStateAction<CounterScene>>;
 }) {
-  const dates = Object.keys(scene.history ?? {}).sort().reverse();
+    const dates = Object.keys(scene.history ?? {}).sort().reverse();
 
-  const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setScene({
-      ...scene,
-      showDate: e.target.value, // save directly in main state
-    });
-  };
+    const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        setScene({
+            ...scene,
+            showDate: e.target.value, // save directly in main state
+        });
+    };
 
-  return (
-    <div className="border p-2 max-w-xs">
-      <select
-        value={scene.showDate ?? "current"}
-        onChange={handleChange}
-        size={5} // shows 5 rows, scrollable
-        className="w-full border rounded"
-      >
-        <option value="current">current</option>
-        {dates.map((d) => (
-          <option key={d} value={d}>
-            {d}
-          </option>
-        ))}
-      </select>
-    </div>
-  );
+    return (
+        <div className="border p-2 max-w-xs">
+            <select
+                value={scene.showDate ?? "current"}
+                onChange={handleChange}
+                size={5} // shows 5 rows, scrollable
+                className="w-full border rounded"
+            >
+                <option value="current">current</option>
+                {dates.map((d) => (
+                    <option key={d} value={d}>
+                        {d}
+                    </option>
+                ))}
+            </select>
+        </div>
+    );
 }
 
 
@@ -84,10 +79,12 @@ export default function CounterAdmin() {
         setNewValue("");
     }
 
-    function moveCurrentToHistory {}
+    function updateScene(counters: Counter[]) {
+        setScene({ ...scene, counters });
+    }
 
     // TODO: only move to history when day reset is clicked. or maybe have it occasionally check date and block updates if off? or do automatically?
-    function updateScene(counters: Counter[]) {
+    function updateSceneOld(counters: Counter[]) {
         const date = todayKey();
         const active = counters.filter((c) => c.show && c.value !== 0 && c.name)
             .map((c) => ({ name: c.name, value: c.value }));
@@ -107,7 +104,39 @@ export default function CounterAdmin() {
         updateScene(counters);
     }
 
-    function doDayReset() {
+  function doDayReset() {
+  const date = scene.currentDate || todayKey();
+
+  // 1. Copy current counters to history
+  const active = scene.counters
+    .filter((c) => c.value !== 0 && c.name)
+    .map((c) => ({ name: c.name, value: c.value }));
+
+  const updatedHistory = {
+    ...scene.history,
+    [date]: active,
+  };
+
+  // 2. Reset counters
+  const resetCounters = scene.counters.map((counter) => ({
+    ...counter,
+    value: 0,
+    show: false,
+    play: true,
+  }));
+
+  // 3. Update scene with new date and cleared counters
+  setScene({
+    ...scene,
+    counters: resetCounters,
+    history: updatedHistory,
+    currentDate: todayKey(),
+  });
+
+  setConfirmReset(false);
+}
+
+    function doDayResetOld() {
         if (scene.counters) {
             setScene(
                 {
@@ -158,8 +187,8 @@ export default function CounterAdmin() {
             <div className=" w-1/2 flex justify-between">
 
                 <div className="">
-                    Display:
-                    
+                    Display: { format(parse(scene.currentDate, 'yyyyMMdd', new Date()), "eee MMM d yyyy G") }
+
                 </div>
 
 

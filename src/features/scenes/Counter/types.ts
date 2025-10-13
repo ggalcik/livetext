@@ -21,6 +21,7 @@ export type Counter = z.infer<typeof CounterSchema>;
 export const CounterSceneSchema =
   z.object({
     counters: z.array(CounterSchema).default([]),
+    currentDate: z.string(),
     history: z.record(z.string(), z.array(CounterHistorySchema)).optional(),
     showDate: z.string().optional()
   });

@@ -25,7 +25,7 @@ function loadState<S extends z.ZodTypeAny>({
   }
 
   if (workingData && workingData[storageKey as keyof IWorkingData]) {
-    const res = schema.safeParse(workingData);
+    const res = schema.safeParse(workingData[storageKey as keyof IWorkingData]);
     if (res.success) return res.data;
     console.warn(`Invalid workingData for ${storageKey}`, res.error.format());
   }
