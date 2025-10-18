@@ -1,19 +1,21 @@
 import { useEffect, useRef, useState } from "react";
 import { MasterViewport } from "../../../components/MasterViewport/MasterViewport";
 import { dateStr } from "../../../components/util";
-import { format } from "date-fns";
+import { format, parse } from "date-fns";
 import './Counter.css';
-import { type Counter } from "./types";
+import { CounterSceneSchema, type Counter } from "./types";
 import dling from '/src/assets/dling.mp3';
 import notebook from '../../../assets/notebook.png'
+import { usePersistentState } from "../../../hooks/usePersistentState";
 
-type CounterScene = {
-    counters: Counter[];
-    history: Record<string, Counter[]>;
-};
 
 export default function Counter() {
-    const [scene, setScene] = useState<CounterScene>({ counters: [], history: {} });
+    const [scene] = usePersistentState({
+        storageKey: 'counterScene',
+        schema: CounterSceneSchema,
+        fallback: { counters: [], currentDate: format(new Date(), 'yyyyMMdd') }
+    })
+
     const audio = new Audio(dling);
 
     const playSound = () => {
@@ -21,23 +23,6 @@ export default function Counter() {
             console.warn("Could not play sound:", err);
         });
     };
-
-    // load once + subscribe to storage events
-    useEffect(() => {
-        const load = () => {
-            const raw = localStorage.getItem("counterScene");
-            if (raw) {
-                try {
-                    setScene(JSON.parse(raw));
-                } catch {
-                    console.warn("Bad counterScene JSON");
-                }
-            }
-        };
-        load();
-        window.addEventListener("storage", load);
-        return () => window.removeEventListener("storage", load);
-    }, []);
 
     const activeCounters = scene.counters.filter((c) => c.show);
 
@@ -63,7 +48,9 @@ export default function Counter() {
                     <div className="p-4 relative">
                         <div className="absolute w-[100vw]">
                             <div className="text-lg font-[Ink_Free] -rotate-6 mt-2 text-black ">The Same Old, Same Old counters for</div>
-                            <div className="text-2xl leading-6 font-[Ink_Free] -rotate-2  font-bold  ml-40 text-black ">{dateStr()} A.D.</div>
+                            <div className="text-2xl leading-6 font-[Ink_Free] -rotate-2  font-bold  ml-40 text-black ">
+                                {parse(scene.currentDate,'yyyyMMdd', new Date() ).toDateString()} A.D.
+                                </div>
                         </div>
                         <div className="grid gap-2 text-blue-800 mt-21">
                             {activeCounters.map((c) => (

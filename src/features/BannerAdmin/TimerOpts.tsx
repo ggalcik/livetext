@@ -1,6 +1,7 @@
 import clsx from "clsx";
 import type { LiveDataAction, Timer, TimerKey } from "../../context/LiveData/types";
 import RotateCountdown from "./RotateCountdown";
+import DisplayCountdown from "../../components/DisplayCountdown";
 
 interface ITimerOptsProps {
     timer: Timer;
@@ -32,6 +33,7 @@ export default function TimerOpts({ timer, timerKey, dispatch }: ITimerOptsProps
             })} />
 
         <div>
+            {/* <DisplayCountdown timer={timer}  */}
             <RotateCountdown timerKey={timerKey} nextTimerKey={otherTimerKey} />
         </div>
     </div>;

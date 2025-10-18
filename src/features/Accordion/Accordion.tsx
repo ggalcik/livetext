@@ -10,8 +10,10 @@ interface IAccordion<T extends string> {
     selectedLink?: T;
     setSelectedLink?: (scene: SceneType) => void;
     selectedRadio?: T;
-    setSelectedRadio?: (scene: SceneType) => void;
+    setSelectedRadio?: (scene: SceneType, delay?: number) => void;
+    boomerangRadio?: (delay?: number) => void;
     startOpen?: boolean;
+    delay: number| null;
 
 }
 
@@ -23,6 +25,8 @@ export function Accordion<T extends string>({
     setSelectedLink,
     selectedRadio,
     setSelectedRadio,
+    boomerangRadio,
+    delay,
     startOpen = false }: IAccordion<T>) {
     const [isOpen, setIsOpen] = useState(startOpen);
 
@@ -37,7 +41,10 @@ export function Accordion<T extends string>({
     // TODO: ugh doesn't apply to accordion, but is there a point to generalizing
     function handleSceneSelect(evt: React.MouseEvent, scene: T) {
         evt.stopPropagation();
-        openPopup(scene);
+        // setSelectedLink && setSelectedLink(scene);
+        // if (!isOpen) {
+        //     setIsOpen(true);
+        // }
         setSelectedRadio && setSelectedRadio(scene);
     }
 
@@ -54,16 +61,22 @@ export function Accordion<T extends string>({
                 </div>
                 {links && setSelectedLink &&
                     links.map(item =>
-                        <div key={`accordion_link_${item}`} 
-                        className={clsx("flex gap-2 px-2 border-r items-center",
-                            selectedLink === item && links && isOpen && "bg-green-300",
-                            selectedLink === item && "bg-green-200")}>
-                            <input type="radio"
-                                className="w-6 h-6"
-                                name={`accordion_${label}`}
-                                value={item}
-                                checked={selectedRadio && selectedRadio === item}
-                                onClick={(e) => handleSceneSelect(e, item)} />
+                        <div key={`accordion_link_${item}`}
+                            className={clsx("flex gap-2 px-2 border-r items-center",
+                                selectedLink === item && links && isOpen && "bg-green-300",
+                                selectedLink === item && "bg-green-200")}>
+                            <div className="w-6 h-6 relative">
+                                <input type="radio"
+                                    className="w-6 h-6"
+                                    name={`accordion_${label}`}
+                                    value={item}
+                                    checked={selectedRadio && selectedRadio === item}
+                                    onClick={(e) => handleSceneSelect(e, item)} />
+                                
+                                { delay && selectedRadio === item  &&
+                                <div className="absolute w-6 h-6 border -top-0 -left-0 bg-white flex justify-center align-baseline">{delay}</div> 
+                                }
+                            </div>
                             <div className=''
                                 onClick={(e) => handleSceneClick(e, item)}>{item}</div>
                         </div>

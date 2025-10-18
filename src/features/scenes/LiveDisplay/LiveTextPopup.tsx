@@ -14,6 +14,7 @@ export default function LiveTextPopup() {
       try {
         const newState = JSON.parse(event.newValue || "");
         setState(newState);
+        // glog("LiveTextPopup");
       } catch {
         console.warn("Invalid JSON in LiveData localStorage");
       }

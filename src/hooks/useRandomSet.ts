@@ -89,7 +89,7 @@ export function useRandomSet(
     }, opts.intervalMs);
 
     return () => clearInterval(timer);
-  }, [active, opts]);
+  }, [active]);
 
   return numbers.map(entry => entry.value).sort();
 }

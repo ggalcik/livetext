@@ -11,6 +11,7 @@ import { useEffect, useRef } from "react";
 import glog from "../../../components/glog";
 import { ItemTransition } from "./ItemTransition";
 import { ProgressWheel } from "../../../components/ProgressWheel";
+import RotateCountdown from "../../BannerAdmin/RotateCountdown";
 
 
 export default function LiveText({ state }: { state: LiveDataState }) {
@@ -36,9 +37,8 @@ export default function LiveText({ state }: { state: LiveDataState }) {
 
   const showSpot = activeSpotIndex !== NO_ACTIVE_SPOT && state.displaySpots;
 
-  useEffect(() => { }, [state]);
-
   return (
+    <>
     <MasterViewport name="livetext" needCtrl>
       <Background which={state.backgroundImage}
        showAngerBits={state.backgroundImage === 'Angry' && 
@@ -96,5 +96,15 @@ export default function LiveText({ state }: { state: LiveDataState }) {
           </div>
         )} */}
     </MasterViewport>
+
+    {/* <div className="absolute flex flex-nowrap top-4 left-4 gap-8 text-white leading-10 items-center">
+        <div className="flex flex-nowrap">
+          timer: <RotateCountdown timerKey="timer" nextTimerKey="breakTimer" />
+          </div>
+       <div className="flex flex-nowrap">
+       breakTimer:  <RotateCountdown timerKey="breakTimer" nextTimerKey="timer" />
+        </div>
+    </div> */}
+    </>
   );
 }
