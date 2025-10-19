@@ -32,26 +32,28 @@ export function ProgressWheel({
 
         const largeArc = stepAngle > 180 ? 1 : 0;
 
-        const radiusMod1 = radius 
-        const radiusMod2 = radius 
-        // const radiusMod1 = radius - 4
-        // const radiusMod2 = radius + 4
+        // const radiusMod1 = radius 
+        // const radiusMod2 = radius 
+        const radiusMod1 = radius - 4
+        const radiusMod2 = radius + 4
 
         const x1 = cx + radiusMod1 * Math.cos((startAngle * Math.PI) / 180);
         const y1 = cy + radiusMod1 * Math.sin((startAngle * Math.PI) / 180);
         const x2 = cx + radiusMod2 * Math.cos((endAngle * Math.PI) / 180);
         const y2 = cy + radiusMod2 * Math.sin((endAngle * Math.PI) / 180);
 
+const arc =  `A ${radius * .6} ${radius * .5} -50 ${largeArc} 1 ${x2} ${y2}`;
+
         const pathData = `
       M ${cx} ${cy}
       L ${x1} ${y1}
-      A ${radius * .5} ${radius * .5} 40 ${largeArc} 1 ${x2} ${y2}
+     ${arc}
       Z
     `;
 
         const outlineData = ` 
       M ${x1} ${y1}
-      A ${radius * .5} ${radius * .5} 0 ${largeArc} 1 ${x2} ${y2}
+     ${arc}
     `;
 
 
@@ -111,7 +113,7 @@ export function ProgressWheel({
                 {timer.countdown}
             </div>
             {alt && SHOW_SPARKLES && animSliceInterval === 1 &&
-                <div className="absolute bottom-6 -left-24 rotate-20 font-[Impact] text-red-300 text-2xl animate-pulse">So angry!!</div>
+                <div className="absolute bottom-6 -left-24 rotate-20 shadow-2xl font-[Impact] text-red-300 text-2xl animate-pulse">So angry!!</div>
             }
             {alt && SHOW_SPARKLES && animSliceInterval === 2 &&
                 <div className="absolute top-0 -right-10 -rotate-20 font-[Impact] text-red-300 text-2xl animate-pulse">Grr!!</div>

@@ -84,7 +84,7 @@ export default function LiveText({ state }: { state: LiveDataState }) {
 
         {!state.breakTimer.waiting &&
           state.displayBanners && (
-            <div className="absolute bottom-0 right-1/12 scale-80">
+            <div className="absolute bottom-1/12 right-1/6 scale-80">
               <ProgressWheel timer={state.breakTimer} size={90} alt />
             </div>
           )}

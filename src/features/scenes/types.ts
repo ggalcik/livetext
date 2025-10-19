@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-export const scenes =  ['banners', 'philbronium', 'video', 'evolution', 'counter']
+export const scenes =  ['banners', 'counter', 'video', 'philbronium', 'evolution']
 const scenesSchema = z.enum(scenes);
 export type SceneType =  z.infer<typeof scenesSchema>
 
