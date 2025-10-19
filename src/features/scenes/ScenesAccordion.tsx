@@ -78,6 +78,7 @@ export default function ScenesAccordion({ popupState }: { popupState: PopupState
       adminSelected: scene
     };
     setSceneAccordionData(newData);
+    
   }
 
   // Clean up if component unmounts

@@ -29,8 +29,10 @@ export function ProgressWheel({
 
         const largeArc = stepAngle > 180 ? 1 : 0;
 
-        const radiusMod1 = radius + (i%2==0?3:-3);
-        const radiusMod2 = radius -  (i%2==1?3:-3);
+        const radiusMod1 = radius - 4
+        const radiusMod2 = radius + 4
+        // const radiusMod1 = radius + (i%2==0?3:-3);
+        // const radiusMod2 = radius -  (i%2==1?3:-3);
 
 
         const x1 = cx + radiusMod1 * Math.cos((startAngle * Math.PI) / 180);

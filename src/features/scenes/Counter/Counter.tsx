@@ -1,6 +1,5 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { MasterViewport } from "../../../components/MasterViewport/MasterViewport";
-import { dateStr } from "../../../components/util";
 import { format, parse } from "date-fns";
 import './Counter.css';
 import { CounterSceneSchema, type Counter } from "./types";
@@ -18,11 +17,11 @@ export default function Counter() {
 
     const audio = new Audio(dling);
 
-    const playSound = () => {
+    const playSound = useCallback(() => {
         audio.play().catch((err) => {
             console.warn("Could not play sound:", err);
         });
-    };
+    }, []);
 
     const activeCounters = scene.counters.filter((c) => c.show);
 
@@ -86,7 +85,7 @@ function CounterRow({ counter, playSound }: ICounterRow) {
             if (counter.play)
                 playSound();
         }
-    }, [counter.lastIncrement]);
+    }, [counter.lastIncrement, playSound, counter.play]);
 
     return (
         <div

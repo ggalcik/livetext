@@ -11,6 +11,8 @@ import IntoJesus from "../../../assets/into_jesus.jpg";
 import Trolley from "../../../assets/trolley.jpg";
 import Quadrant from "../../../assets/quadrant.png";
 
+import AngerMini from "../../../assets/angry_atheist_sm.png";
+
 import type { BackgroundType } from "../../../context/LiveData/types";
 import { useRandomSet } from "../../../hooks/useRandomSet";
 import React from "react";
@@ -64,11 +66,12 @@ const angerBits = angerData.map((d, i) => (
 interface BackgroundProps {
   which: BackgroundType;
   showAngerBits: boolean;
+  altBackground: boolean;
 }
 
 
 
-export default function Background({ which, showAngerBits }: BackgroundProps) {
+export default function Background({ which, showAngerBits, altBackground }: BackgroundProps) {
   const numberSet = useRandomSet(showAngerBits,
     {
       minNumbers: 1,
@@ -77,8 +80,11 @@ export default function Background({ which, showAngerBits }: BackgroundProps) {
     });
 
   //  glog("numberSet", numberSet, "angerBits.length", angerBits.length);
-  return (
+  return altBackground ?
+    <div className="text-white absolute -top-24 scale-110"><img className="" src={AngerMini} /></div>
+    :
     <div className="absolute bottom-0 text-white">
+
 
       <img className="" src={backgroundMap[which]} />
       {numberSet.length > 0 &&
@@ -87,6 +93,8 @@ export default function Background({ which, showAngerBits }: BackgroundProps) {
           React.cloneElement(angerBits[bitNum], { key: bitNum })
         )
       }
+
+
     </div>
-  );
+    ;
 }

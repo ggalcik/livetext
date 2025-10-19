@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { z } from "zod";
 import workingData, {type IWorkingData} from "../workingData";
+import type { PersistentDataKey } from "./types";
 
 // Generic loader that infers T from the schema
 function loadState<S extends z.ZodTypeAny>({
@@ -39,7 +40,7 @@ export function usePersistentState<S extends z.ZodTypeAny>({
   schema,
   fallback,
 }: {
-  storageKey: string;
+  storageKey: PersistentDataKey;
   schema: S;
   fallback: z.infer<S>;
 }) {
