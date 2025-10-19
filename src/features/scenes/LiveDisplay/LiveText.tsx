@@ -104,10 +104,7 @@ export default function LiveText({ state }: { state: LiveDataState }) {
         )} */}
       </MasterViewport>
 
-      <div className="absolute flex flex-nowrap top-4 left-4 gap-8 text-white leading-10 items-center">
-        state.breakTimer {JSON.stringify(state.breakTimer)}
 
-      </div>
       {/* <div className="absolute flex flex-nowrap top-4 left-4 gap-8 text-white leading-10 items-center">
         <div className="flex flex-nowrap">
           timer: <RotateCountdown timerKey="timer" nextTimerKey="breakTimer" />

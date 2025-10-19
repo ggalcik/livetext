@@ -1,3 +1,4 @@
+import React from "react";
 import type { Timer } from "../context/LiveData/types";
 
 interface IProgressWheel {
@@ -13,9 +14,9 @@ export function ProgressWheel({
     size = 120,
     alt = false,
 }: IProgressWheel) {
-  if (!timer || !timer.on || timer.interval == null || timer.countdown == null) {
-    return <div></div>;
-  }
+    if (!timer || !timer.on || timer.interval == null || timer.countdown == null) {
+        return <div></div>;
+    }
 
     const radius = size / 2 - 5;
     const cx = size / 2;
@@ -23,17 +24,18 @@ export function ProgressWheel({
     const stepAngle = 360 / (timer.interval - 1);
     const completed = Math.max(0, timer.interval - timer.countdown);
 
+
+
     const wedges = Array.from({ length: timer.interval - 1 }, (_, i) => {
         const startAngle = -90 + i * stepAngle;
         const endAngle = startAngle + stepAngle;
 
         const largeArc = stepAngle > 180 ? 1 : 0;
 
-        const radiusMod1 = radius - 4
-        const radiusMod2 = radius + 4
-        // const radiusMod1 = radius + (i%2==0?3:-3);
-        // const radiusMod2 = radius -  (i%2==1?3:-3);
-
+        const radiusMod1 = radius 
+        const radiusMod2 = radius 
+        // const radiusMod1 = radius - 4
+        // const radiusMod2 = radius + 4
 
         const x1 = cx + radiusMod1 * Math.cos((startAngle * Math.PI) / 180);
         const y1 = cy + radiusMod1 * Math.sin((startAngle * Math.PI) / 180);
@@ -43,9 +45,15 @@ export function ProgressWheel({
         const pathData = `
       M ${cx} ${cy}
       L ${x1} ${y1}
-      A ${radius} ${radius} 0 ${largeArc} 1 ${x2} ${y2}
+      A ${radius * .5} ${radius * .5} 40 ${largeArc} 1 ${x2} ${y2}
       Z
     `;
+
+        const outlineData = ` 
+      M ${x1} ${y1}
+      A ${radius * .5} ${radius * .5} 0 ${largeArc} 1 ${x2} ${y2}
+    `;
+
 
         const isFilled = i < completed;
         const fill = alt
@@ -53,19 +61,29 @@ export function ProgressWheel({
             : (isFilled ? "#bfdbfe" : "#2563eb");
 
         return (
-            <path
-                key={i}
-                d={pathData}
-                stroke={fill}
-                strokeWidth={1}
-                fill={fill}
-                style={{
-                    transition: "fill 0.5s ease",
+            <React.Fragment key={i}>
+                <path
+                    d={outlineData}
+                    stroke={'black'}
+                    strokeWidth={4}
+                />
+                <path
+                    d={pathData}
+                    stroke={fill}
+                    strokeWidth={1}
+                    fill={fill}
+                    style={{
+                        transition: "fill 0.5s ease",
 
-                    //   transition: "fill 0.5s ease, opacity 0.5s ease",
-                    //   opacity: isFilled ? 0.6: 1,
-                }}
-            />)
+                        //   transition: "fill 0.5s ease, opacity 0.5s ease",
+                        //   opacity: isFilled ? 0.6: 1,
+                    }}
+                />
+            </React.Fragment>
+
+
+
+        )
         // <path key={i} d={pathData} fill={fill} />;
     });
 

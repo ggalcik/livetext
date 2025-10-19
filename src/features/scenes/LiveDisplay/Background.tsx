@@ -10,15 +10,15 @@ import DullAsleep from "../../../assets/dull_asleep.jpg";
 import IntoJesus from "../../../assets/into_jesus.jpg";
 import Trolley from "../../../assets/trolley.jpg";
 import Quadrant from "../../../assets/quadrant.png";
+import './Background.css';
 
 import AngerMini from "../../../assets/angry_atheist_sm.png";
 
 import type { BackgroundType } from "../../../context/LiveData/types";
 import { useRandomSet } from "../../../hooks/useRandomSet";
-import React from "react";
+import React, { useRef } from "react";
 import { twMerge } from "tailwind-merge";
-import clsx from "clsx";
-import glog from "../../../components/glog";
+import { SwitchTransition, CSSTransition } from "react-transition-group";
 
 const backgroundMap: Record<BackgroundType, string> = {
   "": "",
@@ -72,29 +72,39 @@ interface BackgroundProps {
 
 
 export default function Background({ which, showAngerBits, altBackground }: BackgroundProps) {
-  const numberSet = useRandomSet(showAngerBits,
-    {
-      minNumbers: 1,
-      maxNumbers: 3,
-      numberMax: angerBits.length - 1
-    });
+  const numberSet = useRandomSet(showAngerBits, {
+    minNumbers: 1,
+    maxNumbers: 3,
+    numberMax: angerBits.length - 1,
+  });
 
-  //  glog("numberSet", numberSet, "angerBits.length", angerBits.length);
-  return altBackground ?
-    <div className="text-white absolute -top-24 scale-110"><img className="" src={AngerMini} /></div>
-    :
-    <div className="absolute bottom-0 text-white">
+  const altRef = useRef<HTMLDivElement>(null);
+  const mainRef = useRef<HTMLDivElement>(null);
 
+  const activeRef = altBackground ? altRef : mainRef;
 
-      <img className="" src={backgroundMap[which]} />
-      {numberSet.length > 0 &&
-
-        numberSet.map((bitNum) =>
-          React.cloneElement(angerBits[bitNum], { key: bitNum })
-        )
-      }
-
-
-    </div>
-    ;
+  return (
+    <SwitchTransition>
+      <CSSTransition
+        key={altBackground ? "alt" : `main-${which}`} // key drives the swap
+        timeout={300}
+        classNames="fade"
+         nodeRef={activeRef}
+      >
+        {altBackground ? (
+          <div ref={altRef} className="text-white absolute -top-24 scale-110">
+            <img src={AngerMini} />
+          </div>
+        ) : (
+          <div ref={mainRef} className="absolute bottom-0 text-white">
+            <img src={backgroundMap[which]} />
+            {numberSet.length > 0 &&
+              numberSet.map((bitNum) =>
+                React.cloneElement(angerBits[bitNum], { key: bitNum })
+              )}
+          </div>
+        )}
+      </CSSTransition>
+    </SwitchTransition>
+  );
 }
