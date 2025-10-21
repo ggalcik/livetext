@@ -43,7 +43,7 @@ export default function ScenesAccordion({ popupState }: { popupState: PopupState
     setRemainingDelay(null);
   }
 
-  function switchScene(scene: SceneType, delaySeconds?: number) {
+  function switchScene(scene: SceneType, delaySeconds?: number):void {
     // cancel any existing timers
     clearTimers();
 
@@ -78,7 +78,7 @@ export default function ScenesAccordion({ popupState }: { popupState: PopupState
       adminSelected: scene
     };
     setSceneAccordionData(newData);
-    
+
   }
 
   // Clean up if component unmounts
@@ -86,6 +86,9 @@ export default function ScenesAccordion({ popupState }: { popupState: PopupState
     return clearTimers;
   }, []);
 
+  const boomerang = (delay: number) => switchScene(sceneAccordionData.sceneSelected, delay)
+
+// glog("boomerang %o", boomerang)
   return (
     <Accordion
       label="scenes"
@@ -95,12 +98,14 @@ export default function ScenesAccordion({ popupState }: { popupState: PopupState
       setSelectedLink={setSelectedAdmin}
       selectedRadio={sceneAccordionData.sceneSelected}
       setSelectedRadio={(scene, delay) => switchScene(scene, delay)}
-      boomerangRadio={delay => switchScene(sceneAccordionData.sceneSelected, delay)}
+      boomerangRadio={sceneAccordionData.adminSelected !== sceneAccordionData.sceneSelected
+        ? boomerang : null}
       delay={remainingDelay} // ⬅ live countdown in seconds
     >
       <SceneAdmin
         scene={sceneAccordionData.adminSelected}
-        popupState={popupState} />
+        popupState={popupState} 
+        boomerang={boomerang}/>
     </Accordion>
   );
 }

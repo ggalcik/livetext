@@ -6,7 +6,7 @@ interface IMasterViewport {
     children: React.ReactNode;
     name: string;
     needCtrl?: boolean;
-    noResize?: boolean;
+    resizable?: boolean;
 }
 
 interface Pointer {
@@ -51,7 +51,7 @@ function getNamedFromLocal(name: string): Edges {
     return defaultEdges;
 }
 
-export function MasterViewport({ children, name, needCtrl=false, noResize=false }: IMasterViewport) {
+export function MasterViewport({ children, name, needCtrl=false, resizable=true }: IMasterViewport) {
     const [panelMoving, setPanelMoving] = useState(false);
     const [pointer, setPointer] = useState<Pointer | null>(null);
     const [edges, setEdges] = useState<Edges>(getNamedFromLocal(name));
@@ -113,7 +113,7 @@ export function MasterViewport({ children, name, needCtrl=false, noResize=false 
 
         let newMovingWhich = movingWhich;
 
-        if (noResize) {
+        if (!resizable) {
             newMovingWhich = 'box';
         } else if (!movingWhich) {
             if (Math.min(fromTop, fromBottom, fromLeft, fromRight) > EDGE_RANGE)

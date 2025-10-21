@@ -11,7 +11,7 @@ interface IAccordion<T extends string> {
     setSelectedLink?: (scene: SceneType) => void;
     selectedRadio?: T;
     setSelectedRadio?: (scene: SceneType, delay?: number) => void;
-    boomerangRadio?: (delay?: number) => void;
+    boomerangRadio?: ((delay: number) => void) | null;
     startOpen?: boolean;
     delay: number| null;
 

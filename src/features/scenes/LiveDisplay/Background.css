@@ -1,14 +1,38 @@
+@import "tailwindcss";
+
 .fade-enter {
   opacity: .5;
 }
+
 .fade-enter-active {
   opacity: 1;
   transition: opacity 300ms ease-in-out;
 }
+
 .fade-exit {
   opacity: 1;
 }
+
 .fade-exit-active {
   opacity: .5;
   transition: opacity 300ms ease-in-out;
+}
+
+
+@theme {
+  --animate-bob: bob 20s ease-in-out infinite;
+
+  @keyframes bob {
+    0% {
+      transform: translateY(0px) scale(0.8) ;
+    }
+
+    50% {
+      transform: translateY(20px) scale(1) ;
+    }
+
+    100% {
+      transform: translateY(0px) scale(0.8) ;
+    }
+  }
 }

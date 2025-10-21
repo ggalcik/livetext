@@ -34,15 +34,15 @@ export function ProgressWheel({
 
         // const radiusMod1 = radius 
         // const radiusMod2 = radius 
-        const radiusMod1 = radius - 4
-        const radiusMod2 = radius + 4
+        const radiusMod1 = radius - 7
+        const radiusMod2 = radius + 2
 
         const x1 = cx + radiusMod1 * Math.cos((startAngle * Math.PI) / 180);
         const y1 = cy + radiusMod1 * Math.sin((startAngle * Math.PI) / 180);
         const x2 = cx + radiusMod2 * Math.cos((endAngle * Math.PI) / 180);
         const y2 = cy + radiusMod2 * Math.sin((endAngle * Math.PI) / 180);
 
-const arc =  `A ${radius * .6} ${radius * .5} -50 ${largeArc} 1 ${x2} ${y2}`;
+const arc =  `A ${radius * .5} ${radius * .5} 0 ${largeArc} 1 ${x2} ${y2}`;
 
         const pathData = `
       M ${cx} ${cy}

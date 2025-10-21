@@ -5,10 +5,12 @@ export default function CounterAdminRow({
   counter,
   onUpdate,
   onDelete,
+  maxActive
 }: {
   counter: Counter;
   onUpdate: (id: string, update: Partial<Counter>) => void;
   onDelete: (id: string) => void;
+  maxActive: boolean;
 }) {
   const [confirmDelete, setConfirmDelete] = useState(false);
 
@@ -18,6 +20,7 @@ export default function CounterAdminRow({
         type="checkbox"
         className="w-8 h-8 cursor-pointer"
         checked={counter.show}
+        disabled={!counter.show && maxActive}
         onChange={(e) => onUpdate(counter.id, { show: e.target.checked })}
       />
       <input

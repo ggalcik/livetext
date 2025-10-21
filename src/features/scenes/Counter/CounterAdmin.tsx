@@ -104,37 +104,37 @@ export default function CounterAdmin() {
         updateScene(counters);
     }
 
-  function doDayReset() {
-  const date = scene.currentDate || todayKey();
+    function doDayReset() {
+        const date = scene.currentDate || todayKey();
 
-  // 1. Copy current counters to history
-  const active = scene.counters
-    .filter((c) => c.value !== 0 && c.name)
-    .map((c) => ({ name: c.name, value: c.value }));
+        // 1. Copy current counters to history
+        const active = scene.counters
+            .filter((c) => c.value !== 0 && c.name)
+            .map((c) => ({ name: c.name, value: c.value }));
 
-  const updatedHistory = {
-    ...scene.history,
-    [date]: active,
-  };
+        const updatedHistory = {
+            ...scene.history,
+            [date]: active,
+        };
 
-  // 2. Reset counters
-  const resetCounters = scene.counters.map((counter) => ({
-    ...counter,
-    value: 0,
-    show: false,
-    play: true,
-  }));
+        // 2. Reset counters
+        const resetCounters = scene.counters.map((counter) => ({
+            ...counter,
+            value: 0,
+            show: false,
+            play: true,
+        }));
 
-  // 3. Update scene with new date and cleared counters
-  setScene({
-    ...scene,
-    counters: resetCounters,
-    history: updatedHistory,
-    currentDate: todayKey(),
-  });
+        // 3. Update scene with new date and cleared counters
+        setScene({
+            ...scene,
+            counters: resetCounters,
+            history: updatedHistory,
+            currentDate: todayKey(),
+        });
 
-  setConfirmReset(false);
-}
+        setConfirmReset(false);
+    }
 
     function doDayResetOld() {
         if (scene.counters) {
@@ -148,6 +148,8 @@ export default function CounterAdmin() {
         }
     }
 
+    const maxActive = scene.counters.filter(i => i.show).length >= 10;
+
     return (
         <div className="flex justify-between gap-8">
 
@@ -158,6 +160,7 @@ export default function CounterAdmin() {
                         counter={c}
                         onUpdate={updateCounter}
                         onDelete={deleteCounter}
+                        maxActive={maxActive}
                     />
                 ))}
 
@@ -187,7 +190,7 @@ export default function CounterAdmin() {
             <div className=" w-1/2 flex justify-between">
 
                 <div className="">
-                    Display: { format(parse(scene.currentDate, 'yyyyMMdd', new Date()), "eee MMM d yyyy G") }
+                    Display: {format(parse(scene.currentDate, 'yyyyMMdd', new Date()), "eee MMM d yyyy G")}
 
                 </div>
 

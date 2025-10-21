@@ -7,6 +7,7 @@ import Video from "../scenes/Video/Video";
 import Evolution from "../scenes/Evolution/Evolution";
 import type { SceneType } from "../scenes/types";
 import Counter from "../scenes/Counter/Counter";
+import Panels from "../scenes/Panels/Panels";
 
 
 export function openPopup(which?: string) {
@@ -38,6 +39,7 @@ export default function PopupScene() {
       {sceneName === 'video' && <Video />}
       {sceneName === 'evolution' && <Evolution />}
       {sceneName === 'counter' && <Counter />}
-    </div>
+      {sceneName === 'panels' && <Panels which='copy Rhizic' />}
+    </div> 
   );
 }

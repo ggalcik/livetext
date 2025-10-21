@@ -54,7 +54,7 @@ export default function Counter() {
     return (
         <div className="absolute w-full h-full bg-amber-900">
 
-            <MasterViewport name="counter" noResize>
+            <MasterViewport name="counter" resizable={false}>
                 <div className={`absolute w-full h-full origin-top-left`}
                     style={{transform: `scale(${getModScale(activeCounters.length)})`  }} 
                 >
