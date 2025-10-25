@@ -24,3 +24,4 @@ dist-ssr
 *.sw?
 /public/local
 /src/local
+/public/local

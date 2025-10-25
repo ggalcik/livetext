@@ -1,13 +1,14 @@
 import { Button } from "../../../components/Button";
 import { usePersistentState } from "../../../hooks/usePersistentState"
 import { IPanelSceneSchema, panelTypes, type IPanelType } from "./types"
-import {panels} from './config';
+import { panels } from './panels/config';
 import glog from "../../../components/glog";
+import { useEffect, type ReactNode } from "react";
 
 interface IPanelsAdminProps {
     boomerang: ((delay: number) => void) | null;
 }
-export default function PanelsAdmin({boomerang}:IPanelsAdminProps) {
+export default function PanelsAdmin({ boomerang }: IPanelsAdminProps) {
 
     const [panelScene, setPanelScene] = usePersistentState({
         storageKey: 'panelsScene',
@@ -19,29 +20,39 @@ export default function PanelsAdmin({boomerang}:IPanelsAdminProps) {
         setPanelScene(
             {
                 ...panelScene,
-                active: { panel }
+                active: panelScene.active?.panel === panel ? null : { panel }
             }
         )
     }
 
-   
-    return (
+    useEffect(() => {
+        return () => { setPanelScene({ active: null }) };
+    }, []);
 
+    return (
+        
         <div className="text-black">
 
             {panelTypes.map((panelName, i) => {
                 const panel = panels[panelName];
- glog('panelName', panelName, 'boomerang',boomerang );
+                const adminElement = panels[panelName]?.adminElement ? panels[panelName]?.adminElement as ReactNode : <></>
                 return (
-                    <div className="flex gap-2">
+                    <div className="grid grid-cols-[auto_auto] gap-6 w-max">
                         <div>
-                            <Button onClick={() => showPanel(panelName)}>
+                            {/* <Button mode={panelName === panelScene.active?.panel ? 'activated' : null} 
+                                onClick={() => showPanel(panelName)}> */}
+                            <Button className={panelName === panelScene.active?.panel
+                                ? 'ring-4 ring-black'
+                                : 'ring-4 ring-white'} onClick={() => showPanel(panelName)}>
                                 <div key={i}>{panelName}</div>
                             </Button>
                         </div>
                         <div>
-                            {panel.boomerangDelay && boomerang && `boomerang: ${panel.boomerangDelay} seconds`}
+                            {adminElement }
                         </div>
+                        {/* <div>
+                            {panel.boomerangDelay && boomerang && `boomerang: ${panel.boomerangDelay} seconds`}
+                        </div> */}
                     </div>
 
                 )

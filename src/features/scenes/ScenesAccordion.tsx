@@ -105,7 +105,8 @@ export default function ScenesAccordion({ popupState }: { popupState: PopupState
       <SceneAdmin
         scene={sceneAccordionData.adminSelected}
         popupState={popupState} 
-        boomerang={boomerang}/>
+        boomerang={sceneAccordionData.adminSelected !== sceneAccordionData.sceneSelected
+        ? boomerang : null}/>
     </Accordion>
   );
 }

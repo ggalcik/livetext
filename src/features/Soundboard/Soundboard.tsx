@@ -2,11 +2,12 @@ import { useState, useEffect } from "react";
 import Controls from "./Controls";
 import ProgressBar from "./ProgressBar";
 
-// Auto-import all .mp3 files from /public/local/soundboard
 const soundModules = import.meta.glob("/src/local/soundboard/*.mp3", {
     eager: true,
     import: "default",
 });
+
+
 
 const soundFiles = Object.keys(soundModules).map((path) => {
     const parts = path.split("/");

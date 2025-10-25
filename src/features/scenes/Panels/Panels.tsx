@@ -1,34 +1,42 @@
 import { MasterViewport } from "../../../components/MasterViewport/MasterViewport";
 
 import { IPanelSceneSchema, type IPanels, type IPanelType } from "./types";
-import { panels } from './config';
+import { panels } from './panels/config';
 import { usePersistentState } from "../../../hooks/usePersistentState";
-import type { ReactNode } from "react";
+import { useEffect, type ReactNode } from "react";
 
 interface IPanelsProps {
     which: IPanelType;
 }
 
-export default function Panels({ which }: IPanelsProps) {
+export default function Panels() {
     const [panelScene] = usePersistentState({
         storageKey: 'panelsScene',
         schema: IPanelSceneSchema,
         fallback: { active: null }
     })
+
+
+
     const showPanel = panelScene.active?.panel;
     const element = showPanel ? panels[showPanel].element as ReactNode : <></>
     const backgroundElement = showPanel && panels[showPanel].backgroundElement
         ? panels[showPanel].backgroundElement as ReactNode
         : <></>
 
+    if (!panelScene.active) {
+        return <div className="absolute w-full h-full bg-gradient-to-b from-purple-600 to-blue-600"></div>
+    }
+
     return (
         <div className="absolute w-full h-full bg-amber-900">
-            { backgroundElement }
-            <MasterViewport name="counter">
+            {backgroundElement}
 
-                {element}
-
-            </MasterViewport>
+            {showPanel && panels[showPanel].noViewport ? element :
+                <MasterViewport name={`panel ${panelScene.active.panel}`}>
+                    {element}
+                </MasterViewport>
+            }
         </div>
 
 

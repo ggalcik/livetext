@@ -39,7 +39,7 @@ export default function PopupScene() {
       {sceneName === 'video' && <Video />}
       {sceneName === 'evolution' && <Evolution />}
       {sceneName === 'counter' && <Counter />}
-      {sceneName === 'panels' && <Panels which='copy Rhizic' />}
+      {sceneName === 'panels' && <Panels />}
     </div> 
   );
 }

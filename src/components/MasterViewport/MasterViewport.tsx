@@ -55,6 +55,7 @@ export function MasterViewport({ children, name, needCtrl=false, resizable=true 
     const [panelMoving, setPanelMoving] = useState(false);
     const [pointer, setPointer] = useState<Pointer | null>(null);
     const [edges, setEdges] = useState<Edges>(getNamedFromLocal(name));
+    const [ctrlKey, setCtrlKey] = useState(false);
     const [movingWhich, setMovingWhich] = useState<'box' | 'edge' | null>(null);
 
     const [masterRef, { width: masterWidth, height: masterHeight }] = useMeasure<HTMLDivElement>();
@@ -154,6 +155,9 @@ export function MasterViewport({ children, name, needCtrl=false, resizable=true 
             <div
                 ref={masterRef}
                 className={clsx("h-full w-full overflow-hidden relative z-0")}
+                onKeyDown={(e) => {alert('ctrl');if (e.ctrlKey) setCtrlKey(true)}}
+                onKeyUp={() => setCtrlKey(false)}
+                onMouseLeave={() => setCtrlKey(false)}
                 onMouseDown={(e) => {
                      if (e.button !== 0) return;
                      if (needCtrl && !e.ctrlKey) return;
@@ -181,7 +185,7 @@ export function MasterViewport({ children, name, needCtrl=false, resizable=true 
                     <div
                         className={clsx(
                             "absolute z-0 w-full h-full border-2 border-dashed border-red-300",
-                            panelMoving ? "block border-red-400" : "hidden border-black"
+                            panelMoving || ctrlKey ? "block border-red-400" : "hidden border-black"
                         )}
                     >
                         <div className="w-2 h-2 top-0 left-0 absolute bg-red-400"></div>
@@ -198,6 +202,14 @@ export function MasterViewport({ children, name, needCtrl=false, resizable=true 
                     <div className="top-0 left-0 p-4">
                         window: {`${masterWidth.toFixed(1)}, ${masterHeight.toFixed(1)}`}<br />
                         pointer: {pointer && `${pointer.pxp},${pointer.pyp}`}<br />
+                    </div>
+                </div>
+            )}  
+                  {ctrlKey && (
+                <div className="absolute top-6 left-3 text-white ">
+                   
+                    <div className="top-0 right-0 p-4">
+                       ctrl
                     </div>
                 </div>
             )}

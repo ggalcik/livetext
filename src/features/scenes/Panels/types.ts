@@ -9,8 +9,10 @@ export type IPanelType = z.infer<typeof IPanelTypeSchema>;
 export const IPanelSchema = z.object({
     element: z.unknown(), // jsx element
     backgroundElement: z.unknown().optional(), // jsx element
+    adminElement: z.unknown().optional(), // jsx element
     soundEnter: z.string().optional(),
     boomerangDelay: z.number().optional(),
+     noViewport: z.boolean().optional(),
 });
 export type IPanel = z.infer<typeof IPanelSchema>;
 
@@ -21,7 +23,8 @@ export type IPanels = z.infer<typeof IPanelsSchema>;
 export const IPanelSceneSchema = z.object({
     active: z.object({
         panel: IPanelTypeSchema,
-        duration: z.number().optional()
+        duration: z.number().optional(),
+       
     }).nullable()
 });
 export type IPanelScene = z.infer<typeof IPanelSceneSchema>;

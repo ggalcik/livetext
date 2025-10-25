@@ -1,0 +1,30 @@
+@import "tailwindcss";
+
+@theme {
+    --animate-risen: risen 15s ease-out forwards;
+
+    @keyframes risen {
+        0% {
+            transform: translate(0, 40%);
+            opacity: 0;
+        }
+
+        20% {
+
+            opacity: 1;
+        }
+
+        90% {
+            transform: translate(0, -20%);
+           
+        }
+
+        100% {
+            transform: translate(0, -20%);
+          
+        }
+    }
+
+
+
+}

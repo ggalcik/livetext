@@ -92,7 +92,7 @@ export default function Background({ which, showAngerBits, altBackground }: Back
          nodeRef={activeRef}
       >
         {altBackground ? (
-          <div ref={altRef} className="text-white absolute -top-48 scale-100 animate-bob">
+          <div ref={altRef} className="text-white absolute -top-48 scale-100 animate-bobzoom">
             <img src={AngerMini} />
           </div>
         ) : (

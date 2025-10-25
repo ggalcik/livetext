@@ -13,7 +13,7 @@ interface IAccordion<T extends string> {
     setSelectedRadio?: (scene: SceneType, delay?: number) => void;
     boomerangRadio?: ((delay: number) => void) | null;
     startOpen?: boolean;
-    delay: number| null;
+    delay?: number| null;
 
 }
 
