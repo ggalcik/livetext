@@ -12,6 +12,7 @@ interface IAccordion<T extends string> {
     selectedRadio?: T;
     setSelectedRadio?: (scene: SceneType, delay?: number) => void;
     boomerangRadio?: ((delay: number) => void) | null;
+    boomerangTarget?: SceneType
     startOpen?: boolean;
     delay?: number| null;
 
@@ -26,6 +27,7 @@ export function Accordion<T extends string>({
     selectedRadio,
     setSelectedRadio,
     boomerangRadio,
+    boomerangTarget,
     delay,
     startOpen = false }: IAccordion<T>) {
     const [isOpen, setIsOpen] = useState(startOpen);

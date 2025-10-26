@@ -9,6 +9,7 @@ interface ISceneAdmin {
   scene: SceneType;
   popupState: PopupState;
   boomerang: ((delay: number) => void) | null;
+  boomerangTarget?: SceneType
 }
 
 export default function SceneAdmin({ scene, popupState, boomerang }: ISceneAdmin) {
