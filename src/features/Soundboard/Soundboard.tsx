@@ -1,6 +1,9 @@
 import { useState, useEffect } from "react";
 import Controls from "./Controls";
 import ProgressBar from "./ProgressBar";
+import { usePersistentState } from "../../hooks/usePersistentState";
+import { soundboardDataDefault, SoundboardDataSchema } from "./types";
+import clsx from "clsx";
 
 const soundModules = import.meta.glob("/src/local/soundboard/*.mp3", {
     eager: true,
@@ -16,6 +19,12 @@ const soundFiles = Object.keys(soundModules).map((path) => {
 });
 
 export default function Soundboard() {
+    const [soundboardData, setSoundboardData] = usePersistentState({
+        storageKey: 'soundboardData',
+        schema: SoundboardDataSchema,
+        fallback: soundboardDataDefault}
+    );
+        
     const [currentSound, setCurrentSound] = useState<string | null>(null);
     const [audioEl, setAudioEl] = useState<HTMLAudioElement | null>(null);
     const [volume, setVolume] = useState<number>(1.0);
@@ -73,6 +82,20 @@ export default function Soundboard() {
         }
     }
 
+    function toggleHighlight(file: string) {
+        let newHighlights;
+        if (soundboardData.highlightNames.includes(file))
+            newHighlights = soundboardData.highlightNames.filter((item) => item != file);
+        else 
+            newHighlights = [...soundboardData.highlightNames, file];
+
+        setSoundboardData({
+            ...soundboardData,
+            highlightNames: newHighlights
+        });
+
+    }
+
     useEffect(() => {
         if (audioEl) {
             audioEl.volume = muted ? 0 : volume;
@@ -94,15 +117,21 @@ export default function Soundboard() {
 
             {/* Buttons */}
             <div className="grid grid-cols-2 md:grid-cols-6 gap-4">
-                {soundFiles.map(({ file, url }) => (
+                {soundFiles.map(({ file, url }) => {
+                    const isHighlighted = soundboardData.highlightNames.includes(file);
+                    return (
                     <button
                         key={file}
                         onClick={() => playSound(url, file)}
-                        className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+                        onContextMenu={(e) => { toggleHighlight(file); e.preventDefault() }}
+                        className={clsx('px-4 py-2 text-white rounded border-2',
+                            isHighlighted ? 'bg-green-600 hover:bg-green-700' : 'bg-blue-600 hover:bg-blue-700',
+                            currentSound===file ? 'border-black' : 'border-white'
+                        )}
                     >
                         {file.replace(".mp3", "").replace("_", " ")}
                     </button>
-                ))}
+                )})}
             </div>
 
             {/* Now playing */}
