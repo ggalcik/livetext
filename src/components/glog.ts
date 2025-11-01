@@ -14,6 +14,7 @@ const logConfig: Record<
   component: { enabled: true, prefix: "Component starting", sgr: "35;1" },
   db: { enabled: true, prefix: "Supabase call", sgr: "103;1" },
   dbAuth: { enabled: false, prefix: "Supabase call", sgr: "103;1" },
+  rotateCountdown: { enabled: false, prefix: "rotateCountdown", sgr: "103;1" },
   // Add more categories as needed
   // Add more categories as needed
 };

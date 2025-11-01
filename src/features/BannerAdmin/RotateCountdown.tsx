@@ -4,48 +4,49 @@ import { useLiveData } from "../../context/LiveData";
 import type { Timer } from "../../context/LiveData/types";
 import glog from "../../components/glog";
 
-type TimerKey = "timer" | "breakTimer";
-interface RotateCountdownOpts {
+type TimerKey = "timer" | "breakTimer"; 
+interface rotateCountdownOpts {
   timerKey: TimerKey;
   nextTimerKey: TimerKey;
 }
 
-export default function RotateCountdown({ timerKey, nextTimerKey }: RotateCountdownOpts) {
+export default function rotateCountdown({ timerKey, nextTimerKey }: rotateCountdownOpts) {
   const { state, dispatch } = useLiveData();
+
   const [timer, nextTimer] = [state[timerKey], state[nextTimerKey]];
+  if (!timer || !nextTimer) {
+    glog.rotateCountdown("Missing timer data", timerKey, nextTimerKey);
+    return null;
+  }
+//   glog.rotateCountdown("this one, the other one", timer, nextTimer)
+// glog.rotateCountdown("Timer identity", timer, timerKey, nextTimer);
 
-  // dispatch({
-  //           type: "timer/params",
-  //           payload: {  waiting: timerKey === 'breakTimer', which: timerKey },
-  //         });
-
-  // console.log("state %o", state);
-  // console.log("timer %o, nextTimer %o", timer, nextTimer);
   const countdownRef = useRef<number | null>(timer.countdown);
   const nextTimerOnRef = useRef<boolean>(nextTimer.on);
   const displayBannersRef = useRef<boolean>(state.displayBanners);
-
-  // const pauseSeconds = 5;
-  // const pauseCountdownRef = useRef(pauseSeconds);
-
+glog.rotateCountdown("timer ", timerKey);
   useEffect(() => {
+    glog.rotateCountdown("useEffect 1");
     countdownRef.current = timer.countdown;
     displayBannersRef.current = state.displayBanners;
     nextTimerOnRef.current = nextTimer.on;
-  }, [timer.countdown, nextTimer.on, state]);
-  
+  }, [state[timerKey].countdown, state[nextTimerKey].on, state.displayBanners]);
+
   useEffect(() => {
-    if (!state.displayBanners) return;
-    if (timer.waiting) return;
+    glog.rotateCountdown("useEffect 2");
+    glog.rotateCountdown("state.displayBanners %s, timer.waiting %s, timer.on %s, timer.interval %s", state.displayBanners, timer.waiting, timer.on, timer.interval)
+    if (!state.displayBanners) return; glog.rotateCountdown("a");
+    if (timer.waiting) return;glog.rotateCountdown("b", timer.interval);
     if (!timer.on || timer.interval === null) {
       dispatch({ type: "timer/params", payload: { countdown: null, which: timerKey } });
       return;
-    }
+    }glog.rotateCountdown("c");
     dispatch({
       type: "timer/params",
       payload: { countdown: timer.interval, which: timerKey },
     });
-    
+
+    glog.rotateCountdown("down here");
     const clock = setInterval(() => {
       const currentCountdown = countdownRef.current;
       const nextTimerOn = nextTimerOnRef.current;

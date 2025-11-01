@@ -109,11 +109,8 @@ function CounterRow({ counter, playSound }: ICounterRow) {
 
     return (
         <div
-            className={`flex w-120 text-4xl font-[Gabriola] font-bold leading-[34px] justify-between p-2 gap-4 
-        ${animating && "animate-tada-color "}`}
-
-        >
-            <div>{counter.name}</div>
+            className={`flex w-120 text-4xl font-[Gabriola] font-bold leading-[34px] justify-between p-2 gap-4`} >
+            <div className={`${animating && "animate-tada-color "}`} >{counter.name}</div>
             <div className="relative">
                 <div
                     className={`${animating && "animate-tada "} scale-150`}

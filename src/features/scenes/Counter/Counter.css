@@ -16,12 +16,15 @@
     --animate-tada-color: tada-color 0.5s ease-in-out;
     @keyframes tada-color {
         0% {
-         color: #193cb8;
+            transform: scale(1);
+         color: #193cb8 ;
         }
         20% {
+            transform: scale(2);
          color: red;
         }        
         100% {
+            transform: scale(1);
          color: #193cb8;
         }
     }
