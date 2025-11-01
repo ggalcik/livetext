@@ -83,15 +83,6 @@ export default function CounterAdmin() {
         setScene({ ...scene, counters });
     }
 
-    // TODO: only move to history when day reset is clicked. or maybe have it occasionally check date and block updates if off? or do automatically?
-    function updateSceneOld(counters: Counter[]) {
-        const date = todayKey();
-        const active = counters.filter((c) => c.show && c.value !== 0 && c.name)
-            .map((c) => ({ name: c.name, value: c.value }));
-        const history = { ...scene.history, [date]: active };
-        setScene({ ...scene, counters });
-    }
-
     function updateCounter(id: string, update: Partial<Counter>) {
         const counters = scene.counters.map((c) =>
             c.id === id ? { ...c, ...update } : c
@@ -136,58 +127,28 @@ export default function CounterAdmin() {
         setConfirmReset(false);
     }
 
-    function doDayResetOld() {
-        if (scene.counters) {
-            setScene(
-                {
-                    ...scene,
-                    counters: scene.counters.map((counter) => { return { ...counter, value: 0, show: false, play: true } })
-                }
-            )
-            setConfirmReset(false);
-        }
+    function sortCheckedUp() {
+        const newCounters = [...scene.counters];
+        newCounters.sort((a,b) => {
+            if (a.show === b.show) return 0;
+            if (a.show && !b.show) return -1;
+            return 1;
+        });
+        setScene({
+            ...scene,
+            counters: newCounters
+        })
     }
+
 
     const maxActive = scene.counters.filter(i => i.show).length >= 10;
 
     return (
-        <div className="flex justify-between gap-8">
+        <div className="">
 
-            <div className="w-1/2 space-y-4">
-                {scene.counters.map((c) => (
-                    <CounterAdminRow
-                        key={c.id}
-                        counter={c}
-                        onUpdate={updateCounter}
-                        onDelete={deleteCounter}
-                        maxActive={maxActive}
-                    />
-                ))}
+           
 
-                {/* Add new counter row */}
-                <div className="flex gap-2">
-                    <div>
-                        <Button
-                            onClick={() => addCounter(true)}>Add blank</Button>
-                    </div>
-                    <input
-                        className="flex-1 border p-1"
-                        placeholder="Name"
-                        value={newName}
-                        onChange={(e) => setNewName(e.target.value)}
-                        onKeyDown={(e) => e.key === "Enter" && addCounter()}
-                    />
-                    <input
-                        className="w-20 border p-1"
-                        placeholder="0"
-                        value={newValue}
-                        onChange={(e) => setNewValue(e.target.value)}
-                        onKeyDown={(e) => e.key === "Enter" && addCounter()}
-                    />
-                </div>
-            </div>
-
-            <div className=" w-1/2 flex justify-between">
+            <div className="p-4 border border-gray-400 flex justify-between bg-amber-50">
 
                 <div className="">
                     Display: {format(parse(scene.currentDate, 'yyyyMMdd', new Date()), "eee MMM d yyyy G")}
@@ -222,6 +183,47 @@ export default function CounterAdmin() {
                     </div>
                 }
             </div>
+            
+            <div className="py-4">
+
+                <Button onClick={sortCheckedUp}>Sort checked up</Button>
+            </div>
+
+            <div className="lg:columns-2  space-y-4">
+                {scene.counters.map((c) => (
+                    <CounterAdminRow
+                        key={c.id}
+                        counter={c}
+                        onUpdate={updateCounter}
+                        onDelete={deleteCounter}
+                        maxActive={maxActive}
+                    />
+                ))}
+
+                {/* Add new counter row */}
+                <div className="flex gap-2">
+                    <div>
+                        <Button
+                            onClick={() => addCounter(true)}>Add blank</Button>
+                    </div>
+                    <input
+                        className="flex-1 border p-1"
+                        placeholder="Name"
+                        value={newName}
+                        onChange={(e) => setNewName(e.target.value)}
+                        onKeyDown={(e) => e.key === "Enter" && addCounter()}
+                    />
+                    <input
+                        className="w-20 border p-1"
+                        placeholder="0"
+                        value={newValue}
+                        onChange={(e) => setNewValue(e.target.value)}
+                        onKeyDown={(e) => e.key === "Enter" && addCounter()}
+                    />
+                </div>
+            </div>
+
+
 
         </div>
     );

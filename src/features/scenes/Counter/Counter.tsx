@@ -66,7 +66,7 @@ export default function Counter() {
 
                 <div className="p-4 relative">
                     <div className="absolute w-[100vw]">
-                        <div className="text-lg font-[Ink_Free] -rotate-6 mt-2 text-black ">The repetiton counters for</div>
+                        <div className="text-lg font-[Ink_Free] font-bold -rotate-6 mt-2 text-black ">"Heard it before" counters for</div>
                         <div className="text-3xl leading-6 font-[Ink_Free] -rotate-2  font-bold  ml-35 mt-2 text-black ">
                             {parse(scene.currentDate, 'yyyyMMdd', new Date()).toDateString()} A.D.
                         </div>

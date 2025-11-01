@@ -18,18 +18,18 @@ workingData.counterScene = {
     {
       "id": "zp6d1x2zxv",
       "name": "\"Agnostic atheist?!\" ",
-      "value": 1,
+      "value": 6,
       "show": true,
       "play": true,
-      "lastIncrement": 1760274897633
+      "lastIncrement": 1761994633638
     },
     {
       "id": "3j330wovh6r",
       "name": "Christian mind reading",
-      "value": 1,
+      "value": 2,
       "show": true,
       "play": true,
-      "lastIncrement": 1760277798245
+      "lastIncrement": 1761939185325
     },
     {
       "id": "pc4fi8artum",
@@ -37,7 +37,7 @@ workingData.counterScene = {
       "value": 0,
       "show": false,
       "play": true,
-      "lastIncrement": 1760189267185
+      "lastIncrement": 1761854949021
     },
     {
       "id": "zbauchxsgwa",
@@ -48,28 +48,20 @@ workingData.counterScene = {
       "lastIncrement": 1759056546776
     },
     {
-      "id": "u1aktjza5mg",
-      "name": "Why so angry?",
-      "value": 0,
-      "show": false,
-      "play": true,
-      "lastIncrement": 1759092489240
-    },
-    {
       "id": "dy8jxsi3ze8",
       "name": "More faith to be an atheist",
       "value": 0,
       "show": false,
       "play": true,
-      "lastIncrement": 1759091063249
+      "lastIncrement": 1761687281612
     },
     {
       "id": "4s41lnfw0ol",
       "name": "\"Something from nothing?!\"",
-      "value": 0,
-      "show": false,
+      "value": 1,
+      "show": true,
       "play": true,
-      "lastIncrement": 1759348566019
+      "lastIncrement": 1761941701540
     },
     {
       "id": "wmju63our6a",
@@ -77,7 +69,7 @@ workingData.counterScene = {
       "value": 0,
       "show": false,
       "play": true,
-      "lastIncrement": 1759432942449
+      "lastIncrement": 1761340753614
     },
     {
       "id": "n3m8lqcsjxj",
@@ -93,15 +85,15 @@ workingData.counterScene = {
       "value": 0,
       "show": false,
       "play": true,
-      "lastIncrement": 1760040261676
+      "lastIncrement": 1761162819434
     },
     {
       "id": "c2pg06yx8xl",
       "name": "Pascal's wager",
-      "value": 0,
-      "show": false,
+      "value": 1,
+      "show": true,
       "play": true,
-      "lastIncrement": 1760125988444
+      "lastIncrement": 1761939890899
     },
     {
       "id": "8qpatdpsdjy",
@@ -109,10 +101,58 @@ workingData.counterScene = {
       "value": 0,
       "show": false,
       "play": true,
-      "lastIncrement": 1760189208403
+      "lastIncrement": 1761855812178
+    },
+    {
+      "id": "2jpuylu9cgn",
+      "name": "Look at the trees!",
+      "value": 0,
+      "show": false,
+      "play": true,
+      "lastIncrement": 1760885098741
+    },
+    {
+      "id": "bjltodl9m2",
+      "name": "Slavery is okay (!)",
+      "value": 0,
+      "show": false,
+      "play": true,
+      "lastIncrement": 1761854943875
+    },
+    {
+      "id": "3p3fgxbxlyo",
+      "name": "Look at the trees! (expert level)",
+      "value": 1,
+      "show": true,
+      "play": true,
+      "lastIncrement": 1761941748118
+    },
+    {
+      "id": "m62t0hbdbg",
+      "name": "Second law of thermodynamics",
+      "value": 0,
+      "show": false,
+      "play": true,
+      "lastIncrement": 1761163861362
+    },
+    {
+      "id": "otrbmblbjmf",
+      "name": "Watchmaker fallacy",
+      "value": 0,
+      "show": false,
+      "play": true,
+      "lastIncrement": 1761685554698
+    },
+    {
+      "id": "yxryt2pf53",
+      "name": "They're not real Christians",
+      "value": 0,
+      "show": false,
+      "play": true,
+      "lastIncrement": 1761250934423
     }
   ],
-  "currentDate": "20251012",
+  "currentDate": "20251031",
   "history": {
     "20250924": [
       {
@@ -287,9 +327,216 @@ workingData.counterScene = {
         "name": "Christian mind reading",
         "value": 1
       }
+    ],
+    "20251013": [
+      {
+        "name": "\"Agnostic atheist?!\" ",
+        "value": 1
+      }
+    ],
+    "20251016": [
+      {
+        "name": "\"Agnostic atheist?!\" ",
+        "value": 1
+      },
+      {
+        "name": "Christian mind reading",
+        "value": 1
+      },
+      {
+        "name": "The worst arguments",
+        "value": 1
+      }
+    ],
+    "20251017": [
+      {
+        "name": "\"Agnostic atheist?!\" ",
+        "value": 2
+      },
+      {
+        "name": "Christian mind reading",
+        "value": 2
+      },
+      {
+        "name": "No hate like Christian love",
+        "value": 1
+      },
+      {
+        "name": "The worst arguments",
+        "value": 1
+      },
+      {
+        "name": "Pascal's wager",
+        "value": 1
+      },
+      {
+        "name": "Look at the trees!",
+        "value": 1
+      }
+    ],
+    "20251019": [
+      {
+        "name": "\"Agnostic atheist?!\" ",
+        "value": 4
+      },
+      {
+        "name": "Christian mind reading",
+        "value": 3
+      },
+      {
+        "name": "Pascal's wager",
+        "value": 1
+      },
+      {
+        "name": "Look at the trees!",
+        "value": 1
+      },
+      {
+        "name": "Slavery is okay (!)",
+        "value": 1
+      }
+    ],
+    "20251022": [
+      {
+        "name": "Christian mind reading",
+        "value": 1
+      },
+      {
+        "name": "Atheism is a religion",
+        "value": 1
+      },
+      {
+        "name": "Pascal's wager",
+        "value": 3
+      },
+      {
+        "name": "Second law of thermodynamics",
+        "value": 1
+      },
+      {
+        "name": "Watchmaker fallacy",
+        "value": 1
+      }
+    ],
+    "20251023": [
+      {
+        "name": "\"Agnostic atheist?!\" ",
+        "value": 1
+      },
+      {
+        "name": "Christian mind reading",
+        "value": 1
+      },
+      {
+        "name": "No hate like Christian love",
+        "value": 1
+      },
+      {
+        "name": "Pascal's wager",
+        "value": 1
+      },
+      {
+        "name": "Slavery is okay (!)",
+        "value": 1
+      },
+      {
+        "name": "They're not real Christians",
+        "value": 1
+      }
+    ],
+    "20251024": [
+      {
+        "name": "\"Agnostic atheist?!\" ",
+        "value": 3
+      },
+      {
+        "name": "Christian mind reading",
+        "value": 3
+      },
+      {
+        "name": "No hate like Christian love",
+        "value": 2
+      },
+      {
+        "name": "The worst arguments",
+        "value": 1
+      },
+      {
+        "name": "Slavery is okay (!)",
+        "value": 1
+      },
+      {
+        "name": "Watchmaker fallacy",
+        "value": 1
+      }
+    ],
+    "20251026": [
+      {
+        "name": "Christian mind reading",
+        "value": 3
+      },
+      {
+        "name": "No hate like Christian love",
+        "value": 2
+      },
+      {
+        "name": "More faith to be an atheist",
+        "value": 1
+      },
+      {
+        "name": "\"Something from nothing?!\"",
+        "value": 1
+      },
+      {
+        "name": "Pascal's wager",
+        "value": 1
+      }
+    ],
+    "20251028": [
+      {
+        "name": "\"Agnostic atheist?!\" ",
+        "value": 2
+      },
+      {
+        "name": "More faith to be an atheist",
+        "value": 3
+      },
+      {
+        "name": "Watchmaker fallacy",
+        "value": 1
+      }
+    ],
+    "20251029": [
+      {
+        "name": "Christian mind reading",
+        "value": 1
+      },
+      {
+        "name": "\"Something from nothing?!\"",
+        "value": 2
+      }
+    ],
+    "20251030": [
+      {
+        "name": "Christian mind reading",
+        "value": 3
+      },
+      {
+        "name": "No hate like Christian love",
+        "value": 1
+      },
+      {
+        "name": "Angry at God",
+        "value": 2
+      },
+      {
+        "name": "Slavery is okay (!)",
+        "value": 1
+      }
     ]
   }
 };
+
 
 
 export default workingData;
