@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { z } from "zod";
 import workingData, {type IWorkingData} from "../workingData";
 import type { PersistentDataKey } from "./types";
+import glog from "../components/glog";
 
 // Generic loader that infers T from the schema
 function loadState<S extends z.ZodTypeAny>({
@@ -15,10 +16,14 @@ function loadState<S extends z.ZodTypeAny>({
 }): z.infer<S> {
   try {
     const stored = localStorage.getItem(storageKey);
+    // glog("loadState: stored: %o", stored);
     if (stored) {
       const parsed = JSON.parse(stored);
       const res = schema.safeParse(parsed);
-      if (res.success) return res.data;
+      if (res.success) {
+         glog(`[${storageKey}] loadState stored`, { data: res.data });
+        return res.data;
+      }
       console.warn(`Invalid localStorage data for ${storageKey}`, res.error.format());
     }
   } catch (e) {
@@ -27,14 +32,17 @@ function loadState<S extends z.ZodTypeAny>({
 
   if (workingData && workingData[storageKey as keyof IWorkingData]) {
     const res = schema.safeParse(workingData[storageKey as keyof IWorkingData]);
-    if (res.success) return res.data;
+    if (res.success) {
+        glog(`[${storageKey}] loadState from workingData?`, { data: res.data });
+      return res.data;
+    }
+      
     console.warn(`Invalid workingData for ${storageKey}`, res.error.format());
   }
 
   return fallback;
 }
 
-// Hook with persistence + cross-tab sync
 export function usePersistentState<S extends z.ZodTypeAny>({
   storageKey,
   schema,
@@ -44,9 +52,22 @@ export function usePersistentState<S extends z.ZodTypeAny>({
   schema: S;
   fallback: z.infer<S>;
 }) {
-  const [state, setState] = useState<z.infer<S>>(() =>
+  const [state, _setState] = useState<z.infer<S>>(() =>
     loadState({ storageKey, schema, fallback })
   );
+
+  const setState = (update: z.infer<S> | ((prev: z.infer<S>) => z.infer<S>)) => {
+    if (typeof update === "function") {
+      _setState(prev => {
+        const next = (update as (p:z.infer<S>) => z.infer<S>)(prev);
+        glog(`[${storageKey}] setState functional`, { prev, next });
+        return next;
+      });
+    } else {
+      glog(`[${storageKey}] setState value`, { prev: state, next: update });
+      _setState(update);
+    }
+  };
 
   // persist on change
   useEffect(() => {

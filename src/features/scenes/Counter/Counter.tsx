@@ -14,15 +14,29 @@ export default function Counter() {
         storageKey: 'counterScene',
         schema: CounterSceneSchema,
         fallback: { counters: [], currentDate: format(new Date(), 'yyyyMMdd') }
-    })
+    });
 
-    const audio = new Audio(dling);
+    const audioRef = useRef<HTMLAudioElement | null>(null);
+
+    // create the Audio object once
+    useEffect(() => {
+        audioRef.current = new Audio(dling);
+    }, []);
 
     const playSound = useCallback(() => {
-        audio.play().catch((err) => {
+        const audio = audioRef.current;
+        if (!audio) return;
+
+        // restart from beginning, even if already playing
+        audio.currentTime = 0;
+        audio.playbackRate = 1 + (Math.random() / 2.5 - .2);
+        audio.preservesPitch = false;
+
+        audio.play().catch(err => {
             console.warn("Could not play sound:", err);
         });
     }, []);
+
 
     const activeCounters = scene.counters.filter((c) => c.show);
 
@@ -66,7 +80,7 @@ export default function Counter() {
 
                 <div className="p-4 relative">
                     <div className="absolute w-[100vw]">
-                        <div className="text-lg font-[Ink_Free] font-bold -rotate-6 mt-2 text-black ">"Heard it before" counters for</div>
+                        <div className="text-lg font-[Ink_Free] font-bold -rotate-6 mt-2 text-black ">"Heard it all before" counters for</div>
                         <div className="text-3xl leading-6 font-[Ink_Free] -rotate-2  font-bold  ml-35 mt-2 text-black ">
                             {parse(scene.currentDate, 'yyyyMMdd', new Date()).toDateString()} A.D.
                         </div>

@@ -56,9 +56,10 @@ const angerData = [
   ["ATHEIST!!!", "right-10 top-5/12 -rotate-6 text-4xl text-red-200 "],
   ["agnostic!!!!!", "left-3/12 top-1/2  rotate-12  text-red-200 "],
   ["No YOU are hell!!", "bottom-10 rotate-2 left-1/4 "],
+  ["(you may have noticed I'm not actually angry)", "font-sans font-bold text-base left-1/12 top-1/4 -rotate-6 text-center p-4 w-60 bg-red-500" ]
 
 ]
-const angerBits = angerData.map((d, i) => (
+const angerBits = angerData.map((d) => (
   <div className={twMerge(baseClass, d[1])}> {d[0]}</div>
 ));
 
@@ -72,7 +73,8 @@ interface BackgroundProps {
 
 
 export default function Background({ which, showAngerBits, altBackground }: BackgroundProps) {
-  const numberSet = useRandomSet(showAngerBits, {
+  const showAll = false;
+  const numberSet = showAll ? Array.from(Array(angerBits.length).keys()) : useRandomSet(showAngerBits, {
     minNumbers: 1,
     maxNumbers: 3,
     numberMax: angerBits.length - 1,

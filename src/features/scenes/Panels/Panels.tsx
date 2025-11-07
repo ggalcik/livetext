@@ -4,6 +4,7 @@ import { IPanelSceneSchema, type IPanels, type IPanelType } from "./types";
 import { panels } from './panels/config';
 import { usePersistentState } from "../../../hooks/usePersistentState";
 import { useEffect, type ReactNode } from "react";
+import glog from "../../../components/glog";
 
 interface IPanelsProps {
     which: IPanelType;
@@ -16,7 +17,12 @@ export default function Panels() {
         fallback: { active: null }
     })
 
+        useEffect(() => {
+        
+    }, [panelScene.active]);
 
+
+glog("panels: panelScene.active?.panel %s", panelScene.active?.panel);
 
     const showPanel = panelScene.active?.panel;
     const element = showPanel ? panels[showPanel].element as ReactNode : <></>

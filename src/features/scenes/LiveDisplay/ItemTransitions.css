@@ -10,12 +10,28 @@
 }
 
 .rotating-exit {
+    @apply  opacity-90 scale-100;
+}
+
+.rotating-exit-active {
+    @apply  opacity-0  scale-0 transition-all duration-500 ease-in;
+}
+/* .rotating-enter {
+    @apply translate-x-full opacity-0;
+
+}
+
+.rotating-enter-active {
+    @apply translate-x-0 opacity-90 transition-all duration-500 ease-out;
+}
+
+.rotating-exit {
     @apply translate-x-0 translate-y-0 opacity-90;
 }
 
 .rotating-exit-active {
     @apply -translate-x-full -translate-y-full opacity-0  scale-0 transition-all duration-500 ease-in;
-}
+} */
 
 .spot-enter {
     @apply opacity-0 scale-20;

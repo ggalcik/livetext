@@ -125,7 +125,7 @@ export default function Soundboard() {
                         onClick={() => currentSound === file ? stopSound() : playSound(url, file)}
                         onContextMenu={(e) => { toggleHighlight(file); e.preventDefault() }}
                         className={clsx('px-4 py-2 text-white rounded border-4',
-                            isHighlighted ? 'bg-green-600 hover:bg-green-700' : 'bg-blue-600 hover:bg-blue-700',
+                            isHighlighted ? 'bg-purple-500 hover:bg-purple-700' : 'bg-blue-600 hover:bg-blue-700',
                             currentSound===file ? 'border-green-900' : 'border-white'
                         )}
                     >

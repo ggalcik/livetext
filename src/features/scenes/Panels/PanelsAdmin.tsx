@@ -9,7 +9,7 @@ interface IPanelsAdminProps {
     boomerang: ((delay: number) => void) | null;
 }
 export default function PanelsAdmin({ boomerang }: IPanelsAdminProps) {
-
+glog("PanelsAdmin in");
     const [panelScene, setPanelScene] = usePersistentState({
         storageKey: 'panelsScene',
         schema: IPanelSceneSchema,
@@ -26,8 +26,11 @@ export default function PanelsAdmin({ boomerang }: IPanelsAdminProps) {
     }
 
     useEffect(() => {
-        return () => { setPanelScene({ active: null }) };
-    }, []);
+        return () => { 
+            glog('unmount PanelsAdmin');
+           //  setPanelScene({ active: null })
+         };
+    }, [panelScene.active]);
 
     return (
         

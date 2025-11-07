@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 
-const STORAGE_KEYS = ["MasterViewports", "fontList", "liveData", "videoScene", "counterScene"] as const;
+const STORAGE_KEYS = ["MasterViewports", "fontList", "liveData", "videoScene", "counterScene", "panelsScene"] as const;
 
 type StorageKey = typeof STORAGE_KEYS[number];
 

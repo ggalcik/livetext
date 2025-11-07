@@ -129,7 +129,7 @@ export default function CounterAdmin() {
 
     function sortCheckedUp() {
         const newCounters = [...scene.counters];
-        newCounters.sort((a,b) => {
+        newCounters.sort((a, b) => {
             if (a.show === b.show) return 0;
             if (a.show && !b.show) return -1;
             return 1;
@@ -146,12 +146,14 @@ export default function CounterAdmin() {
     return (
         <div className="">
 
-           
+
 
             <div className="p-4 border border-gray-400 flex justify-between bg-amber-50">
 
                 <div className="">
-                    Display: {format(parse(scene.currentDate, 'yyyyMMdd', new Date()), "eee MMM d yyyy G")}
+                    Display: <span className="font-bold">
+                        {format(parse(scene.currentDate, 'yyyyMMdd', new Date()), "eee MMM d yyyy G")}
+                    </span>
 
                 </div>
 
@@ -183,7 +185,7 @@ export default function CounterAdmin() {
                     </div>
                 }
             </div>
-            
+
             <div className="py-4">
 
                 <Button onClick={sortCheckedUp}>Sort checked up</Button>

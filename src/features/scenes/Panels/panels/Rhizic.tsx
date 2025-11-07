@@ -28,7 +28,9 @@ export function RhizicAdmin() {
     </div>
     <div className='w-120 h-40 overflow-y-scroll px-2 border'>
         Because I really neweded help from Jesus, but when I turned around there was only one set of footprints<br />
-        The kids are walking on my azaleas again
+        The kids are walking on my azaleas again<br />
+        You become an atheist, you get the anger for free<br />
+        A = A, where A = anger, and A = Atheist
     </div>
     </>
 }

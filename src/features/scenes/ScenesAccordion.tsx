@@ -21,12 +21,7 @@ export default function ScenesAccordion({ popupState }: { popupState: PopupState
 
   function setSelectedScene(scene: SceneType) {
 
-    const newData = {
-      ...sceneAccordionData,
-      sceneSelected: scene,
-      adminSelected: scene,
-    };
-    setSceneAccordionData(newData);
+    setSceneAccordionData(prev => ({...prev,  sceneSelected: scene, adminSelected: scene}));
     openPopup(scene);
     // setSelectedAdmin(scene);
   }
@@ -73,11 +68,8 @@ export default function ScenesAccordion({ popupState }: { popupState: PopupState
   }
 
   function setSelectedAdmin(scene: SceneType) {
-    const newData = {
-      ...sceneAccordionData,
-      adminSelected: scene
-    };
-    setSceneAccordionData(newData);
+
+    setSceneAccordionData(prev => ({...prev, adminSelected: scene}));
 
   }
 

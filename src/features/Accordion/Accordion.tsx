@@ -2,6 +2,8 @@ import clsx from "clsx";
 import { useState } from "react";
 import type { SceneType } from "../scenes/types";
 import PopupScene, { openPopup } from "../Popup/PopupScene";
+import { panelTypes } from "../scenes/Panels/types";
+import MiniSelect from "../scenes/Panels/MiniSelect";
 
 interface IAccordion<T extends string> {
     label: string;
@@ -14,7 +16,7 @@ interface IAccordion<T extends string> {
     boomerangRadio?: ((delay: number) => void) | null;
     boomerangTarget?: SceneType
     startOpen?: boolean;
-    delay?: number| null;
+    delay?: number | null;
 
 }
 
@@ -31,6 +33,7 @@ export function Accordion<T extends string>({
     delay,
     startOpen = false }: IAccordion<T>) {
     const [isOpen, setIsOpen] = useState(startOpen);
+    const [showMiniSelect, setShowMiniSelect] = useState(false);
 
     function handleSceneClick(evt: React.MouseEvent, scene: T) {
         evt.preventDefault();
@@ -61,12 +64,14 @@ export function Accordion<T extends string>({
                 <div className={clsx("p-2 pl-4", label === 'scenes' && 'border-r')}>
                     {label}
                 </div>
-                {links && setSelectedLink &&
+                {links && setSelectedLink && setSelectedRadio &&
                     links.map(item =>
                         <div key={`accordion_link_${item}`}
-                            className={clsx("flex gap-2 px-2 border-r items-center",
+                            className={clsx("relative flex gap-2 px-2 border-r items-center",
                                 selectedLink === item && links && isOpen && "bg-green-300",
-                                selectedLink === item && "bg-green-200")}>
+                                selectedLink === item && "bg-green-200")}
+                            onMouseEnter={() => item === 'panels' && setShowMiniSelect(true)}
+                            onMouseLeave={() => item === 'panels' && setShowMiniSelect(false)}>
                             <div className="w-6 h-6 relative">
                                 <input type="radio"
                                     className="w-6 h-6"
@@ -74,13 +79,17 @@ export function Accordion<T extends string>({
                                     value={item}
                                     checked={selectedRadio && selectedRadio === item}
                                     onClick={(e) => handleSceneSelect(e, item)} />
-                                
-                                { delay && selectedRadio === item  &&
-                                <div className="absolute w-6 h-6 border -top-0 -left-0 bg-white flex justify-center align-baseline">{delay}</div> 
+
+                                {delay && selectedRadio === item &&
+                                    <div className="absolute w-6 h-6 border -top-0 -left-0 bg-white flex justify-center align-baseline">{delay}</div>
                                 }
                             </div>
                             <div className=''
                                 onClick={(e) => handleSceneClick(e, item)}>{item}</div>
+                            {item === 'panels' && showMiniSelect &&
+                                <MiniSelect activate={() => { setSelectedRadio('panels') }} />
+                            }
+
                         </div>
                     )
                 }
