@@ -3,6 +3,7 @@ import dling from '/src/assets/ding.mp3';
 import { Rhizic, RhizicAdmin, RhizicBackground } from "./Rhizic";
 import { LasLajas, LasLajasBackground } from "./LasLajas";
 import { Aaaaamennnn, AaaaamennnnBackground } from "./Aaaamennnn";
+import { HolyHonkers, HolyHonkersBackground } from "./HolyHonkers";
 
 export const panels: IPanels = {
     'copy Rhizic':
@@ -11,6 +12,14 @@ export const panels: IPanels = {
         element: <Rhizic />,
         backgroundElement: <RhizicBackground />,
         adminElement: <RhizicAdmin />,
+        boomerangDelay: 5,
+    },
+    'HolyHonkers':
+    {
+        // soundEnter: dling,
+        element: <HolyHonkers />,
+        backgroundElement: <HolyHonkersBackground />,
+
         boomerangDelay: 5,
     },
 

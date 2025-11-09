@@ -72,7 +72,7 @@ export function Accordion<T extends string>({
                                 selectedLink === item && "bg-green-200")}
                             onMouseEnter={() => item === 'panels' && setShowMiniSelect(true)}
                             onMouseLeave={() => item === 'panels' && setShowMiniSelect(false)}>
-                            <div className="w-6 h-6 relative">
+                            <div className="w-6 h-6 relative z-10">
                                 <input type="radio"
                                     className="w-6 h-6"
                                     name={`accordion_${label}`}

@@ -8,6 +8,7 @@ import Evolution from "../scenes/Evolution/Evolution";
 import type { SceneType } from "../scenes/types";
 import Counter from "../scenes/Counter/Counter";
 import Panels from "../scenes/Panels/Panels";
+import Slides from "../scenes/Slides/Slides";
 
 
 export function openPopup(which?: string) {
@@ -37,6 +38,7 @@ export default function PopupScene() {
       {sceneName === 'banners' && <LiveTextPopup />}
       {sceneName === 'philbronium' && <Philbronium controls={true} />}
       {sceneName === 'video' && <Video />}
+      {sceneName === 'slides' && <Slides />}
       {sceneName === 'evolution' && <Evolution />}
       {sceneName === 'counter' && <Counter />}
       {sceneName === 'panels' && <Panels />}

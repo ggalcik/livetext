@@ -1,7 +1,7 @@
 import { type JSX } from 'react';
 import { z } from 'zod';
 
-export const panelTypes = ['copy Rhizic','Las Lajas','Aaaamennn'] as const;
+export const panelTypes = ['copy Rhizic','Las Lajas','Aaaamennn', 'HolyHonkers'] as const;
 
 export const IPanelTypeSchema = z.enum(panelTypes);
 export type IPanelType = z.infer<typeof IPanelTypeSchema>;

@@ -10,18 +10,18 @@ function loadState<S extends z.ZodTypeAny>({
   schema,
   fallback,
 }: {
-  storageKey: string;
+  storageKey: PersistentDataKey;
   schema: S;
   fallback: z.infer<S>;
 }): z.infer<S> {
   try {
     const stored = localStorage.getItem(storageKey);
-    // glog("loadState: stored: %o", stored);
+    // glog.ups("loadState: stored: %o", stored);
     if (stored) {
       const parsed = JSON.parse(stored);
       const res = schema.safeParse(parsed);
       if (res.success) {
-         glog(`[${storageKey}] loadState stored`, { data: res.data });
+         glog.ups(`[${storageKey}] loadState stored`, { data: res.data });
         return res.data;
       }
       console.warn(`Invalid localStorage data for ${storageKey}`, res.error.format());
@@ -33,7 +33,7 @@ function loadState<S extends z.ZodTypeAny>({
   if (workingData && workingData[storageKey as keyof IWorkingData]) {
     const res = schema.safeParse(workingData[storageKey as keyof IWorkingData]);
     if (res.success) {
-        glog(`[${storageKey}] loadState from workingData?`, { data: res.data });
+        glog.ups(`[${storageKey}] loadState from workingData?`, { data: res.data });
       return res.data;
     }
       
@@ -59,13 +59,23 @@ export function usePersistentState<S extends z.ZodTypeAny>({
   const setState = (update: z.infer<S> | ((prev: z.infer<S>) => z.infer<S>)) => {
     if (typeof update === "function") {
       _setState(prev => {
-        const next = (update as (p:z.infer<S>) => z.infer<S>)(prev);
-        glog(`[${storageKey}] setState functional`, { prev, next });
+        const next = (update as (p: z.infer<S>) => z.infer<S>)(prev);
+        glog.ups(`[${storageKey}] setState functional`, { prev, next });
+        try {
+          localStorage.setItem(storageKey, JSON.stringify(next));
+        } catch (e) {
+          console.warn(`Failed to save ${storageKey}`, e);
+        }
         return next;
       });
     } else {
-      glog(`[${storageKey}] setState value`, { prev: state, next: update });
+      glog.ups(`[${storageKey}] setState value`, { prev: state, next: update });
       _setState(update);
+      try {
+        localStorage.setItem(storageKey, JSON.stringify(update));
+      } catch (e) {
+        console.warn(`Failed to save ${storageKey}`, e);
+      }
     }
   };
 
