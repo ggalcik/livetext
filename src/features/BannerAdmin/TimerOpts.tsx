@@ -33,8 +33,8 @@ export default function TimerOpts({ timer, timerKey, dispatch }: ITimerOptsProps
             })} />
 
         <div>
-            {/* <DisplayCountdown timer={timer}  */}
-            <RotateCountdown timerKey={timerKey} nextTimerKey={otherTimerKey} />
+            {/* <DisplayCountdown timer={timer} /> */}
+             <RotateCountdown timerKey={timerKey} nextTimerKey={otherTimerKey} />
         </div>
     </div>;
 }

@@ -12,9 +12,12 @@ import glog from "../../../components/glog";
 import { ItemTransition } from "./ItemTransition";
 import { ProgressWheel } from "../../../components/ProgressWheel";
 import RotateCountdown from "../../BannerAdmin/RotateCountdown";
+import { useLiveData } from "../../../context/LiveData";
 
 
 export default function LiveText({ state }: { state: LiveDataState }) {
+
+  // const { state } = useLiveData();
   // export default function LiveText() {
   // const { state } = useLiveData();
   // glog(state);
@@ -103,7 +106,10 @@ export default function LiveText({ state }: { state: LiveDataState }) {
           </div>
         )} */}
       </MasterViewport>
-{/* <div className="absolute flex flex-nowrap top-4 left-4 gap-8 text-white leading-10 items-center">
+
+      {/* works but the admin needs to be properly hooked in to watching localStorage
+         also remove state being passed here
+<div className="absolute flex flex-nowrap top-4 left-4 gap-8 text-white leading-10 items-center">
 one two
  <RotateCountdown timerKey="timer" nextTimerKey="breakTimer" />
 <RotateCountdown timerKey="breakTimer" nextTimerKey="timer" /> 

@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useRef } from 'react';
-import dling from '/src/assets/ding.mp3';
 import chant from './assets/ambient_monk.mp3';
 import back from './assets/las-lajas-background.webp';
 import float1 from './assets/las_lajas_back.webp';

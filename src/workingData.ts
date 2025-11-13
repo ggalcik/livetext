@@ -125,6 +125,22 @@ workingData.MasterViewports = {
       "right": 99.79999999999998,
       "bottom": 23.20000000000006
     }
+  },
+  "slides": {
+    "edges": {
+      "top": 48.8,
+      "left": 8.9,
+      "right": 92.8,
+      "bottom": 97.1
+    }
+  },
+  "panel HolyHonkers": {
+    "edges": {
+      "top": 34.4,
+      "left": 16.799999999999997,
+      "right": 83.19999999999987,
+      "bottom": 100.19999999999999
+    }
   }
 };
 
@@ -2833,12 +2849,25 @@ workingData.liveData = {
     },
     {
       "id": "lj1fgnhok49ay20hmxgn",
-      "text": "I AM AN ATHEIST\nchange my mind[[font-size: 70%]]",
+      "text": "I AM AN ATHEIST\nchange my mind*[[font-size: 70%]]\n* I don't really need you to change my mind[[font-size: 40%;color:gray;text-align:right;text-shadow:0 0]]",
       "bannerCSS": {
         "padding": "40px",
         "font": "bold 50px \"arial rounded mt\"",
         "textAlign": "center",
         "backgroundColor": "#82e",
+        "onBox": true,
+        "textShadow": "2px 2px black"
+      },
+      "type": "rotating",
+      "on": true
+    },
+    {
+      "id": "l8jmodrqe4fk36q18d08",
+      "text": "What do you think nonbelievers aren't considering?\n* (C) 2025 Bored Atheist. All Rights Reserved.[[font-size: 40%;color:gray;text-align:right;text-shadow:0 0]]",
+      "bannerCSS": {
+        "padding": "40px",
+        "font": "50px/1.1 'Palatino Linotype'",
+        "backgroundColor": "#228",
         "onBox": true,
         "textShadow": "2px 2px black"
       },
@@ -2872,8 +2901,7 @@ workingData.liveData = {
         "textShadow": "2px 2px black"
       },
       "type": "rotating",
-      "on": true,
-      "idx": 3
+      "on": true
     },
     {
       "id": "thfj4tqmlo41a2n6cz6k",
@@ -2888,14 +2916,14 @@ workingData.liveData = {
         "textShadow": "1px 1px black"
       },
       "type": "rotating",
-      "on": true
+      "on": false
     },
     {
       "id": "1svu7nnxu8",
-      "text": "Slavery is bad[[font-size: 80%]]\nWE ALL* AGREE\nGod* doesn't, though[[font-size: 70%]]",
+      "text": "Slavery is bad[[font-size: 80%]]\nWE ALL* AGREE\nGod** doesn't, though[[font-size: 70%]]\n* I am amazed to learn we all don't[[font-size: 40%;color:gray;text-align:right;text-shadow:0 0]]\n** of the Bible[[font-size: 40%;color:gray;text-align:right;text-shadow:0 0]]",
       "bannerCSS": {
-        "padding": "40px",
-        "font": " 50px/1.3 'Berlin Sans FB'",
+        "padding": "20px",
+        "font": "50px/1.3 'Berlin Sans FB'",
         "textAlign": "center",
         "backgroundColor": "#040",
         "onBox": true
@@ -3005,30 +3033,28 @@ workingData.liveData = {
     "textShadow": "4px 4px black"
   },
   "displayBanners": true,
-  "activeBanner": 0,
+  "activeBanner": 12,
   "spots": [
     {
       "id": "6lymdetz1yf",
-      "text": "I am 129% angry!!!@![[line-height:1]]\nstats don't lie![[font-size: 40%; transform: translate(10%)]]",
+      "text": "I am 133% angry!!!@![[line-height:1]]\nstats don't lie![[font-size: 40%; transform: translate(10%)]]",
       "bannerCSS": {
         "padding": "60px 20px",
         "font": "bold 70px/1.3  \"Agency FB\"",
         "backgroundColor": "red",
         "onBox": true
       },
-      "type": "spot",
-      "idx": 0
+      "type": "spot"
     },
     {
       "id": "jdrhx3cda8",
-      "text": "My favorite names today![[color:#8ff;font-size:80%]]\n\nthemushiestavocado\nRay\nMarxist Barbie\nSpice Hoarder\n",
+      "text": "My favorite names today![[color:#8ff;font-size:80%]]\n\nOrnalius.Izbëçænstein.Pheadore\nareyoutokkingtome\njambiyay🐉\njigglypuff on the floor",
       "bannerCSS": {
         "color": "",
         "backgroundColor": "#770077",
         "onBox": true
       },
-      "type": "spot",
-      "idx": 1
+      "type": "spot"
     },
     {
       "id": "8hzswknvgj",
@@ -3082,10 +3108,9 @@ workingData.liveData = {
     },
     {
       "id": "sn9vacq1eo42xcbjzdcg",
-      "text": "soup -> humans it feasible.[[font-size: 50%]]\nWell NOT choosing itself is a choice of free will isn’t?[[font-size: 50%]]\n you're asking people to anger you, sad!",
+      "text": "soup -> humans it feasible.[[font-size: 50%]]\nWell NOT choosing itself is a choice of free will isn’t?[[font-size: 50%]]\n you're asking people to anger you, sad![[font-size: 50%]]\nyou are ready sinin",
       "bannerCSS": {},
-      "type": "spot",
-      "idx": 7
+      "type": "spot"
     }
   ],
   "defaultSpotCSS": {
@@ -3098,15 +3123,15 @@ workingData.liveData = {
     "textShadow": "4px 4px #444"
   },
   "displaySpots": false,
-  "activeSpot": 7,
+  "activeSpot": 1,
   "timer": {
     "on": true,
     "interval": 12,
-    "countdown": 6,
+    "countdown": 7,
     "waiting": false
   },
   "breakTimer": {
-    "on": true,
+    "on": false,
     "interval": 9,
     "countdown": 1,
     "waiting": true
@@ -3116,7 +3141,7 @@ workingData.liveData = {
 
 workingData.videoScene = {
   "preview": null,
-  "live": "eat your vegetables.mp4",
+  "live": "mollys back.mp4",
   "opts": {
     "loop": false,
     "autoplay": true
@@ -3150,28 +3175,92 @@ workingData.videoScene = {
 workingData.counterScene = {
   "counters": [
     {
+      "id": "3j330wovh6r",
+      "name": "Christian mind reading",
+      "value": 2,
+      "show": true,
+      "play": true,
+      "lastIncrement": 1762706812309
+    },
+    {
+      "id": "zp6d1x2zxv",
+      "name": "\"Agnostic atheist?!\" ",
+      "value": 7,
+      "show": true,
+      "play": true,
+      "lastIncrement": 1762702850163
+    },
+    {
       "id": "4s41lnfw0ol",
       "name": "\"Something from nothing?!\"",
-      "value": 0,
-      "show": false,
+      "value": 2,
+      "show": true,
       "play": true,
-      "lastIncrement": 1762099347746
+      "lastIncrement": 1762701021610
+    },
+    {
+      "id": "zbauchxsgwa",
+      "name": "Atheists don't exist",
+      "value": 1,
+      "show": true,
+      "play": true,
+      "lastIncrement": 1762701124309
+    },
+    {
+      "id": "qqno5sntn9",
+      "name": "\"accident\"",
+      "value": 13,
+      "show": true,
+      "play": true,
+      "lastIncrement": 1762702010158
     },
     {
       "id": "pc4fi8artum",
       "name": "No hate like Christian love",
-      "value": 1,
-      "show": true,
+      "value": 0,
+      "show": false,
       "play": true,
-      "lastIncrement": 1762463727038
+      "lastIncrement": 1762632950311
     },
     {
-      "id": "3j330wovh6r",
-      "name": "Christian mind reading",
-      "value": 1,
-      "show": true,
+      "id": "n3m8lqcsjxj",
+      "name": "Praying for me",
+      "value": 0,
+      "show": false,
       "play": true,
-      "lastIncrement": 1762463738403
+      "lastIncrement": 1762632955306
+    },
+    {
+      "id": "tvb3n8foe9",
+      "name": "Atheism is a religion",
+      "value": 0,
+      "show": false,
+      "play": true,
+      "lastIncrement": 1762634107959
+    },
+    {
+      "id": "8qpatdpsdjy",
+      "name": "Angry at God",
+      "value": 0,
+      "show": false,
+      "play": true,
+      "lastIncrement": 1762632962417
+    },
+    {
+      "id": "1698tyolzrd",
+      "name": "Philbro",
+      "value": 0,
+      "show": false,
+      "play": true,
+      "lastIncrement": 1762632942235
+    },
+    {
+      "id": "68vs3r3wy32",
+      "name": "Church hurt",
+      "value": 0,
+      "show": false,
+      "play": true,
+      "lastIncrement": 1762635255612
     },
     {
       "id": "c2pg06yx8xl",
@@ -3179,7 +3268,7 @@ workingData.counterScene = {
       "value": 0,
       "show": false,
       "play": true,
-      "lastIncrement": 1762377680954
+      "lastIncrement": 1762640111477
     },
     {
       "id": "2jpuylu9cgn",
@@ -3198,28 +3287,12 @@ workingData.counterScene = {
       "lastIncrement": 1762029014940
     },
     {
-      "id": "zp6d1x2zxv",
-      "name": "\"Agnostic atheist?!\" ",
-      "value": 0,
-      "show": false,
-      "play": true,
-      "lastIncrement": 1762028495474
-    },
-    {
       "id": "3p3fgxbxlyo",
       "name": "Look at the trees! (expert level)",
-      "value": 1,
-      "show": true,
-      "play": true,
-      "lastIncrement": 1762461047917
-    },
-    {
-      "id": "zbauchxsgwa",
-      "name": "Atheists don't exist",
       "value": 0,
       "show": false,
       "play": true,
-      "lastIncrement": 1759056546776
+      "lastIncrement": 1762461047917
     },
     {
       "id": "dy8jxsi3ze8",
@@ -3238,34 +3311,10 @@ workingData.counterScene = {
       "lastIncrement": 1762034319939
     },
     {
-      "id": "n3m8lqcsjxj",
-      "name": "Praying for me",
-      "value": 0,
-      "show": false,
-      "play": true,
-      "lastIncrement": 1760043507507
-    },
-    {
-      "id": "tvb3n8foe9",
-      "name": "Atheism is a religion",
-      "value": 0,
-      "show": false,
-      "play": true,
-      "lastIncrement": 1762378344659
-    },
-    {
-      "id": "8qpatdpsdjy",
-      "name": "Angry at God",
-      "value": 0,
-      "show": false,
-      "play": true,
-      "lastIncrement": 1761855812178
-    },
-    {
       "id": "m62t0hbdbg",
       "name": "Laws of thermodynamics",
-      "value": 1,
-      "show": true,
+      "value": 0,
+      "show": false,
       "play": true,
       "lastIncrement": 1762461679311
     },
@@ -3294,15 +3343,15 @@ workingData.counterScene = {
       "lastIncrement": 1762377942556
     },
     {
-      "id": "1698tyolzrd",
-      "name": "Philbro",
-      "value": 0,
-      "show": false,
+      "id": "x02wmvv7g5",
+      "name": "No atheists in foxholes",
+      "value": 1,
+      "show": true,
       "play": true,
-      "lastIncrement": 1762380533493
+      "lastIncrement": 1762705428353
     }
   ],
-  "currentDate": "20251106",
+  "currentDate": "20251109",
   "history": {
     "20250924": [
       {
@@ -3763,7 +3812,69 @@ workingData.counterScene = {
         "name": "Philbro",
         "value": 1
       }
+    ],
+    "20251106": [
+      {
+        "name": "No hate like Christian love",
+        "value": 1
+      },
+      {
+        "name": "Christian mind reading",
+        "value": 1
+      },
+      {
+        "name": "Look at the trees! (expert level)",
+        "value": 1
+      },
+      {
+        "name": "Laws of thermodynamics",
+        "value": 1
+      }
+    ],
+    "20251108": [
+      {
+        "name": "No hate like Christian love",
+        "value": 1
+      },
+      {
+        "name": "Christian mind reading",
+        "value": 6
+      },
+      {
+        "name": "\"Agnostic atheist?!\" ",
+        "value": 3
+      },
+      {
+        "name": "Praying for me",
+        "value": 1
+      },
+      {
+        "name": "Atheism is a religion",
+        "value": 1
+      },
+      {
+        "name": "Angry at God",
+        "value": 1
+      },
+      {
+        "name": "Philbro",
+        "value": 1
+      },
+      {
+        "name": "Church hurt",
+        "value": 1
+      },
+      {
+        "name": "Pascal's wager",
+        "value": 2
+      }
     ]
+  }
+};
+
+workingData.panelsScene = {
+  "active": {
+    "panel": "Las Lajas"
   }
 };
 
