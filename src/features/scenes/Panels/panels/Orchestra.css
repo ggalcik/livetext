@@ -1,0 +1,48 @@
+@import "tailwindcss";
+
+@theme {
+--animate-slide1: slide1 10s linear forwards infinite ;
+    @keyframes slide1 {
+        0% {
+            transform: translate(-20px, 10px) scale(0.7) ; 
+            opacity: 0; 
+        }        
+        10% {
+            opacity: 1; 
+        }
+        30% {
+            opacity: 1; 
+        }
+        40% {
+            transform:  translate(20px, 0px) scale(0.9) ;  
+            opacity: 0; 
+        }
+        100% {
+            opacity: 0; 
+        }
+    }
+
+--animate-slide2: slide2 10s linear forwards infinite ;
+    @keyframes slide2 {
+        0% {
+            opacity: 0; 
+        }
+        50% {
+            transform: translate(-20px, 10px) scale(1) ; 
+            opacity: 0; 
+        }        
+        60% {
+            opacity: 1; 
+        }
+        80% {
+            opacity: 1; 
+        }
+        90% {
+            transform:  translate(20px, 3px) scale(0.7) ;  
+            opacity: 0; 
+        }
+        100% {
+            opacity: 0; 
+        }
+    }
+}
