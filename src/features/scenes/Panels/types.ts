@@ -1,7 +1,13 @@
-import { type JSX } from 'react';
 import { z } from 'zod';
 
-export const panelTypes = ['copy Rhizic', 'HolyHonkers','Orchestra','Aaaamennn','Las Lajas'] as const;
+export const panelTypes = [
+    'copy Rhizic', 
+    'HolyHonkers',
+    'Chalkboard', 
+    'Orchestra', 
+    'Aaaamennn', 
+    'Las Lajas'
+] as const;
 
 export const IPanelTypeSchema = z.enum(panelTypes);
 export type IPanelType = z.infer<typeof IPanelTypeSchema>;
@@ -12,20 +18,33 @@ export const IPanelSchema = z.object({
     adminElement: z.unknown().optional(), // jsx element
     soundEnter: z.string().optional(),
     boomerangDelay: z.number().optional(),
-     noViewport: z.boolean().optional(),
+    noViewport: z.boolean().optional(),
+    ctrlViewport: z.boolean().optional(),
 });
 export type IPanel = z.infer<typeof IPanelSchema>;
 
 export const IPanelsSchema = z.record(IPanelTypeSchema, IPanelSchema);
 export type IPanels = z.infer<typeof IPanelsSchema>;
 
+const IPanelDataBaseSchema = z.object({
+    panel: IPanelTypeSchema.exclude(['Orchestra']),
+    duration: z.number().optional(),
+});
+
+const IPanelOrchestraSchema = IPanelDataBaseSchema.extend({
+    panel: z.literal('Orchestra'),
+    stopSound: z.string().optional(),
+});
+
+const IPanelDataSchema = z.discriminatedUnion('panel', [
+  IPanelDataBaseSchema,
+  IPanelOrchestraSchema,
+]);
+
 
 export const IPanelSceneSchema = z.object({
-    active: z.object({
-        panel: IPanelTypeSchema,
-        duration: z.number().optional(),
-       
-    }).nullable()
+    active: IPanelDataSchema.nullable()
 });
+
 export type IPanelScene = z.infer<typeof IPanelSceneSchema>;
 

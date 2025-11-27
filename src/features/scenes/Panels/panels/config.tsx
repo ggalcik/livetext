@@ -5,6 +5,7 @@ import { LasLajas, LasLajasBackground } from "./LasLajas";
 import { Aaaaamennnn, AaaaamennnnBackground } from "./Aaaamennnn";
 import { HolyHonkers, HolyHonkersBackground } from "./HolyHonkers";
 import { Orchestra, OrchestraBackground } from "./Orchestra";
+import { Chalkboard, ChalkboardBackground } from "./Chalkboard";
 
 export const panels: IPanels = {
     'copy Rhizic':
@@ -14,6 +15,12 @@ export const panels: IPanels = {
         backgroundElement: <RhizicBackground />,
         adminElement: <RhizicAdmin />,
         boomerangDelay: 5,
+    },
+    'Chalkboard':
+    {
+        element: <Chalkboard />,
+        backgroundElement: <ChalkboardBackground />,
+        ctrlViewport: true,
     },
     'HolyHonkers':
     {
@@ -41,7 +48,6 @@ export const panels: IPanels = {
     'Orchestra':
     {
         soundEnter: dling,
-
         element: <Orchestra />,
         backgroundElement: <OrchestraBackground />,
     },

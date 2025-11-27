@@ -8,6 +8,8 @@ interface IMiniSelectProps {
 }
 export default function MiniSelect({ activate }: IMiniSelectProps) {
 
+    const whatever = 'this';
+
     const [panelScene, setPanelScene] = usePersistentState({
         storageKey: 'panelsScene',
         schema: IPanelSceneSchema,

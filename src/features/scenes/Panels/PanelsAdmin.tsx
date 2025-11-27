@@ -33,21 +33,21 @@ export default function PanelsAdmin({ boomerang }: IPanelsAdminProps) {
     }, [panelScene.active]);
 
     const activePanel = panelScene.active?.panel || null;
-    const adminElement = activePanel && panels[activePanel].adminElement ? panels[activePanel]?.adminElement as ReactNode : null;  
-    
+    const adminElement = activePanel && panels[activePanel].adminElement ? panels[activePanel]?.adminElement as ReactNode : null;
+
     return (
 
         <div className="flex w-max text-black gap-4">
 
-<div className="">
+            <div className="">
 
-            <div className="border bg-green-200 p-2">
+                <div className="border bg-green-200 p-2">
 
-                {panelTypes.map((panelName, i) => {
-                    const panel = panels[panelName];
-                    // const adminElement = panels[panelName]?.adminElement ? panels[panelName]?.adminElement as ReactNode : <></>
-                    return (
-                        <div>
+                    {panelTypes.map((panelName, i) => {
+                        const panel = panels[panelName];
+                        // const adminElement = panels[panelName]?.adminElement ? panels[panelName]?.adminElement as ReactNode : <></>
+                        return (
+                            <div>
                                 {/* <Button mode={panelName === panelScene.active?.panel ? 'activated' : null} 
                                 onClick={() => showPanel(panelName)}> */}
                                 <Button className={panelName === panelScene.active?.panel
@@ -57,15 +57,15 @@ export default function PanelsAdmin({ boomerang }: IPanelsAdminProps) {
                                 </Button>
                             </div>
 
-)
-}
-)}
+                        )
+                    }
+                    )}
 
+                </div>
             </div>
-</div>
 
-            {adminElement &&  <div>{adminElement}</div>}
-            
+            {adminElement && <div>{adminElement}</div>}
+
 
         </div>
 

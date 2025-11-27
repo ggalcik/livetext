@@ -191,7 +191,7 @@ export default function CounterAdmin() {
                 <Button onClick={sortCheckedUp}>Sort checked up</Button>
             </div>
 
-            <div className="lg:columns-2  space-y-4">
+            <div className="lg:columns-2  space-y-4 scale-80 origin-top-left">
                 {scene.counters.map((c) => (
                     <CounterAdminRow
                         key={c.id}

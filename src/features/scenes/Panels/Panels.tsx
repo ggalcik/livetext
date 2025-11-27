@@ -29,6 +29,7 @@ glog("panels: panelScene.active?.panel %s", panelScene.active?.panel);
     const backgroundElement = showPanel && panels[showPanel].backgroundElement
         ? panels[showPanel].backgroundElement as ReactNode
         : <></>
+    const ctrlViewport = showPanel && panels[showPanel].ctrlViewport;
 
     if (!panelScene.active) {
         return <div className="absolute w-full h-full bg-gradient-to-b from-purple-600 to-blue-600"></div>
@@ -39,7 +40,7 @@ glog("panels: panelScene.active?.panel %s", panelScene.active?.panel);
             {backgroundElement}
 
             {showPanel && panels[showPanel].noViewport ? element :
-                <MasterViewport name={`panel ${panelScene.active.panel}`}>
+                <MasterViewport name={`panel ${panelScene.active.panel}`} needCtrl={ctrlViewport}>
                     {element}
                 </MasterViewport>
             }

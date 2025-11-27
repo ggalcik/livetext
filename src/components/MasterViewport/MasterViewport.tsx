@@ -155,7 +155,7 @@ export function MasterViewport({ children, name, needCtrl=false, resizable=true 
             <div
                 ref={masterRef}
                 className={clsx("h-full w-full overflow-hidden relative z-0")}
-                onKeyDown={(e) => {alert('ctrl');if (e.ctrlKey) setCtrlKey(true)}}
+                onKeyDown={(e) => {if (e.ctrlKey) setCtrlKey(true)}}
                 onKeyUp={() => setCtrlKey(false)}
                 onMouseLeave={() => setCtrlKey(false)}
                 onMouseDown={(e) => {
