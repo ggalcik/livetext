@@ -33,8 +33,9 @@ const IPanelDataBaseSchema = z.object({
 
 const IPanelOrchestraSchema = IPanelDataBaseSchema.extend({
     panel: z.literal('Orchestra'),
-    stopSound: z.string().optional(),
+    stopVideo: z.string().optional(),
 });
+export type IPanelOrchestra = z.infer<typeof IPanelOrchestraSchema>;
 
 const IPanelDataSchema = z.discriminatedUnion('panel', [
   IPanelDataBaseSchema,

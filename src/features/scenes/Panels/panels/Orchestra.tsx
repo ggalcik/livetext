@@ -4,8 +4,13 @@ import orchestra from "../../../../local/video/orchestra.mp4";
 import applause from "../../../../local/soundboard/applause_polite.mp3";
 import crowd_lose from "../../../../local/soundboard/crowd lose.mp3";
 import boo_you_suck from "../../../../local/soundboard/boo you suck.mp3";
-import { IPanelSceneSchema } from "../types";
+
+import applauseVid from "../../../../local/panels/end_applause.mp4";
+import booYouSuckVid from "../../../../local/panels/boo_you_suck.mp4";
+
+import { IPanelSceneSchema, type IPanelOrchestra } from "../types";
 import { usePersistentState } from "../../../../hooks/usePersistentState";
+import { Button } from "../../../../components/Button";
 
 export function OrchestraBackground() {
   return <div className="absolute top-0 left-0 w-full h-full bg-black"
@@ -18,6 +23,49 @@ export function OrchestraAdmin() {
     schema: IPanelSceneSchema,
     fallback: { active: null }
   })
+
+  useEffect(() => {
+    return () => {
+      if (panelScene.active?.panel !== 'Orchestra'){
+        setStopVideo(undefined);
+      }
+    }
+  }, []);
+
+  if (panelScene.active?.panel !== 'Orchestra') return <></>;
+
+   const stopVideo = panelScene.active.stopVideo;
+
+  function setStopVideo(stop: string | undefined) {
+    if (!panelScene.active?.panel) return;
+    const currentOrchestraPanel = panelScene.active as IPanelOrchestra;
+
+    setPanelScene(
+      {
+        ...panelScene, 
+        active: {
+          ...currentOrchestraPanel,
+          stopVideo: stop, 
+        },
+      }
+    )
+  }
+
+  if (stopVideo !== undefined) return <></>;
+
+
+  return (
+    <div className="flex gap-2">
+      <Button onClick={() => setStopVideo(applauseVid)}>
+        applause
+      </Button>
+      <Button onClick={() => setStopVideo(booYouSuckVid)}>
+        boo you suck
+      </Button>
+    </div>
+  )
+
+
 }
 
 export function Orchestra() {
@@ -30,10 +78,10 @@ export function Orchestra() {
     fallback: { active: null }
   })
 
+
   if (!panelScene.active || panelScene.active.panel !== 'Orchestra') return;
   const thePanel = panelScene.active;
-  
-  const stopsound = thePanel.stopSound;
+  const stopVideo = thePanel.stopVideo;
 
 
   useEffect(() => {
@@ -100,26 +148,6 @@ export function Orchestra() {
         />
       </div>
 
-      <div className="flex gap-2">
-        <button
-          onClick={() => handleInterjection(applause)}
-          className="border px-3 py-1 rounded hover:bg-gray-200"
-        >
-          Applause
-        </button>
-        <button
-          onClick={() => handleInterjection(crowd_lose)}
-          className="border px-3 py-1 rounded hover:bg-gray-200"
-        >
-          Crowd Lose
-        </button>
-        <button
-          onClick={() => handleInterjection(boo_you_suck)}
-          className="border px-3 py-1 rounded hover:bg-gray-200"
-        >
-          Boo You Suck
-        </button>
-      </div>
     </div>
   );
 }
