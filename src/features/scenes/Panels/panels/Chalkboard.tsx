@@ -4,13 +4,21 @@ import chalkboardWall from './assets/chalkboard_wall.png';
 import { usePersistentState } from '../../../../hooks/usePersistentState';
 import { defaultChalkboardPanel, IChalkboardPanelSchema, CHALKBOARD_FONTSIZE_MIN, CHALKBOARD_FONTSIZE_MAX } from './types';
 import glog from '../../../../components/glog';
+import './Chalkboard.css'
+import { useEffect, useState } from 'react';
+import plinkIn from './assets/plink_in.mp3';
+import whooshOut from './assets/whoosh_out.mp3';
+
 
 export function ChalkboardBackground() {
-
     return <div className="absolute top-0 left-0 w-full h-full bg-[length:100%_auto] bg-top bg-black bg-no-repeat opacity-80"
         style={{ backgroundImage: `url(${chalkboardWall})` }}
     ></div>
 }
+
+// const BOARD_FONT = 'Kristen ITC';
+const BOARD_FONT = 'Segoe Print';
+
 
 const colorPairs = [['#0092b8', '#a2f4fd'],
 ['#bb36bd', '#e4b3e5'],
@@ -38,7 +46,7 @@ function boardLetter(seq: number, sel: number | null, click: () => void) {
             } as React.CSSProperties}
             className={clsx(
                 "absolute cursor-pointer font-[Courier] font-bold  px-2 py-1",
-                " ring  ring-offset-3 shadow-lg shadow-black transition-colors duration-150",
+                " ring  ring-offset-3 shadow-[6px_10px_8px] shadow-black/50 transition-colors duration-150",
                 // "bg-[#e4b3e5]"
                 "bg-[var(--bg-color)] hover:bg-[var(--hover-color)]",
                 selected ? 'ring-black ring-offset-white' : 'ring-black/50 ring-offset-white/70'
@@ -49,7 +57,7 @@ function boardLetter(seq: number, sel: number | null, click: () => void) {
     );
 }
 
-function boardSizer(sel: number | null, label: '+'|'-', click: () => void) {
+function boardSizer(label: '+' | '-', click: () => void) {
     const rots = [4, -8];
     const colors = [colorPairs[0], colorPairs[1]];
     const rot = label === "+" ? rots[0] : rots[1];
@@ -66,7 +74,7 @@ function boardSizer(sel: number | null, label: '+'|'-', click: () => void) {
                 " border shadow-lg shadow-black transition-colors duration-150",
                 // "bg-[#e4b3e5]"
                 "bg-[var(--bg-color)] hover:bg-[var(--hover-color)]",
-               
+
             )}
             onClick={(e) => { e.preventDefault(); click() }}
             onMouseDown={(e) => { e.preventDefault(); }}
@@ -75,11 +83,35 @@ function boardSizer(sel: number | null, label: '+'|'-', click: () => void) {
 }
 
 export function Chalkboard() {
+    const [showIntro, setShowIntro] = useState(true);
     const [chalkboardPanel, setChalkboardPanel] = usePersistentState({
         storageKey: 'chalkboardPanel',
         schema: IChalkboardPanelSchema,
         fallback: defaultChalkboardPanel
     })
+
+    useEffect(() => {
+    const plinkSound = new Audio(plinkIn);
+    const whooshSound = new Audio(whooshOut);
+
+    // const plinkTimeout = setTimeout(() => {
+      plinkSound.play().catch(error => console.error("Error playing plinkIn:", error));
+    // }, 500); 
+
+    const whooshTimeout = setTimeout(() => {
+      whooshSound.play().catch(error => console.error("Error playing whooshOut:", error));
+    }, 2000);
+
+    return () => {
+    //   clearTimeout(plinkTimeout);
+      clearTimeout(whooshTimeout);
+      
+      plinkSound.pause();
+      whooshSound.pause();
+      plinkSound.currentTime = 0;
+      whooshSound.currentTime = 0;
+    };
+  }, []);
 
     const active = chalkboardPanel.active;
 
@@ -104,12 +136,32 @@ export function Chalkboard() {
         )
     }
 
-    function setBoardFontSize(sel: number | null, fontChange: '+'|'-') {
+    function handleKeyDown(sel: number | null, e: React.KeyboardEvent<HTMLTextAreaElement>) {
+        if (e.key === 'Tab') {
+            e.preventDefault();
+
+            const { currentTarget } = e;
+            const start = currentTarget.selectionStart;
+            const end = currentTarget.selectionEnd;
+            const textareaValue = currentTarget.value;
+            const spaces = '    ';
+
+            const newText =
+                textareaValue.substring(0, start) +
+                spaces +
+                textareaValue.substring(end);
+
+            setBoardText(sel, newText);
+            currentTarget.selectionStart = start + spaces.length;
+            currentTarget.selectionEnd = start + spaces.length;
+        }
+    }
+
+    function setBoardFontSize(sel: number | null, fontChange: '+' | '-') {
         if (sel === null) return;
         const boards = [...chalkboardPanel.boards];
         const currentSize = boards[sel].fontSize;
         const fontSize = currentSize + (fontChange === '+' ? 2 : -2);
-        glog('setBoardFontSize %s %s, %s %s', sel, fontChange, currentSize, fontSize);
         if (fontSize < CHALKBOARD_FONTSIZE_MIN || fontSize > CHALKBOARD_FONTSIZE_MAX) return;
         boards[sel] = { ...boards[sel], fontSize }
         setChalkboardPanel(
@@ -120,6 +172,53 @@ export function Chalkboard() {
         )
     }
 
+    interface IntroProps {
+        onAnimationComplete: () => void;
+    }
+
+    function Intro({ onAnimationComplete }: IntroProps) {
+        const words = [
+            { text: "Let's", classes: "top-20 left-30 text-yellow-200 text-4xl -rotate-10" },
+            { text: "Go", classes: "top-30 left-25 text-pink-300 text-7xl" },
+            { text: "To", classes: "top-27 left-55 text-pink-300 text-7xl" },
+            { text: "the", classes: "top-46 left-13 text-yellow-200 text-4xl rotate-2" },
+            { text: "Board!", classes: "top-48 left-35 text-pink-300 text-7xl -rotate-3" },
+        ];
+
+        const handleBgEnd = (event: React.AnimationEvent<HTMLDivElement>) => {
+            // Only trigger the callback when the actual animation ends (not the children's)
+            if (event.currentTarget === event.target) {
+                onAnimationComplete();
+            }
+        };
+        return (
+            <div className='absolute top-0 left-0 w-full h-full scale-110'>
+                <div
+                    className='absolute top-0 left-0 w-full h-full opacity-80 animate-bg-fade'
+                    onAnimationEnd={handleBgEnd} // <-- Function call here
+                    style={{
+                        backgroundImage: 'linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 1) 15%)',
+                        opacity: 0.8
+                    }} // Initial state must be 0.8
+                />
+                <div className='absolute left-10'>
+
+                    {words.map((word, i) => (
+                        <div
+                            key={i}
+                            className={`absolute drop-shadow-xl/100 stroke-black font-[Ravie]  animate-intro opacity-0 ${word.classes}`}
+                            style={{
+                                animationDelay: `${i * 0.1}s`,
+                            }}
+                        >
+                            {word.text}
+                        </div>
+                    ))}
+                </div>
+            </div>
+        )
+    };
+
     return (
         <div className={`bg-[length:100%_100%] w-full h-full`}
             style={{ backgroundImage: `url(${chalkboard})` }}
@@ -127,13 +226,14 @@ export function Chalkboard() {
             <div className="pl-[12%] pr-[10%] py-[9%] h-full w-full box-border ">
                 <textarea
                     spellCheck="false"
-                    className="
+                    className={`
                     h-full w-full text-white bg-transparent border-0 focus:outline-none
-                    text-xl font-bold font-[Segoe_Print] resize-none
-                    "
-                    style={{fontSize: `${chalkboardPanel.boards[active ?? 0].fontSize}px`}}
+                    text-xl font-bold  resize-none
+                    `}
+                    style={{ font: `${chalkboardPanel.boards[active ?? 0].fontSize}px '${BOARD_FONT}'` }}
                     value={chalkboardPanel.boards[active ?? 0].text || ''}
                     onChange={e => setBoardText(active, e.target.value)}
+                    onKeyDown={e => handleKeyDown(active, e)}
                 ></textarea>
             </div>
 
@@ -142,13 +242,14 @@ export function Chalkboard() {
             </div>
 
             <div className="top-5/8 right-[10%] absolute">
-                {boardSizer(active, '+', () => setBoardFontSize(active, '+'))}
+                {boardSizer('+', () => setBoardFontSize(active, '+'))}
                 <div className='top-12 right-2 absolute'>
 
-                {boardSizer(active, '-', () => setBoardFontSize(active, '-'))}
+                    {boardSizer('-', () => setBoardFontSize(active, '-'))}
                 </div>
             </div>
 
+            {showIntro && <Intro onAnimationComplete={() => setShowIntro(false)} />}
         </div>
     );
 }

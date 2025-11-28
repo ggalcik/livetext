@@ -1,0 +1,46 @@
+@import "tailwindcss";
+
+@theme {
+    @keyframes floatSequence {
+        0% {
+            opacity: 0.2;
+            transform: translateY(2.5rem) rotate(var(--tw-rotate));
+        }
+        
+        6% { 
+            opacity: 1;
+            transform: translateY(-0.5rem) rotate(var(--tw-rotate)); 
+        }
+
+        20% { 
+            opacity: 1;
+            transform: translateY(0) rotate(var(--tw-rotate));
+        }
+
+        80% { 
+            opacity: 1;
+            transform: translateY(0) rotate(var(--tw-rotate));
+        }
+
+        100% {
+            opacity: 0;
+            transform: scale(2) rotate(var(--tw-rotate));
+        }
+    }
+    @keyframes fade-bg-out {
+        0% { opacity: 0.8; }
+        80% { opacity: 0.8; }
+        100% { opacity: 0; } 
+    }
+}
+
+
+.animate-intro {
+    /* We must use var(--tw-rotate) to preserve the rotation classes */
+    --tw-rotate: 0deg;
+    animation: floatSequence 2.5s ease-in-out forwards ;
+}
+
+.animate-bg-fade {
+    animation: fade-bg-out 3.0s ease-in-out forwards ;
+}
