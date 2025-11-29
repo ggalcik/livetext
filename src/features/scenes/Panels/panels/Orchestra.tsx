@@ -74,9 +74,7 @@ export function Orchestra() {
     schema: IPanelSceneSchema,
     fallback: { active: null }
   });
-  glog("one");
   if (!panelScene.active || panelScene.active.panel !== 'Orchestra') return null;
-  glog("two");
 
   const thePanel = panelScene.active;
   const thisVideo = thePanel.stopVideo || orchestraRising;
@@ -84,32 +82,14 @@ export function Orchestra() {
 
   useEffect(() => {
     const video = videoRef.current;
-
     if (!video) return;
 
-    let playedInitial = false;
-
-    const loadAndPlayVideo = (src: string) => {
-      video.src = src;
-      video.load();
-      video.play().catch(error => {
-        console.warn(`Video playback failed for ${src}:`, error);
-      });
-    };
-
-    if (!thisVideo) {
-      console.log('Loading initial video: orchestraRising');
-      loadAndPlayVideo(orchestraRising);
-      playedInitial = true;
-    }
-
-    else if (thisVideo && !playedInitial) {
-      console.log(`Switching video source to: ${thisVideo}`);
-      video.pause();
-      video.currentTime = 0;
-
-      loadAndPlayVideo(thisVideo);
-    }
+    video.src = thisVideo;
+    video.load();
+    video.volume = isStopVideo? .2 : 1;
+    video.play().catch(error => {
+      console.warn(`Video playback failed for ${src}:`, error);
+    });
 
     // Cleanup: Pause the video when the component unmounts
     return () => {
@@ -124,7 +104,7 @@ export function Orchestra() {
 
       <video
         ref={videoRef}
-    
+
         autoPlay
         className="max-w-full max-h-full border"
       />
