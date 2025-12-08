@@ -20,10 +20,11 @@ export function ChalkboardBackground() {
 const BOARD_FONT = 'Segoe Print';
 
 
-const colorPairs = [['#0092b8', '#a2f4fd'],
-['#bb36bd', '#e4b3e5'],
-['#868719', '#dfe17b'],
-['#19790e', '#8ada82']]
+const colorPairs =
+    [['#0092b8', '#a2f4fd'],
+    ['#bb36bd', '#e4b3e5'],
+    ['#868719', '#dfe17b'],
+    ['#19790e', '#8ada82']]
 
 function boardLetter(seq: number, sel: number | null, click: () => void) {
     const left = (seq * 42);
@@ -82,36 +83,64 @@ function boardSizer(label: '+' | '-', click: () => void) {
     );
 }
 
-export function Chalkboard() {
-    const [showIntro, setShowIntro] = useState(true);
+export function ChalkboardAdmin() {
     const [chalkboardPanel, setChalkboardPanel] = usePersistentState({
         storageKey: 'chalkboardPanel',
         schema: IChalkboardPanelSchema,
         fallback: defaultChalkboardPanel
     })
 
+    const showIntro = chalkboardPanel.showIntro;
+
+    function toggleShowIntro() {
+        setChalkboardPanel((p) => {
+            return { ...p, showIntro: !p.showIntro }
+        })
+    }
+
+    return (
+        <div className='flex gap-2'>
+            <input type="checkbox" className='w-8 h-8'
+                checked={showIntro}
+                onChange={toggleShowIntro} />
+            <div> show intro</div>
+        </div>
+
+    )
+
+}
+
+export function Chalkboard() {
+    const [chalkboardPanel, setChalkboardPanel] = usePersistentState({
+        storageKey: 'chalkboardPanel',
+        schema: IChalkboardPanelSchema,
+        fallback: defaultChalkboardPanel
+    })
+    const [showIntro, setShowIntro] = useState(chalkboardPanel.showIntro);
+
     useEffect(() => {
-    const plinkSound = new Audio(plinkIn);
-    const whooshSound = new Audio(whooshOut);
+        if (!chalkboardPanel.showIntro) return;
+        const plinkSound = new Audio(plinkIn);
+        const whooshSound = new Audio(whooshOut);
 
-    // const plinkTimeout = setTimeout(() => {
-      plinkSound.play().catch(error => console.error("Error playing plinkIn:", error));
-    // }, 500); 
+        // const plinkTimeout = setTimeout(() => {
+        plinkSound.play().catch(error => console.error("Error playing plinkIn:", error));
+        // }, 500); 
 
-    const whooshTimeout = setTimeout(() => {
-      whooshSound.play().catch(error => console.error("Error playing whooshOut:", error));
-    }, 2000);
+        const whooshTimeout = setTimeout(() => {
+            whooshSound.play().catch(error => console.error("Error playing whooshOut:", error));
+        }, 2000);
 
-    return () => {
-    //   clearTimeout(plinkTimeout);
-      clearTimeout(whooshTimeout);
-      
-      plinkSound.pause();
-      whooshSound.pause();
-      plinkSound.currentTime = 0;
-      whooshSound.currentTime = 0;
-    };
-  }, []);
+        return () => {
+            //   clearTimeout(plinkTimeout);
+            clearTimeout(whooshTimeout);
+
+            plinkSound.pause();
+            whooshSound.pause();
+            plinkSound.currentTime = 0;
+            whooshSound.currentTime = 0;
+        };
+    }, []);
 
     const active = chalkboardPanel.active;
 

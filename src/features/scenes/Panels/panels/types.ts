@@ -12,6 +12,7 @@ export type IChalkboardPanelBoard = z.infer<typeof IChalkboardPanelBoardSchema>;
 export const IChalkboardPanelSchema = z.object({
     active: z.number().nullable(),
     boards: z.array(IChalkboardPanelBoardSchema),
+    showIntro: z.boolean().optional(),
 })
 
 export type IChalkboardPanel = z.infer<typeof IChalkboardPanelSchema>;
@@ -22,4 +23,5 @@ const boards = new Array(8);
 export const defaultChalkboardPanel:IChalkboardPanel = {
     active: 0,
     boards: boards.fill(boardDefault,0,8),
+    showIntro: true,
 }

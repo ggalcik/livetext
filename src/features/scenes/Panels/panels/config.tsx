@@ -5,7 +5,7 @@ import { LasLajas, LasLajasBackground } from "./LasLajas";
 import { Aaaaamennnn, AaaaamennnnBackground } from "./Aaaamennnn";
 import { HolyHonkers, HolyHonkersBackground } from "./HolyHonkers";
 import { Orchestra, OrchestraAdmin, OrchestraBackground } from "./Orchestra";
-import { Chalkboard, ChalkboardBackground } from "./Chalkboard";
+import { Chalkboard, ChalkboardAdmin, ChalkboardBackground } from "./Chalkboard";
 
 export const panels: IPanels = {
     'copy Rhizic':
@@ -20,6 +20,7 @@ export const panels: IPanels = {
     {
         element: <Chalkboard />,
         backgroundElement: <ChalkboardBackground />,
+        adminElement: <ChalkboardAdmin />,
         ctrlViewport: true,
     },
     'HolyHonkers':

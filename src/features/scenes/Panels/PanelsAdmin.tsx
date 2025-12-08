@@ -9,7 +9,6 @@ interface IPanelsAdminProps {
     boomerang: ((delay: number) => void) | null;
 }
 export default function PanelsAdmin({ boomerang }: IPanelsAdminProps) {
-    glog("PanelsAdmin in");
     const [panelScene, setPanelScene] = usePersistentState({
         storageKey: 'panelsScene',
         schema: IPanelSceneSchema,
@@ -27,7 +26,6 @@ export default function PanelsAdmin({ boomerang }: IPanelsAdminProps) {
 
     useEffect(() => {
         return () => {
-            glog('unmount PanelsAdmin');
             //  setPanelScene({ active: null })
         };
     }, [panelScene.active]);
@@ -44,15 +42,16 @@ export default function PanelsAdmin({ boomerang }: IPanelsAdminProps) {
                 <div className="border bg-green-200 p-2">
 
                     {panelTypes.map((panelName, i) => {
-                        const panel = panels[panelName];
+                        
                         // const adminElement = panels[panelName]?.adminElement ? panels[panelName]?.adminElement as ReactNode : <></>
                         return (
-                            <div>
+                            <div key={panelName}>
                                 {/* <Button mode={panelName === panelScene.active?.panel ? 'activated' : null} 
                                 onClick={() => showPanel(panelName)}> */}
                                 <Button className={panelName === panelScene.active?.panel
                                     ? 'ring-4 ring-black'
-                                    : 'ring-4 ring-green-200'} onClick={() => showPanel(panelName)}>
+                                    : 'ring-4 ring-green-200 opacity-80'} 
+                                    onClick={() => showPanel(panelName)}>
                                     <div key={i}>{panelName}</div>
                                 </Button>
                             </div>

@@ -44,7 +44,7 @@ export function Accordion<T extends string>({
         }
     }
     // TODO: ugh doesn't apply to accordion, but is there a point to generalizing
-    function handleSceneSelect(evt: React.MouseEvent, scene: T) {
+    function handleSceneSelect(evt: React.ChangeEvent<HTMLInputElement>, scene: T) {
         evt.stopPropagation();
         // setSelectedLink && setSelectedLink(scene);
         // if (!isOpen) {
@@ -78,7 +78,7 @@ export function Accordion<T extends string>({
                                     name={`accordion_${label}`}
                                     value={item}
                                     checked={selectedRadio && selectedRadio === item}
-                                    onClick={(e) => handleSceneSelect(e, item)} />
+                                    onChange={(e) => handleSceneSelect(e, item)} />
 
                                 {delay && selectedRadio === item &&
                                     <div className="absolute w-6 h-6 border -top-0 -left-0 bg-white flex justify-center align-baseline">{delay}</div>

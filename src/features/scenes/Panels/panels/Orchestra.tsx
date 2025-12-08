@@ -88,7 +88,7 @@ export function Orchestra() {
     video.load();
     video.volume = isStopVideo? .2 : 1;
     video.play().catch(error => {
-      console.warn(`Video playback failed for ${src}:`, error);
+      console.warn(`Video playback failed for ${video.src}:`, error);
     });
 
     // Cleanup: Pause the video when the component unmounts

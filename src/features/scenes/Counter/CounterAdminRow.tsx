@@ -46,7 +46,7 @@ export default function CounterAdminRow({
             value: parseInt(e.target.value) || 0,
           })
         }
-      />
+      /> 
       <button
         className="px-2 border cursor-pointer"
         onClick={() =>
