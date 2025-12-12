@@ -4,6 +4,7 @@ import type { SceneType } from "../scenes/types";
 import PopupScene, { openPopup } from "../Popup/PopupScene";
 import { panelTypes } from "../scenes/Panels/types";
 import MiniSelect from "../scenes/Panels/MiniSelect";
+import glog from "../../components/glog";
 
 interface IAccordion<T extends string> {
     label: string;
@@ -45,11 +46,7 @@ export function Accordion<T extends string>({
     }
     // TODO: ugh doesn't apply to accordion, but is there a point to generalizing
     function handleSceneSelect(evt: React.ChangeEvent<HTMLInputElement>, scene: T) {
-        evt.stopPropagation();
-        // setSelectedLink && setSelectedLink(scene);
-        // if (!isOpen) {
-        //     setIsOpen(true);
-        // }
+        // evt.preventDefault();
         setSelectedRadio && setSelectedRadio(scene);
     }
 
@@ -65,8 +62,9 @@ export function Accordion<T extends string>({
                     {label}
                 </div>
                 {links && setSelectedLink && setSelectedRadio &&
-                    links.map(item =>
-                        <div key={`accordion_link_${item}`}
+                    <>{links.map((item, i) => {
+                        // console.log("radio: selectedRadio %s, item %s ", selectedRadio, item);
+                        return <div key={`accordion_link_${item}`}
                             className={clsx("relative flex gap-2 px-2 border-r items-center",
                                 selectedLink === item && links && isOpen && "bg-green-300",
                                 selectedLink === item && "bg-green-200")}
@@ -74,11 +72,13 @@ export function Accordion<T extends string>({
                             onMouseLeave={() => item === 'panels' && setShowMiniSelect(false)}>
                             <div className="w-6 h-6 relative z-10">
                                 <input type="radio"
-                                    className="w-6 h-6"
-                                    name={`accordion_${label}`}
+                                    className="w-6 h-6 cursor-pointer"
+                                    
                                     value={item}
-                                    checked={selectedRadio && selectedRadio === item}
-                                    onChange={(e) => handleSceneSelect(e, item)} />
+                                    checked={selectedRadio === item}
+                                    onChange={() => setSelectedRadio(item)} 
+                                    onClick={(e) => e.stopPropagation()}
+                                    />
 
                                 {delay && selectedRadio === item &&
                                     <div className="absolute w-6 h-6 border -top-0 -left-0 bg-white flex justify-center align-baseline">{delay}</div>
@@ -91,7 +91,10 @@ export function Accordion<T extends string>({
                             }
 
                         </div>
+                    }
                     )
+                }  </>
+                    
                 }
             </div>
             {isOpen &&

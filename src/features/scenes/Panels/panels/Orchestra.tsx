@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 import orchestraRising from "../../../../local/panels/orchestra_rising.mp4";
 
@@ -9,6 +9,9 @@ import { IPanelSceneSchema, type IPanelOrchestra } from "../types";
 import { usePersistentState } from "../../../../hooks/usePersistentState";
 import { Button } from "../../../../components/Button";
 import glog from "../../../../components/glog";
+
+const DELAY_SECONDS = 3;
+const DELAY_MS = DELAY_SECONDS * 1000;
 
 export function OrchestraBackground() {
   return <div className="absolute top-0 left-0 w-full h-full bg-black"
@@ -21,14 +24,58 @@ export function OrchestraAdmin() {
     schema: IPanelSceneSchema,
     fallback: { active: null }
   })
+  const [countdown, setCountdown] = useState<number | null>(null);
+
+  const pendingVideoRef = useRef<string | undefined>(undefined);
+  const timeoutIdRef = useRef<number | null>(null);
 
   useEffect(() => {
-    return () => {
-      if (panelScene.active?.panel !== 'Orchestra') {
+
+      if (panelScene.active?.panel === 'Orchestra') {
         setStopVideo(undefined);
       }
-    }
+    
   }, []);
+
+
+
+  const setStopVideoTimer = useCallback(
+    (videoValue: string | undefined) => {
+      if (countdown !== null) {
+        console.warn("Countdown already active. Ignoring new request.");
+        return;
+      }
+
+      pendingVideoRef.current = videoValue;
+      setCountdown(DELAY_SECONDS);
+
+      const id = setTimeout(() => {
+        setStopVideo(pendingVideoRef.current);
+        setCountdown(null);
+        pendingVideoRef.current = undefined;
+      }, DELAY_MS);
+
+      timeoutIdRef.current = id as unknown as number;
+
+    },
+    [countdown]
+  );
+
+  useEffect(() => {
+    let intervalId: number | undefined;
+
+    if (countdown !== null && countdown > 0) {
+      intervalId = setInterval(() => {
+        setCountdown(prev => (prev !== null ? prev - 1 : null));
+      }, 1000) as unknown as number;
+    }
+
+    return () => {
+      if (intervalId) {
+        clearInterval(intervalId);
+      }
+    };
+  }, [countdown]);
 
   if (panelScene.active?.panel !== 'Orchestra') return <></>;
 
@@ -53,13 +100,32 @@ export function OrchestraAdmin() {
 
 
   return (
-    <div className="flex gap-2">
-      <Button onClick={() => setStopVideo(applauseVid)}>
-        applause
-      </Button>
-      <Button onClick={() => setStopVideo(booYouSuckVid)}>
-        boo you suck
-      </Button>
+    <div>
+
+{!countdown && 
+<div>
+      <div className="flex gap-2">
+        <Button onClick={() => setStopVideo(applauseVid)}>
+          applause
+        </Button>
+        <Button onClick={() => setStopVideoTimer(applauseVid)}>
+          ({DELAY_SECONDS}s)
+        </Button>
+      </div>
+
+      <div className="flex gap-2">
+        <Button onClick={() => setStopVideo(booYouSuckVid)}>
+          boo you suck
+        </Button>
+        <Button onClick={() => setStopVideoTimer(booYouSuckVid)}>
+          ({DELAY_SECONDS}s)
+        </Button>
+      </div>
+      </div>
+}
+
+      {countdown && <div className="font-bold text-2xl">{countdown} second{countdown > 1 && 's'}...</div>}
+
     </div>
   )
 
@@ -69,7 +135,7 @@ export function OrchestraAdmin() {
 export function Orchestra() {
   const videoRef = useRef<HTMLVideoElement>(null);
 
-  const [panelScene, setPanelScene] = usePersistentState({
+  const [panelScene] = usePersistentState({
     storageKey: 'panelsScene',
     schema: IPanelSceneSchema,
     fallback: { active: null }
@@ -86,7 +152,7 @@ export function Orchestra() {
 
     video.src = thisVideo;
     video.load();
-    video.volume = isStopVideo? .2 : 1;
+    video.volume = isStopVideo ? .2 : 1;
     video.play().catch(error => {
       console.warn(`Video playback failed for ${video.src}:`, error);
     });

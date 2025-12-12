@@ -76,11 +76,12 @@ export default function ScenesAccordion({ popupState }: { popupState: PopupState
   // Clean up if component unmounts
   useEffect(() => {
     return clearTimers;
-  }, []);
+  }, [sceneAccordionData.sceneSelected,sceneAccordionData.adminSelected]);
 
   const boomerang = (delay: number = 0) => switchScene(sceneAccordionData.sceneSelected, delay)
   const boomerangTarget = (sceneAccordionData.adminSelected !== sceneAccordionData.sceneSelected 
     ? sceneAccordionData.sceneSelected : undefined);
+
 
 // glog("boomerang %o", boomerang)
   return (
