@@ -3,6 +3,7 @@ import clsx from "clsx";
 import { useLiveData } from "../../context/LiveData";
 import type { Timer } from "../../context/LiveData/types";
 import glog from "../../components/glog";
+import DisplayCountdown from "../../components/DisplayCountdown";
 
 type TimerKey = "timer" | "breakTimer"; 
 interface rotateCountdownOpts {
@@ -88,9 +89,7 @@ glog.rotateCountdown("timer ", timerKey);
     state.displayBanners,
   ]);
 
-  return (
-    <div className={clsx("w-8 h-8 text-2xl text-center")}>
-      {timer.waiting ? "⏸️" : timer.countdown ?? "--"}
-    </div>
-  );
+  return <DisplayCountdown timer={timer} />
+
+  ;
 }
