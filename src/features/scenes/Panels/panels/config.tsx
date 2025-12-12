@@ -52,5 +52,6 @@ export const panels: IPanels = {
         element: <Orchestra />,
         adminElement: <OrchestraAdmin />,
         backgroundElement: <OrchestraBackground />,
+         ctrlViewport: true,
     },
 }
