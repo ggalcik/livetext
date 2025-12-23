@@ -9,18 +9,18 @@ export function RhizicBackground() {
 }
 
 const rheazons = [
-    "the power of the holy spirit isn't enugh to open this pickle jar",
-    "my toaster keeps burning the Virgin Mary into my bread",
-    "cat keeps walking on the keyboard and spelling 'He is Risen!'",
-    "I keep committing sins, but Jesus keeps forgiving me",
-    "the neighbor's Wi-Fi is named 'JesusLovesYou' & it's got stronger signal than mine",
-    "Keep getting 'Hogwarts Letters' but don't believe in magic either",
-    "the demon that steals all the left socks",
-    "I can't eat Trix anymore, because I'm not a kid",
-    "Caught a leprechaun but he gave me an AOL disc for 180 free hours of internet ",
-    "can't break par at mini-golf",
-    "If my anger gets below 55% I'm rigged to explode",
-    "Jesus leaves my messages on read but never replies",
+    "The power of the holy spirit isn't enough to open this pickle jar.",
+    "My toaster keeps burning the Virgin Mary into my bread.",
+    "The cat keeps spelling 'He is Risen!' when she walks across the keyyboard.",
+    "I keep committing sins, but Jesus keeps forgiving me.",
+    "The neighbor's Wi-Fi is named 'JesusLovesYou' & it has stronger signal than mine.",
+    "I keep getting 'Hogwarts Letters' but I don't believe in magic either.",
+    "The demon that steals all the left socks.",
+    "I can't eat Trix anymore, because I'm not a kid.",
+    "Caught a leprechaun, but all he gave me was an AOL disc with 180 free hours of internet.",
+    "I can't break par at mini-golf.",
+    "If my anger gets below 55% I'm rigged to explode!",
+    "Jesus leaves my messages on read but never replies.",
 ]
 
 export function RhizicAdmin() {
@@ -51,8 +51,13 @@ export function Rhizic() {
     }, []);
 
     return (
-        <div className="absolute bottom-0  left-0  text-4xl text-gray-700 font-bold font-[Book_Antiqua]">
-            <span className='text-6xl'>&copy;</span>opyright 2025<br /
-            >Rev Rhizic, Emperor of Antifa<br />All Rights Reserved.</div>
+        <>
+            <div className="absolute top-0  left-0 text-2xl text-black font-bold font-[Book_Antiqua]">
+               &ldquo;{rheazons[Math.floor(Math.random() * rheazons.length)]}&rdquo;
+                </div>
+            <div className="absolute bottom-0  left-0  text-2xl text-gray-700 font-bold font-[Book_Antiqua]">
+                <span className='text-4xl'>&copy;</span>opyright 2025<br /
+                >Rev Rhizic, Emperor of Antifa<br />All Rights Reserved.</div>
+        </>
     );
 }

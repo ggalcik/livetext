@@ -230,7 +230,7 @@ export function Chalkboard() {
                         opacity: 0.8
                     }} // Initial state must be 0.8
                 />
-                <div className='absolute left-10'>
+                <div className='absolute left-24'>
 
                     {words.map((word, i) => (
                         <div
@@ -257,7 +257,7 @@ export function Chalkboard() {
                     spellCheck="false"
                     className={`
                     h-full w-full text-white bg-transparent border-0 focus:outline-none
-                    text-xl font-bold  resize-none
+                    text-xl font-bold  resize-none pl-4
                     `}
                     style={{ font: `${chalkboardPanel.boards[active ?? 0].fontSize}px '${BOARD_FONT}'` }}
                     value={chalkboardPanel.boards[active ?? 0].text || ''}

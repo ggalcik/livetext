@@ -5,8 +5,9 @@ export const panelTypes = [
     'HolyHonkers',
     'Chalkboard', 
     'Orchestra', 
+    'Pivat',
     'Aaaamennn', 
-    'Las Lajas'
+    'Las Lajas',
 ] as const;
 
 export const IPanelTypeSchema = z.enum(panelTypes);
