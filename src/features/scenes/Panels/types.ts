@@ -28,7 +28,7 @@ export const IPanelsSchema = z.record(IPanelTypeSchema, IPanelSchema);
 export type IPanels = z.infer<typeof IPanelsSchema>;
 
 const IPanelDataBaseSchema = z.object({
-    panel: IPanelTypeSchema.exclude(['Orchestra']),
+    panel: IPanelTypeSchema.exclude(['Orchestra','copy Rhizic']),
     duration: z.number().optional(),
 });
 
@@ -36,11 +36,19 @@ const IPanelOrchestraSchema = IPanelDataBaseSchema.extend({
     panel: z.literal('Orchestra'),
     stopVideo: z.string().optional(),
 });
+
+const IPanelRhizicSchema = IPanelDataBaseSchema.extend({
+    panel: z.literal('copy Rhizic'),
+    rheazon: z.string().optional(),
+    showCopyright: z.boolean().optional(),
+});
+
 export type IPanelOrchestra = z.infer<typeof IPanelOrchestraSchema>;
 
 const IPanelDataSchema = z.discriminatedUnion('panel', [
   IPanelDataBaseSchema,
   IPanelOrchestraSchema,
+  IPanelRhizicSchema,
 ]);
 
 

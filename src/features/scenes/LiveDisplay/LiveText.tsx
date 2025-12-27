@@ -40,7 +40,8 @@ export default function LiveText({ state }: { state: LiveDataState }) {
 
   const showSpot = activeSpotIndex !== NO_ACTIVE_SPOT && state.displaySpots;
 
-  const altBackground = !(state.backgroundImage === 'Angry'
+  // TODO: hack! fix this, for showing other backgrounds for banners off
+  const altBackground = !((state.backgroundImage === 'Angry' || state.backgroundImage === 'Christlessmas')
     && (state.breakTimer.on && !state.breakTimer.waiting)
     || !(state.displayBanners || state.displaySpots));
 

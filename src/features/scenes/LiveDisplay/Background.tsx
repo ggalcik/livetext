@@ -1,4 +1,5 @@
 import Angry from "../../../assets/angry_atheist.png";
+import Christlessmas from "../../../assets/christlessmas.jpg";
 import Dull from "../../../assets/dull_atheist.jpg";
 import DullAtheistAgnostic from "../../../assets/dull_atheist_agnostic.jpg";
 import DullHell from "../../../assets/dull_hell.jpg";
@@ -23,6 +24,7 @@ import { SwitchTransition, CSSTransition } from "react-transition-group";
 const backgroundMap: Record<BackgroundType, string> = {
   "": "",
   "Angry": Angry,
+  "Christlessmas": Christlessmas,
   "Dull": Dull,
   "Dull atheist agnostic": DullAtheistAgnostic,
   "Dull going to hell": DullHell,

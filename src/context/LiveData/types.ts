@@ -60,6 +60,7 @@ export type Timer = z.infer<typeof TimerSchema>;
 export const backgroundOptions = [
   "",
   "Angry",
+  "Christlessmas",
   "Dull",
   "Dull atheist agnostic",
   "Dull going to hell",
