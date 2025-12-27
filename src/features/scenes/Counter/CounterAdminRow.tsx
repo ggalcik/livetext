@@ -18,18 +18,18 @@ export default function CounterAdminRow({
     <div className="flex items-center gap-2">
       <input
         type="checkbox"
-        className="w-8 h-8 cursor-pointer"
+        className="w-8 h-8 cursor-pointer bg-white"
         checked={counter.show}
         disabled={!counter.show && maxActive}
         onChange={(e) => onUpdate(counter.id, { show: e.target.checked })}
       />
       <input
-        className="flex-1 border p-1"
+        className="flex-1  px-2 bg-white border border-gray-300"
         value={counter.name}
         onChange={(e) => onUpdate(counter.id, { name: e.target.value })}
       />
       <button
-        className="px-2 border cursor-pointer"
+        className="px-2 border cursor-pointer bg-white"
         onClick={() =>
           onUpdate(counter.id, {
             value: (counter.value || 0) - 1,
@@ -39,7 +39,7 @@ export default function CounterAdminRow({
         -
       </button>
       <input
-        className="w-16 border p-1 text-center"
+        className="w-12 border  text-center bg-white"
         value={counter.value}
         onChange={(e) =>
           onUpdate(counter.id, {
@@ -48,7 +48,7 @@ export default function CounterAdminRow({
         }
       /> 
       <button
-        className="px-2 border cursor-pointer"
+        className="px-2 border cursor-pointer bg-white"
         onClick={() =>
           onUpdate(counter.id, {
             value: counter.value ? counter.value + 1 : 1,

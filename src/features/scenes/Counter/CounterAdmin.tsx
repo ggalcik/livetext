@@ -4,6 +4,7 @@ import CounterAdminRow from "./CounterAdminRow";
 import { Button } from "../../../components/Button";
 import { usePersistentState } from "../../../hooks/usePersistentState";
 import { parse, format } from "date-fns";
+import glog from "../../../components/glog";
 
 function todayKey(): string {
     return format(new Date(), 'yyyyMMdd');
@@ -140,6 +141,20 @@ export default function CounterAdmin() {
         })
     }
 
+    function sortAlphaUp() {
+        const newCounters = [...scene.counters];
+        newCounters.sort((a, b) => {
+            const aName = a.name.toUpperCase().replaceAll(/[^A-Z]/g, '');
+            const bName = b.name.toUpperCase().replaceAll(/[^A-Z]/g, '');
+            glog("aName %s, bName %s, aName < bName %o", aName, bName, aName < bName);
+            return aName < bName ? -1 : 1;
+        });
+        setScene({
+            ...scene,
+            counters: newCounters
+        })
+    }
+
 
     const maxActive = scene.counters.filter(i => i.show).length >= 10;
 
@@ -186,12 +201,12 @@ export default function CounterAdmin() {
                 }
             </div>
 
-            <div className="py-4">
-
+            <div className="flex gap-2 py-4">
                 <Button onClick={sortCheckedUp}>Sort checked up</Button>
+                <Button onClick={sortAlphaUp}>Sort alpha up</Button>
             </div>
 
-            <div className="lg:columns-2  space-y-4 scale-100 origin-top-left">
+            <div className="lg:columns-2 space-y-1 scale-100 origin-top-left bg-green-100">
                 {scene.counters.map((c) => (
                     <CounterAdminRow
                         key={c.id}
@@ -209,14 +224,14 @@ export default function CounterAdmin() {
                             onClick={() => addCounter(true)}>Add blank</Button>
                     </div>
                     <input
-                        className="flex-1 border p-1"
+                        className="flex-1 border p-1 bg-white"
                         placeholder="Name"
                         value={newName}
                         onChange={(e) => setNewName(e.target.value)}
                         onKeyDown={(e) => e.key === "Enter" && addCounter()}
                     />
                     <input
-                        className="w-20 border p-1"
+                        className="w-20 border p-1 bg-white"
                         placeholder="0"
                         value={newValue}
                         onChange={(e) => setNewValue(e.target.value)}
