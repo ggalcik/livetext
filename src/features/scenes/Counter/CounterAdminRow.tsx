@@ -29,7 +29,7 @@ export default function CounterAdminRow({
         onChange={(e) => onUpdate(counter.id, { name: e.target.value })}
       />
       <button
-        className="px-2 border cursor-pointer bg-white"
+        className="px-2 border cursor-pointer bg-white border-gray-300"
         onClick={() =>
           onUpdate(counter.id, {
             value: (counter.value || 0) - 1,
@@ -39,7 +39,7 @@ export default function CounterAdminRow({
         -
       </button>
       <input
-        className="w-12 border  text-center bg-white"
+        className="w-12 border  text-center bg-white border-gray-300"
         value={counter.value}
         onChange={(e) =>
           onUpdate(counter.id, {
@@ -48,7 +48,7 @@ export default function CounterAdminRow({
         }
       /> 
       <button
-        className="px-2 border cursor-pointer bg-white"
+        className="px-2 border cursor-pointer bg-white border-gray-300"
         onClick={() =>
           onUpdate(counter.id, {
             value: counter.value ? counter.value + 1 : 1,
