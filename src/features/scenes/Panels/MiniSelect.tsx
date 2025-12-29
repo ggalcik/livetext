@@ -5,8 +5,10 @@ import { panels } from './panels/config';
 
 interface IMiniSelectProps {
     activate: () => void;
+    boom?: ((delay: number) => void) | null;
 }
-export default function MiniSelect({ activate }: IMiniSelectProps) {
+
+export default function MiniSelect({ activate, boom }: IMiniSelectProps) {
 
     const whatever = 'this';
 

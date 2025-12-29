@@ -2,9 +2,11 @@ import { useCallback, useEffect } from 'react';
 import dling from '/src/assets/ding.mp3';
 import paper from './assets/blank-newspaper.jpg';
 
-export function RhizicBackground() {
+import {rheazons as rheazonsData} from './data';
 
-    return <div className="absolute top-0 left-0 w-full h-full bg-blue-900 bg-no-repeat bg-cover bg-center"
+export function WhySoAngryBackground() {
+
+    return <div className="absolute top-0 left-0 w-full h-full bg-blue-900 bg-no-repeat bg-cover bg-center opacity-70"
         style={{ backgroundImage: `url(${paper})` }}></div>
 }
 
@@ -23,7 +25,7 @@ const rheazons = [
     "Jesus leaves my messages on read but never replies.",
 ]
 
-export function RhizicAdmin() {
+export function WhySoAngryAdmin() {
     return <>
         <div className='w-120 h-40 overflow-y-scroll px-2 text-sm border mb-4'>
             {rheazons.map(item => <div className='border-b-gray-400 border-b py-1'>{item}</div>)}
@@ -37,14 +39,17 @@ export function RhizicAdmin() {
     </>
 }
 
-export function Rhizic() {
+export function WhySoAngry() {
     const audio = new Audio(dling);
+    const year = new Date().getFullYear();
 
     const playSound = useCallback(() => {
         audio.play().catch((err) => {
             console.warn("Could not play sound:", err);
         });
     }, []);
+
+    const {person, saying} = rheazonsData[Math.floor(Math.random() * rheazonsData.length)]
 
     useEffect(() => {
         playSound();
@@ -53,11 +58,11 @@ export function Rhizic() {
     return (
         <>
             <div className="absolute top-0  left-0 text-2xl text-black font-bold font-[Book_Antiqua]">
-               &ldquo;{rheazons[Math.floor(Math.random() * rheazons.length)]}&rdquo;
+               &ldquo;{saying}&rdquo;
                 </div>
             <div className="absolute bottom-0  left-0  text-2xl text-gray-700 font-bold font-[Book_Antiqua]">
-                <span className='text-4xl'>&copy;</span>opyright 2025<br /
-                >Rev Rhizic, Emperor of Antifa<br />All Rights Reserved.</div>
+                <span className='text-4xl'>&copy;</span>opyright {year}<br /
+                >{person}<br />All Rights Reserved.</div>
         </>
     );
 }

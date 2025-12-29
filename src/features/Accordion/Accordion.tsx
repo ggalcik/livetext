@@ -15,6 +15,7 @@ interface IAccordion<T extends string> {
     selectedRadio?: T;
     setSelectedRadio?: (scene: SceneType, delay?: number) => void;
     boomerangRadio?: ((delay: number) => void) | null;
+    boom?: ((delay: number) => void) | null;
     boomerangTarget?: SceneType
     startOpen?: boolean;
     delay?: number | null;
@@ -32,6 +33,7 @@ export function Accordion<T extends string>({
     boomerangRadio,
     boomerangTarget,
     delay,
+    boom = null,
     startOpen = false }: IAccordion<T>) {
     const [isOpen, setIsOpen] = useState(startOpen);
     const [showMiniSelect, setShowMiniSelect] = useState(false);
@@ -87,7 +89,7 @@ export function Accordion<T extends string>({
                             <div className=''
                                 onClick={(e) => handleSceneClick(e, item)}>{item}</div>
                             {item === 'panels' && showMiniSelect &&
-                                <MiniSelect activate={() => { setSelectedRadio('panels') }} />
+                                <MiniSelect boom={boom} activate={() => { setSelectedRadio('panels') }} />
                             }
 
                         </div>

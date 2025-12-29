@@ -1,6 +1,6 @@
 import type { IPanel, IPanels } from "../types";
 import dling from '/src/assets/ding.mp3';
-import { Rhizic, RhizicAdmin, RhizicBackground } from "./Rhizic";
+import { WhySoAngry, WhySoAngryAdmin, WhySoAngryBackground } from "./WhySoAngry";
 import { LasLajas, LasLajasBackground } from "./LasLajas";
 import { Aaaaamennnn, AaaaamennnnBackground } from "./Aaaamennnn";
 import { HolyHonkers, HolyHonkersBackground } from "./HolyHonkers";
@@ -9,12 +9,12 @@ import { Chalkboard, ChalkboardAdmin, ChalkboardBackground } from "./Chalkboard"
 import { Pivat } from "./Pivat";
 
 export const panels: IPanels = {
-    'copy Rhizic':
+    'Why So Angry':
     {
         soundEnter: dling,
-        element: <Rhizic />,
-        backgroundElement: <RhizicBackground />,
-        adminElement: <RhizicAdmin />,
+        element: <WhySoAngry />,
+        backgroundElement: <WhySoAngryBackground />,
+        adminElement: <WhySoAngryAdmin />,
         boomerangDelay: 5,
     },
     'Chalkboard':

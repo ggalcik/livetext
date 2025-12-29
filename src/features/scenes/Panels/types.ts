@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 export const panelTypes = [
-    'copy Rhizic', 
+    'Why So Angry', 
     'HolyHonkers',
     'Chalkboard', 
     'Orchestra', 
@@ -28,7 +28,7 @@ export const IPanelsSchema = z.record(IPanelTypeSchema, IPanelSchema);
 export type IPanels = z.infer<typeof IPanelsSchema>;
 
 const IPanelDataBaseSchema = z.object({
-    panel: IPanelTypeSchema.exclude(['Orchestra','copy Rhizic']),
+    panel: IPanelTypeSchema.exclude(['Orchestra','Why So Angry']),
     duration: z.number().optional(),
 });
 
@@ -37,8 +37,8 @@ const IPanelOrchestraSchema = IPanelDataBaseSchema.extend({
     stopVideo: z.string().optional(),
 });
 
-const IPanelRhizicSchema = IPanelDataBaseSchema.extend({
-    panel: z.literal('copy Rhizic'),
+const IPanelWhySoAngrySchema = IPanelDataBaseSchema.extend({
+    panel: z.literal('Why So Angry'),
     rheazon: z.string().optional(),
     showCopyright: z.boolean().optional(),
 });
@@ -48,7 +48,7 @@ export type IPanelOrchestra = z.infer<typeof IPanelOrchestraSchema>;
 const IPanelDataSchema = z.discriminatedUnion('panel', [
   IPanelDataBaseSchema,
   IPanelOrchestraSchema,
-  IPanelRhizicSchema,
+  IPanelWhySoAngrySchema,
 ]);
 
 
