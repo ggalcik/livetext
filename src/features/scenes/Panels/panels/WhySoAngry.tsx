@@ -35,6 +35,7 @@ export function WhySoAngry() {
         });
     }, []);
 
+    // TODO: write used rheazons to storage, choose new ones that don't match, clear used reasons when all exhausted
     const {person, saying} = rheazonsData[Math.floor(Math.random() * rheazonsData.length)]
 
     useEffect(() => {

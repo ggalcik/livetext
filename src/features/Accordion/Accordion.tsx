@@ -9,7 +9,7 @@ import glog from "../../components/glog";
 interface IAccordion<T extends string> {
     label: string;
     children: React.ReactNode;
-    links?: readonly T[];
+    linkLabels?: readonly T[];
     selectedLink?: T;
     setSelectedLink?: (scene: SceneType) => void;
     selectedRadio?: T;
@@ -25,7 +25,7 @@ interface IAccordion<T extends string> {
 export function Accordion<T extends string>({
     label,
     children,
-    links,
+    linkLabels,
     selectedLink,
     setSelectedLink,
     selectedRadio,
@@ -60,43 +60,45 @@ export function Accordion<T extends string>({
                 "bg-green-50": !isOpen
             })}
                 onClick={(e) => { e.preventDefault(); setIsOpen(p => !p) }}>
-                <div className={clsx("p-2 pl-4", label === 'scenes' && 'border-r')}>
+                <div className={clsx("p-2 pl-4", linkLabels && 'border-r')}>
                     {label}
                 </div>
-                {links && setSelectedLink && setSelectedRadio &&
-                    <>{links.map((item, i) => {
+                {linkLabels && setSelectedLink &&
+                    <>{linkLabels.map((item) => {
                         // console.log("radio: selectedRadio %s, item %s ", selectedRadio, item);
-                        return <div key={`accordion_link_${item}`}
+                        return <div key={`accordion_${label}_${item}`}
                             className={clsx("relative flex gap-2 px-2 border-r items-center",
-                                selectedLink === item && links && isOpen && "bg-green-300",
+                                selectedLink === item && isOpen && "bg-green-300",
                                 selectedLink === item && "bg-green-200")}
                             onMouseEnter={() => item === 'panels' && setShowMiniSelect(true)}
                             onMouseLeave={() => item === 'panels' && setShowMiniSelect(false)}>
-                            <div className="w-6 h-6 relative z-10">
-                                <input type="radio"
-                                    className="w-6 h-6 cursor-pointer"
-                                    
-                                    value={item}
-                                    checked={selectedRadio === item}
-                                    onChange={() => setSelectedRadio(item)} 
-                                    onClick={(e) => e.stopPropagation()}
+                            {setSelectedRadio &&
+                                <div className="w-6 h-6 relative z-10">
+                                    <input type="radio"
+                                        className="w-6 h-6 cursor-pointer"
+
+                                        value={item}
+                                        checked={selectedRadio === item}
+                                        onChange={() => setSelectedRadio(item)}
+                                        onClick={(e) => e.stopPropagation()}
                                     />
 
-                                {delay && selectedRadio === item &&
-                                    <div className="absolute w-6 h-6 border -top-0 -left-0 bg-white flex justify-center align-baseline">{delay}</div>
-                                }
-                            </div>
+                                    {delay && selectedRadio === item &&
+                                        <div className="absolute w-6 h-6 border -top-0 -left-0 bg-white flex justify-center align-baseline">{delay}</div>
+                                    }
+                                </div>
+                            }
                             <div className=''
                                 onClick={(e) => handleSceneClick(e, item)}>{item}</div>
-                            {item === 'panels' && showMiniSelect &&
+                            {item === 'panels' && setSelectedRadio && showMiniSelect &&
                                 <MiniSelect boom={boom} activate={() => { setSelectedRadio('panels') }} />
                             }
 
                         </div>
                     }
                     )
-                }  </>
-                    
+                    }  </>
+
                 }
             </div>
             {isOpen &&

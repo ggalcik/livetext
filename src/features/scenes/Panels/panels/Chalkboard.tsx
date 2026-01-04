@@ -252,7 +252,7 @@ export function Chalkboard() {
         <div className={`bg-[length:100%_100%] w-full h-full`}
             style={{ backgroundImage: `url(${chalkboard})` }}
         >
-            <div className="pl-[12%] pr-[10%] py-[9%] h-full w-full box-border ">
+            <div className="pl-[12%] pr-[12%] py-[9%] h-full w-full box-border ">
                 <textarea
                     spellCheck="false"
                     className={`

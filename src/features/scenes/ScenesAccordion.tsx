@@ -38,7 +38,7 @@ export default function ScenesAccordion({ popupState }: { popupState: PopupState
     setRemainingDelay(null);
   }
 
-  function switchScene(scene: SceneType, delaySeconds?: number = 0):void {
+  function switchScene(scene: SceneType, delaySeconds: number = 0):void {
     // cancel any existing timers
     clearTimers();
 
@@ -92,7 +92,7 @@ export default function ScenesAccordion({ popupState }: { popupState: PopupState
     <Accordion
       label="scenes"
       startOpen
-      links={scenes}
+      linkLabels={scenes}
       selectedLink={sceneAccordionData.adminSelected}
       setSelectedLink={setSelectedAdmin}
       selectedRadio={sceneAccordionData.sceneSelected}

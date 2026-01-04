@@ -10,6 +10,7 @@ import { version } from '../package.json';
 import ScenesAccordion from "./features/scenes/ScenesAccordion";
 import PopupScene from "./features/Popup/PopupScene";
 import Data from "./features/Data/Data";
+import OverlaysAccordion from "./features/scenes/OverlaysAccordion";
 
 function App() {
 
@@ -26,7 +27,7 @@ function App() {
                 isActive ? (
                   <>
                     <div className="absolute top-4 right-4 border bg-white px-2">{version}</div>
-                    <Accordion label="fonts">
+                    {/* <Accordion label="fonts">
                       <FontReference />
                     </Accordion>
 
@@ -36,8 +37,9 @@ function App() {
 
                     <Accordion label="sounds">
                       <Soundboard />
-                    </Accordion>
+                    </Accordion> */}
 
+<OverlaysAccordion />
                     <ScenesAccordion popupState={{ visiblePopup, setVisiblePopup }} />
 
                   </>

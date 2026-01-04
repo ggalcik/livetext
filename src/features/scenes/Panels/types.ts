@@ -39,8 +39,7 @@ const IPanelOrchestraSchema = IPanelDataBaseSchema.extend({
 
 const IPanelWhySoAngrySchema = IPanelDataBaseSchema.extend({
     panel: z.literal('Why So Angry'),
-    rheazon: z.string().optional(),
-    showCopyright: z.boolean().optional(),
+    rheazon: z.string().optional()
 });
 
 export type IPanelOrchestra = z.infer<typeof IPanelOrchestraSchema>;
