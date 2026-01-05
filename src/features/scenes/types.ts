@@ -11,7 +11,7 @@ export const SceneAccordionDataSchema = z.object({
 
 export type SceneAccordionData = z.infer<typeof SceneAccordionDataSchema>;
 
-export const overlays = ['videos', 'sounds', 'data', 'fonts'];
+export const overlays = ['vidclips', 'sounds', 'data', 'fonts'];
 const overlaysSchema = z.enum(overlays);
 export type OverlayType = z.infer<typeof overlaysSchema>;
 

@@ -41,10 +41,15 @@ export function Accordion<T extends string>({
     function handleSceneClick(evt: React.MouseEvent, scene: T) {
         evt.preventDefault();
         evt.stopPropagation();
-        setSelectedLink && setSelectedLink(scene);
-        if (!isOpen) {
+        if (scene === selectedLink) {
+            setIsOpen(p => !p);
+        } else {
+            setSelectedLink && setSelectedLink(scene);
             setIsOpen(true);
         }
+        // if (!isOpen) {
+        //     setIsOpen(true);
+        // }
     }
     // TODO: ugh doesn't apply to accordion, but is there a point to generalizing
     function handleSceneSelect(evt: React.ChangeEvent<HTMLInputElement>, scene: T) {
@@ -60,18 +65,21 @@ export function Accordion<T extends string>({
                 "bg-green-50": !isOpen
             })}
                 onClick={(e) => { e.preventDefault(); setIsOpen(p => !p) }}>
-                <div className={clsx("p-2 pl-4", linkLabels && 'border-r')}>
+                <div className={clsx("p-2 pl-4 font-bold text-red-800", linkLabels && 'border-r')}>
+                    <div className="inline-block text-sm mr-1">{isOpen ? '⏷' : '⏶'}</div>
                     {label}
                 </div>
                 {linkLabels && setSelectedLink &&
                     <>{linkLabels.map((item) => {
                         // console.log("radio: selectedRadio %s, item %s ", selectedRadio, item);
                         return <div key={`accordion_${label}_${item}`}
-                            className={clsx("relative flex gap-2 px-2 border-r items-center",
-                                selectedLink === item && isOpen && "bg-green-300",
-                                selectedLink === item && "bg-green-200")}
+                        className={clsx("relative flex gap-2 px-2 border-r items-center",
+                            selectedLink === item && isOpen && "bg-green-300",
+                            selectedLink === item && "bg-green-200")}
                             onMouseEnter={() => item === 'panels' && setShowMiniSelect(true)}
-                            onMouseLeave={() => item === 'panels' && setShowMiniSelect(false)}>
+                            onMouseLeave={() => item === 'panels' && setShowMiniSelect(false)}
+                                onClick={(e) => handleSceneClick(e, item)}
+                            >
                             {setSelectedRadio &&
                                 <div className="w-6 h-6 relative z-10">
                                     <input type="radio"
@@ -89,7 +97,8 @@ export function Accordion<T extends string>({
                                 </div>
                             }
                             <div className=''
-                                onClick={(e) => handleSceneClick(e, item)}>{item}</div>
+
+                            >{item}</div>
                             {item === 'panels' && setSelectedRadio && showMiniSelect &&
                                 <MiniSelect boom={boom} activate={() => { setSelectedRadio('panels') }} />
                             }

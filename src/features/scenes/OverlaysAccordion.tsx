@@ -5,11 +5,12 @@ import glog from "../../components/glog";
 import Soundboard from "../Soundboard/Soundboard";
 import Data from "../Data/Data";
 import FontReference from "../FontReference/FontReference";
+import VidclipAdmin from "../Vidclips/VidclipAdmin";
 
 
 function showOverlay(overlay: OverlayType) {
  switch (overlay) {
-    // case "videos": return <BannerAdmin popupState={popupState} />;
+    case "vidclips": return <VidclipAdmin />;
     case "sounds": return <Soundboard />;
     case "data": return <Data />;
     case "fonts": return <FontReference />;
@@ -27,7 +28,7 @@ function showOverlay(overlay: OverlayType) {
 
 
 export default function OverlaysAccordion() {
-  const [selectedOverlay, setSelectedOverlay] = useState<OverlayType>('videos')
+  const [selectedOverlay, setSelectedOverlay] = useState<OverlayType>('vidclips')
 
   return (
     <Accordion

@@ -27,19 +27,8 @@ function App() {
                 isActive ? (
                   <>
                     <div className="absolute top-4 right-4 border bg-white px-2">{version}</div>
-                    {/* <Accordion label="fonts">
-                      <FontReference />
-                    </Accordion>
 
-                    <Accordion label="data">
-                      <Data />
-                    </Accordion>
-
-                    <Accordion label="sounds">
-                      <Soundboard />
-                    </Accordion> */}
-
-<OverlaysAccordion />
+                    <OverlaysAccordion />
                     <ScenesAccordion popupState={{ visiblePopup, setVisiblePopup }} />
 
                   </>

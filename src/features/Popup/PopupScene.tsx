@@ -9,6 +9,7 @@ import type { SceneType } from "../scenes/types";
 import Counter from "../scenes/Counter/Counter";
 import Panels from "../scenes/Panels/Panels";
 import Slides from "../scenes/Slides/Slides";
+import VidclipDisplay from "../Vidclips/VidclipDisplay";
 
 
 export function openPopup(which?: string) {
@@ -34,14 +35,18 @@ export default function PopupScene() {
   }, []);
 
   return (
-    <div className="absolute w-full h-full bg-black">
-      {sceneName === 'banners' && <LiveTextPopup />}
-      {sceneName === 'philbronium' && <Philbronium controls={true} />}
-      {sceneName === 'video' && <Video />}
-      {sceneName === 'slides' && <Slides />}
-      {sceneName === 'evolution' && <Evolution />}
-      {sceneName === 'counter' && <Counter />}
-      {sceneName === 'panels' && <Panels />}
-    </div> 
+    <>
+
+      <div className="absolute w-full h-full bg-black">
+        {sceneName === 'banners' && <LiveTextPopup />}
+        {sceneName === 'philbronium' && <Philbronium controls={true} />}
+        {sceneName === 'video' && <Video />}
+        {sceneName === 'slides' && <Slides />}
+        {sceneName === 'evolution' && <Evolution />}
+        {sceneName === 'counter' && <Counter />}
+        {sceneName === 'panels' && <Panels />}
+      </div>
+      <VidclipDisplay />
+    </>
   );
 }

@@ -7,7 +7,7 @@ export const rheazonsData: RheazonEntry[] = [
             [
                 "The power of the holy spirit isn't enough to open this pickle jar.",
                 "My toaster keeps burning the Virgin Mary into my bread.",
-                "The cat keeps spelling 'He is Risen!' when she walks across the keyyboard.",
+                "The cat keeps spelling 'He is Risen!' when she walks across the keyboard.",
                 "I keep committing sins, but Jesus keeps forgiving me.",
                 "The neighbor's Wi-Fi is named 'JesusLovesYou' & it has stronger signal than mine.",
                 "I keep getting 'Hogwarts Letters' but I don't believe in magic either.",
