@@ -6,7 +6,7 @@ import {rheazons as rheazonsData} from './data';
 
 export function WhySoAngryBackground() {
 
-    return <div className="absolute top-0 left-0 w-full h-full bg-blue-900 bg-no-repeat bg-cover bg-center opacity-70"
+    return <div className="absolute top-0 left-0 w-full h-full  bg-no-repeat bg-cover bg-center"
         style={{ backgroundImage: `url(${paper})` }}></div>
 }
 

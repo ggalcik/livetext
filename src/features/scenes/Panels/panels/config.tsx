@@ -6,7 +6,6 @@ import { Aaaaamennnn, AaaaamennnnBackground } from "./Aaaamennnn";
 import { HolyHonkers, HolyHonkersBackground } from "./HolyHonkers";
 import { Orchestra, OrchestraAdmin, OrchestraBackground } from "./Orchestra";
 import { Chalkboard, ChalkboardAdmin, ChalkboardBackground } from "./Chalkboard";
-import { Pivat } from "./Pivat";
 
 export const panels: IPanels = {
     'Why So Angry':
@@ -55,11 +54,5 @@ export const panels: IPanels = {
         backgroundElement: <OrchestraBackground />,
         ctrlViewport: true,
     },
-    'Pivat':
-    {
-        
-        backgroundElement: <OrchestraBackground />,
-        element: <Pivat />,
 
-    },
 }

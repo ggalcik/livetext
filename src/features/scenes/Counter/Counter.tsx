@@ -2,11 +2,12 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { MasterViewport } from "../../../components/MasterViewport/MasterViewport";
 import { format, parse } from "date-fns";
 import './Counter.css';
-import { CounterSceneSchema, type Counter } from "./types";
+import { CounterSceneSchema, type Counter, type CounterHistory } from "./types";
 import dling from '/src/assets/dling.mp3';
 import notebook from '../../../assets/notebook.png'
 import { usePersistentState } from "../../../hooks/usePersistentState";
 import { transform } from "zod";
+import clsx from "clsx";
 
 
 export default function Counter() {
@@ -15,6 +16,16 @@ export default function Counter() {
         schema: CounterSceneSchema,
         fallback: { counters: [], currentDate: format(new Date(), 'yyyyMMdd') }
     });
+    const historyEntries = scene.history ? Object.keys(scene.history).reverse() : [];
+    const historySliderRange = historyEntries.length;
+    const [showCounterIdx, setShowCounterIdx] = useState(0);
+
+    const activeCounters = scene.counters.filter((c) => c.show);
+    const showList: Array<Counter | CounterHistory> =
+        !scene.history || showCounterIdx == 0
+            ? activeCounters
+            : scene.history[historyEntries[showCounterIdx - 1]];
+
 
     const audioRef = useRef<HTMLAudioElement | null>(null);
 
@@ -37,8 +48,13 @@ export default function Counter() {
         });
     }, []);
 
+    function currentDisplayDate() : string {
+        if (showCounterIdx) {
+            return  parse(historyEntries[showCounterIdx - 1], 'yyyyMMdd', new Date()).toDateString() + ' A.D.';
+        }
+        return parse(scene.currentDate, 'yyyyMMdd', new Date()).toDateString() + ' A.D.';
+    }
 
-    const activeCounters = scene.counters.filter((c) => c.show);
 
     // TODO: display history counters
     //     const showingHistory = !!(scene.showDate && scene.history && scene.history[scene.showDate].length > 0);
@@ -48,8 +64,8 @@ export default function Counter() {
     //     : scene.counters.filter((c) => c.show);
     function getModScale(
         numCounters: number,
-        topScale = 0.85,
-        bottomScale = 0.55
+        topScale = 0.95,
+        bottomScale = 0.65
     ): number {
         const minCount = 5;
         const maxCount = 10;
@@ -62,51 +78,67 @@ export default function Counter() {
         return Math.round(scale * 1000) / 1000;
     }
 
-
-
-
     return (
         <div className="absolute w-full h-full bg-amber-900">
 
-            <MasterViewport name="counter" resizable={false}>
+            <MasterViewport name="counter" resizable={false} needCtrl={true}>
+          
+                <input type="range" min="0" max={historySliderRange}
+                    className={clsx("absolute top-6 -left-6 z-10 hover:opacity-100",
+                        {"opacity-0" : showCounterIdx == 0 })
+                    }
+                    style={{ writingMode: 'vertical-lr' }}
+                    value={showCounterIdx}
+                    onChange={(e) => setShowCounterIdx(Number(e.target.value))}
+                />
+                
                 <div className={`absolute w-full h-full origin-top-left`}
-                    style={{transform: `scale(${getModScale(activeCounters.length)})`  }} 
+                    style={{ transform: `scale(${getModScale(showList.length)})` }}
                 >
 
-                <div className={`absolute w-200 h-200 -left-30 top-0 bg-cover`}
-                    style={{ backgroundImage: `url(${notebook})` }}>
+                    <div className={`absolute w-200 h-200 -left-30 top-0 bg-cover`}
+                        style={{ backgroundImage: `url(${notebook})`,
+                            opacity: showCounterIdx == 0 ? 1 : 0.9 }}>
 
-                </div>
+                    </div>
 
-                <div className="p-4 relative">
-                    <div className="absolute w-[100vw]">
-                        <div className="text-lg font-[Ink_Free] font-bold -rotate-6 mt-2 text-black ">"Heard it all before" counters for</div>
-                        <div className="text-3xl leading-6 font-[Ink_Free] -rotate-2  font-bold  ml-35 mt-2 text-black ">
-                            {parse(scene.currentDate, 'yyyyMMdd', new Date()).toDateString()} A.D.
+                    <div className="p-4 relative">
+                        <div className="absolute w-[100vw]">
+                            <div className="text-lg font-[Ink_Free] font-bold -rotate-6 mt-2 text-black ">"Heard it all before" counters for</div>
+                            <div className="text-3xl leading-6 font-[Ink_Free] -rotate-2  font-bold  ml-35 mt-2 text-black ">
+                                { currentDisplayDate() }
+                            </div>
+                        </div>
+                        <div className={clsx("grid gap-2 mt-21",
+                            showCounterIdx ? 'text-gray-700': 'text-blue-800'
+                        )}>
+                            {showList.map((c) => (
+                                <CounterRow key={c.name} counter={c} playSound={playSound} />
+                            ))}
                         </div>
                     </div>
-                    <div className="grid gap-2 text-blue-800 mt-21">
-                        {activeCounters.map((c) => (
-                            <CounterRow key={c.id} counter={c} playSound={playSound} />
-                        ))}
-                    </div>
                 </div>
-        </div>
             </MasterViewport >
         </div >
     );
 }
 
 interface ICounterRow {
-    counter: Counter;
+    counter: Counter | CounterHistory;
     playSound: () => void
+}
+function isLiveCounter(x: Counter | CounterHistory): x is Counter {
+    return "lastIncrement" in x; // or: return "id" in x;
 }
 
 function CounterRow({ counter, playSound }: ICounterRow) {
     const [animating, setAnimating] = useState(false);
     const prevIncrement = useRef<number | null>(null);
+    const live = isLiveCounter(counter);
 
     useEffect(() => {
+        if (!live) return;
+
         // skip the first render
         if (prevIncrement.current === null) {
             prevIncrement.current = counter.lastIncrement;
@@ -119,7 +151,7 @@ function CounterRow({ counter, playSound }: ICounterRow) {
             if (counter.play)
                 playSound();
         }
-    }, [counter.lastIncrement, playSound, counter.play]);
+    }, [live, playSound, counter]);
 
     return (
         <div
