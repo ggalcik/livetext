@@ -58,6 +58,36 @@ function boardLetter(seq: number, sel: number | null, click: () => void) {
     );
 }
 
+function boardShape(seq: number, sel: number, click: () => void) {
+    const top = (seq * 55);
+    const rot = [4, 0, -8, -3];
+    const shapes = ['■', '◀', '◆', '◕']
+    // const top = [4, 0, -8, -3, 2, 0, 6, 1];
+    // const bg = '#0092b8';
+    // const bgHi = '#a2f4fd';
+    const selected = seq === sel;
+    const colors = [colorPairs[2], colorPairs[0], colorPairs[1], colorPairs[0]];
+    return (
+        <div key={`shape-${seq}`}
+            style={{
+                top: `${top}px`,
+                transform: `rotate(${rot[seq] * 2}deg)`,
+                "--bg-color": selected ? colors[seq][1] : colors[seq][0],
+                "--hover-color": colors[seq][1],
+            } as React.CSSProperties}
+            className={clsx(
+                "absolute cursor-pointer font-[Courier] font-bold px-1 py-1 text-indigo-800",
+                " ring ring-offset-3 shadow-[6px_10px_8px] shadow-black/50 transition-colors duration-150",
+                // "bg-[#e4b3e5]"
+                "bg-[var(--bg-color)] hover:bg-[var(--hover-color)]",
+                selected ? 'ring-black ring-offset-white' : 'ring-black/50 ring-offset-white/70'
+            )}
+            onClick={(e) => { e.preventDefault(); click() }}
+            onMouseDown={(e) => { e.preventDefault(); }}
+        >{shapes[seq]}</div>
+    );
+}
+
 function boardSizer(label: '+' | '-', click: () => void) {
     const rots = [4, -8];
     const colors = [colorPairs[0], colorPairs[1]];
@@ -119,6 +149,8 @@ export function Chalkboard() {
     const [showIntro, setShowIntro] = useState(chalkboardPanel.showIntro);
 
     useEffect(() => {
+
+
         if (!chalkboardPanel.showIntro) return;
         const plinkSound = new Audio(plinkIn);
         const whooshSound = new Audio(whooshOut);
@@ -144,7 +176,32 @@ export function Chalkboard() {
 
     const active = chalkboardPanel.active;
 
-    function setActive(sel: number | null) {
+
+    function getActives() {
+        const activeSet = chalkboardPanel.boardSets[chalkboardPanel.active];
+        glog("activeSet chalkboardPanel %o ", chalkboardPanel);
+        const activeBoard = activeSet.boards[activeSet.active];
+        const currentSet = chalkboardPanel.active;
+        const currentBoard = activeSet.active;
+        return { activeSet, activeBoard, currentSet, currentBoard };
+    }
+
+    function setActive(sel: number) {
+        const { activeSet, currentSet, currentBoard } = getActives();
+
+
+        const newSets = [...chalkboardPanel.boardSets];
+        newSets[currentSet] = { ...newSets[currentSet], active: sel };
+
+        setChalkboardPanel(
+            {
+                ...chalkboardPanel,
+                boardSets: newSets
+            }
+        )
+    }
+
+    function setActiveSet(sel: number) {
         setChalkboardPanel(
             {
                 ...chalkboardPanel,
@@ -153,19 +210,24 @@ export function Chalkboard() {
         )
     }
 
-    function setBoardText(sel: number | null, text: string) {
-        if (sel === null) return;
-        const boards = [...chalkboardPanel.boards];
-        boards[sel] = { ...boards[sel], text }
+    function setBoardText(text: string) {
+        const { activeSet, currentSet, currentBoard } = getActives();
+
+        const newBoards = [...activeSet.boards];
+        newBoards[currentBoard] = { ...newBoards[currentBoard], text };
+
+        const newSets = [...chalkboardPanel.boardSets];
+        newSets[currentSet] = { ...newSets[currentSet], boards: newBoards };
+
         setChalkboardPanel(
             {
                 ...chalkboardPanel,
-                boards
+                boardSets: newSets,
             }
         )
     }
 
-    function handleKeyDown(sel: number | null, e: React.KeyboardEvent<HTMLTextAreaElement>) {
+    function handleKeyDown(e: React.KeyboardEvent<HTMLTextAreaElement>) {
         if (e.key === 'Tab') {
             e.preventDefault();
 
@@ -180,23 +242,30 @@ export function Chalkboard() {
                 spaces +
                 textareaValue.substring(end);
 
-            setBoardText(sel, newText);
+            setBoardText(newText);
             currentTarget.selectionStart = start + spaces.length;
             currentTarget.selectionEnd = start + spaces.length;
         }
     }
 
-    function setBoardFontSize(sel: number | null, fontChange: '+' | '-') {
-        if (sel === null) return;
-        const boards = [...chalkboardPanel.boards];
-        const currentSize = boards[sel].fontSize;
+    function setBoardFontSize(fontChange: '+' | '-') {
+
+        const { activeSet, activeBoard, currentSet, currentBoard } = getActives();
+        const currentSize = activeBoard.fontSize;
         const fontSize = currentSize + (fontChange === '+' ? 2 : -2);
+
         if (fontSize < CHALKBOARD_FONTSIZE_MIN || fontSize > CHALKBOARD_FONTSIZE_MAX) return;
-        boards[sel] = { ...boards[sel], fontSize }
+
+        const newBoards = [...activeSet.boards];
+        newBoards[currentBoard] = { ...newBoards[currentBoard], fontSize };
+
+        const newSets = [...chalkboardPanel.boardSets];
+        newSets[currentSet] = { ...newSets[currentSet], boards: newBoards };
+
         setChalkboardPanel(
             {
                 ...chalkboardPanel,
-                boards
+                boardSets: newSets,
             }
         )
     }
@@ -248,6 +317,9 @@ export function Chalkboard() {
         )
     };
 
+
+    const { activeSet, activeBoard, currentSet, currentBoard } = getActives();
+
     return (
         <div className={`bg-[length:100%_100%] w-full h-full`}
             style={{ backgroundImage: `url(${chalkboard})` }}
@@ -259,22 +331,26 @@ export function Chalkboard() {
                     h-full w-full text-white bg-transparent border-0 focus:outline-none
                     text-xl font-bold  resize-none pl-4
                     `}
-                    style={{ font: `${chalkboardPanel.boards[active ?? 0].fontSize}px '${BOARD_FONT}'` }}
-                    value={chalkboardPanel.boards[active ?? 0].text || ''}
-                    onChange={e => setBoardText(active, e.target.value)}
-                    onKeyDown={e => handleKeyDown(active, e)}
+                    style={{ font: `${activeBoard.fontSize}px '${BOARD_FONT}'` }}
+                    value={activeBoard.text}
+                    onChange={e => setBoardText(e.target.value)}
+                    onKeyDown={e => handleKeyDown(e)}
                 ></textarea>
             </div>
 
             <div className="top-2.5 ml-[12%] absolute">
-                {Array.from({ length: 8 }, (_, i) => boardLetter(i, active, () => setActive(i)))}
+                {Array.from({ length: 8 }, (_, i) => boardLetter(i, currentBoard, () => setActive(i)))}
+            </div>
+
+            <div className="top-[10%] right-[10%] absolute">
+                {Array.from({ length: 4 }, (_, i) => boardShape(i, currentSet, () => setActiveSet(i)))}
             </div>
 
             <div className="top-5/8 right-[10%] absolute">
-                {boardSizer('+', () => setBoardFontSize(active, '+'))}
+                {boardSizer('+', () => setBoardFontSize('+'))}
                 <div className='top-12 right-2 absolute'>
 
-                    {boardSizer('-', () => setBoardFontSize(active, '-'))}
+                    {boardSizer('-', () => setBoardFontSize('-'))}
                 </div>
             </div>
 
