@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-export const PersistentDataKeySchema = z.enum([
+export const persistentDataKeys = [
     "SceneAccordion",
     "counterScene",
     "panelsScene",
@@ -8,5 +8,7 @@ export const PersistentDataKeySchema = z.enum([
     'slidesScene',
     'chalkboardPanel',
     'vidclip'
-]);
+];
+
+export const PersistentDataKeySchema = z.enum(persistentDataKeys);
 export type PersistentDataKey = z.infer<typeof PersistentDataKeySchema>;

@@ -1,8 +1,12 @@
 import React, { useState, useEffect, useRef } from "react";
+import { persistentDataKeys } from "../../hooks/types";
 
 const STORAGE_KEYS = ["MasterViewports", "fontList", "liveData", "videoScene", "counterScene", "panelsScene"] as const;
+const ALL_STORAGE_KEYS = [
+  ...new Set([...STORAGE_KEYS, ...persistentDataKeys]),
+] as const;
 
-type StorageKey = typeof STORAGE_KEYS[number];
+export type StorageKey = typeof ALL_STORAGE_KEYS[number];
 
 export default function Data() {
     const [copiedKey, setCopiedKey] = useState<string | null>(null);
@@ -43,7 +47,7 @@ export default function Data() {
         navigator.clipboard.writeText(text).then(() => setCopiedKey(key));
     };
 
-    const allText = STORAGE_KEYS.map(getFormatted).join("\n");
+    const allText = ALL_STORAGE_KEYS.map(getFormatted).join("\n");
 
     return (
         <div ref={containerRef} className="space-y-6 p-4 border rounded">
@@ -57,7 +61,7 @@ export default function Data() {
                 {copiedKey === "ALL" && <div className="text-green-600">copied!</div>}
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 auto-rows-auto">
-                {STORAGE_KEYS.map((key) => {
+                {ALL_STORAGE_KEYS.map((key) => {
                     const formatted = getFormatted(key);
                     return (
                         <div key={key} className="space-y-2 pr-20">
