@@ -6,6 +6,7 @@ import PhilbroniumAdmin from "./Philbronium/PhilbroniumlAdmin";
 import { SlidesAdmin } from "./Slides/SlidesAdmin";
 import type { SceneType } from "./types";
 import VideoAdmin from "./Video/VideoAdmin";
+import WhoWantsToAdmin from "./WhoWantsTo/WhoWantsToAdmin";
 
 interface ISceneAdmin {
   scene: SceneType;
@@ -22,6 +23,7 @@ export default function SceneAdmin({ scene, popupState, boomerang }: ISceneAdmin
     case "panels": return <PanelsAdmin boomerang={boomerang} />
     case "philbronium": return <PhilbroniumAdmin />
     case "slides": return <SlidesAdmin />
+    case "whowants": return <WhoWantsToAdmin />
     default: return <div className="p-4">
       {/* <div className="flex flex-wrap">
         <div className="flex-grow basis-full lg:basis-0 bg-red-300">First (fills row)</div>

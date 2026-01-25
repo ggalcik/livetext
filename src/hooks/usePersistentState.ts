@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { z } from "zod";
-import workingData, {type IWorkingData} from "../workingData";
+import workingData, { type IWorkingData } from "../workingData";
 import type { PersistentDataKey } from "./types";
 import glog from "../components/glog";
 
@@ -21,7 +21,7 @@ function loadState<S extends z.ZodTypeAny>({
       const parsed = JSON.parse(stored);
       const res = schema.safeParse(parsed);
       if (res.success) {
-         glog.ups(`[${storageKey}] loadState stored`, { data: res.data });
+        glog.ups(`[${storageKey}] loadState stored`, { data: res.data });
         return res.data;
       }
       console.warn(`Invalid localStorage data for ${storageKey}`, res.error.format());
@@ -33,10 +33,10 @@ function loadState<S extends z.ZodTypeAny>({
   if (workingData && workingData[storageKey as keyof IWorkingData]) {
     const res = schema.safeParse(workingData[storageKey as keyof IWorkingData]);
     if (res.success) {
-        glog.ups(`[${storageKey}] loadState from workingData?`, { data: res.data });
+      glog.ups(`[${storageKey}] loadState from workingData?`, { data: res.data });
       return res.data;
     }
-      
+
     console.warn(`Invalid workingData for ${storageKey}`, res.error.format());
   }
 

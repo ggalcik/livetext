@@ -26,7 +26,7 @@ export const IChalkboardPanelSchema = z.object({
 
 export type IChalkboardPanel = z.infer<typeof IChalkboardPanelSchema>;
 
-const boardDefault: IChalkboardPanelBoard = { text: '\n\n\n\n                Mr. dePlume\n                     (Greg)', fontSize: 20 };
+export const boardDefault: IChalkboardPanelBoard = { text: '\n\n\n                Mr. dePlume\n                     (Greg)', fontSize: 20 };
 const boards = new Array(8);
 
 export const defaultChalkboardPanel: IChalkboardPanel = {

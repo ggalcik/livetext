@@ -1,8 +1,8 @@
 
 import glog from "../../components/glog";
-import { createBanner, createSpot, NO_ACTIVE_BANNER, NO_ACTIVE_SPOT } from "./types";
+import { createBanner, createSpot, NO_ACTIVE_BANNER } from "./types";
 import type { LiveDataState, LiveDataAction, Banner } from "./types";
-import { LiveDataStateSchema, makeInitialLiveDataState, backgroundOptions } from './types';
+import { LiveDataStateSchema, makeInitialLiveDataState } from './types';
 
 import workingData from "./workingData.json";
 

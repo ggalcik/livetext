@@ -2,7 +2,7 @@ import clsx from 'clsx';
 import chalkboard from './assets/chalkboard.png';
 import chalkboardWall from './assets/chalkboard_wall.png';
 import { usePersistentState } from '../../../../hooks/usePersistentState';
-import { defaultChalkboardPanel, IChalkboardPanelSchema, CHALKBOARD_FONTSIZE_MIN, CHALKBOARD_FONTSIZE_MAX } from './types';
+import { boardDefault, defaultChalkboardPanel, IChalkboardPanelSchema, CHALKBOARD_FONTSIZE_MIN, CHALKBOARD_FONTSIZE_MAX } from './types';
 import glog from '../../../../components/glog';
 import './Chalkboard.css'
 import { useEffect, useState } from 'react';
@@ -17,17 +17,20 @@ export function ChalkboardBackground() {
 }
 
 // const BOARD_FONT = 'Kristen ITC';
-const BOARD_FONT = 'Segoe Print';
+// const BOARD_FONT = 'Atomic Age';
+// const BOARD_FONT = 'Bahnschrift';
+// const BOARD_FONT = 'KG Ten Thousand Reasons';
+const BOARD_FONT = 'Segoe Print'; 
 
 
 const colorPairs =
     [['#0092b8', '#a2f4fd'],
     ['#bb36bd', '#e4b3e5'],
-    ['#868719', '#dfe17b'],
+    ['#868719', '#a2a339'],
     ['#19790e', '#8ada82']]
 
 function boardLetter(seq: number, sel: number | null, click: () => void) {
-    const left = (seq * 42);
+    const left = (seq * 50);
     const rot = [4, 0, -8, -3, 2, 0, 6, 1];
     const letter = String.fromCharCode(seq + (seq === 6 ? 65 : 97))
     // const top = [4, 0, -8, -3, 2, 0, 6, 1];
@@ -46,11 +49,13 @@ function boardLetter(seq: number, sel: number | null, click: () => void) {
                 "--hover-color": colors[seq][1],
             } as React.CSSProperties}
             className={clsx(
-                "absolute cursor-pointer font-[Courier] font-bold  px-2 py-1",
+                "absolute cursor-pointer font-[Courier] font-bold text-2xl px-2 py-1",
                 " ring  ring-offset-3 shadow-[6px_10px_8px] shadow-black/50 transition-colors duration-150",
                 // "bg-[#e4b3e5]"
                 "bg-[var(--bg-color)] hover:bg-[var(--hover-color)]",
-                selected ? 'ring-black ring-offset-white' : 'ring-black/50 ring-offset-white/70'
+                selected 
+                ? 'text-black ring-black ring-offset-white' 
+                : 'text-gray-800 ring-black/50 ring-offset-white/60'
             )}
             onClick={(e) => { e.preventDefault(); click() }}
             onMouseDown={(e) => { e.preventDefault(); }}
@@ -61,7 +66,9 @@ function boardLetter(seq: number, sel: number | null, click: () => void) {
 function boardShape(seq: number, sel: number, click: () => void) {
     const top = (seq * 55);
     const rot = [4, 0, -8, -3];
-    const shapes = ['■', '◀', '◆', '◕']
+    const shapes = ['✩', '△', '⭘', '⬠'];
+    // const shapes = ['α', 'β', 'γ', 'δ'];
+    // const shapes = ['■', '▲', '◆', '◕']
     // const top = [4, 0, -8, -3, 2, 0, 6, 1];
     // const bg = '#0092b8';
     // const bgHi = '#a2f4fd';
@@ -76,11 +83,13 @@ function boardShape(seq: number, sel: number, click: () => void) {
                 "--hover-color": colors[seq][1],
             } as React.CSSProperties}
             className={clsx(
-                "absolute cursor-pointer font-[Courier] font-bold px-1 py-1 text-indigo-800",
+                "absolute cursor-pointer font-[Courier] font-bold text-2xl px-1 py-1 h-[1.5em]",
                 " ring ring-offset-3 shadow-[6px_10px_8px] shadow-black/50 transition-colors duration-150",
                 // "bg-[#e4b3e5]"
                 "bg-[var(--bg-color)] hover:bg-[var(--hover-color)]",
-                selected ? 'ring-black ring-offset-white' : 'ring-black/50 ring-offset-white/70'
+                                selected 
+                ? 'text-black ring-black ring-offset-white' 
+                : 'text-gray-600 ring-black/50 ring-offset-white/60'
             )}
             onClick={(e) => { e.preventDefault(); click() }}
             onMouseDown={(e) => { e.preventDefault(); }}
@@ -179,7 +188,7 @@ export function Chalkboard() {
 
     function getActives() {
         const activeSet = chalkboardPanel.boardSets[chalkboardPanel.active];
-        glog("activeSet chalkboardPanel %o ", chalkboardPanel);
+        // glog("activeSet chalkboardPanel %o ", chalkboardPanel);
         const activeBoard = activeSet.boards[activeSet.active];
         const currentSet = chalkboardPanel.active;
         const currentBoard = activeSet.active;
@@ -329,12 +338,14 @@ export function Chalkboard() {
                     spellCheck="false"
                     className={`
                     h-full w-full text-white bg-transparent border-0 focus:outline-none
-                    text-xl font-bold  resize-none pl-4
+                    text-xl font-bold  resize-none pl-4  placeholder-white 
                     `}
-                    style={{ font: `${activeBoard.fontSize}px '${BOARD_FONT}'` }}
+                    style={{ font: `${activeBoard.fontSize}px/1.2em '${BOARD_FONT}'`, 
+                }}
                     value={activeBoard.text}
                     onChange={e => setBoardText(e.target.value)}
                     onKeyDown={e => handleKeyDown(e)}
+                    placeholder={boardDefault.text}
                 ></textarea>
             </div>
 

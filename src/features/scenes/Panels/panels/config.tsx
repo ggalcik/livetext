@@ -6,6 +6,7 @@ import { Aaaaamennnn, AaaaamennnnBackground } from "./Aaaamennnn";
 import { HolyHonkers, HolyHonkersBackground } from "./HolyHonkers";
 import { Orchestra, OrchestraAdmin, OrchestraBackground } from "./Orchestra";
 import { Chalkboard, ChalkboardAdmin, ChalkboardBackground } from "./Chalkboard";
+import { Hypotheticheck, HypotheticheckAdmin, HypotheticheckBackground } from "./Hypotheticheck";
 
 export const panels: IPanels = {
     'Why So Angry':
@@ -15,6 +16,12 @@ export const panels: IPanels = {
         backgroundElement: <WhySoAngryBackground />,
         adminElement: <WhySoAngryAdmin />,
         boomerangDelay: 5,
+    },
+    'Hypotheticheck':
+    {
+        element: <Hypotheticheck />,
+        backgroundElement: <HypotheticheckBackground />,
+        adminElement: <HypotheticheckAdmin />,
     },
     'Chalkboard':
     {

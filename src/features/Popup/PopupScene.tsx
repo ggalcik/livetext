@@ -10,6 +10,7 @@ import Counter from "../scenes/Counter/Counter";
 import Panels from "../scenes/Panels/Panels";
 import Slides from "../scenes/Slides/Slides";
 import VidclipDisplay from "../Vidclips/VidclipDisplay";
+import WhoWantsTo from "../scenes/WhoWantsTo/WhoWantsTo";
 
 
 export function openPopup(which?: string) {
@@ -45,6 +46,7 @@ export default function PopupScene() {
         {sceneName === 'evolution' && <Evolution />}
         {sceneName === 'counter' && <Counter />}
         {sceneName === 'panels' && <Panels />}
+        {sceneName === 'whowants' && <WhoWantsTo />}
       </div>
       <VidclipDisplay />
     </>

@@ -26,7 +26,8 @@ export const rheazonsData: RheazonEntry[] = [
                 "The kids are walking on my azaleas again.",
                 "You become an atheist, you get the anger for free.",
                 "It's a tautology! A = A, where A = anger, and A = Atheist.",
-                "If I wasn't angry, then what would all the Reddit atheists say about me?"
+                "If I wasn't angry, then what would all the Reddit atheists say about me?",
+                "I want to be taken seriously, but my tiny legs make me look ridiculous.",
             ]
     }
 ]
@@ -46,3 +47,8 @@ function flattenRheazons(data: readonly RheazonEntry[]): Rheason[] {
 }
 
 export const rheazons = flattenRheazons(rheazonsData);
+
+export const hypothetichecks = [
+    "If your child was blind and you told them 'you can play with any of your toys, but not the red ones', how would you punish them for playing with the red ones?",
+    "If God told you to do something that you thought was disgusting, would you do it?"
+]

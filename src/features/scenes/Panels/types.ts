@@ -1,10 +1,11 @@
 import { z } from 'zod';
 
 export const panelTypes = [
-    'Why So Angry', 
-    'HolyHonkers',
     'Chalkboard', 
-    'Orchestra', 
+    'HolyHonkers',
+    'Why So Angry', 
+    'Orchestra',
+    'Hypotheticheck', 
     'Aaaamennn', 
     'Las Lajas',
 ] as const;

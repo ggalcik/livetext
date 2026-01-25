@@ -64,7 +64,7 @@ export default function Counter() {
     //     : scene.counters.filter((c) => c.show);
     function getModScale(
         numCounters: number,
-        topScale = 0.95,
+        topScale = 0.90,
         bottomScale = 0.65
     ): number {
         const minCount = 5;
