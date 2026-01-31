@@ -88,7 +88,8 @@ export function Accordion<T extends string>({
                                         value={item}
                                         checked={selectedRadio === item}
                                         onChange={() => setSelectedRadio(item)}
-                                        onClick={(e) => e.stopPropagation()}
+                                        onClick={(e) => {e.stopPropagation();setSelectedRadio(item)}
+                                    }
                                     />
 
                                     {delay && selectedRadio === item &&

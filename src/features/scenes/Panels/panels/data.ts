@@ -50,5 +50,7 @@ export const rheazons = flattenRheazons(rheazonsData);
 
 export const hypothetichecks = [
     "If your child was blind and you told them 'you can play with any of your toys, but not the red ones', how would you punish them for playing with the red ones?",
-    "If God told you to do something that you thought was disgusting, would you do it?"
+    "If God told you to do something that you thought was disgusting, would you do it?",
+    "If you died tomorrow and saw God and he said you can ask him any single question you wanted, what would you ask?",
+    "Was Satan forgiven when Jesus was cricified?",
 ]

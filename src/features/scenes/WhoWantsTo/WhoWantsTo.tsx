@@ -7,18 +7,14 @@ import medallion from '../assets/whowants.png'
 import { AudioController } from "../../../components/AudioController";
 import { whoWantsToDefault, WhoWantsToSchema, type WhoWantsToAnswer, type WhoWantsToRound, type WhoWantsToState } from "./types";
 import clsx from "clsx";
-import { usePersistentState } from "../../../hooks/usePersistentState";
+import { useWhoWantsState } from "./helpers";
 
 const million_start = "/local/scenes/whowantsto/million 1-start.mp3";
 const million_chat = "/local/scenes/whowantsto/million 2-ask.mp3";
 
 export default function WhoWantsTo() {
     const [stage, setStage] = useState<WhoWantsToState>('start');
-    const [whoScene, setWhoScene] = usePersistentState({
-        storageKey: 'panelsScene',
-        schema: WhoWantsToSchema,
-        fallback: whoWantsToDefault
-    })
+    const [whoScene, setWhoScene] = useWhoWantsState();
 
     const audioRef = useRef<AudioController | null>(null);
     const round = (whoScene.activeRoundId === null
@@ -131,10 +127,10 @@ export default function WhoWantsTo() {
 
 
                         {WhoBox('Q', round, { mode: 'norm' })}
-                        {WhoBox('A', round.answers[0], { mode: 'norm' })}
-                        {WhoBox('B', round.answers[1], { mode: 'norm' })}
-                        {WhoBox('C', round.answers[2], { mode: 'norm' })}
-                        {WhoBox('D', round.answers[3], { mode: 'norm' })}
+                        {WhoBox('A', round.answers[0], { mode: 'norm', showText: round.answers[0].show })}
+                        {WhoBox('B', round.answers[1], { mode: 'norm', showText: round.answers[1].show })}
+                        {WhoBox('C', round.answers[2], { mode: 'norm', showText: round.answers[2].show })}
+                        {WhoBox('D', round.answers[3], { mode: 'norm', showText: round.answers[3].show })}
 
                     </div>
 
