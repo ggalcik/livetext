@@ -1,19 +1,22 @@
 import { useEffect, useRef, useState } from "react";
 import { MasterViewport } from "../../../components/MasterViewport/MasterViewport";
-
+import { produce } from 'immer';
 import { whoWantsToStarfield } from "../data";
 import './WhoWantsTo.css';
 import medallion from '../assets/whowants.png'
 import { AudioController } from "../../../components/AudioController";
-import { whoWantsToDefault, WhoWantsToSchema, type WhoWantsToAnswer, type WhoWantsToRound, type WhoWantsToState } from "./types";
+import { whoWantsToDefault, WhoWantsToSchema, type WhoWantsToAnswer, type WhoWantsToRound, type WhoWantsToStage } from "./types";
 import clsx from "clsx";
 import { useWhoWantsState } from "./helpers";
 
-const million_start = "/local/scenes/whowantsto/million 1-start.mp3";
+const million_start = "/local/scenes/whowantsto/million 1-start w claps.mp3";
 const million_chat = "/local/scenes/whowantsto/million 2-ask.mp3";
 
+const vid = true;
+const volume = 0.6;
+
+
 export default function WhoWantsTo() {
-    const [stage, setStage] = useState<WhoWantsToState>('start');
     const [whoScene, setWhoScene] = useWhoWantsState();
 
     const audioRef = useRef<AudioController | null>(null);
@@ -28,16 +31,27 @@ export default function WhoWantsTo() {
         audioRef.current = new AudioController();
     }
 
+    const setStage = (stage: WhoWantsToStage) => {
+        setWhoScene(produce((draft) => {
+            draft.stage = stage;
+        }));
+    }
+
     useEffect(() => {
-        if (stage === 'start') {
-            audioRef.current?.setVolume(0);
+        setStage('start');
+    }, []);
+
+
+    useEffect(() => {
+        if (whoScene.stage === 'start') {
+            audioRef.current?.setVolume(volume);
             audioRef.current?.playUrl(million_start);
         }
-        if (stage === 'chat') {
-            audioRef.current?.setVolume(0);
+        if (whoScene.stage === 'chat') {
+            audioRef.current?.setVolume(volume);
             audioRef.current?.playUrl(million_chat, { loop: true });
         }
-    }, [stage]);
+    }, [whoScene.stage]);
 
     type WhoBoxMode = "none" | "norm" | "good" | "chosen";
     interface IWhoBoxOpts {
@@ -57,9 +71,10 @@ export default function WhoWantsTo() {
     }
 
     function WhoBoxOuter({ children, question = true, mode = 'none' }: IWhoBoxOuter) {
+
         return <div className={clsx("bg-black border-2 border-blue-400 font-bold flex items-center font-[Conduit]",
-            question && 'justify-center text-4xl',
-            !question && 'mx-4 px-2 text-2xl',
+            question && 'justify-center p-2',
+            !question && 'mx-4 px-2',
             mode === 'norm' && 'text-white',
             mode === 'good' && 'text-black bg-green-500',
             mode === 'chosen' && 'text-black bg-orange-500',
@@ -71,27 +86,30 @@ export default function WhoWantsTo() {
     function WhoBox(ident: string, item: WhoWantsToRound | WhoWantsToAnswer, opts: IWhoBoxOpts = {}): React.ReactNode {
         const { showText = true, mode = 'none' } = opts;
         const q = "question" in item;
+        let qSize = 'text-4xl';
+        if (q && item.question.length > 60) qSize = 'text-3xl';
 
         return <WhoBoxOuter question={q} mode={mode}>
+            {showText && q && <div className={`text-center ${qSize}`}>{item.question}</div>}
             {showText && !q &&
                 <>
-                    <span className={clsx("mr-2 text-md",
+                    <span className={clsx("mr-2 text-2xl",
                         mode === 'good' && 'text-emerald-200',
                         mode !== 'good' && 'text-amber-400')}
                     >•{ident}: </span>
-                    {item.text}
+                    <span className="text-2xl">{item.text}</span>
                 </>
             }
-            {showText && q && item.question}
         </WhoBoxOuter>
     }
 
     const grid = 1;
-    const vid = false;
+
 
 
     return (
-        <div className="absolute top-0 left-0 w-full h-full overflow-hidden bg-blue-800">
+        <div className="absolute top-0 left-0 w-full h-full overflow-hidden bg-black">
+
             <div className="absolute bottom-0 w-[1200px] animate-oscillate">
 
                 {vid && <video className="-translate-x-1/4"
@@ -104,7 +122,7 @@ export default function WhoWantsTo() {
 
             </div>
 
-            {stage === 'start' &&
+            {whoScene.stage === 'start' &&
                 <div className="absolute top-1/2 w-full">
                     <div className="text-center">
                         <img className="inline animate-medallion" src={medallion}
@@ -118,8 +136,8 @@ export default function WhoWantsTo() {
 
             <MasterViewport name={"whowantsto"} needCtrl>
 
-                {stage === 'chat' && round &&
-                    <div className={clsx(
+                {whoScene.stage === 'chat' && round &&
+                    <div className={clsx("animate-fade-in-1s",
                         grid == 1 && "grid grid-rows-[2fr_1fr_1fr_1fr_1fr] grid-cols-1 gap-2 w-full h-full ",
                         grid != 1 && "grid grid-rows-[2fr_1fr_1fr] grid-cols-2 [&>:first-child]:col-span-2 gap-4 w-full h-full "
                     )} >

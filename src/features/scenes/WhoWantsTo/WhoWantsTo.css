@@ -37,6 +37,13 @@
             opacity: 0;
         }
     }
+
+  --animate-fade-in-1s: fade-in-1s 1s ease forwards;
+
+  @keyframes fade-in-1s {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
 }
 
 @layer components {

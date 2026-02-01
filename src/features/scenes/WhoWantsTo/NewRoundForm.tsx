@@ -21,7 +21,7 @@ type NewRoundFormProps = {
 export function NewRoundForm({ initialAnswersCount = 4, onSubmit }: NewRoundFormProps) {
     const [question, setQuestion] = React.useState<string>("");
     const [answers, setAnswers] = React.useState<WhoWantsToAnswer[]>(
-        Array.from({ length: initialAnswersCount }, () => ({ 
+        Array.from({ length: initialAnswersCount }, () => ({
             text: "",
             show: false,
             correct: false,
@@ -105,7 +105,8 @@ export function NewRoundForm({ initialAnswersCount = 4, onSubmit }: NewRoundForm
 
                     <div className="flex justify-center">
                         <input
-                        className="w-6 h-6"
+                            className="w-6 h-6 "
+                            tabIndex={-1}
                             type="radio"
                             name="correctAnswer"
                             checked={correctIndex === i}

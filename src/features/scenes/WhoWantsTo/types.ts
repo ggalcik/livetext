@@ -33,8 +33,8 @@ const WhoWantsToRoundSchema = z.object({
 })
 export type WhoWantsToRound = z.infer<typeof WhoWantsToRoundSchema>;
 
-export const whoWantsToState = ['idle', 'start', 'chat', 'tense', 'win', 'lose'] as const;
-export type WhoWantsToState = typeof whoWantsToState[number];
+export const whoWantsToStage = ['idle', 'start', 'chat', 'tense', 'win', 'lose'] as const;
+export type WhoWantsToStage= typeof whoWantsToStage[number];
 
 export const WhoWantsToSchema =
     z.object({
@@ -42,7 +42,7 @@ export const WhoWantsToSchema =
         showRound: z.boolean().default(false),
         chosen: z.number().nullable(),
         rounds: z.array(WhoWantsToRoundSchema),
-        state: z.enum(whoWantsToState),
+        stage: z.enum(whoWantsToStage),
     });
 
 
@@ -81,5 +81,5 @@ export const whoWantsToDefault: IWhoWantsTo = {
             ]
         }
     ],
-    state: 'idle'
+    stage: 'idle'
 }
