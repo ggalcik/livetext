@@ -25,6 +25,7 @@ export function NewRoundForm({ initialAnswersCount = 4, onSubmit }: NewRoundForm
             text: "",
             show: false,
             correct: false,
+            chosen: false,
         }))
     );
 
@@ -72,6 +73,7 @@ export function NewRoundForm({ initialAnswersCount = 4, onSubmit }: NewRoundForm
                 text: a.text.trim(),
                 show: a.show,
                 correct: idx === correctIndex ? true : undefined,
+                chosen: false,
             })),
         };
 
