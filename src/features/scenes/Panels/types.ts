@@ -7,6 +7,7 @@ export const panelTypes = [
     'Orchestra',
     'Hypotheticheck', 
     'Aaaamennn', 
+    'Egregore',
     'Las Lajas',
 ] as const;
 

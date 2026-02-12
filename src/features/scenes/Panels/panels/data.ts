@@ -52,5 +52,8 @@ export const hypothetichecks = [
     "If your child was blind and you told them 'you can play with any of your toys, but not the red ones', how would you punish them for playing with the red ones?",
     "If God told you to do something that you thought was disgusting, would you do it?",
     "If you died tomorrow and saw God and he said you can ask him any single question you wanted, what would you ask?",
-    "Was Satan forgiven when Jesus was cricified?",
+    "Was Satan forgiven when Jesus was crucified?",
+    "Could God have made coveting okay?",
+    "If you saw someone being mugged and you had the ability to stop it, should you?",
+    "In the year 200 BC, how many hundreds of years did people own slaves with God's permission?"
 ]

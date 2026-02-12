@@ -148,7 +148,7 @@ export default function WhoWantsToAdmin() {
                 {isActive ?
                 <HoldToConfirmButton
                     
-                    onConfirm={() => { showNextAnswer(round.id) }}
+                    onConfirm={() => { showNextAnswer() }}
                     holdMs={0}
                 >
                  Show answer

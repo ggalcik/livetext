@@ -7,6 +7,7 @@ import { HolyHonkers, HolyHonkersBackground } from "./HolyHonkers";
 import { Orchestra, OrchestraAdmin, OrchestraBackground } from "./Orchestra";
 import { Chalkboard, ChalkboardAdmin, ChalkboardBackground } from "./Chalkboard";
 import { Hypotheticheck, HypotheticheckAdmin, HypotheticheckBackground } from "./Hypotheticheck";
+import { Egregore, EgregoreBackground } from "./Egregore";
 
 export const panels: IPanels = {
     'Why So Angry':
@@ -52,6 +53,13 @@ export const panels: IPanels = {
         noViewport: true,
         element: <Aaaaamennnn />,
         backgroundElement: <AaaaamennnnBackground />,
+    },
+    'Egregore':
+    {
+        // soundEnter: dling,
+        noViewport: true,
+        element: <Egregore />,
+        backgroundElement: <EgregoreBackground />,
     },
     'Orchestra':
     {

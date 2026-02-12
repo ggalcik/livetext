@@ -13,7 +13,9 @@ import { ItemTransition } from "./ItemTransition";
 import { ProgressWheel } from "../../../components/ProgressWheel";
 import RotateCountdown from "../../BannerAdmin/RotateCountdown";
 import { useLiveData } from "../../../context/LiveData";
-
+import egregore1 from "../Panels/panels/assets/egregore1.png";
+import egregore2 from "../Panels/panels/assets/egregore2.png";
+import egregore3 from "../Panels/panels/assets/egregore3.png";
 
 export default function LiveText({ state }: { state: LiveDataState }) {
 
@@ -106,8 +108,9 @@ export default function LiveText({ state }: { state: LiveDataState }) {
             <ProgressDots timer={state.breakTimer} alt />
           </div>
         )} */}
+         
       </MasterViewport>
-
+{/* <img src={egregore1} className="absolute -bottom-60"/> */}
       {/* works but the admin needs to be properly hooked in to watching localStorage
          also remove state being passed here
 <div className="absolute flex flex-nowrap top-4 left-4 gap-8 text-white leading-10 items-center">

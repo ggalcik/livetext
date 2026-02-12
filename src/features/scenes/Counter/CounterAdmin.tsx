@@ -144,8 +144,8 @@ export default function CounterAdmin() {
     function sortAlphaUp() {
         const newCounters = [...scene.counters];
         newCounters.sort((a, b) => {
-            const aName = a.name.toUpperCase().replaceAll(/[^A-Z]/g, '');
-            const bName = b.name.toUpperCase().replaceAll(/[^A-Z]/g, '');
+            const aName = a.name.toUpperCase().replace(/[^A-Z]/g, '');
+            const bName = b.name.toUpperCase().replace(/[^A-Z]/g, '');
             glog("aName %s, bName %s, aName < bName %o", aName, bName, aName < bName);
             return aName < bName ? -1 : 1;
         });

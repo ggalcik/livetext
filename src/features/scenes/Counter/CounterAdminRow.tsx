@@ -15,10 +15,10 @@ export default function CounterAdminRow({
   const [confirmDelete, setConfirmDelete] = useState(false);
 
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex items-center gap-1">
       <input
         type="checkbox"
-        className="w-8 h-8 cursor-pointer bg-white"
+        className="w-6 h-6 cursor-pointer bg-white"
         checked={counter.show}
         disabled={!counter.show && maxActive}
         onChange={(e) => onUpdate(counter.id, { show: e.target.checked })}
