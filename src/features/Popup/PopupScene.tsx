@@ -11,10 +11,19 @@ import Panels from "../scenes/Panels/Panels";
 import Slides from "../scenes/Slides/Slides";
 import VidclipDisplay from "../Vidclips/VidclipDisplay";
 import WhoWantsTo from "../scenes/WhoWantsTo/WhoWantsTo";
+// import { usePersistentState } from "../../hooks/usePersistentState";
+// import { PopupDataSchema } from "./types";
+import Blip from "../Blip/Blip";
+
 
 
 export function openPopup(which?: string) {
   const appendURL = which ? "/" + which : "";
+      // const [popupData] = usePersistentState({
+      //     storageKey: 'popupData',
+      //     schema: PopupDataSchema,
+      //     fallback: { showBlip: false }
+      // });
 
   window.open(
     "/popup" + appendURL,
@@ -49,6 +58,7 @@ export default function PopupScene() {
         {sceneName === 'whowants' && <WhoWantsTo />}
       </div>
       <VidclipDisplay />
+      <Blip />
     </>
   );
 }

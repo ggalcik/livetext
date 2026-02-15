@@ -1,0 +1,180 @@
+@import "tailwindcss";
+
+@theme {
+    --animate-rise-enter: rise-enter 1s ease-out forwards;
+
+    @keyframes rise-enter {
+        0% {
+            transform: translateY(100%);
+
+        }
+
+        25% {}
+
+        100% {
+            transform: translateY(10%);
+
+        }
+
+    }
+
+    --animate-fadein-egregore1: fadein-egregore1 6s ease-out forwards;
+    --animate-fadein-egregore2: fadein-egregore2 6s ease-out .8s forwards;
+    --animate-fadein-egregore4: fadein-egregore4 6s ease-out 1.4s forwards;
+
+    @keyframes fadein {
+        0% {
+            opacity: 0;
+        }
+
+        100% {
+            opacity: 1;
+        }
+    }
+
+    @keyframes fadein-egregore1 {
+
+        0%,
+        100% {
+            opacity: 0;
+        }
+
+        33%,
+        66% {
+            opacity: 1;
+        }
+    }
+
+    @keyframes fadein-egregore2 {
+
+        0%,
+        100% {
+            opacity: 0;
+        }
+
+        25%,
+        75% {
+            opacity: 1;
+        }
+    }
+
+    @keyframes fadein-egregore4 {
+
+        0%,
+        100% {
+            opacity: 0;
+        }
+
+        20%,
+        80% {
+            opacity: 1;
+        }
+    }
+
+    --animate-charwave-container: charwave-container 7s linear 2s forwards;
+
+    @keyframes charwave-container {
+        0% {
+            opacity: 0;
+            transform: scale(.8);
+        }
+
+        20%,
+        80% {
+            opacity: 1;
+
+        }
+
+        100% {
+            opacity: 0;
+            transform: scale(1.4);
+        }
+    }
+
+    --animate-charwave: charwave 2s ease-in-out infinite;
+
+    @keyframes charwave {
+
+        0%,
+        100% {
+            transform: translateY(0);
+        }
+
+        50% {
+            transform: translateY(-20px);
+        }
+    }
+
+    --animate-honkers: honkers 3s linear forwards;
+
+    @keyframes honkers {
+
+        0% {
+            transform: translateX(-100%) skew(10deg)
+        }
+
+        10% {
+            transform: translateX(0) skew(10deg);
+        }
+
+        15%,19% {
+            transform: skew(-14deg);
+        }
+        21%, 87% {
+            transform: skew(0);
+        }
+
+
+        88% {
+            transform: skew(5deg);
+        }
+
+        90% {
+            transform: translateX(0) skew(5deg);
+        }
+
+        100% {
+            transform: translateX(100%) skew(10deg);
+        }
+    }
+}
+
+.egregore-wave>span {
+    display: inline-block;
+    /* required so transform affects each letter */
+    animation: var(--animate-charwave);
+    will-change: transform;
+}
+
+/* stagger */
+.egregore-wave>span:nth-child(1) {
+    animation-delay: 0ms;
+}
+
+.egregore-wave>span:nth-child(2) {
+    animation-delay: 80ms;
+}
+
+.egregore-wave>span:nth-child(3) {
+    animation-delay: 160ms;
+}
+
+.egregore-wave>span:nth-child(4) {
+    animation-delay: 240ms;
+}
+
+.egregore-wave>span:nth-child(5) {
+    animation-delay: 320ms;
+}
+
+.egregore-wave>span:nth-child(6) {
+    animation-delay: 400ms;
+}
+
+.egregore-wave>span:nth-child(7) {
+    animation-delay: 480ms;
+}
+
+.egregore-wave>span:nth-child(8) {
+    animation-delay: 560ms;
+}

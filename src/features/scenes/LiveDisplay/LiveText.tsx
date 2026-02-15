@@ -13,9 +13,7 @@ import { ItemTransition } from "./ItemTransition";
 import { ProgressWheel } from "../../../components/ProgressWheel";
 import RotateCountdown from "../../BannerAdmin/RotateCountdown";
 import { useLiveData } from "../../../context/LiveData";
-import egregore1 from "../Panels/panels/assets/egregore1.png";
-import egregore2 from "../Panels/panels/assets/egregore2.png";
-import egregore3 from "../Panels/panels/assets/egregore3.png";
+
 
 export default function LiveText({ state }: { state: LiveDataState }) {
 
@@ -84,7 +82,7 @@ export default function LiveText({ state }: { state: LiveDataState }) {
 
         {showBanner && state.timer.on && state.timer.interval && (
           <div className="absolute top-0 -left-6 scale-80">
-            <ProgressWheel timer={state.timer} size={90} />
+            <ProgressWheel timer={state.timer} size={120} />
           </div>
         )}
 

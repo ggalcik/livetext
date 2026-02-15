@@ -13,7 +13,7 @@ import Trolley from "../../../assets/trolley.jpg";
 import Quadrant from "../../../assets/quadrant.png";
 import './Background.css';
 
-import AngerMini from "../../../assets/angry_atheist_sm.png";
+import AngerMini from "../../../assets/angry_atheist_sm_2.jpg";
 
 import type { BackgroundType } from "../../../context/LiveData/types";
 import { useRandomSet } from "../../../hooks/useRandomSet";

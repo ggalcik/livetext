@@ -10,7 +10,7 @@ import { version } from '../package.json';
 import ScenesAccordion from "./features/scenes/ScenesAccordion";
 import PopupScene from "./features/Popup/PopupScene";
 import Data from "./features/Data/Data";
-import OverlaysAccordion from "./features/scenes/OverlaysAccordion";
+import OverlaysAccordion from "./features/OverlaysAccordion";
 
 function App() {
 

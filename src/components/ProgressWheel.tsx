@@ -18,9 +18,10 @@ export function ProgressWheel({
         return <div></div>;
     }
 
-    const radius = size / 2 - 5;
-    const cx = size / 2;
-    const cy = size / 2;
+    const innerSize = size * .9;
+    const radius = innerSize / 2;
+    const cx = innerSize / 2;
+    const cy = innerSize / 2;
     const stepAngle = 360 / (timer.interval - 1);
     const completed = Math.max(0, timer.interval - timer.countdown);
 
@@ -34,15 +35,15 @@ export function ProgressWheel({
 
         // const radiusMod1 = radius 
         // const radiusMod2 = radius 
-        const radiusMod1 = radius - 7
-        const radiusMod2 = radius + 2
+        const radiusMod1 = radius - 0
+        const radiusMod2 = radius + 0
 
         const x1 = cx + radiusMod1 * Math.cos((startAngle * Math.PI) / 180);
         const y1 = cy + radiusMod1 * Math.sin((startAngle * Math.PI) / 180);
         const x2 = cx + radiusMod2 * Math.cos((endAngle * Math.PI) / 180);
         const y2 = cy + radiusMod2 * Math.sin((endAngle * Math.PI) / 180);
 
-const arc =  `A ${radius * .5} ${radius * .5} 0 ${largeArc} 1 ${x2} ${y2}`;
+const arc =  `A ${radius * 1} ${radius * 1} 0 ${largeArc} 1 ${x2} ${y2}`;
 
         const pathData = `
       M ${cx} ${cy}
@@ -91,16 +92,20 @@ const arc =  `A ${radius * .5} ${radius * .5} 0 ${largeArc} 1 ${x2} ${y2}`;
 
     const animSliceInterval = Math.floor((timer.countdown - 1) / 3) % 3 + 1;
 
+
     return (
         <div
-            className="inline-flex items-center justify-center rounded relative"
+            className="inline-flex items-center justify-center rounded relative -rotate-20"
             style={{
                 width: size,
                 height: size,
             }}
         >
-            <svg width={size} height={size}>
+            <svg width={innerSize} height={innerSize}>
                 {wedges}
+                <circle cx={radius} cy={radius} r={radius*.95} fill="transparent" stroke="white" stroke-width="2"/>
+                <circle cx={radius} cy={radius} r={radius*.90} fill="transparent" stroke="black" stroke-width="2"/>
+                <circle cx={radius} cy={radius} r={radius*.85} fill="transparent" stroke="white" stroke-width="2"/>
             </svg>
             <div
                 className="absolute text-center font-bold -translate-y-0.5"

@@ -1,16 +1,18 @@
 import {  useState } from "react";
-import {overlays, type OverlayType } from "./types";
-import { Accordion } from "../Accordion/Accordion";
-import glog from "../../components/glog";
-import Soundboard from "../Soundboard/Soundboard";
-import Data from "../Data/Data";
-import FontReference from "../FontReference/FontReference";
-import VidclipAdmin from "../Vidclips/VidclipAdmin";
+import {overlays, type OverlayType } from "./scenes/types";
+import { Accordion } from "./Accordion/Accordion";
+import glog from "../components/glog";
+import Soundboard from "./Soundboard/Soundboard";
+import Data from "./Data/Data";
+import FontReference from "./FontReference/FontReference";
+import VidclipAdmin from "./Vidclips/VidclipAdmin";
+import BlipAdmin from "./Blip/BlipAdmin";
 
 
 function showOverlay(overlay: OverlayType) {
  switch (overlay) {
     case "vidclips": return <VidclipAdmin />;
+    case "blips": return <BlipAdmin />;
     case "sounds": return <Soundboard />;
     case "data": return <Data />;
     case "fonts": return <FontReference />;
