@@ -24,10 +24,11 @@ export default function BlipAdmin() {
 
 
     return (
-        <div className="flex gap-2">
+        <div className="flex gap-2 pt-2 pl-2 bg-green-200">
             {blipTypes.map(blip => {
                 const isActive = blipData.showBlip === blip;
                 return <Button
+                    size="lg" 
                     key={`blip_${blip}`}
                     className="ring-black"
                     mode={isActive ? 'activated' : undefined}

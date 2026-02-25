@@ -26,7 +26,7 @@ export default function VidclipAdmin() {
 
 
     return (
-<div className="flex gap-2">
+<div className="flex gap-2 pt-2 pl-2 bg-green-200">
 
 
         {Object.keys(VIDCLIPS).map((vidkey) => {
@@ -35,9 +35,12 @@ export default function VidclipAdmin() {
                 <div key={`vidclip_${vidkey}`}>
                     {/* <Button mode={panelName === panelScene.active?.panel ? 'activated' : null} 
                                     onClick={() => showPanel(panelName)}> */}
-                    <Button className={isActive 
+                    <Button 
+                    size="lg" 
+                    className={isActive 
                         ? 'ring-4 ring-black'
-                        : 'ring-4 ring-white'}
+                        : ''}
+                        // : 'ring-4 ring-white'}
                         onClick={() => updateVidclip(vidkey)}>
                         {vidkey}
                     </Button>

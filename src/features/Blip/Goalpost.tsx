@@ -1,0 +1,42 @@
+import { useCallback, useEffect } from 'react';
+import goalSky from './assets/goalpost back.png';
+import goalGrass from './assets/goalpost grass.png';
+import goalPost from './assets/goalpost.png';
+import goalSound from './assets/goalpost.mp3';
+import type { BlipProps } from './types';
+import './Blip.css';
+
+
+
+
+export default function Goalpost({ endBlip }: BlipProps) {
+    useEffect(() => {
+        const timeout = setTimeout(() => {
+            endBlip();
+        }, 15000);
+
+        return () => clearTimeout(timeout);
+    }, [endBlip]);
+
+    const audioGoal = new Audio(goalSound);
+
+    const playSound = useCallback((audio: HTMLAudioElement) => {
+        audio.play().catch((err) => {
+            console.warn("Could not play sound:", err);
+        });
+    }, []);
+
+    useEffect(() => {
+        playSound(audioGoal)
+    }, []);
+
+    return (
+        <div className="w-full h-full relative animate-goalblip bg-blue-400">
+            <img src={goalSky} className='absolute top-0 scale-120 animate-goal-sky' />
+            <div className='absolute animate-goal-ground w-full h-full bottom-0'>
+                <img src={goalGrass} className='absolute -bottom-28 w-full' />
+                <img src={goalPost} className='absolute animate-goalpost -bottom-20 w-full ' />
+            </div>
+        </div>
+    );
+}

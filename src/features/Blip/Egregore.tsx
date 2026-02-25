@@ -8,7 +8,7 @@ import egregore_sound from "./assets/egregore 6.mp3"
 import './Blip.css';
 
 export default function Egregore({ endBlip }: BlipProps) {
-    console.log("start egregore");
+
 
       const audioRef = useRef<HTMLAudioElement | null>(null);
 

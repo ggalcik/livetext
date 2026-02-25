@@ -1,22 +1,20 @@
-import {  useState } from "react";
-import {overlays, type OverlayType } from "./scenes/types";
+import { useState } from "react";
+import { overlays, type OverlayType } from "./scenes/types";
 import { Accordion } from "./Accordion/Accordion";
 import glog from "../components/glog";
 import Soundboard from "./Soundboard/Soundboard";
 import Data from "./Data/Data";
 import FontReference from "./FontReference/FontReference";
-import VidclipAdmin from "./Vidclips/VidclipAdmin";
-import BlipAdmin from "./Blip/BlipAdmin";
+import Overcards from "./Overcards/Overcards";
 
 
 function showOverlay(overlay: OverlayType) {
- switch (overlay) {
-    case "vidclips": return <VidclipAdmin />;
-    case "blips": return <BlipAdmin />;
+  switch (overlay) {
+    case "overcards": return <Overcards />
     case "sounds": return <Soundboard />;
     case "data": return <Data />;
     case "fonts": return <FontReference />;
-   
+
     default: return <div className="p-4">
       {/* <div className="flex flex-wrap">
         <div className="flex-grow basis-full lg:basis-0 bg-red-300">First (fills row)</div>
@@ -39,7 +37,7 @@ export default function OverlaysAccordion() {
       selectedLink={selectedOverlay}
       setSelectedLink={setSelectedOverlay}>
 
-       { showOverlay(selectedOverlay)}
+      {showOverlay(selectedOverlay)}
 
     </Accordion>
   );

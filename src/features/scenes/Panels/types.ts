@@ -4,11 +4,8 @@ export const panelTypes = [
     'Chalkboard', 
     'HolyHonkers',
     'Why So Angry', 
-    'Orchestra',
     'Hypotheticheck', 
     'Aaaamennn', 
-    'Egregore',
-    'Las Lajas',
 ] as const;
 
 export const IPanelTypeSchema = z.enum(panelTypes);
@@ -29,25 +26,19 @@ export const IPanelsSchema = z.record(IPanelTypeSchema, IPanelSchema);
 export type IPanels = z.infer<typeof IPanelsSchema>;
 
 const IPanelDataBaseSchema = z.object({
-    panel: IPanelTypeSchema.exclude(['Orchestra','Why So Angry']),
+    panel: IPanelTypeSchema.exclude(['Why So Angry']),
     duration: z.number().optional(),
 });
 
-const IPanelOrchestraSchema = IPanelDataBaseSchema.extend({
-    panel: z.literal('Orchestra'),
-    stopVideo: z.string().optional(),
-});
 
 const IPanelWhySoAngrySchema = IPanelDataBaseSchema.extend({
     panel: z.literal('Why So Angry'),
     rheazon: z.string().optional()
 });
 
-export type IPanelOrchestra = z.infer<typeof IPanelOrchestraSchema>;
 
 const IPanelDataSchema = z.discriminatedUnion('panel', [
   IPanelDataBaseSchema,
-  IPanelOrchestraSchema,
   IPanelWhySoAngrySchema,
 ]);
 

@@ -18,6 +18,15 @@
 
     }
 
+    --animate-snail-text-1: fadein 1s linear 1.0s forwards;
+    --animate-snail-text-2: fadein 1s linear 1.2s forwards;
+    --animate-snail-text-3: fadein 1s linear 1.4s forwards;
+    --animate-snail-text-4: fadein 1s linear 1.6s forwards;
+    --animate-snail-text-5: fadein 1s linear 1.8s forwards;
+    --animate-snail-text-6: fadein 1s linear 2.0s forwards;
+
+
+
     --animate-fadein-egregore1: fadein-egregore1 6s ease-out forwards;
     --animate-fadein-egregore2: fadein-egregore2 6s ease-out .8s forwards;
     --animate-fadein-egregore4: fadein-egregore4 6s ease-out 1.4s forwards;
@@ -117,10 +126,13 @@
             transform: translateX(0) skew(10deg);
         }
 
-        15%,19% {
+        15%,
+        19% {
             transform: skew(-14deg);
         }
-        21%, 87% {
+
+        21%,
+        87% {
             transform: skew(0);
         }
 
@@ -137,6 +149,160 @@
             transform: translateX(100%) skew(10deg);
         }
     }
+
+    --animate-fadein-orchestra: fadein 10s linear forwards;
+
+    --animate-snail-blip: snail-blip 8s linear forwards;
+
+    --animate-snail-universe: snail-universe 10s linear forwards;
+
+    --animate-snail: snail 10s linear forwards;
+
+    @keyframes snail-blip {
+
+        0%,
+        100% {
+            opacity: 0;
+        }
+
+
+        20%,
+        80% {
+            opacity: 1;
+        }
+    }
+
+    @keyframes snail-universe {
+
+        0% {
+            transform: translate(0, -20px);
+        }
+
+        100% {
+            transform: translate(60px, 40px);
+        }
+    }
+
+    @keyframes snail {
+
+        0% {
+            transform: translate(140px, 50) scale(0.8);
+
+        }
+
+        100% {
+            transform: translate(-600px, -120px) scale(1.3);
+        }
+    }
+
+    --animate-galaxy-spin: spin 16s linear infinite;
+
+    @keyframes galaxy-spin {
+        to {
+            transform: rotate(360deg);
+        }
+    }
+
+    --animate-galaxy-fart: galaxy-fart 10s linear forwards;
+
+    @keyframes galaxy-fart {
+
+        0%,
+        20% {
+            opacity: 0;
+        }
+
+        25% {
+            opacity: 0;
+            transform: translate(0, 100px) scale(1);
+        }
+
+        35% {
+            opacity: 1;
+        }
+
+        100% {
+            transform: translate(240px, -100px) scale(1.8);
+
+        }
+
+    }
+
+    --animate-nyeh: nyeh 10s linear forwards;
+
+    @keyframes nyeh {
+
+        0%,
+        25% {
+            opacity: 0;
+            transform: translate(0, 0) scale(0.6);
+        }
+
+        27% {
+            transform: translate(0, -3px) scale(1.4);
+            opacity: 1;
+        }
+
+
+        40%,
+        100% {
+            opacity: 0;
+            /* transform: translate(0,0) scale(1.8); */
+            transform: translate(70px, -120px) scale(1.8);
+
+        }
+
+    }
+
+    --animate-goalblip: goalblip 15s linear forwards;
+    --animate-goalpost: goalpost 12s ease-in-out 5s forwards;
+
+    --animate-goal-sky: goal-sky 3s ease-out forwards;
+    --animate-goal-ground: goal-ground 3s ease-out forwards;
+
+    @keyframes goalblip {
+
+        0%, 100% {
+            opacity: 0;
+        }
+        7%, 90% {
+             opacity: 1;
+        }
+    }
+
+    @keyframes goal-sky {
+
+        0% {
+            transform: translateY(100px);
+        }
+        100% {
+            transform: translateY(-100px);
+        }
+    }
+
+    @keyframes goalpost {
+
+        0% {
+            transform: translate(0,0) scale(1);
+
+        }
+
+        100% {
+            transform: translate(230px, 60px) scale(0.55);
+
+        }
+    }
+
+        @keyframes goal-ground {
+
+        0% {
+            transform: translateY(100%);
+        }
+        100% {
+            transform: translateY(0);
+        }
+    }
+
 }
 
 .egregore-wave>span {

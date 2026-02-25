@@ -29,6 +29,13 @@ export const rheazonsData: RheazonEntry[] = [
                 "If I wasn't angry, then what would all the Reddit atheists say about me?",
                 "I want to be taken seriously, but my tiny legs make me look ridiculous.",
             ]
+    },
+    {
+        'The Other Mike':
+            [
+                "Because my tax dollars are sending crows to crow school.",
+                "Because the numbers didn't really mean anything and the island was just purgatory all along."
+            ]
     }
 ]
 
