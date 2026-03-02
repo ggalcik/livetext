@@ -26,8 +26,16 @@ export default function Goalpost({ endBlip }: BlipProps) {
         });
     }, []);
 
+    
+    const stopSound = useCallback((audio: HTMLAudioElement) => {
+        audio.pause();
+        audio.currentTime = 0;
+    }, []);
+
     useEffect(() => {
-        playSound(audioGoal)
+        playSound(audioGoal);
+
+        return () => stopSound(audioGoal);
     }, []);
 
     return (

@@ -27,14 +27,21 @@ export default function Snail({ endBlip }: BlipProps) {
         });
     }, []);
 
+    const stopSound = useCallback((audio: HTMLAudioElement) => {
+        console.log("what! %o", audio);
+        audio.pause();
+        audio.currentTime = 0;
+    }, []);
+
     useEffect(() => {
         playSound(audioSnail)
+        return () => stopSound(audioSnail);
     }, []);
 
     return (
         <div className="w-full h-full relative animate-snail-blip bg-black">
             <img src={snailBackdrop} className='absolute bottom-0 scale-150 opacity-40 animate-snail-universe' />
-            <div className=" absolute right-1/12 bottom-5/12 flex flex-col items-end font-[Broadway] text-blue-400 mix-blend-difference">
+            <div className=" absolute right-1/12 bottom-1/2 flex flex-col items-end font-[Broadway] text-blue-400 mix-blend-difference">
                 <div className="animate-snail-text-1 opacity-0  text-2xl">The</div>
                 <div className="animate-snail-text-2 opacity-0  text-5xl">Ontological</div>
                 <div className="animate-snail-text-3 opacity-0  text-5xl">Snail</div>

@@ -75,7 +75,7 @@
         }
 
         20%,
-        80% {
+        70% {
             opacity: 1;
         }
     }
@@ -262,11 +262,14 @@
 
     @keyframes goalblip {
 
-        0%, 100% {
+        0%,
+        100% {
             opacity: 0;
         }
-        7%, 90% {
-             opacity: 1;
+
+        7%,
+        90% {
+            opacity: 1;
         }
     }
 
@@ -275,6 +278,7 @@
         0% {
             transform: translateY(100px);
         }
+
         100% {
             transform: translateY(-100px);
         }
@@ -283,7 +287,7 @@
     @keyframes goalpost {
 
         0% {
-            transform: translate(0,0) scale(1);
+            transform: translate(0, 0) scale(1);
 
         }
 
@@ -293,13 +297,44 @@
         }
     }
 
-        @keyframes goal-ground {
+    @keyframes goal-ground {
 
         0% {
             transform: translateY(100%);
         }
+
         100% {
             transform: translateY(0);
+        }
+
+
+    }
+
+    --animate-mario-hand: mario-hand 0.55s ease-in-out infinite;
+    --animate-mario: mario 1.8s linear forwards;
+
+    @keyframes mario-hand {
+
+        0%,
+        100% {
+            transform: rotate(-60deg);
+        }
+
+        70% {
+            transform: rotate(0);
+        }
+    }
+
+    @keyframes mario {
+
+        0%,
+        100% {
+            transform: translateY(120%);
+        }
+
+        18%,
+        82% {
+            transform: translateY(0%);
         }
     }
 
