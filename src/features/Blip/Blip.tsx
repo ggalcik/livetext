@@ -1,7 +1,7 @@
 import { produce } from "immer";
 import { usePersistentState } from "../../hooks/usePersistentState"
 import { BLIP_COMPONENTS } from "./BlipRegistry"
-import { BlipDataSchema } from "./types"
+import { BlipDataSchema, type BlipProps } from "./types"
 
 
 export default function Blip() {
@@ -21,11 +21,24 @@ export default function Blip() {
 
   }
 
-  const BlipComponent = BLIP_COMPONENTS[blipData.showBlip];
+  // const BlipComponent = BLIP_COMPONENTS[blipData.showBlip];
+
+
+  const registryEntry = BLIP_COMPONENTS[blipData.showBlip];
+
+  let BlipComponent: React.ComponentType<BlipProps>;
+  let opts: Record<string, string> | undefined;
+
+  if ("component" in registryEntry) {
+    BlipComponent = registryEntry.component;
+    opts = registryEntry.opts;
+  } else {
+    BlipComponent = registryEntry;
+  }
 
   return (
     <div className="absolute inset-0 overflow-hidden">
-      <BlipComponent endBlip={endBlip} />
+      <BlipComponent endBlip={endBlip} opts={opts} />
     </div>
   )
 }

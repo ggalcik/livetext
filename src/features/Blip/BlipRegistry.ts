@@ -1,16 +1,18 @@
 import Egregore from "./Egregore";
 import Goalpost from "./Goalpost";
-import  HolyHonkers from "./HolyHonkers";
+import HolyHonkers from "./HolyHonkers";
 import MammaMia from "./MammaMia";
 import  Orchestra from "./Orchestra";
 import Snail from "./Snail";
-import type { BlipProps, IBlipType } from "./types";
+import type { BlipEntry, IBlipType } from "./types";
 
-export const BLIP_COMPONENTS: Record<IBlipType, React.ComponentType<BlipProps>> = {
+
+export const BLIP_COMPONENTS: Record<IBlipType, BlipEntry> = {
   Egregore,
   "Holy Honkers": HolyHonkers,
+  "Holy Sulfur": {component: HolyHonkers, opts: {alt: 'sulfur'}},
   Orchestra,
-  'Snail': Snail,
+  Snail,
   'Mamma Mia': MammaMia,
   Goalpost
-};
+}; 
