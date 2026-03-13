@@ -22,7 +22,7 @@ export default function WhoWantsToAdmin() {
         setWhoWantsScene(produce((draft) => {
             const theRound = draft.rounds.find(round => round.id === draft.activeRoundId);
             if (!theRound) return;
-            theRound.answers = theRound.answers.map(a => ({ ...a, show: false, chosen:false }));
+            theRound.answers = theRound.answers.map(a => ({ ...a, show: false, chosen: false }));
         }));
     }, [whoWantsScene.stage]);
 
@@ -48,14 +48,14 @@ export default function WhoWantsToAdmin() {
             theRound.answers[idx] = { ...theRound.answers[idx], ...newAnswer }
         }));
     }
-    
+
     function showNextAnswer() {
         const theRound = whoWantsScene.rounds.find(round => round.id === whoWantsScene.activeRoundId);
         if (!theRound) return;
         const theAnswer = theRound.answers.findIndex(a => !a.show)
         if (theAnswer == -1) return;
-        
-        updateAnswer(theRound.id, theAnswer, {show: true})
+
+        updateAnswer(theRound.id, theAnswer, { show: true })
     }
 
     type UpdateQuestion = (
@@ -93,9 +93,21 @@ export default function WhoWantsToAdmin() {
                 const theRound = draft.rounds.find(round => round.id === whoWantsScene.activeRoundId);
                 if (!theRound) return;
                 glog('here');
-                theRound.answers.forEach(a => { if (!a.correct && !a.chosen) a.show = false } );
+                theRound.answers.forEach(a => { if (!a.correct && !a.chosen) a.show = false });
             }
         }));
+    }
+
+    const doNextStage = (stage: WhoWantsToStage) => {
+        const nextStage: Partial<Record<WhoWantsToStage, WhoWantsToStage>> = {
+            'idle': 'chat',
+            'chat': 'tense',
+            'tense': 'finish',
+        }
+console.log("doNextStage: ", stage);
+        if (!nextStage[stage]) return;
+
+        setStage(nextStage[stage]);
     }
 
     function ViewRound({ round, isActive = false }: { round: WhoWantsToRound, isActive?: boolean }) {
@@ -146,20 +158,20 @@ export default function WhoWantsToAdmin() {
             <div className="w-20 flex-none flex flex-col justify-between align-middle">
 
                 {isActive ?
-                <HoldToConfirmButton
-                    
-                    onConfirm={() => { showNextAnswer() }}
-                    holdMs={0}
-                >
-                 Show answer
-                </HoldToConfirmButton>
-                :
-                <HoldToConfirmButton
-                    onConfirm={() => { startRound(round.id) }}
-                    holdMs={1000}
-                >
-                    Start round
-                </HoldToConfirmButton>
+                    <HoldToConfirmButton
+
+                        onConfirm={() => { showNextAnswer() }}
+                        holdMs={0}
+                    >
+                        Show answer
+                    </HoldToConfirmButton>
+                    :
+                    <HoldToConfirmButton
+                        onConfirm={() => { startRound(round.id) }}
+                        holdMs={1000}
+                    >
+                        Start round
+                    </HoldToConfirmButton>
                 }
                 <HoldToConfirmButton
                     disabled={isActive}
@@ -176,12 +188,14 @@ export default function WhoWantsToAdmin() {
 
 
     const activeRound = whoWantsScene.activeRoundId == null ? undefined : whoWantsScene.rounds.find(item => item.id === whoWantsScene.activeRoundId);
-    
+
     if (!activeRound) return <div>what are we even doing</div>;
     const oneChosen = activeRound.answers.find(a => a.chosen);
     const tenseActive = whoWantsScene.stage == 'chat' && oneChosen != undefined;
+    const finishActive = whoWantsScene.stage !== 'finish' && oneChosen != undefined;
 
-glog("oneChosen: %o", oneChosen);
+    glog("oneChosen: %o", oneChosen);
+    glog("finishActive: %o", finishActive);
 
     return (
 
@@ -192,7 +206,7 @@ glog("oneChosen: %o", oneChosen);
 
                     <button className="rounded border px-3 py-1 cursor-pointer" onClick={() => setStage('chat')}>chat</button>
                     <button className={clsx("rounded border px-3 py-1 ",
-                        tenseActive ?  "cursor-pointer" :'opacity-50'
+                        tenseActive ? "cursor-pointer" : 'opacity-50'
                     )}
                         disabled={!tenseActive}
                         onClick={() => setStage('tense')}>tense</button>
@@ -201,6 +215,14 @@ glog("oneChosen: %o", oneChosen);
                     )}
                         disabled={whoWantsScene.stage != 'tense'}
                         onClick={() => setStage('finish')}>finish</button>
+                </div>
+                <div className="p-10">
+                    <button className={clsx("rounded border px-3 py-1 w-full h-20",
+                        finishActive ? "cursor-pointer" : 'opacity-50'
+                    )}
+                        disabled={!finishActive}
+                        onClick={() => doNextStage(whoWantsScene.stage)}
+                    >Next</button>
                 </div>
             </div>
 

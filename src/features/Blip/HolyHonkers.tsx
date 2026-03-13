@@ -40,7 +40,7 @@ export default function HolyHonkers({ endBlip, opts }: BlipProps) {
         return () => stopSound(audioHonk);
     }, []);
 
-    const sulfurImgStyle = isSulfur ? 'w-full' : 'w-4/5';
+    const sulfurImgStyle = isSulfur ? 'w-5/6' : 'w-2/3';
 
     return (
         <div className={`absolute bottom-0 `}>
