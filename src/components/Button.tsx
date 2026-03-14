@@ -4,7 +4,7 @@ import React from 'react';
 
 
 const buttonVariants = cva(
-    ' rounded-lg mb-2  cursor-pointer',
+    ' rounded-lg   cursor-pointer',
     {
         variants: {
             variant: {
@@ -17,6 +17,7 @@ const buttonVariants = cva(
                 sm: 'text-xs px-2 h-5',
                 med: 'text-sm px-2 h-7',
                 lg: 'text-md px-2 h-9',
+                xl: 'text-xl px-4 py-2 h-12'
             },
             mode: {
                 normal: '',

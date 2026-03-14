@@ -1,6 +1,7 @@
 import type { PopupState } from "../../context/LiveData/types";
 import BannerAdmin from "../BannerAdmin/BannerAdmin";
 import CounterAdmin from "./Counter/CounterAdmin";
+import IntonationAdmin from "./Intonation/IntonationAdmin";
 import PanelsAdmin from "./Panels/PanelsAdmin";
 import PhilbroniumAdmin from "./Philbronium/PhilbroniumlAdmin";
 import { SlidesAdmin } from "./Slides/SlidesAdmin";
@@ -24,6 +25,7 @@ export default function SceneAdmin({ scene, popupState, boomerang }: ISceneAdmin
     case "philbronium": return <PhilbroniumAdmin />
     case "slides": return <SlidesAdmin />
     case "whowants": return <WhoWantsToAdmin />
+    case "intonation": return <IntonationAdmin />
     default: return <div className="p-4">
       {/* <div className="flex flex-wrap">
         <div className="flex-grow basis-full lg:basis-0 bg-red-300">First (fills row)</div>

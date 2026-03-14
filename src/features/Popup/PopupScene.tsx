@@ -14,6 +14,7 @@ import WhoWantsTo from "../scenes/WhoWantsTo/WhoWantsTo";
 // import { usePersistentState } from "../../hooks/usePersistentState";
 // import { PopupDataSchema } from "./types";
 import Blip from "../Blip/Blip";
+import Intonation from "../scenes/Intonation/Intonation";
 
 
 
@@ -56,6 +57,7 @@ export default function PopupScene() {
         {sceneName === 'counter' && <Counter />}
         {sceneName === 'panels' && <Panels />}
         {sceneName === 'whowants' && <WhoWantsTo />}
+        {sceneName === 'intonation' && <Intonation />}
       </div>
       <VidclipDisplay />
       <Blip />
