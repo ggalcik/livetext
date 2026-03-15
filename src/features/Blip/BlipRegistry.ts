@@ -13,6 +13,7 @@ export const BLIP_COMPONENTS: Record<IBlipType, BlipEntry> = {
   "Holy Sulfur": {component: HolyHonkers, opts: {alt: 'sulfur'}},
   Orchestra,
   Snail,
+  'Snail shell': {component: Snail, opts: {shell: true}},
   'Mamma Mia': MammaMia,
   Goalpost
 }; 

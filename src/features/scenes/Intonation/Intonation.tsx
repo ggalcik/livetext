@@ -7,6 +7,7 @@ import { useEffect, useState, type ReactNode } from "react";
 import glog from "../../../components/glog";
 import { afterChants } from "./data";
 import { AudioController } from "../../../components/AudioController";
+import Snail from "../../Blip/Snail";
 
 export default function Intonation() {
     const [intonationScene, setIntonationScene] = usePersistentState({
@@ -16,6 +17,7 @@ export default function Intonation() {
     })
     const activeSection = intonationScene.active;
     const [currentSection, setCurrentSection] = useState(activeSection);
+    const [showSnail, setShowSnail] = useState(false);
 
     const audio = new AudioController();
 
@@ -23,7 +25,10 @@ export default function Intonation() {
     useEffect(() => { 
         if (currentSection === activeSection) return;
 
-        if (intonationScene.advanced) audio.playUrl(afterChants[currentSection]);
+        if (intonationScene.advanced) {
+            audio.playUrl(afterChants[currentSection]);
+            if (currentSection != 'Nyeh') setShowSnail(true);
+        }
         setCurrentSection(activeSection);
 
         return(() => audio.stop());
@@ -34,9 +39,8 @@ export default function Intonation() {
     return (
         <div className="absolute w-full h-full bg-black overflow-hidden">
 
-            <img src={snailWindow} />
-
-
+            <img className="absolute top-0" src={snailWindow} />
+            { showSnail && <Snail endBlip={() => setShowSnail(false)} opts={{shell: true}} />}
         </div>
 
 
