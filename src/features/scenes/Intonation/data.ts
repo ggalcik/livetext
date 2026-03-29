@@ -15,7 +15,7 @@ export const afterChants: Record<IIntonementType, string> = {
 }
 
 export const intonations: Record<IIntonementType, string> = {
-    'Intro': `You are invited to join me in the escargological intonation.`,
+    'Intro': `You are invited to join us in the escargological intonation.`,
     'Wisdom': `We beseech that which shall not be beseechéd, 
         we implore that which shall not be imploréd, 
         we give thanks to that which cares not for our thanks, 

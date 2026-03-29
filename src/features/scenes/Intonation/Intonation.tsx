@@ -10,7 +10,7 @@ import { AudioController } from "../../../components/AudioController";
 import Snail from "../../Blip/Snail";
 
 export default function Intonation() {
-    const [intonationScene, setIntonationScene] = usePersistentState({
+    const [intonationScene] = usePersistentState({
         storageKey: 'intonationScene',
         schema: IIntonementSceneSchema,
         fallback: { active: 'Intro' }
@@ -21,13 +21,16 @@ export default function Intonation() {
 
     const audio = new AudioController();
 
-
+ 
     useEffect(() => { 
         if (currentSection === activeSection) return;
 
         if (intonationScene.advanced) {
             audio.playUrl(afterChants[currentSection]);
             if (currentSection != 'Nyeh') setShowSnail(true);
+        } else {
+            audio.stop();
+            setShowSnail(false)
         }
         setCurrentSection(activeSection);
 

@@ -22,6 +22,7 @@ const buttonVariants = cva(
             mode: {
                 normal: '',
                 activated: 'ring-4',
+                alert: 'bg-red-700 hover:bg-red-700'
             },
             disabled: {
                 true: 'opacity-50 cursor-not-allowed pointer-events-none',
