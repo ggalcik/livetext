@@ -7,14 +7,7 @@ import { Chalkboard, ChalkboardAdmin, ChalkboardBackground } from "./Chalkboard"
 import { Hypotheticheck, HypotheticheckAdmin, HypotheticheckBackground } from "./Hypotheticheck";
 
 export const panels: IPanels = {
-    'Why So Angry':
-    {
-        soundEnter: dling,
-        element: <WhySoAngry />,
-        backgroundElement: <WhySoAngryBackground />,
-        adminElement: <WhySoAngryAdmin />,
-        boomerangDelay: 5,
-    },
+
     'Hypotheticheck':
     {
         element: <Hypotheticheck />,
@@ -28,14 +21,7 @@ export const panels: IPanels = {
         adminElement: <ChalkboardAdmin />,
         ctrlViewport: true,
     },
-    'HolyHonkers':
-    {
-        // soundEnter: dling,
-        element: <HolyHonkers />,
-        backgroundElement: <HolyHonkersBackground />,
-        
-        boomerangDelay: 5,
-    },
+
     'Aaaamennn':
     {
         soundEnter: dling,

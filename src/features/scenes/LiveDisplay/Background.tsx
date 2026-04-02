@@ -11,6 +11,7 @@ import DullAsleep from "../../../assets/dull_asleep.jpg";
 import IntoJesus from "../../../assets/into_jesus.jpg";
 import Trolley from "../../../assets/trolley.jpg";
 import Quadrant from "../../../assets/quadrant.png";
+import {gGlobal} from "../../Global/global";
 import './Background.css';
 
 import AngerMini from "../../../assets/angry_atheist_sm_2.jpg";
@@ -87,6 +88,10 @@ export default function Background({ which, showAngerBits, altBackground }: Back
 
   const activeRef = altBackground ? altRef : mainRef;
 
+  const miniStyle = gGlobal.layout.crampedPortrait 
+    ? 'text-white absolute -top-54 scale-50 '
+    : 'text-white absolute -top-80 scale-100 animate-bobzoom';
+
   return (
     <SwitchTransition>
       <CSSTransition
@@ -95,12 +100,13 @@ export default function Background({ which, showAngerBits, altBackground }: Back
         classNames="fade"
          nodeRef={activeRef}
       >
-        {altBackground ? (
-          <div ref={altRef} className="text-white absolute -top-80 scale-100 animate-bobzoom">
-            <img src={AngerMini} />
-          </div>
-        ) : (
-          <div ref={mainRef} className="absolute bottom-0 text-white">
+        {altBackground ? ( 
+          gGlobal.layout.crampedPortrait ? <div></div> : 
+           <div ref={altRef} className={miniStyle}>
+             <img src={AngerMini} />
+           </div>
+        ) : ( // TODO - crampedPortrait
+          <div ref={mainRef} className="absolute -bottom-1/4 text-white">
             <img src={backgroundMap[which]} />
             {numberSet.length > 0 &&
               numberSet.map((bitNum) =>

@@ -340,6 +340,30 @@
         }
     }
 
+    --animate-whyangry: whyangry 2.5s ease-out forwards;
+    @keyframes whyangry {
+
+        0%, 41.9% {
+            transform: translateY(120%);
+            opacity: 0.0;
+        }
+        
+        42% {
+            transform: translateY(120%);
+            opacity: 0.0;
+        }
+
+        84%, 88% {
+            transform: translateY(10%);
+        }
+
+
+
+        100% {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
 }
 
 .egregore-wave>span {

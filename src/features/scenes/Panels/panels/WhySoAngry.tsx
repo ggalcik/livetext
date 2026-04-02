@@ -2,10 +2,21 @@ import { useCallback, useEffect } from 'react';
 import dling from '/src/assets/ding.mp3';
 import paper from './assets/blank-newspaper.jpg';
 
-import {rheazons as rheazonsData} from './data';
+import { rheazons as rheazonsData } from './data';
+import { gGlobal } from '../../../Global/global';
 
 export function WhySoAngryBackground() {
 
+    if (gGlobal.layout.crampedPortrait) {
+        return (
+            <div className="absolute top-0 left-0 w-full h-full bg-blue-700">
+                
+                    <img src={paper} className='absolute w-[150%] bottom-0' />
+                
+                
+            </div>
+        );
+    }
     return <div className="absolute top-0 left-0 w-full h-full  bg-no-repeat bg-cover bg-center"
         style={{ backgroundImage: `url(${paper})` }}></div>
 }
@@ -36,7 +47,7 @@ export function WhySoAngry() {
     }, []);
 
     // TODO: write used rheazons to storage, choose new ones that don't match, clear used reasons when all exhausted
-    const {person, saying} = rheazonsData[Math.floor(Math.random() * rheazonsData.length)]
+    const { person, saying } = rheazonsData[Math.floor(Math.random() * rheazonsData.length)]
 
     useEffect(() => {
         playSound();
@@ -45,8 +56,8 @@ export function WhySoAngry() {
     return (
         <>
             <div className="absolute top-0  left-0 text-3xl text-black font-bold font-[Book_Antiqua]">
-               &ldquo;{saying}&rdquo;
-                </div>
+                &ldquo;{saying}&rdquo;
+            </div>
             <div className="absolute bottom-0  left-0  text-2xl text-gray-700 font-bold font-[Book_Antiqua]">
                 <span className='text-4xl'>&copy;</span>opyright {year}<br /
                 >{person}<br />All Rights Reserved.</div>

@@ -4,6 +4,8 @@ import mammaMiaMario from './assets/mario.png';
 import mammaMiaHand from './assets/mario_hand.png';
 import type { BlipProps } from './types';
 import './Blip.css';
+import clsx from 'clsx';
+import { gGlobal } from '../Global/global';
 
 
 
@@ -37,11 +39,12 @@ export default function MammaMia({ endBlip }: BlipProps) {
         return () => stopSound(audioMammaMia);
     }, []);
 
-    const randDeg = Math.floor(Math.random()*120 - 40);
-    
+    const randDeg = Math.floor(Math.random() * 120 - 40);
+
     return (
-        <div className="absolute -bottom-1/8 left-1/2 -translate-x-1/2 origin-top -rotate-20 text-white"
-        style={{transform: `rotate(${randDeg}deg)`}}>
+        <div className={clsx("absolute  left-1/2 -translate-x-1/2 origin-top -rotate-20 text-white",
+            gGlobal.layout.crampedPortrait ? 'bottom-1/8' : '-bottom-1/8')}
+            style={{ transform: `rotate(${randDeg}deg)` }}>
             <div className='relative animate-mario '>
                 <img src={mammaMiaMario} className='' />
                 <img src={mammaMiaHand} className='absolute animate-mario-hand top-[-150px] left-[-25px] origin-bottom ' />

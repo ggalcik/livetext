@@ -3,6 +3,8 @@ import honkersAudio from './assets/honkers_in_2.mp3';
 import honkers from './assets/holy_honkers_blip.png';
 import sulfur from './assets/holy_sulfur_blip.png';
 import type { BlipProps } from './types';
+import clsx from 'clsx';
+import { gGlobal } from '../Global/global';
 
 
 export default function HolyHonkers({ endBlip, opts }: BlipProps) {
@@ -43,7 +45,8 @@ export default function HolyHonkers({ endBlip, opts }: BlipProps) {
     const sulfurImgStyle = isSulfur ? 'w-5/6' : 'w-2/3';
 
     return (
-        <div className={`absolute bottom-0 `}>
+        <div className={clsx(`absolute `,
+        gGlobal.layout.crampedPortrait ? 'top-30' : 'bottom-0')}>
             <div className={` animate-honkers origin-bottom `}>
                 <img className={` ${sulfurImgStyle}  m-auto bottom-0`} src={theImage} />
             </div>

@@ -27,7 +27,7 @@ export default function Blip() {
   const registryEntry = BLIP_COMPONENTS[blipData.showBlip];
 
   let BlipComponent: React.ComponentType<BlipProps>;
-  let opts: Record<string, string> | undefined;
+  let opts: Record<string, string|boolean> | undefined;
 
   if ("component" in registryEntry) {
     BlipComponent = registryEntry.component;

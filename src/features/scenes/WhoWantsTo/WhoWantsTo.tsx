@@ -8,6 +8,7 @@ import { AudioController } from "../../../components/AudioController";
 import { whoWantsToDefault, WhoWantsToSchema, type WhoWantsToAnswer, type WhoWantsToRound, type WhoWantsToStage } from "./types";
 import clsx from "clsx";
 import { useWhoWantsState } from "./helpers";
+import { gGlobal } from "../../Global/global";
 
 const million_start = "/local/scenes/whowantsto/million 1-start w claps.mp3";
 const million_chat = "/local/scenes/whowantsto/million 2-ask.mp3";
@@ -157,9 +158,9 @@ export default function WhoWantsTo() {
 
     const grid = 1;
     const started = whoScene.stage !== 'idle' && whoScene.stage !== "start";
-
+const crampedStyle = gGlobal.layout.crampedPortrait ? 'bottom-2/5 scale-60' : 'top-0';
     return (
-        <div className="absolute top-0 left-0 w-full h-full overflow-hidden bg-black">
+        <div className={`absolute  left-0 w-full h-full overflow-hidden bg-black ${crampedStyle}`}>
 
             <div className="absolute bottom-0 w-[1200px] animate-oscillate">
 

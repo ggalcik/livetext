@@ -7,6 +7,7 @@ import nyeh from './assets/nyeh.png';
 import type { BlipProps } from './types';
 import './Blip.css';
 import glog from '../../components/glog';
+import { gGlobal } from '../Global/global';
 
 
 
@@ -41,11 +42,13 @@ export default function Snail({ endBlip, opts }: BlipProps) {
         return () => stopSound(audioSnail);
     }, []);
 
+    const crampedStyle = gGlobal.layout.crampedPortrait ? 'bottom-1/5 scale-90 origin-bottom' : '';
+
     return (
-        <div className="w-full h-full relative animate-snail-blip bg-black">
-            <img src={snailBackdrop} className='absolute bottom-0 scale-150 opacity-40 animate-snail-universe' />
+        <div className={`w-full h-full relative animate-snail-blip bg-black ${crampedStyle}`} >
+            <img src={snailBackdrop} className='absolute bottom-0 scale-150  animate-snail-universe' />
             {!shell &&
-                <div className=" absolute right-1/12 bottom-1/2 flex flex-col items-end font-[Broadway] text-blue-400 mix-blend-difference">
+                <div className="absolute right-1/12 bottom-1/2 flex flex-col items-end font-[Broadway] text-blue-400 ">
                     <div className="animate-snail-text-1 opacity-0  text-2xl">The</div>
                     <div className="animate-snail-text-2 opacity-0  text-5xl">Ontological</div>
                     <div className="animate-snail-text-3 opacity-0  text-5xl">Snail</div>

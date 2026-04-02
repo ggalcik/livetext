@@ -8,6 +8,8 @@ import { Button } from "../../components/Button";
 import type { BlipProps } from "./types";
 import './Blip.css';
 
+import { gGlobal } from "../Global/global";
+import clsx from "clsx";
 const DELAY_SECONDS = 3;
 
 
@@ -85,7 +87,8 @@ export default function Orchestra({ endBlip }: BlipProps) {
   return (
     <div className="w-full h-full bg-black opacity-0 animate-fadein-orchestra">
       {/* Controls at the top */}
-      <div className="absolute top-0 left-0 right-0 p-4 flex flex-col gap-3">
+      <div className={clsx("absolute left-0 right-0 p-4 flex flex-col gap-3",
+        gGlobal.layout.crampedPortrait ? 'bottom-0' : 'top-0')}>
         {showControls && (
           <div className="flex flex-wrap gap-4">
             <div className="flex gap-2">
@@ -122,7 +125,9 @@ export default function Orchestra({ endBlip }: BlipProps) {
       </div>
 
 
-      <div className="absolute bottom-0 left-0 right-0">
+      <div className={clsx("absolute left-0 right-0",
+        gGlobal.layout.crampedPortrait ? 'top-0' : 'bottom-0'
+      )}>
         <video
           ref={videoRef}
           className="max-w-[150%] max-h-full"

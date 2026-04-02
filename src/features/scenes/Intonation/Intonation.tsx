@@ -8,6 +8,7 @@ import glog from "../../../components/glog";
 import { afterChants } from "./data";
 import { AudioController } from "../../../components/AudioController";
 import Snail from "../../Blip/Snail";
+import { gGlobal } from "../../Global/global";
 
 export default function Intonation() {
     const [intonationScene] = usePersistentState({
@@ -37,10 +38,11 @@ export default function Intonation() {
         return(() => audio.stop());
     }, [activeSection]);
 
+const crampedStyle = gGlobal.layout.crampedPortrait ? '-top-1/5' : '';
 
 
     return (
-        <div className="absolute w-full h-full bg-black overflow-hidden">
+        <div className={`absolute w-full h-full bg-black overflow-hidden ${crampedStyle}`}>
 
             <img className="absolute top-0" src={snailWindow} />
             { showSnail && <Snail endBlip={() => setShowSnail(false)} opts={{shell: true}} />}

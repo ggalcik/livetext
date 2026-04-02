@@ -6,6 +6,7 @@ import egregore3 from "../../features/scenes/Panels/panels/assets/egregore3.png"
 import egregore4 from "../../features/scenes/Panels/panels/assets/egregore4.png";
 import egregore_sound from "./assets/egregore 6.mp3"
 import './Blip.css';
+import { gGlobal } from "../Global/global";
 
 export default function Egregore({ endBlip }: BlipProps) {
 
@@ -35,7 +36,7 @@ export default function Egregore({ endBlip }: BlipProps) {
     }, [endBlip]);
 
     return (
-        <div className="animate-rise-enter translate-x-[5%] w-[90%]">
+        <div className={`animate-rise-enter translate-x-[5%] w-[90%] ${gGlobal.layout.crampedPortrait && '-translate-y-[10%]'}`}>
             <img className="border-8 border-transparent top-0  opacity-0" src={egregore1} />
             <img className="animate-fadein-egregore1 absolute border-8 border-transparent top-0" src={egregore1} />
             <img className="animate-fadein-egregore2 opacity-0 absolute border-8 border-amber-600 top-0" src={egregore2} />

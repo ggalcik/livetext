@@ -1,6 +1,7 @@
 import clsx from "clsx";
 import { useEffect, useState } from 'react';
 import { useMeasure } from "react-use";
+import { gGlobal } from '../../features/Global/global';
 
 interface IMasterViewport {
     children: React.ReactNode;
@@ -51,7 +52,9 @@ function getNamedFromLocal(name: string): Edges {
     return defaultEdges;
 }
 
-export function MasterViewport({ children, name, needCtrl=false, resizable=true }: IMasterViewport) {
+export function MasterViewport({ children, name: sentName, needCtrl = false, resizable = true }: IMasterViewport) {
+
+    const name = `${sentName}${gGlobal.activeLayout ? `_${gGlobal.activeLayout}` : ''}`;
     const [panelMoving, setPanelMoving] = useState(false);
     const [pointer, setPointer] = useState<Pointer | null>(null);
     const [edges, setEdges] = useState<Edges>(getNamedFromLocal(name));
@@ -79,7 +82,6 @@ export function MasterViewport({ children, name, needCtrl=false, resizable=true 
         setEdges(getNamedFromLocal(name));
     }, [name]);
 
-    // handlePointer function
     function handlePointer(p: Pointer | null) {
         setPointer(p);
         if (!p) {
@@ -155,12 +157,12 @@ export function MasterViewport({ children, name, needCtrl=false, resizable=true 
             <div
                 ref={masterRef}
                 className={clsx("h-full w-full overflow-hidden relative z-0")}
-                onKeyDown={(e) => {if (e.ctrlKey) setCtrlKey(true)}}
+                onKeyDown={(e) => { if (e.ctrlKey) setCtrlKey(true) }}
                 onKeyUp={() => setCtrlKey(false)}
                 onMouseLeave={() => setCtrlKey(false)}
                 onMouseDown={(e) => {
-                     if (e.button !== 0) return;
-                     if (needCtrl && !e.ctrlKey) return;
+                    if (e.button !== 0) return;
+                    if (needCtrl && !e.ctrlKey) return;
                     setPanelMoving(true);
                     doPanelMove(e);
                 }}
@@ -197,19 +199,18 @@ export function MasterViewport({ children, name, needCtrl=false, resizable=true 
             </div>
 
             {panelMoving && (
-                <div className="absolute top-6 left-3 text-white ">
+                <div className={`absolute ${gGlobal.layout.crampedPortrait ? 'bottom-6' : 'top-6'} left-3 text-white`}>
                     <div>master panel {name}</div>
                     <div className="top-0 left-0 p-4">
                         window: {`${masterWidth.toFixed(1)}, ${masterHeight.toFixed(1)}`}<br />
                         pointer: {pointer && `${pointer.pxp},${pointer.pyp}`}<br />
                     </div>
                 </div>
-            )}  
-                  {ctrlKey && (
+            )}
+            {ctrlKey && (
                 <div className="absolute top-6 left-3 text-white ">
-                   
                     <div className="top-0 right-0 p-4">
-                       ctrl
+                        ctrl
                     </div>
                 </div>
             )}

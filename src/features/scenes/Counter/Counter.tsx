@@ -8,6 +8,7 @@ import notebook from '../../../assets/notebook.png'
 import { usePersistentState } from "../../../hooks/usePersistentState";
 import { transform } from "zod";
 import clsx from "clsx";
+import { gGlobal } from "../../Global/global";
 
 
 export default function Counter() {
@@ -78,6 +79,8 @@ export default function Counter() {
         return Math.round(scale * 1000) / 1000;
     }
 
+    const crampedStyle = gGlobal.layout.crampedPortrait ? 'scale-80' : '';
+    
     return (
         <div className="absolute w-full h-full bg-amber-900">
 
@@ -92,7 +95,7 @@ export default function Counter() {
                     onChange={(e) => setShowCounterIdx(Number(e.target.value))}
                 />
                 
-                <div className={`absolute w-full h-full origin-top-left`}
+                <div className={`absolute w-full h-full origin-top-left ${crampedStyle}`}
                     style={{ transform: `scale(${getModScale(showList.length)})` }}
                 >
 

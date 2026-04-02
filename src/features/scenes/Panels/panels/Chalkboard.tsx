@@ -8,6 +8,7 @@ import './Chalkboard.css'
 import { useEffect, useState } from 'react';
 import plinkIn from './assets/plink_in.mp3';
 import whooshOut from './assets/whoosh_out.mp3';
+import { gGlobal } from '../../../Global/global';
 
 
 export function ChalkboardBackground() {
@@ -298,8 +299,13 @@ export function Chalkboard() {
                 onAnimationComplete();
             }
         };
+
+        const crampedStyle = gGlobal.layout.crampedPortrait 
+        ? '-left-1/8 w-[110%]' 
+        : 'left-0 w-full';
+        
         return (
-            <div className='absolute top-0 left-0 w-full h-full scale-110'>
+            <div className={`absolute top-0 ${crampedStyle}  h-full scale-110`}>
                 <div
                     className='absolute top-0 left-0 w-full h-full opacity-80 animate-bg-fade'
                     onAnimationEnd={handleBgEnd} // <-- Function call here
@@ -330,7 +336,7 @@ export function Chalkboard() {
     const { activeSet, activeBoard, currentSet, currentBoard } = getActives();
 
     return (
-        <div className={`bg-[length:100%_100%] w-full h-full`}
+        <div className={`bg-[length:100%_100%] w-full h-full scale-90`}
             style={{ backgroundImage: `url(${chalkboard})` }}
         >
             <div className="pl-[12%] pr-[12%] py-[9%] h-full w-full box-border ">

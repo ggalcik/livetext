@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import captions from "./captions.json";
 import type { Caption } from "./types";
 import { MasterViewport } from "../../../components/MasterViewport/MasterViewport";
+import { gGlobal } from "../../Global/global";
 
 /**
  * Canvas-based caption player: renders timed text onto <canvas> for tighter timing (<= 100ms).
@@ -152,6 +153,9 @@ export default function CanvasCaptionPlayer({ which, controls }:ICanvasCaptionPl
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const crampedStyle = gGlobal.layout.crampedPortrait ? 'bottom-4' : 'top-4';
+  
+
   return (
     <div className="p-4 absolute w-full h-full bg-yellow-200">
 
@@ -161,7 +165,7 @@ export default function CanvasCaptionPlayer({ which, controls }:ICanvasCaptionPl
       </MasterViewport>
 
       {controls &&
-        <div className="absolute top-4 right-4 w-1/2 flex">
+        <div className={`absolute  right-4 w-1/2 flex ${crampedStyle}`}>
 
           <div className="flex items-center w-60 gap-4">
             <span className="text-xs text-gray-500 w-12 text-right">{elapsed.toFixed(1)}s</span>
