@@ -22,6 +22,7 @@ export default function Goalpost({ endBlip }: BlipProps) {
     const audioGoal = new Audio(goalSound);
 
     const playSound = useCallback((audio: HTMLAudioElement) => {
+        audio.volume = 0.3;
         audio.play().catch((err) => {
             console.warn("Could not play sound:", err);
         });

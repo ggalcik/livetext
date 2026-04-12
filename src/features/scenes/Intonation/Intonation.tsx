@@ -21,6 +21,7 @@ export default function Intonation() {
     const [showSnail, setShowSnail] = useState(false);
 
     const audio = new AudioController();
+    audio.setVolume(0.3);
 
  
     useEffect(() => { 

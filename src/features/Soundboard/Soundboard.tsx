@@ -27,7 +27,7 @@ export default function Soundboard() {
         
     const [currentSound, setCurrentSound] = useState<string | null>(null);
     const [audioEl, setAudioEl] = useState<HTMLAudioElement | null>(null);
-    const [volume, setVolume] = useState<number>(1.0);
+    const [volume, setVolume] = useState<number>(0.5);
     const [muted, setMuted] = useState<boolean>(false);
     const [loop, setLoop] = useState<boolean>(false);
     const [progress, setProgress] = useState<number>(0);

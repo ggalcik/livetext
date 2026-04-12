@@ -45,7 +45,7 @@ export default function PanelsAdmin({ boomerang }: IPanelsAdminProps) {
                         
                         // const adminElement = panels[panelName]?.adminElement ? panels[panelName]?.adminElement as ReactNode : <></>
                         return (
-                            <div key={panelName}>
+                            <div key={panelName} className="mb-2">
                                 {/* <Button mode={panelName === panelScene.active?.panel ? 'activated' : null} 
                                 onClick={() => showPanel(panelName)}> */}
                                 <Button className={panelName === panelScene.active?.panel

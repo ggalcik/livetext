@@ -2,8 +2,6 @@ import { z } from 'zod';
 
 export const panelTypes = [
     'Chalkboard', 
-    'HolyHonkers',
-    'Why So Angry', 
     'Hypotheticheck', 
     'Aaaamennn', 
 ] as const;
@@ -25,21 +23,33 @@ export type IPanel = z.infer<typeof IPanelSchema>;
 export const IPanelsSchema = z.record(IPanelTypeSchema, IPanelSchema);
 export type IPanels = z.infer<typeof IPanelsSchema>;
 
+// to add a panel with its own data shape
+// const IPanelDataBaseSchema = z.object({
+//     panel: IPanelTypeSchema.exclude(['Why So Angry']),
+//     duration: z.number().optional(),
+// });
+
+
+// const IPanelWhySoAngrySchema = IPanelDataBaseSchema.extend({
+//     panel: z.literal('Why So Angry'),
+//     rheazon: z.string().optional()
+// });
+
+
+// const IPanelDataSchema = z.discriminatedUnion('panel', [
+//   IPanelDataBaseSchema,
+//   IPanelWhySoAngrySchema,
+// ]);
+
 const IPanelDataBaseSchema = z.object({
-    panel: IPanelTypeSchema.exclude(['Why So Angry']),
+    panel: IPanelTypeSchema,
     duration: z.number().optional(),
-});
-
-
-const IPanelWhySoAngrySchema = IPanelDataBaseSchema.extend({
-    panel: z.literal('Why So Angry'),
-    rheazon: z.string().optional()
 });
 
 
 const IPanelDataSchema = z.discriminatedUnion('panel', [
   IPanelDataBaseSchema,
-  IPanelWhySoAngrySchema,
+//   IPanelWhySoAngrySchema,
 ]);
 
 
