@@ -18,9 +18,16 @@ export type BlipProps = {
     opts?: Record<string, string|boolean>,
 };
 
+type BlipOpts = Record<string, string | boolean>;
+
+type BlipVariant = {
+    opts?: BlipOpts;
+};
+
 export type BlipEntry =
   | React.ComponentType<BlipProps>
   | {
       component: React.ComponentType<BlipProps>;
-      opts: Record<string, string|boolean>;
+      opts: BlipOpts;
+      variants?: Record<string, BlipVariant>;
     };

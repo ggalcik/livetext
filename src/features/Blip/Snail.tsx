@@ -9,11 +9,25 @@ import './Blip.css';
 import glog from '../../components/glog';
 import { gGlobal } from '../Global/global';
 
+import chant1a from './assets/snail_choral_1a.mp3';
+import chant1b from './assets/snail_choral_1b.mp3';
+import chant2 from './assets/snail_choral_2.mp3';
+import chant3 from './assets/snail_choral_3.mp3';
+import chantN from './assets/snail_choral_nyeh.mp3';
+
+const variantAudio:Record<string,string> = {
+    '1a': chant1a,
+    '1b': chant1b,
+    '2': chant2,
+    '3': chant3,
+    'N': chantN,
+}
 
 
 
 export default function Snail({ endBlip, opts }: BlipProps) {
     const shell = opts?.shell;
+    const playAudio = (opts?.variant && typeof opts.variant === 'string') ? variantAudio[opts.variant] : snailAudio;
     glog('shell: %o', shell);
     useEffect(() => {
         const timeout = setTimeout(() => {

@@ -4,6 +4,7 @@ export const panelTypes = [
     'Chalkboard', 
     'Hypotheticheck', 
     'Aaaamennn', 
+    'Chrystolyzer'
 ] as const;
 
 export const IPanelTypeSchema = z.enum(panelTypes);
