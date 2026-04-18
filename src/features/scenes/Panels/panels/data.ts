@@ -64,3 +64,17 @@ export const hypothetichecks = [
     "If you saw someone being mugged and you had the ability to stop it, should you?",
     "In the year 200 BC, how many hundreds of years did people own slaves with God's permission?"
 ]
+
+export const chrystolyzerQuestions = [
+    "Is it good to pray to Mary?",
+    "Can you get into heaven solely by believing in Jesus?",
+    "Is baptism by immersion necessary?",
+    "Is it a sin to be homosexual?",
+    "Are we guilty of Adam's sin?",
+    "Does God make a choice about what is good?",
+    "Can a human ever be in a sinless state?",
+    "Did Noah's flood actually happen in history?",
+    "Does the bread become the actual body of Christ?",
+    "Is another human necessary to confess sins?",
+    "Is the Bible without error?",
+]

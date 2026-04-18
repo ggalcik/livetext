@@ -3,28 +3,30 @@
 @theme {
 
     @keyframes animateComputing {
-  0% {
-    background-position: 0px 0px;
-  }
-  25% {
-    background-position: -200px 0px;
-  }
-  50% {
-    background-position: -400px 0px;
-  }
-  75% {
-    background-position: -600px 0px;
-  }
-  100% {
-    background-position: 0px 0px; 
-  }
-}
+        0% {
+            background-position: 0px 0px;
+        }
+
+        25% {
+            background-position: -200px 0px;
+        }
+
+        50% {
+            background-position: -400px 0px;
+        }
+
+        75% {
+            background-position: -600px 0px;
+        }
+
+        100% {
+            background-position: 0px 0px;
+        }
+    }
 }
 
 .animate-computing {
-  animation: animateComputing 8s steps(4) infinite;
-      background-image: url('./assets/random_lights.png');
+    animation: animateComputing 4s steps(4) infinite;
+    background-image: url('./assets/random_lights.png');
     background-size: 980px;
 }
-
-
