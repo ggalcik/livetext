@@ -27,6 +27,7 @@ export default function Counter() {
             ? activeCounters
             : scene.history[historyEntries[showCounterIdx - 1]];
 
+    const crampedStyle = gGlobal.layout.crampedPortrait ? 'scale-80' : '';
 
     const audioRef = useRef<HTMLAudioElement | null>(null);
 
@@ -71,6 +72,7 @@ export default function Counter() {
         const minCount = 5;
         const maxCount = 10;
 
+        if (crampedStyle) return 1;
         if (numCounters <= minCount) return topScale;
         if (numCounters >= maxCount) return bottomScale;
 
@@ -79,7 +81,6 @@ export default function Counter() {
         return Math.round(scale * 1000) / 1000;
     }
 
-    const crampedStyle = gGlobal.layout.crampedPortrait ? 'scale-80' : '';
     
     return (
         <div className="absolute w-full h-full bg-amber-900">
