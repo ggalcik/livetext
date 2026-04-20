@@ -10,7 +10,7 @@ const buttonVariants = cva(
             variant: {
                 a: 'text-white    bg-blue-700                         hover:bg-blue-800 ',
                 b: 'text-gray-900 bg-white    border border-gray-400  hover:bg-gray-100  hover:text-blue-700',
-                c: 'text-white    bg-red-700  border border-gray-400  hover:bg-red-800',
+                c: 'text-white    bg-red-800  border border-gray-400  hover:bg-red-600',
 
             },
             size: {

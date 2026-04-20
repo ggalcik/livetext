@@ -5,14 +5,14 @@ import { Aaaaamennnn, AaaaamennnnBackground } from "./Aaaamennnn";
 import { HolyHonkers, HolyHonkersBackground } from "./HolyHonkers";
 import { Chalkboard, ChalkboardAdmin, ChalkboardBackground } from "./Chalkboard";
 import { Hypotheticheck, HypotheticheckAdmin, HypotheticheckBackground } from "./Hypotheticheck";
-import { Chrystolyzer, ChrystolyzerAdmin, ChrystolyzerBackground } from "./Chrystolyzer";
+import { Christolyzer, ChristolyzerAdmin, ChristolyzerBackground } from "./Christolyzer";
 
 export const panels: IPanels = {
 
-    'Chrystolyzer': {
-        element: <Chrystolyzer />,
-        backgroundElement: <ChrystolyzerBackground />,
-        adminElement: <ChrystolyzerAdmin />,
+    'Christolyzer': {
+        element: <Christolyzer />,
+        backgroundElement: <ChristolyzerBackground />,
+        adminElement: <ChristolyzerAdmin />,
         ctrlViewport: true,
     },
     'Chalkboard':

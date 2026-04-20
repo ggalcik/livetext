@@ -16,3 +16,7 @@ export function randomSample<T>(arr: T[], n: number): T[] {
 
   return copy.slice(0, sampleSize);
 }
+
+export function textToHtmlBreaks (text: string) {
+    return text.replace(/(?:\r\n|\r|\n)/g, "<br>");
+  }

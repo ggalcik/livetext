@@ -1,0 +1,158 @@
+@import "tailwindcss";
+
+@theme {
+
+    @keyframes animateComputing {
+        0% {
+            background-position: 0px 0px;
+        }
+
+        25% {
+            background-position: -200px 0px;
+        }
+
+        50% {
+            background-position: -400px 0px;
+        }
+
+        75% {
+            background-position: -600px 0px;
+        }
+
+        100% {
+            background-position: 0px 0px;
+        }
+    }
+
+    @keyframes animateBlink {
+
+        0%,
+        49.99% {
+            opacity: 1;
+        }
+
+        50%,
+        100% {
+            opacity: 0;
+        }
+    }
+
+
+    @keyframes animateLogoFlicker {
+
+        0%,
+        22%,
+        100% {
+            opacity: 0;
+        }
+
+        23% {
+            opacity: 0.85;
+        }
+
+        25% {
+            opacity: 0.1;
+        }
+
+        27% {
+            opacity: 0.75;
+        }
+
+        32% {
+            opacity: 0;
+        }
+
+        33% {
+            opacity: 0.6;
+        }
+
+        34%,
+        99% {
+            opacity: 0;
+        }
+    }
+
+    @keyframes animateSlideIn {
+        0% {
+            transform: translateX(100%)
+        }
+
+        100% {
+            transform: translateX(0%)
+        }
+    }
+
+    @keyframes animateBootUp {
+        0% {
+            transform: translateY(100%)
+        }
+
+        100% {
+            transform: translateY(0%)
+        }
+    }
+
+    @keyframes animateScreenOn {
+        0%, 90% {
+            opacity: 1;
+        }
+
+        100% {
+                opacity: 0;
+        }
+    }
+        @keyframes animateTextOn {
+        0%, 95% {
+            opacity: 0;
+        }
+
+        100% {
+             opacity: 1;
+        }
+    }
+    @keyframes displayTextClear {
+        from {
+            transform: translateY(0%);
+        }
+
+        to {
+            transform: translateY(-100%);
+        }
+    }
+}
+
+.animate-screenOn {
+    animation: animateScreenOn 8s linear forwards;
+}
+
+.animate-bootUp {
+    animation: animateBootUp 8s ease-out forwards;
+}
+
+.animate-textOn {
+    animation: animateTextOn 10s linear forwards;
+}
+
+.animate-logoFlicker {
+    animation: animateLogoFlicker 10s linear infinite;
+    opacity: 0;
+}
+
+.animate-blink {
+    animation: animateBlink 1s infinite;
+
+}
+
+.animate-slideIn {
+    animation: animateSlideIn 0.4s linear;
+}
+
+
+.animate-computing {
+    animation: animateComputing 4s steps(4) infinite;
+    background-image: url('./assets/random_lights.png');
+    background-size: 980px;
+}
+.displayTextClear {
+    animation: displayTextClear 1s steps(8) forwards;
+}

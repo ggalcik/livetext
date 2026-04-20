@@ -65,16 +65,15 @@ export const hypothetichecks = [
     "In the year 200 BC, how many hundreds of years did people own slaves with God's permission?"
 ]
 
-export const chrystolyzerQuestions = [
-    "Is it good to pray to Mary?",
+export const christolyzerQuestions = [
+    "Is it acceptable to pray for Mary's intercession?",
     "Can you get into heaven solely by believing in Jesus?",
-    "Is baptism by immersion necessary?",
     "Is it a sin to be homosexual?",
-    "Are we guilty of Adam's sin?",
-    "Does God make a choice about what is good?",
-    "Can a human ever be in a sinless state?",
-    "Did Noah's flood actually happen in history?",
-    "Does the bread become the actual body of Christ?",
-    "Is another human necessary to confess sins?",
-    "Is the Bible without error?",
+    "Are we all guilty of Adam's sin?",
+    "Does God make choices about what is good?",
+    "Did Noah's flood actually happen as a historical event?",
+    "Was the world literally created in six days (as we commonly measure days)?",
+    "Does the bread of the Eucharist become the actual body of Christ?",
+    "Is it necessary for another human to be involved in the process of confessing your sins?",
+    "Is the Bible without error in all that is written?",
 ]
