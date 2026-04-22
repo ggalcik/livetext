@@ -67,13 +67,15 @@ export const hypothetichecks = [
 
 export const christolyzerQuestions = [
     "Is it acceptable to pray for Mary's intercession?",
-    "Can you get into heaven solely by believing in Jesus?",
+    "Is it possible for non-Christians to get into heaven?",
     "Is it a sin to be homosexual?",
     "Are we all guilty of Adam's sin?",
     "Does God make choices about what is good?",
     "Did Noah's flood actually happen as a historical event?",
     "Was the world literally created in six days (as we commonly measure days)?",
+    "Is Hell a metaphysical place of eternal, conscious torment?",
     "Does the bread of the Eucharist become the actual body of Christ?",
     "Is it necessary for another human to be involved in the process of confessing your sins?",
     "Is the Bible without error in all that is written?",
+    "Should a Christian approve generally of the work that the ICE agency is doing in America?"
 ]

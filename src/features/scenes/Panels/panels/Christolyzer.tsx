@@ -1,11 +1,15 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 // import aaaamennnn from '../../../../../src/local/soundboard/aaaamennnn.mp3';
 // import gregorius from './assets/in_nominae_gregorius_no.png';
-import christolyzer from './assets/christolyzer.png';
+// import christolyzer from './assets/christolyzer.png';
+import christolyzer from './assets/christolyzer_booting.png';
 import christolyzerFail from './assets/christolyzer_red.png';
 import christolyzerDarkLogo from './assets/christolyzer_darklogo2.png';
+import christolyzerOffLogo from './assets/christolyzer_offlogo.png';
 // import christolyzerDarkLogo from './assets/christolyzer_darklogo.png';
 import christolyzerDarkScreen from './assets/christolyzer_darkscreen.png';
+import christolyzerBooting from './assets/christolyzer_booting.png';
+import christolyzerBootingTop from './assets/christolyzer_booting_readout.png';
 import beepboop from './assets/beepboop.mp3';
 import yesBeep from './assets/yes.mp3';
 import noBeep from './assets/NO.mp3';
@@ -130,6 +134,22 @@ export function Christolyzer() {
     }, []);
 
     useEffect(() => {
+        const computingStartTimer = window.setTimeout(() => {
+            setComputing(true);
+        }, 8000);
+
+        const computingStopTimer = window.setTimeout(() => {
+            setComputing(false);
+        }, 10000);
+
+        return () => {
+            window.clearTimeout(computingStartTimer);
+            window.clearTimeout(computingStopTimer);
+            setComputing(false);
+        };
+    }, []);
+    
+    useEffect(() => {
         computerBootRef.current = new Audio(computerBoot);
         computerAmbientRef.current = new Audio(computerAmbient);
         computerBeepRef.current = new Audio(computerBeep);
@@ -200,7 +220,7 @@ export function Christolyzer() {
         if (quizStage === 'deciding') return `
         
         
-        Computing...`;
+        Tabulating...`;
         if (typeof quizStage === 'number') return questionList[quizStage - 1];
 
         return "-- kzzktzt --";
@@ -249,7 +269,7 @@ export function Christolyzer() {
     }
 
     function handleTextClearDone() {
-        const delay = quizStage === 'init' ? 0 : 2000;
+        const delay = quizStage === 'init' ? 0 : 500;
         setTimeout(handleAdvanceStage, delay);
     }
 
@@ -298,11 +318,15 @@ export function Christolyzer() {
     return <div className="absolute w-full h-full overflow-hidden text-white animate-bootUp">
 
         <div className='theMainBox relative' >
-            <img className="relative z-10 w-full" src={christolyzer} />
+            <img className="relative z-10 w-full" src={christolyzerBooting} />
+            <img className="absolute animate-logoTopUp z-9 top-0 w-full" src={christolyzerBootingTop} />
+            {/* <img className="relative z-10 w-full" src={christolyzer} /> */}
             {quizStage === 'fail' && <img className="absolute animate-blink z-10 w-full top-0" src={christolyzerFail} />}
             <img className="animate-logoFlicker absolute z-10 w-full top-0 pointer-events-none" src={christolyzerDarkLogo} />
+            <img className="animate-logoPowerOn absolute z-10 w-full top-0 pointer-events-none" src={christolyzerOffLogo} />
             <img className="animate-screenOn absolute z-10 w-full top-0 pointer-events-none" src={christolyzerDarkScreen} />
-            <div className='theReadoutWrapper absolute z-1 top-0 left-0 w-full h-full pt-[12%] pl-[14%] pr-[15%]'>
+
+            <div className='theReadoutWrapper animate-logoTopUp absolute z-1 top-0 left-0 w-full h-full pt-[12%] pl-[14%] pr-[15%]'>
                 <div className='theReadoutBox relative border w-full h-[14%] overflow-hidden'>
                      <div className='absolute w-full h-full bg-black'></div>
                     {computing && <div className='relative w-full h-full animate-computing'></div>}
@@ -320,10 +344,16 @@ export function Christolyzer() {
                         <div className='displayText h-full'>
                             <div dangerouslySetInnerHTML={{ __html: textToHtmlBreaks(getDisplayText()) }} />
                             {isQuestion &&
+                            <>
                                 <div className='absolute bottom-0 flex w-full h-[35%]'>
                                     <div className={`flex w-1/2 h-full items-center justify-center text-xl ${chosen === 'YES' ? 'bg-gray-500 text-white' : ''}`}>YES</div>
                                     <div className={`flex w-1/2 h-full items-center justify-center text-xl ${chosen === 'NO' ? 'bg-gray-500 text-white' : ''}`}>NO</div>
                                 </div>
+                                <div className='absolute -bottom-20 flex w-full h-[35%]'>
+Processing...
+                                </div>
+
+                            </>
                             }
                         </div>
                     </div>

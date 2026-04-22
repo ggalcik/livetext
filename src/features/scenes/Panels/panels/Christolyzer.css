@@ -92,24 +92,71 @@
         }
     }
 
+    @keyframes animateLogoTopUp {
+        0%, 80% {
+            transform: translateY(24%)
+        }
+
+        100% {
+            transform: translateY(0%)
+        }
+    }
+
     @keyframes animateScreenOn {
-        0%, 90% {
+
+        0%,
+        90% {
             opacity: 1;
         }
 
         100% {
-                opacity: 0;
+            opacity: 0;
         }
     }
-        @keyframes animateTextOn {
-        0%, 95% {
+
+    @keyframes animateLogoPowerOn {
+
+        0%,
+        50% {
+            opacity: 1;
+        }
+
+        82%,
+        84% {
+            opacity: .4;
+        }
+
+        83% {
+            opacity: .6
+        }
+
+        95%,
+        97% {
+            opacity: .9;
+        }
+
+        96% {
+            opacity: .5
+        }
+
+
+        100% {
+            opacity: 0;
+        }
+    }
+
+    @keyframes animateTextOn {
+
+        0%,
+        95% {
             opacity: 0;
         }
 
         100% {
-             opacity: 1;
+            opacity: 1;
         }
     }
+
     @keyframes displayTextClear {
         from {
             transform: translateY(0%);
@@ -123,6 +170,14 @@
 
 .animate-screenOn {
     animation: animateScreenOn 8s linear forwards;
+}
+
+.animate-logoPowerOn {
+    animation: animateLogoPowerOn 6s linear forwards;
+}
+
+.animate-logoTopUp {
+    animation: animateLogoTopUp 10s ease-out forwards;
 }
 
 .animate-bootUp {
@@ -153,6 +208,7 @@
     background-image: url('./assets/random_lights.png');
     background-size: 980px;
 }
+
 .displayTextClear {
     animation: displayTextClear 1s steps(8) forwards;
 }
