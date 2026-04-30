@@ -1,8 +1,9 @@
 import { usePersistentState } from "../../hooks/usePersistentState"
-import { BlipDataSchema, blipTypes, type IBlipType } from "./types"
+import { BlipDataSchema, type IBlipType } from "./types"
 
 import { Button } from "../../components/Button";
 import { produce } from "immer";
+import { BLIP_COMPONENTS } from "./BlipRegistry";
 
 export default function BlipAdmin() {
     const [blipData, setBlipData] = usePersistentState({
@@ -11,12 +12,13 @@ export default function BlipAdmin() {
         fallback: {}
     })
 
-    const isOn = blipData.showBlip;
+    const blipTypes = Object.keys(BLIP_COMPONENTS) as IBlipType[];
 
-    const setBlip = (showBlip?: IBlipType) => {
+    const setBlip = (showBlip?: IBlipType, showBlipVariant?: string) => {
 
         setBlipData(produce((draft) => {
             draft.showBlip = showBlip;
+            draft.showBlipVariant = showBlip ? showBlipVariant : undefined;
         }));
 
     }
@@ -27,13 +29,44 @@ export default function BlipAdmin() {
         <div className="flex gap-2 pt-2 pl-2 bg-green-200">
             {blipTypes.map(blip => {
                 const isActive = blipData.showBlip === blip;
-                return <Button
-                    size="lg" 
-                    key={`blip_${blip}`}
-                    className="ring-black"
-                    mode={isActive ? 'activated' : undefined}
-                    onClick={() => setBlip(isActive ? undefined : blip)}
-                >{blip}</Button>
+                const registryEntry = BLIP_COMPONENTS[blip];
+                const variants = "component" in registryEntry ? registryEntry.variants : undefined;
+
+                return (
+                    <div key={`blip_${blip}`} className="group relative">
+                        <Button
+                            size="lg"
+                            className="ring-black"
+                            mode={isActive ? 'activated' : undefined}
+                            onClick={() => setBlip(isActive ? undefined : blip)}
+                        >{blip}</Button>
+                        {variants && (
+                            <div
+                                className={`absolute left-0 top-full z-10 min-w-full pt-1 ${
+                                    isActive && blipData.showBlipVariant ? 'block' : 'hidden group-hover:block'
+                                }`}
+                            >
+                                <div className="flex gap-1 rounded-lg bg-green-100 p-1 shadow-lg ring-1 ring-black/15">
+                                    {Object.keys(variants).map((variant) => {
+                                        const isVariantActive =
+                                            isActive && blipData.showBlipVariant === variant;
+
+                                        return (
+                                            <Button
+                                                key={`${blip}_${variant}`}
+                                                size="sm"
+                                                variant="b"
+                                                mode={isVariantActive ? 'activated' : undefined}
+                                                className="whitespace-nowrap ring-black"
+                                                onClick={() => setBlip(isVariantActive ? undefined : blip, isVariantActive ? undefined : variant)}
+                                            >{variant}</Button>
+                                        );
+                                    })}
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                );
             }
             )}
         </div>

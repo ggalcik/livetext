@@ -1,7 +1,7 @@
 import { produce } from "immer";
 import { usePersistentState } from "../../hooks/usePersistentState"
 import { BLIP_COMPONENTS } from "./BlipRegistry"
-import { BlipDataSchema, type BlipProps } from "./types"
+import { BlipDataSchema, type BlipEntry, type BlipProps } from "./types"
 
 
 export default function Blip() {
@@ -17,21 +17,22 @@ export default function Blip() {
   const endBlip = () => {
     setBlipData(produce((draft) => {
       draft.showBlip = undefined;
+      draft.showBlipVariant = undefined;
     }));
 
   }
-
-  // const BlipComponent = BLIP_COMPONENTS[blipData.showBlip];
-
 
   const registryEntry = BLIP_COMPONENTS[blipData.showBlip];
 
   let BlipComponent: React.ComponentType<BlipProps>;
   let opts: Record<string, string|boolean> | undefined;
 
-  if ("component" in registryEntry) {
+  if (isConfiguredEntry(registryEntry)) {
     BlipComponent = registryEntry.component;
-    opts = registryEntry.opts;
+    const variantOpts = blipData.showBlipVariant
+      ? registryEntry.variants?.[blipData.showBlipVariant]?.opts
+      : undefined;
+    opts = { ...registryEntry.opts, ...variantOpts };
   } else {
     BlipComponent = registryEntry;
   }
@@ -41,4 +42,8 @@ export default function Blip() {
       <BlipComponent endBlip={endBlip} opts={opts} />
     </div>
   )
+}
+
+function isConfiguredEntry(entry: BlipEntry): entry is Exclude<BlipEntry, React.ComponentType<BlipProps>> {
+  return "component" in entry;
 }

@@ -9,6 +9,7 @@ export type IBlipType = z.infer<typeof blipTypeSchema>;
 
 export const BlipDataSchema = z.object({
     showBlip: blipTypeSchema.optional(),
+    showBlipVariant: z.string().optional(),
 });
 export type BlipData = z.infer<typeof BlipDataSchema>;
 
@@ -20,7 +21,7 @@ export type BlipProps = {
 
 type BlipOpts = Record<string, string | boolean>;
 
-type BlipVariant = {
+export type BlipVariant = {
     opts?: BlipOpts;
 };
 

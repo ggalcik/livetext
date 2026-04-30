@@ -346,7 +346,8 @@ export function Christolyzer() {
                 <div className='theReadoutBox relative border w-full h-[14%] overflow-hidden'>
                      <div className='absolute w-full h-full bg-black'></div>
                     {computing && <div className='relative w-full h-full animate-computing'></div>}
-                    {readoutStatus && !computing && <div className='relative text-green-300 font-["Press_Start_2P"] text-3xl p-[3%] w-full animate-slideIn'>{readoutStatus}</div>}
+                    {readoutStatus && !computing && <div className='relative text-green-300 font-["Press_Start_2P"] text-3
+                    xl p-[3%] w-full animate-slideIn'>{readoutStatus}</div>}
                 </div>
             </div>
 
