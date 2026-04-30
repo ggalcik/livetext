@@ -28,6 +28,7 @@ export const rheazonsData: RheazonEntry[] = [
                 "It's a tautology! A = A, where A = anger, and A = Atheist.",
                 "If I wasn't angry, then what would all the Reddit atheists say about me?",
                 "I want to be taken seriously, but my tiny legs make me look ridiculous.",
+                "I asked Jesus to help me put together some shelves and he said he didn't know how."
             ]
     },
     {
@@ -36,6 +37,30 @@ export const rheazonsData: RheazonEntry[] = [
                 "Because my tax dollars are sending crows to crow school.",
                 "Because the numbers didn't really mean anything and the island was just purgatory all along."
             ]
+    }, 
+    {
+        'DX Josh':
+        [
+            "The remote isn't working and spinning the batteries isn't helping anymore."
+        ]
+    }, 
+    {
+        'geomiles61':
+        [
+            "The council rejected my request for my landscaping plans with a burning bush theme."
+        ]
+    }, 
+    {
+        'Gray eyes':
+        [
+            "I forgot all of the Mason handshakes and now I have to buy my babies at full price."
+        ]
+    }, 
+    {
+        'WithoutClaire':
+        [
+            "Because Noah took a pair of koalas on the ark, and those things are bastards."
+        ]
     }
 ]
 
@@ -62,7 +87,7 @@ export const hypothetichecks = [
     "Was Satan forgiven when Jesus was crucified?",
     "Could God have made coveting okay?",
     "If you saw someone being mugged and you had the ability to stop it, should you?",
-    "In the year 200 BC, how many hundreds of years did people own slaves with God's permission?"
+    "If you were able to ask Jesus one question, what would it be?"
 ]
 
 export const christolyzerQuestions = [

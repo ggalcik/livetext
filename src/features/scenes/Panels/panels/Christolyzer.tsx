@@ -53,7 +53,7 @@ const followingStage: Record<QuizStage, QuizStage | null> = {
     1: 2,
     2: 3,
     3: 4,
-    4: 5,
+    4: 'deciding',
     5: 'deciding',
     'deciding': 'fail',
     'fail': null
@@ -68,10 +68,10 @@ const yesnoBeep: Record<Choice, string> = {
 
 
 export function Christolyzer() {
-    const defaultDisplay = `Need to discern whether you're talking to a true Christian? Answer five questions to find out!
+    const defaultDisplay = `Need to discern whether you're talking to a true Christian? Answer four questions to find out!
 
     Press "YES" to begin.`
-    const helpDisplay = 'The Christ-O-Lyzer will ask five questions, and return the result "True Christian" if all answers are correct (based on responses previously provided by true Christians).';
+    const helpDisplay = 'The Christ-O-Lyzer will ask four questions, and return the result "True Christian" if all answers are correct (based on responses previously provided by true Christians).';
 
     const [computing, setComputing] = useState(false);
     const [confirmingReset, setConfirmingReset] = useState(false);
@@ -79,6 +79,7 @@ export function Christolyzer() {
     const [quizStage, setQuizStage] = useState<QuizStage>('init');
     const [pendingStage, setPendingStage] = useState<QuizStage | null>(null);
     const [isClearingDisplayText, setIsClearingDisplayText] = useState(false);
+    const [isReadoutAnimatingIn, setIsReadoutAnimatingIn] = useState(false);
     const isQuestion = typeof quizStage === 'number';
     const [chosen, setChosen] = useState<null | Choice>(null);
     const [questionList, setQuestionList] = useState<string[]>(() => randomSample(christolyzerQuestions, 5));
@@ -131,6 +132,22 @@ export function Christolyzer() {
 
         computerAmbientRef.current?.pause();
         computerClicksRef.current?.pause();
+    }, []);
+
+    useEffect(() => {
+        let frameOne = 0;
+        let frameTwo = 0;
+
+        frameOne = window.requestAnimationFrame(() => {
+            frameTwo = window.requestAnimationFrame(() => {
+                setIsReadoutAnimatingIn(true);
+            });
+        });
+
+        return () => {
+            window.cancelAnimationFrame(frameOne);
+            window.cancelAnimationFrame(frameTwo);
+        };
     }, []);
 
     useEffect(() => {
@@ -218,7 +235,6 @@ export function Christolyzer() {
         
      Sorry, at least one response was incorrect and did not represent previous responses by true Christians.`;
         if (quizStage === 'deciding') return `
-        
         
         Tabulating...`;
         if (typeof quizStage === 'number') return questionList[quizStage - 1];
@@ -326,11 +342,11 @@ export function Christolyzer() {
             <img className="animate-logoPowerOn absolute z-10 w-full top-0 pointer-events-none" src={christolyzerOffLogo} />
             <img className="animate-screenOn absolute z-10 w-full top-0 pointer-events-none" src={christolyzerDarkScreen} />
 
-            <div className='theReadoutWrapper animate-logoTopUp absolute z-1 top-0 left-0 w-full h-full pt-[12%] pl-[14%] pr-[15%]'>
+            <div className={`theReadoutWrapper absolute z-1 top-0 left-0 w-full h-full pt-[12%] pl-[14%] pr-[15%] ${isReadoutAnimatingIn ? 'animate-logoTopUp' : ''}`}>
                 <div className='theReadoutBox relative border w-full h-[14%] overflow-hidden'>
                      <div className='absolute w-full h-full bg-black'></div>
                     {computing && <div className='relative w-full h-full animate-computing'></div>}
-                    {readoutStatus && !computing && <div className='relative text-green-300 font-["Press_Start_2P"] text-4xl p-[3%] w-full animate-slideIn'>{readoutStatus}</div>}
+                    {readoutStatus && !computing && <div className='relative text-green-300 font-["Press_Start_2P"] text-3xl p-[3%] w-full animate-slideIn'>{readoutStatus}</div>}
                 </div>
             </div>
 
