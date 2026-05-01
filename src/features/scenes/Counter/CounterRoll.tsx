@@ -105,19 +105,26 @@ export default function CounterRoll({ scene, setScene }: CounterRollProps) {
                                 <button
                                     type="button"
                                     className={clsx(
-                                    "flex h-full w-full items-center border bg-white px-2 text-left font-mono text-lg shadow-md transition-all",
+                                    "flex h-full w-full items-center border px-2 text-left font-mono text-lg shadow-md transition-all",
                                     counter.show
-                                        ? "bg-blue-300 text-stone-900 ring-2"
-                                        : "bg-stone-300 text-stone-500",
+                                        ? "border-amber-200 text-stone-900 ring-2"
+                                        : "border-stone-200 text-stone-500",
                                     index === selectedIndex && counter.show
-                                        ? "bg-blue-300"
+                                        ? "bg-yellow-100"
+                                        : "",
+                                    index !== selectedIndex && counter.show
+                                        ? "bg-white"
                                         : "",
                                     index === selectedIndex && !counter.show
                                         ? "bg-stone-300"
                                         : "",
+                                    index !== selectedIndex && !counter.show
+                                        ? "bg-stone-400"
+                                        : "",
+
                                     !counter.show && maxActive
                                         ? "cursor-not-allowed opacity-45"
-                                        : "hover:-translate-y-0.5 hover:shadow-lg"
+                                        : "hover:shadow-lg"
                                 )}
                                     style={{
                                         opacity: getCardOpacity(index, selectedIndex),
@@ -125,7 +132,9 @@ export default function CounterRoll({ scene, setScene }: CounterRollProps) {
                                     }}
                                     onClick={() => {
                                         setSelectedIndex(index);
-                                        toggleCounter(counter);
+                                        if (index === selectedIndex) {
+                                            toggleCounter(counter);
+                                        }
                                     }}
                                 >
                                     <span className="truncate">{counter.name || "Untitled"}</span>
@@ -190,14 +199,14 @@ export default function CounterRoll({ scene, setScene }: CounterRollProps) {
 
 function getCardScale(index: number, selectedIndex: number) {
     const distance = Math.abs(index - selectedIndex);
-    if (distance === 0) return 1;
-    if (distance === 1) return 0.985;
+    if (distance === 0) return 1.1;
+    if (distance === 1) return 1;
     if (distance === 2) return 0.965;
     return 0.94;
 }
 
 function getCardOpacity(index: number, selectedIndex: number) {
     const distance = Math.abs(index - selectedIndex);
-    if (distance <= 1) return 1;
-    return Math.max(1 - ((distance - 1) * 0.25), 0.25);
+    if (distance <= 2) return 1;
+    return Math.max(1 - ((distance - 2) * 0.2), 0.4);
 }
