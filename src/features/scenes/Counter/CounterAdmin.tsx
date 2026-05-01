@@ -4,7 +4,7 @@ import CounterAdminRow from "./CounterAdminRow";
 import { Button } from "../../../components/Button";
 import { usePersistentState } from "../../../hooks/usePersistentState";
 import { parse, format } from "date-fns";
-import { sortCountersAlphaUp, sortCountersCheckedUp } from "./counterHelpers";
+import { sortAlphaUp, sortCheckedUp } from "./counterHelpers";
 
 function todayKey(): string {
     return format(new Date(), 'yyyyMMdd');
@@ -128,21 +128,6 @@ export default function CounterAdmin() {
         setConfirmReset(false);
     }
 
-    function sortCheckedUp() {
-        setScene({
-            ...scene,
-            counters: sortCountersCheckedUp(scene.counters)
-        });
-    }
-
-    function sortAlphaUp() {
-        setScene({
-            ...scene,
-            counters: sortCountersAlphaUp(scene.counters)
-        });
-    }
-
-
     const maxActive = scene.counters.filter(i => i.show).length >= 10;
 
     return (
@@ -189,8 +174,8 @@ export default function CounterAdmin() {
             </div>
 
             <div className="flex gap-2 py-4">
-                <Button onClick={sortCheckedUp}>Sort checked up</Button>
-                <Button onClick={sortAlphaUp}>Sort alpha up</Button>
+                <Button onClick={() => sortCheckedUp(scene, setScene)}>Sort checked up</Button>
+                <Button onClick={() => sortAlphaUp(scene, setScene)}>Sort alpha up</Button>
             </div>
 
             <div className="lg:columns-2 space-y-1 scale-100 origin-top-left bg-green-100">
