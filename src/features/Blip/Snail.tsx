@@ -1,5 +1,6 @@
 import { useCallback, useEffect } from 'react';
 import snailAudio from './assets/snail universe.mp3';
+import snailAudioNyehless from './assets/snail nyehless.mp3';
 import snailBackdrop from './assets/snail_backdrop.jpg';
 import snailIdol from './assets/Snail.png';
 import snailFart from './assets/Galaxy.png';
@@ -25,10 +26,9 @@ const variantAudio:Record<string,string> = {
 
 
 
-export default function Snail({ endBlip, opts }: BlipProps) {
-    const shell = opts?.shell;
-    const playAudio = (opts?.variant && typeof opts.variant === 'string') ? variantAudio[opts.variant] : snailAudio;
-    glog('shell: %o', shell);
+export default function Snail({ endBlip, variant, opts }: BlipProps) {
+    const shell = variant === 'shell';
+    // const playAudio = (opts?.variant && typeof opts.variant === 'string') ? variantAudio[opts.variant] : snailAudio;
     useEffect(() => {
         const timeout = setTimeout(() => {
             endBlip();
@@ -37,26 +37,36 @@ export default function Snail({ endBlip, opts }: BlipProps) {
         return () => clearTimeout(timeout);
     }, [endBlip]);
 
-    const audioSnail = new Audio(snailAudio);
-
-    const playSound = useCallback((audio: HTMLAudioElement) => {
+    
+    const playSound = useCallback((audio: HTMLAudioElement, volume = 1) => {
+        audio.volume = volume;
         audio.play().catch((err) => {
             console.warn("Could not play sound:", err);
         });
     }, []);
-
+    
     const stopSound = useCallback((audio: HTMLAudioElement) => {
         audio.pause();
         audio.currentTime = 0;
     }, []);
-
+    
     useEffect(() => {
         if (shell) return;
-        playSound(audioSnail)
-        return () => stopSound(audioSnail);
-    }, []);
+        const background = new Audio(variant ? snailAudioNyehless : snailAudio);
+        const choir = variant && variantAudio[variant] &&  new Audio(variantAudio[variant]);
+        playSound(background);
+        const choirTimeout = choir
+            ? setTimeout(() => playSound(choir, 0.5), variant === 'N' ? 2500 : 1000)
+            : undefined;
 
-    const crampedStyle = gGlobal.layout.crampedPortrait ? 'bottom-1/5 scale-90 origin-bottom' : '';
+        return () => {
+            if (choirTimeout) clearTimeout(choirTimeout);
+            stopSound(background);
+            if (choir) stopSound(choir);
+        }
+    }, [playSound, shell, stopSound, variant]);
+
+    const crampedStyle = gGlobal.layout.crampedPortrait ? 'bottom-1/5 scale-95 origin-bottom' : '';
 
     return (
         <div className={`w-full h-full relative animate-snail-blip bg-black ${crampedStyle}`} >

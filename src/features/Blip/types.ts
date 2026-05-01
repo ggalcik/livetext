@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 export const blipTypes = [
-    'Why Angry', 'Holy Honkers', 'Holy Sulfur', 'Orchestra', 'Snail', 'Goalpost', 'Mamma Mia', 'Egregore'
+    'Why Angry', 'Holy Honkers', 'Orchestra', 'Snail', 'Goalpost', 'Mamma Mia', 'Egregore'
 ] as const;
 
 export const blipTypeSchema = z.enum(blipTypes);
@@ -16,19 +16,23 @@ export type BlipData = z.infer<typeof BlipDataSchema>;
 
 export type BlipProps = {
     endBlip: () => void,
+    variant?: string,
     opts?: Record<string, string|boolean>,
 };
 
 type BlipOpts = Record<string, string | boolean>;
 
-export type BlipVariant = {
-    opts?: BlipOpts;
-};
+export type BlipVariant =
+    | string
+    | {
+        variant: string;
+        opts?: BlipOpts;
+    };
 
 export type BlipEntry =
   | React.ComponentType<BlipProps>
   | {
       component: React.ComponentType<BlipProps>;
       opts: BlipOpts;
-      variants?: Record<string, BlipVariant>;
+      variants?: BlipVariant[];
     };

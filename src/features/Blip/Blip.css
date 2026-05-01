@@ -177,11 +177,11 @@
     @keyframes snail-universe {
 
         0% {
-            transform: translate(0, -20px);
+            transform: translate(0, -80px);
         }
 
         100% {
-            transform: translate(60px, 40px);
+            transform: translate(60px, 0px);
         }
     }
 

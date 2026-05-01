@@ -1,7 +1,7 @@
 import { produce } from "immer";
 import { usePersistentState } from "../../hooks/usePersistentState"
 import { BLIP_COMPONENTS } from "./BlipRegistry"
-import { BlipDataSchema, type BlipEntry, type BlipProps } from "./types"
+import { BlipDataSchema, type BlipEntry, type BlipProps, type BlipVariant } from "./types"
 
 
 export default function Blip() {
@@ -25,25 +25,42 @@ export default function Blip() {
   const registryEntry = BLIP_COMPONENTS[blipData.showBlip];
 
   let BlipComponent: React.ComponentType<BlipProps>;
+  let variant: string | undefined;
   let opts: Record<string, string|boolean> | undefined;
 
   if (isConfiguredEntry(registryEntry)) {
     BlipComponent = registryEntry.component;
-    const variantOpts = blipData.showBlipVariant
-      ? registryEntry.variants?.[blipData.showBlipVariant]?.opts
-      : undefined;
-    opts = { ...registryEntry.opts, ...variantOpts };
+    const selectedVariant = getSelectedVariant(
+      registryEntry.variants,
+      blipData.showBlipVariant
+    );
+    variant = selectedVariant?.variant;
+    opts = { ...registryEntry.opts, ...selectedVariant?.opts };
   } else {
     BlipComponent = registryEntry;
   }
 
   return (
     <div className="absolute inset-0 overflow-hidden">
-      <BlipComponent endBlip={endBlip} opts={opts} />
+      <BlipComponent endBlip={endBlip} variant={variant} opts={opts} />
     </div>
   )
 }
 
 function isConfiguredEntry(entry: BlipEntry): entry is Exclude<BlipEntry, React.ComponentType<BlipProps>> {
   return "component" in entry;
+}
+
+function getSelectedVariant(variants: BlipVariant[] | undefined, variantId: string | undefined) {
+  if (!variantId) return undefined;
+
+  const variant = variants?.find((entry) =>
+    typeof entry === "string" ? entry === variantId : entry.variant === variantId
+  );
+
+  if (!variant) return undefined;
+
+  return typeof variant === "string"
+    ? { variant }
+    : variant;
 }

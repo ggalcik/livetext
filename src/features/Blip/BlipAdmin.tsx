@@ -1,5 +1,5 @@
 import { usePersistentState } from "../../hooks/usePersistentState"
-import { BlipDataSchema, type IBlipType } from "./types"
+import { BlipDataSchema, type BlipVariant, type IBlipType } from "./types"
 
 import { Button } from "../../components/Button";
 import { produce } from "immer";
@@ -23,7 +23,9 @@ export default function BlipAdmin() {
 
     }
 
-
+    function getVariantId(variant: BlipVariant) {
+        return typeof variant === "string" ? variant : variant.variant;
+    }
 
     return (
         <div className="flex gap-2 pt-2 pl-2 bg-green-200">
@@ -42,19 +44,19 @@ export default function BlipAdmin() {
                         >{blip}</Button>
                         {variants && (
                             <div
-                                className={`absolute left-0 top-full z-10 min-w-full pt-1 ${
-                                    isActive && blipData.showBlipVariant ? 'block' : 'hidden group-hover:block'
-                                }`}
+                                className={`absolute left-0 top-full z-20 min-w-full pt-1 ${isActive && blipData.showBlipVariant ? 'block' : 'hidden group-hover:block'
+                                    }`}
                             >
                                 <div className="flex gap-1 rounded-lg bg-green-100 p-1 shadow-lg ring-1 ring-black/15">
-                                    {Object.keys(variants).map((variant) => {
+                                    {variants.map((variantEntry) => {
+                                        const variant = getVariantId(variantEntry);
                                         const isVariantActive =
                                             isActive && blipData.showBlipVariant === variant;
 
                                         return (
                                             <Button
                                                 key={`${blip}_${variant}`}
-                                                size="sm"
+                                                size="lg"
                                                 variant="b"
                                                 mode={isVariantActive ? 'activated' : undefined}
                                                 className="whitespace-nowrap ring-black"
@@ -74,5 +76,7 @@ export default function BlipAdmin() {
 
 
 }
+
+
 
 

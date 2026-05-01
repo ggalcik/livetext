@@ -44,13 +44,9 @@ const crampedStyle = gGlobal.layout.crampedPortrait ? '-top-1/5' : '';
 
     return (
         <div className={`absolute w-full h-full bg-black overflow-hidden ${crampedStyle}`}>
-
             <img className="absolute top-0" src={snailWindow} />
-            { showSnail && <Snail endBlip={() => setShowSnail(false)} opts={{shell: true}} />}
+            { showSnail && <Snail endBlip={() => setShowSnail(false)} variant='shell' />}
         </div>
-
-
-
     );
 }
 
