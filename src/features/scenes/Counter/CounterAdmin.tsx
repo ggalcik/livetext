@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
-import { CounterSchema, CounterSceneSchema, type Counter, type CounterScene } from "./types";
+import { CounterSceneSchema, type Counter, type CounterScene } from "./types";
 import CounterAdminRow from "./CounterAdminRow";
 import { Button } from "../../../components/Button";
 import { usePersistentState } from "../../../hooks/usePersistentState";
 import { parse, format } from "date-fns";
-import glog from "../../../components/glog";
+import { sortCountersAlphaUp, sortCountersCheckedUp } from "./counterHelpers";
 
 function todayKey(): string {
     return format(new Date(), 'yyyyMMdd');
@@ -129,30 +129,17 @@ export default function CounterAdmin() {
     }
 
     function sortCheckedUp() {
-        const newCounters = [...scene.counters];
-        newCounters.sort((a, b) => {
-            if (a.show === b.show) return 0;
-            if (a.show && !b.show) return -1;
-            return 1;
-        });
         setScene({
             ...scene,
-            counters: newCounters
-        })
+            counters: sortCountersCheckedUp(scene.counters)
+        });
     }
 
     function sortAlphaUp() {
-        const newCounters = [...scene.counters];
-        newCounters.sort((a, b) => {
-            const aName = a.name.toUpperCase().replace(/[^A-Z]/g, '');
-            const bName = b.name.toUpperCase().replace(/[^A-Z]/g, '');
-            glog("aName %s, bName %s, aName < bName %o", aName, bName, aName < bName);
-            return aName < bName ? -1 : 1;
-        });
         setScene({
             ...scene,
-            counters: newCounters
-        })
+            counters: sortCountersAlphaUp(scene.counters)
+        });
     }
 
 
