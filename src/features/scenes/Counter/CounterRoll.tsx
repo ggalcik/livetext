@@ -10,15 +10,27 @@ const CARD_HEIGHT = 32;
 const CARD_GAP = 8;
 const ROW_STEP = CARD_HEIGHT + CARD_GAP;
 const WHEEL_STEP = 36;
+const DRAG_THRESHOLD = 6;
 
 interface CounterRollProps {
     scene: CounterScene;
     setScene: React.Dispatch<React.SetStateAction<CounterScene>>;
 }
 
+interface DragState {
+    pointerId: number;
+    startY: number;
+    startIndex: number;
+    targetIndex: number | null;
+    dragged: boolean;
+}
+
 export default function CounterRoll({ scene, setScene }: CounterRollProps) {
     const [selectedIndex, setSelectedIndex] = useState(0);
+    const [isDragging, setIsDragging] = useState(false);
     const wheelCarry = useRef(0);
+    const dragState = useRef<DragState | null>(null);
+    const suppressClickRef = useRef(false);
     const activeCount = scene.counters.filter((counter) => counter.show).length;
     const maxActive = activeCount >= 10;
     const selectedCounter = scene.counters[selectedIndex];
@@ -69,15 +81,86 @@ export default function CounterRoll({ scene, setScene }: CounterRollProps) {
         changeSelected(direction * steps);
     }
 
+    function onPointerDown(e: React.PointerEvent<HTMLDivElement>) {
+        if (!scene.counters.length) return;
+
+        suppressClickRef.current = false;
+        setIsDragging(false);
+        const target = e.target as HTMLElement | null;
+        const counterButton = target?.closest("[data-counter-index]");
+        const targetIndex = counterButton
+            ? Number(counterButton.getAttribute("data-counter-index"))
+            : null;
+
+        dragState.current = {
+            pointerId: e.pointerId,
+            startY: e.clientY,
+            startIndex: selectedIndex,
+            targetIndex: Number.isNaN(targetIndex) ? null : targetIndex,
+            dragged: false,
+        };
+
+        e.currentTarget.setPointerCapture(e.pointerId);
+    }
+
+    function onPointerMove(e: React.PointerEvent<HTMLDivElement>) {
+        const drag = dragState.current;
+        if (!drag || drag.pointerId !== e.pointerId) return;
+
+        const deltaY = e.clientY - drag.startY;
+        if (!drag.dragged && Math.abs(deltaY) >= DRAG_THRESHOLD) {
+            drag.dragged = true;
+            setIsDragging(true);
+        }
+
+        if (!drag.dragged) return;
+
+        const stepDelta = Math.round(deltaY / ROW_STEP);
+        const nextIndex = clampIndex(drag.startIndex - stepDelta);
+        setSelectedIndex(nextIndex);
+    }
+
+    function onPointerEnd(e: React.PointerEvent<HTMLDivElement>) {
+        const drag = dragState.current;
+        if (!drag || drag.pointerId !== e.pointerId) return;
+
+        suppressClickRef.current = drag.dragged;
+        if (!drag.dragged && drag.targetIndex != null) {
+            activateCounter(drag.targetIndex);
+            suppressClickRef.current = true;
+        }
+        setIsDragging(false);
+        dragState.current = null;
+        if (e.currentTarget.hasPointerCapture(e.pointerId)) {
+            e.currentTarget.releasePointerCapture(e.pointerId);
+        }
+    }
+
+    function activateCounter(index: number) {
+        const counter = scene.counters[index];
+        if (!counter) return;
+        setSelectedIndex(index);
+        if (index === selectedIndex) {
+            toggleCounter(counter);
+        }
+    }
+
     if (!scene.counters.length) return null;
 
     return (
         <div className="pointer-events-none absolute inset-0 z-20 flex items-center justify-end p-4 opacity-0 transition-opacity duration-200 group-hover:pointer-events-auto group-hover:opacity-100">
             <div className="w-72 overflow-visible">
                 <div
-                    className="relative overflow-visible"
+                    className={clsx(
+                        "relative overflow-visible",
+                        isDragging ? "cursor-grabbing" : "cursor-grab"
+                    )}
                     style={{ height: VISIBLE_ROWS * ROW_STEP - CARD_GAP }}
                     onWheel={onWheel}
+                    onPointerDown={onPointerDown}
+                    onPointerMove={onPointerMove}
+                    onPointerUp={onPointerEnd}
+                    onPointerCancel={onPointerEnd}
                 >
                     <div
                         className="pointer-events-none absolute inset-x-0 bg-blue-100/60"
@@ -104,11 +187,12 @@ export default function CounterRoll({ scene, setScene }: CounterRollProps) {
                             >
                                 <button
                                     type="button"
+                                    data-counter-index={index}
                                     className={clsx(
                                     "flex h-full w-full items-center border px-2 text-left font-mono text-lg shadow-md transition-all",
                                     counter.show
                                         ? "border-amber-200 text-stone-900 ring-2"
-                                        : "border-stone-200 text-stone-500",
+                                        : "border-stone-200 text-stone-700",
                                     index === selectedIndex && counter.show
                                         ? "bg-yellow-100"
                                         : "",
@@ -116,24 +200,26 @@ export default function CounterRoll({ scene, setScene }: CounterRollProps) {
                                         ? "bg-white"
                                         : "",
                                     index === selectedIndex && !counter.show
-                                        ? "bg-stone-300"
+                                        ? "bg-stone-100"
                                         : "",
                                     index !== selectedIndex && !counter.show
-                                        ? "bg-stone-400"
+                                        ? "bg-stone-200"
                                         : "",
 
                                     !counter.show && maxActive
                                         ? "cursor-not-allowed opacity-45"
-                                        : "hover:shadow-lg"
+                                        : index === selectedIndex
+                                            ? "cursor-pointer hover:shadow-lg"
+                                            : "hover:shadow-lg"
                                 )}
                                     style={{
                                         opacity: getCardOpacity(index, selectedIndex),
                                         transform: `scale(${getCardScale(index, selectedIndex)})`,
                                     }}
-                                    onClick={() => {
-                                        setSelectedIndex(index);
-                                        if (index === selectedIndex) {
-                                            toggleCounter(counter);
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        if (suppressClickRef.current) {
+                                            suppressClickRef.current = false;
                                         }
                                     }}
                                 >
@@ -208,5 +294,5 @@ function getCardScale(index: number, selectedIndex: number) {
 function getCardOpacity(index: number, selectedIndex: number) {
     const distance = Math.abs(index - selectedIndex);
     if (distance <= 2) return 1;
-    return Math.max(1 - ((distance - 2) * 0.2), 0.4);
+    return Math.max(1 - ((distance - 2) * 0.1), 0.7      );
 }
