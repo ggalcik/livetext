@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { MasterViewport } from "../../../components/MasterViewport/MasterViewport";
 import { format, parse } from "date-fns";
 import './Counter.css';
@@ -6,13 +6,13 @@ import { CounterSceneSchema, type Counter, type CounterHistory } from "./types";
 import dling from '/src/assets/dling.mp3';
 import notebook from '../../../assets/notebook.png'
 import { usePersistentState } from "../../../hooks/usePersistentState";
-import { transform } from "zod";
 import clsx from "clsx";
 import { gGlobal } from "../../Global/global";
+import CounterRoll from "./CounterRoll";
 
 
 export default function Counter() {
-    const [scene] = usePersistentState({
+    const [scene, setScene] = usePersistentState({
         storageKey: 'counterScene',
         schema: CounterSceneSchema,
         fallback: { counters: [], currentDate: format(new Date(), 'yyyyMMdd') }
@@ -83,9 +83,10 @@ export default function Counter() {
 
     
     return (
-        <div className="absolute w-full h-full bg-amber-900">
+        <div className="group absolute w-full h-full bg-amber-900">
 
-            <MasterViewport name="counter" resizable={false} needCtrl={true}>
+            <MasterViewport name="counter" resizable={true} needCtrl={true}>
+                <CounterRoll scene={scene} setScene={setScene} />
           
                 <input type="range" min="0" max={historySliderRange}
                     className={clsx("absolute top-6 -left-6 z-10 hover:opacity-100 w-6 text-red-400",
