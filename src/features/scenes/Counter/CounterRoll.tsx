@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import clsx from "clsx";
 import { Button } from "../../../components/Button";
 import type { Counter, CounterScene } from "./types";
-import { sortAlphaUp, sortCheckedUp } from "./counterHelpers";
+import { addCounter, doDayReset, sortAlphaUp, sortCheckedUp } from "./counterHelpers";
 
 const VISIBLE_ROWS = 7;
 const ACTIVE_ROW = Math.floor(VISIBLE_ROWS / 2);
@@ -29,6 +29,7 @@ export default function CounterRoll({ scene, setScene }: CounterRollProps) {
     const [selectedIndex, setSelectedIndex] = useState(0);
     const [isDragging, setIsDragging] = useState(false);
     const [showControls, setShowControls] = useState(false);
+    const [confirmReset, setConfirmReset] = useState(false);
     const wheelCarry = useRef(0);
     const dragState = useRef<DragState | null>(null);
     const suppressClickRef = useRef(false);
@@ -71,7 +72,7 @@ export default function CounterRoll({ scene, setScene }: CounterRollProps) {
     function onWheel(e: React.WheelEvent<HTMLDivElement>) {
         if (!scene.counters.length) return;
 
-        e.preventDefault();
+        // e.preventDefault();
         wheelCarry.current += e.deltaY;
 
         if (Math.abs(wheelCarry.current) < WHEEL_STEP) return;
@@ -144,6 +145,16 @@ export default function CounterRoll({ scene, setScene }: CounterRollProps) {
         if (index === selectedIndex) {
             toggleCounter(counter);
         }
+    }
+
+    function handleDayReset() {
+        doDayReset(scene, setScene);
+        setConfirmReset(false);
+    }
+
+    function handleAddCounter() {
+        addCounter(scene, setScene, { addBlank: true });
+        setSelectedIndex(scene.counters.length);
     }
 
     if (!scene.counters.length) return null;
@@ -301,6 +312,26 @@ export default function CounterRoll({ scene, setScene }: CounterRollProps) {
                                 </Button>
                                 <Button variant="b" className="flex-1" onClick={() => sortAlphaUp(scene, setScene)}>
                                     Sort Alpha
+                                </Button>
+                            </div>
+
+                            <div className="mt-3 flex items-center justify-between gap-2">
+                                <div className="flex items-center gap-2">
+                                    <Button
+                                        variant="c"
+                                        className="w-20"
+                                        onClick={() => setConfirmReset((prev) => !prev)}
+                                    >
+                                        {confirmReset ? "Cancel" : "Day reset"}
+                                    </Button>
+                                    {confirmReset && (
+                                        <Button variant="c" className="w-16" onClick={handleDayReset}>
+                                            Sure?
+                                        </Button>
+                                    )}
+                                </div>
+                                <Button variant="b" className="h-8 w-8 p-0 text-lg leading-none" onClick={handleAddCounter}>
+                                    +
                                 </Button>
                             </div>
                         </div>

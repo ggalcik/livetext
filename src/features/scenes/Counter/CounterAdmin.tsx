@@ -4,11 +4,7 @@ import CounterAdminRow from "./CounterAdminRow";
 import { Button } from "../../../components/Button";
 import { usePersistentState } from "../../../hooks/usePersistentState";
 import { parse, format } from "date-fns";
-import { sortAlphaUp, sortCheckedUp } from "./counterHelpers";
-
-function todayKey(): string {
-    return format(new Date(), 'yyyyMMdd');
-}
+import { addCounter, doDayReset, sortAlphaUp, sortCheckedUp, todayKey } from "./counterHelpers";
 
 function DateSelector({
     scene,
@@ -64,18 +60,14 @@ export default function CounterAdmin() {
         localStorage.setItem("counterScene", JSON.stringify(scene));
     }, [scene]);
 
-    function addCounter(addBlank = false) {
-        if (!newName.trim() && !addBlank) return;
-        const counter: Counter = {
-            id: Math.random().toString(36).slice(2),
-            name: newName.trim(),
-            value: newValue ? parseInt(newValue, 10) || 0 : 0,
-            show: true,
-            play: false,
-            lastIncrement: 0,
-        };
-        const counters = [...scene.counters, counter];
-        updateScene(counters);
+    function handleAddCounter(addBlank = false) {
+        const added = addCounter(scene, setScene, {
+            name: newName,
+            value: newValue,
+            addBlank,
+        });
+
+        if (!added) return;
         setNewName("");
         setNewValue("");
     }
@@ -96,35 +88,8 @@ export default function CounterAdmin() {
         updateScene(counters);
     }
 
-    function doDayReset() {
-        const date = scene.currentDate || todayKey();
-
-        // 1. Copy current counters to history
-        const active = scene.counters
-            .filter((c) => c.value !== 0 && c.name)
-            .map((c) => ({ name: c.name, value: c.value }));
-
-        const updatedHistory = {
-            ...scene.history,
-            [date]: active,
-        };
-
-        // 2. Reset counters
-        const resetCounters = scene.counters.map((counter) => ({
-            ...counter,
-            value: 0,
-            show: false,
-            play: true,
-        }));
-
-        // 3. Update scene with new date and cleared counters
-        setScene({
-            ...scene,
-            counters: resetCounters,
-            history: updatedHistory,
-            currentDate: todayKey(),
-        });
-
+    function handleDayReset() {
+        doDayReset(scene, setScene);
         setConfirmReset(false);
     }
 
@@ -158,7 +123,7 @@ export default function CounterAdmin() {
                             <>
                                 <button
                                     className="px-2 bg-red-500 text-white cursor-pointer"
-                                    onClick={() => doDayReset()}
+                                    onClick={handleDayReset}
                                 >
                                     Sure?
                                 </button>
@@ -193,21 +158,21 @@ export default function CounterAdmin() {
                 <div className="flex gap-2">
                     <div>
                         <Button
-                            onClick={() => addCounter(true)}>Add blank</Button>
+                            onClick={() => handleAddCounter(true)}>Add blank</Button>
                     </div>
                     <input
                         className="flex-1 border p-1 bg-white"
                         placeholder="Name"
                         value={newName}
                         onChange={(e) => setNewName(e.target.value)}
-                        onKeyDown={(e) => e.key === "Enter" && addCounter()}
+                        onKeyDown={(e) => e.key === "Enter" && handleAddCounter()}
                     />
                     <input
                         className="w-20 border p-1 bg-white"
                         placeholder="0"
                         value={newValue}
                         onChange={(e) => setNewValue(e.target.value)}
-                        onKeyDown={(e) => e.key === "Enter" && addCounter()}
+                        onKeyDown={(e) => e.key === "Enter" && handleAddCounter()}
                     />
                 </div>
             </div>
