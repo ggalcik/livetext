@@ -15,22 +15,26 @@ export default function IntonationsAdmin() {
         fallback: { active: 'Intro' }
     })
     const [advanceActive, setAdvanceActive] = useState(true);
+    const [advanceCountdown, setAdvanceCountdown] = useState(0);
 
     const advanceTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+    const advanceDeadlineRef = useRef<number | null>(null);
 
     function handleAdvance() {
-
-        
         if (advanceTimeoutRef.current) {
             clearTimeout(advanceTimeoutRef.current);
             setAdvanceActive(true);
+            setAdvanceCountdown(0);
             advanceTimeoutRef.current = null;
+            advanceDeadlineRef.current = null;
         } else {
             setAdvanceActive(false);
             const currentIdx = intonementSections.findIndex(
                 intonment => intonment === intonationScene.active
             );
             const nextIdx = (currentIdx + 1) % intonementSections.length;
+            advanceDeadlineRef.current = Date.now() + ADVANCE_DELAY;
+            setAdvanceCountdown(ADVANCE_DELAY / 1000);
 
             advanceTimeoutRef.current = setTimeout(() => {
                 setIntonationScene({
@@ -38,16 +42,33 @@ export default function IntonationsAdmin() {
                     advanced: true,
                 });
                 setAdvanceActive(true);
+                setAdvanceCountdown(0);
                 advanceTimeoutRef.current = null;
+                advanceDeadlineRef.current = null;
             }, ADVANCE_DELAY);
         }
     }
+
+    useEffect(() => {
+        if (advanceActive) return;
+
+        const interval = setInterval(() => {
+            if (!advanceDeadlineRef.current) return;
+
+            const remainingMs = Math.max(0, advanceDeadlineRef.current - Date.now());
+            setAdvanceCountdown(remainingMs / 1000);
+        }, 100);
+
+        return () => clearInterval(interval);
+    }, [advanceActive]);
 
     useEffect(() => {
         return () => {
             if (advanceTimeoutRef.current) {
                 clearTimeout(advanceTimeoutRef.current);
             }
+
+            advanceDeadlineRef.current = null;
         };
     }, []);
 
@@ -65,7 +86,7 @@ export default function IntonationsAdmin() {
                     onClick={handleAdvance}
                     mode={advanceActive ? 'normal' : 'alert'}
                     size='xl'>
-                    {advanceActive ? 'Advance' : 'Cancel'}
+                    {advanceActive ? 'Advance' : `Cancel (${advanceCountdown.toFixed(1)}s)`}
                 </Button>
 
                 <div className="border inline-flex bg-green-200 flex-col gap-2 p-2">

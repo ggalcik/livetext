@@ -30,6 +30,7 @@ export default function Snail({ endBlip, variant, opts }: BlipProps) {
     const shell = variant === 'shell';
     // const playAudio = (opts?.variant && typeof opts.variant === 'string') ? variantAudio[opts.variant] : snailAudio;
     useEffect(() => {
+        glog('in Snail');
         const timeout = setTimeout(() => {
             endBlip();
         }, 8000);
