@@ -1,0 +1,27 @@
+@import "tailwindcss";
+
+@theme {
+    --animate-intonation-text-enter: intonation-text-enter 7s ease-out forwards;
+
+    @keyframes intonation-text-enter {
+        0% {
+           transform: translateY(100%);
+        }
+
+        100% {
+            transform: translateY(0%);
+        }
+    }
+
+    --animate-intonation-text-exit: intonation-text-exit 2s ease-out forwards;
+
+    @keyframes intonation-text-exit {
+        0% {
+            opacity: 1;
+        }
+
+        100% {
+            opacity: 0;
+        }
+    }
+}

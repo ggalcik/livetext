@@ -92,7 +92,6 @@ export default function WhoWantsToAdmin() {
             if (stage == 'finish') {
                 const theRound = draft.rounds.find(round => round.id === whoWantsScene.activeRoundId);
                 if (!theRound) return;
-                glog('here');
                 theRound.answers.forEach(a => { if (!a.correct && !a.chosen) a.show = false });
             }
         }));
@@ -193,9 +192,6 @@ console.log("doNextStage: ", stage);
     const oneChosen = activeRound.answers.find(a => a.chosen);
     const tenseActive = whoWantsScene.stage == 'chat' && oneChosen != undefined;
     const finishActive = whoWantsScene.stage !== 'finish' && oneChosen != undefined;
-
-    glog("oneChosen: %o", oneChosen);
-    glog("finishActive: %o", finishActive);
 
     return (
 

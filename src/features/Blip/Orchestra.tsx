@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 
 import orchestraRising from "../../local/panels/orchestra_rising.mp4";
+import orchestraFiller from "../../local/video/orchestra_filler.mp4";
 import applauseVid from "../../local/panels/end_applause.mp4";
 import booYouSuckVid from "../../local/panels/boo_you_suck.mp4";
 

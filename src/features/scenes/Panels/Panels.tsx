@@ -22,8 +22,6 @@ export default function Panels() {
     }, [panelScene.active]);
 
 
-glog("panels: panelScene.active?.panel %s", panelScene.active?.panel);
-
     const showPanel = panelScene.active?.panel;
     const element = showPanel ? panels[showPanel].element as ReactNode : <></>
     const backgroundElement = showPanel && panels[showPanel].backgroundElement

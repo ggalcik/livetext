@@ -35,7 +35,7 @@ export function Aaaaamennnn() {
   }, []);
 
     return <div className="absolute w-full h-full overflow-hidden">
-        <div className="absolute w-full h-full animate-risen">
+        <div className="absolute w-full h-full -top-40 animate-risen">
             <img src={gregorius} />
         </div>
     </div>

@@ -81,7 +81,7 @@ export default function LiveText({ state }: { state: LiveDataState }) {
         </TransitionGroup>
 
         {showBanner && state.timer.on && state.timer.interval && (
-          <div className="absolute top-0 -left-6 scale-80">
+          <div className="absolute -top-12 -left-6 scale-80">
             <ProgressWheel timer={state.timer} size={80} />
           </div>
         )}

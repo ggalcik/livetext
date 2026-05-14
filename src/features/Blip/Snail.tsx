@@ -28,9 +28,9 @@ const variantAudio:Record<string,string> = {
 
 export default function Snail({ endBlip, variant, opts }: BlipProps) {
     const shell = variant === 'shell';
+    const reverse = opts?.reverse;
     // const playAudio = (opts?.variant && typeof opts.variant === 'string') ? variantAudio[opts.variant] : snailAudio;
     useEffect(() => {
-        glog('in Snail');
         const timeout = setTimeout(() => {
             endBlip();
         }, 8000);
@@ -70,10 +70,10 @@ export default function Snail({ endBlip, variant, opts }: BlipProps) {
     const crampedStyle = gGlobal.layout.crampedPortrait ? 'bottom-1/5 scale-95 origin-bottom' : '';
 
     return (
-        <div className={`w-full h-full relative animate-snail-blip bg-black ${crampedStyle}`} >
-            <img src={snailBackdrop} className='absolute bottom-0 scale-150  animate-snail-universe' />
+        <div className={`w-full h-full relative animate-snail-blip bg-black ${crampedStyle} ${reverse && '-scale-x-100'}`} >
+            <img src={snailBackdrop} className={`absolute bottom-20 ${shell ? 'scale-300' : 'scale-150'}  animate-snail-universe`} />
             {!shell &&
-                <div className="absolute right-1/12 bottom-1/2 flex flex-col items-end font-[Broadway] text-blue-400 ">
+                <div className="absolute right-1/12 bottom-1/2 flex flex-col items-end font-[Broadway] text-white drop-shadow-xl drop-shadow-black">
                     <div className="animate-snail-text-1 opacity-0  text-2xl">The</div>
                     <div className="animate-snail-text-2 opacity-0  text-5xl">Ontological</div>
                     <div className="animate-snail-text-3 opacity-0  text-5xl">Snail</div>
@@ -85,7 +85,7 @@ export default function Snail({ endBlip, variant, opts }: BlipProps) {
             <div className='absolute animate-galaxy-fart bottom-0 translate-30'>
                 <img src={snailFart} className='animate-galaxy-spin  xopacity-0 scale-60 ' />
             </div>
-            <img src={snailIdol} className='absolute animate-snail bottom-0 right-0 scale-80 origin-bottom rotate-12' />
+            <img src={snailIdol} className='absolute animate-snail bottom-0 right-0  origin-bottom rotate-12' />
             {!shell && <img src={nyeh} className='absolute animate-nyeh bottom-1/4 right-1/4' /> }
             {/* <img className="w-4/5 m-auto translate-y-40" src={honkers} /> */}
         </div>
