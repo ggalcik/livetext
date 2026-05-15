@@ -11,10 +11,9 @@ export const rheazonsData: RheazonEntry[] = [
                 "I keep committing sins, but Jesus keeps forgiving me.",
                 "The neighbor's Wi-Fi is named 'JesusLovesYou' & it has stronger signal than mine.",
                 "I keep getting 'Hogwarts Letters' but I don't believe in magic either.",
-                "The demon that steals all the left socks.",
+                "The dryer demon that steals half my socks.",
                 "I can't eat Trix anymore, because I'm not a kid.",
                 "Caught a leprechaun, but all he gave me was an AOL disc with 180 free hours of internet.",
-                "I can't break par at mini-golf.",
                 "If my anger gets below 55% I'm rigged to explode!",
                 "Jesus leaves my messages on read but never replies.",
             ]
@@ -26,7 +25,7 @@ export const rheazonsData: RheazonEntry[] = [
                 "The kids are walking on my azaleas again.",
                 "You become an atheist, you get the anger for free.",
                 "It's a tautology! A = A, where A = anger, and A = Atheist.",
-                "If I wasn't angry, then what would all the Reddit atheists say about me?",
+                "If I wasn't angry, then the Reddit atheists wouldn't let me in the clubhouse anymore.",
                 "I want to be taken seriously, but my tiny legs make me look ridiculous.",
             ]
     },

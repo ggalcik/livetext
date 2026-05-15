@@ -22,9 +22,11 @@ function choiceToSrc(choice: ClipChoice): string {
 
 export default function Orchestra({ endBlip }: BlipProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const audioRef = useRef<HTMLVideoElement>(null);
 
   const [showControls, setShowControls] = useState(true);
   const [countdown, setCountdown] = useState<number | null>(null);
+  const [fillerStartTime] = useState(() => 60 + Math.random() * (25 * 60 - 60));
 
   // null means we're still on orchestraRising
   const [selectedChoice, setSelectedChoice] = useState<ClipChoice | null>(null);
@@ -34,6 +36,7 @@ export default function Orchestra({ endBlip }: BlipProps) {
   }, [selectedChoice]);
 
   const isRising = selectedChoice === null;
+  const visibleSrc = isRising ? orchestraFiller : activeSrc;
 
   function startNow(choice: ClipChoice) {
     setShowControls(false);
@@ -63,20 +66,50 @@ export default function Orchestra({ endBlip }: BlipProps) {
     return () => window.clearInterval(intervalId);
   }
 
-  // Load + play whenever activeSrc changes
+  // Keep the audible track separate while the filler video is visible.
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (!audio) return;
+
+    audio.src = activeSrc;
+    audio.volume = isRising ? 1 : 0.2;
+    audio.muted = false;
+
+    audio.load();
+    void audio.play().catch(() => {
+      // autoplay might be blocked; ignore quietly
+    });
+  }, [activeSrc, isRising]);
+
+  // Show the looping filler video during the rising audio, then swap back to clips.
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
 
-    video.src = activeSrc;
-    video.loop = isRising;            // rising loops, selected clips do not
-    video.volume = isRising ? 1 : 0.2;
+    video.src = visibleSrc;
+    video.muted = isRising;
+    video.volume = isRising ? 0 : 0.2;
+
+    const setStartTime = () => {
+      if (isRising) {
+        video.currentTime = Math.min(fillerStartTime, Math.max(video.duration - 0.1, 0));
+      }
+    };
 
     video.load();
+
+    if (isRising) {
+      video.addEventListener("loadedmetadata", setStartTime, { once: true });
+    }
+
     void video.play().catch(() => {
       // autoplay might be blocked; ignore quietly
     });
-  }, [activeSrc, isRising]);
+
+    return () => {
+      video.removeEventListener("loadedmetadata", setStartTime);
+    };
+  }, [fillerStartTime, isRising, visibleSrc]);
 
   // Call endClip when the selected clip finishes
   function handleEnded() {
@@ -126,12 +159,13 @@ export default function Orchestra({ endBlip }: BlipProps) {
       </div>
 
 
-      <div className={clsx("absolute left-0 right-0",
+      <div className={clsx("absolute w-[160%] top-10 left-0 right-0",
         gGlobal.layout.crampedPortrait ? 'top-0' : 'bottom-0'
       )}>
+        <video ref={audioRef} className="hidden" playsInline />
         <video
           ref={videoRef}
-          className="max-w-[150%] max-h-full"
+          className="absolute -translate-x-[20%] w-[150%] "
           onEnded={handleEnded}
           playsInline
         />

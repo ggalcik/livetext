@@ -95,12 +95,13 @@ export const christolyzerQuestions = [
     "Is it possible for non-Christians to get into heaven?",
     "Is it a sin to be homosexual?",
     "Are we all guilty of Adam's sin?",
-    "Does God make choices about what is good?",
+    "Does God make decisions about what is good? (As opposed to: what is good is simply part of God's nature)",
     "Did Noah's flood actually happen as a historical event?",
     "Was the world literally created in six days (as we commonly measure days)?",
-    "Is Hell a metaphysical place of eternal, conscious torment?",
+    "Is Hell a spiritual place of eternal, conscious torment?",
     "Does the bread of the Eucharist become the actual body of Christ?",
     "Is it necessary for another human to be involved in the process of confessing your sins?",
-    "Is the Bible without error in all that is written?",
+    "Does the Bible contain any errors?",
+    "Is it okay to pray for people when they ask you not to?",
     "Should a Christian approve generally of the work that the ICE agency is doing in America?"
 ]
