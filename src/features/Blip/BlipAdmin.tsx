@@ -14,14 +14,37 @@ export default function BlipAdmin() {
 
     const blipTypes = Object.keys(BLIP_COMPONENTS) as IBlipType[];
 
-    const setBlip = (showBlip?: IBlipType, showBlipVariant?: string) => {
+    const clearBlip = () => {
+        setBlipData(produce((draft) => {
+            draft.showBlip = undefined;
+            draft.showBlipVariant = undefined;
+            draft.deactivateRequestId = undefined;
+        }));
+    };
 
+    const activateBlip = (showBlip: IBlipType, showBlipVariant?: string) => {
         setBlipData(produce((draft) => {
             draft.showBlip = showBlip;
-            draft.showBlipVariant = showBlip ? showBlipVariant : undefined;
+            draft.showBlipVariant = showBlipVariant;
+            draft.deactivateRequestId = undefined;
         }));
+    };
 
-    }
+    const requestDeactivateBlip = (blip: IBlipType) => {
+        const registryEntry = BLIP_COMPONENTS[blip];
+        const handlesDeactivate =
+            "component" in registryEntry && registryEntry.handlesDeactivate;
+
+        if (!handlesDeactivate) {
+            clearBlip();
+            return;
+        }
+
+        setBlipData(produce((draft) => {
+            if (draft.showBlip !== blip) return;
+            draft.deactivateRequestId = Date.now();
+        }));
+    };
 
     function getVariantId(variant: BlipVariant) {
         return typeof variant === "string" ? variant : variant.variant;
@@ -40,7 +63,7 @@ export default function BlipAdmin() {
                             size="lg"
                             className="ring-black"
                             mode={isActive ? 'activated' : undefined}
-                            onClick={() => setBlip(isActive ? undefined : blip)}
+                            onClick={() => isActive ? requestDeactivateBlip(blip) : activateBlip(blip)}
                         >{blip}</Button>
                         {variants && (
                             <div
@@ -60,7 +83,7 @@ export default function BlipAdmin() {
                                                 variant="b"
                                                 mode={isVariantActive ? 'activated' : undefined}
                                                 className="whitespace-nowrap ring-black"
-                                                onClick={() => setBlip(isVariantActive ? undefined : blip, isVariantActive ? undefined : variant)}
+                                                onClick={() => isVariantActive ? requestDeactivateBlip(blip) : activateBlip(blip, variant)}
                                             >{variant}</Button>
                                         );
                                     })}

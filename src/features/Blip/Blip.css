@@ -342,6 +342,7 @@
     }
 
     --animate-whyangry: whyangry 2.5s ease-out forwards;
+    --animate-whyangry-exit: whyangry-exit 0.7s ease-in forwards;
     @keyframes whyangry {
 
         0%, 41.9% {
@@ -363,6 +364,17 @@
         100% {
             transform: translateY(0);
             opacity: 1;
+        }
+    }
+
+    @keyframes whyangry-exit {
+        0% {
+            transform: translateY(0);
+            
+        }
+
+        100% {
+            transform: translateY(-100%);
         }
     }
 }

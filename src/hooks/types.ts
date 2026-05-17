@@ -7,7 +7,9 @@ export const persistentDataKeys = [
     "soundboardData",
     'slidesScene',
     'chalkboardPanel',
-    'vidclip'
+    'vidclip',
+    'blipData',
+    'whySoAngryBlip'
 ];
 
 export const PersistentDataKeySchema = z.enum(persistentDataKeys);

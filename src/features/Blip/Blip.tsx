@@ -1,7 +1,7 @@
 import { produce } from "immer";
 import { usePersistentState } from "../../hooks/usePersistentState"
 import { BLIP_COMPONENTS } from "./BlipRegistry"
-import { BlipDataSchema, type BlipEntry, type BlipProps, type BlipVariant } from "./types"
+import { BlipDataSchema, type BlipConfig, type BlipEntry, type BlipProps, type BlipVariant } from "./types"
 
 
 export default function Blip() {
@@ -18,6 +18,7 @@ export default function Blip() {
     setBlipData(produce((draft) => {
       draft.showBlip = undefined;
       draft.showBlipVariant = undefined;
+      draft.deactivateRequestId = undefined;
     }));
 
   }
@@ -42,12 +43,17 @@ export default function Blip() {
 
   return (
     <div className="absolute inset-0 overflow-hidden">
-      <BlipComponent endBlip={endBlip} variant={variant} opts={opts} />
+      <BlipComponent
+        endBlip={endBlip}
+        deactivateRequestId={blipData.deactivateRequestId}
+        variant={variant}
+        opts={opts}
+      />
     </div>
   )
 }
 
-function isConfiguredEntry(entry: BlipEntry): entry is Exclude<BlipEntry, React.ComponentType<BlipProps>> {
+function isConfiguredEntry(entry: BlipEntry): entry is BlipConfig {
   return "component" in entry;
 }
 

@@ -9,7 +9,11 @@ import type { BlipEntry, IBlipType } from "./types";
 
 
 export const BLIP_COMPONENTS: Record<IBlipType, BlipEntry> = {
-  "Why Angry": WhySoAngry,
+  "Why Angry": {
+    component: WhySoAngry,
+    opts: {},
+    handlesDeactivate: true,
+  },
   "Holy Honkers": {
     component: HolyHonkers, opts: {},
     variants: ['sailor', 'sulfur'],
