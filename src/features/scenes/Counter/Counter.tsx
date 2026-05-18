@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { MasterViewport } from "../../../components/MasterViewport/MasterViewport";
+import { Button } from "../../../components/Button";
 import { format, parse } from "date-fns";
 import './Counter.css';
 import { CounterSceneSchema, type Counter, type CounterHistory } from "./types";
@@ -50,6 +51,28 @@ export default function Counter() {
         });
     }, []);
 
+    function updateCounter(id: string, update: Partial<Counter>) {
+        setScene((prev) => ({
+            ...prev,
+            counters: prev.counters.map((counter) =>
+                counter.id === id ? { ...counter, ...update } : counter
+            ),
+        }));
+    }
+
+    function incrementCounter(id: string, value: number) {
+        updateCounter(id, {
+            value: value ? value + 1 : 1,
+            lastIncrement: Date.now(),
+        });
+    }
+
+    function decrementCounter(id: string, value: number) {
+        updateCounter(id, {
+            value: (value || 0) - 1,
+        });
+    }
+
     function currentDisplayDate() : string {
         if (showCounterIdx) {
             return  parse(historyEntries[showCounterIdx - 1], 'yyyyMMdd', new Date()).toDateString() + ' A.D.';
@@ -83,7 +106,7 @@ export default function Counter() {
 
     
     return (
-        <div className="group absolute w-full h-full bg-amber-900">
+        <div className="absolute w-full h-full bg-amber-900">
 
             <MasterViewport name="counter" resizable={true} needCtrl={true}>
                 <CounterRoll scene={scene} setScene={setScene} />
@@ -118,7 +141,13 @@ export default function Counter() {
                             showCounterIdx ? 'text-gray-700': 'text-blue-800'
                         )}>
                             {showList.map((c) => (
-                                <CounterRow key={c.name} counter={c} playSound={playSound} />
+                                <CounterRow
+                                    key={isLiveCounter(c) ? c.id : c.name}
+                                    counter={c}
+                                    playSound={playSound}
+                                    onIncrement={isLiveCounter(c) ? () => incrementCounter(c.id, c.value) : undefined}
+                                    onDecrement={isLiveCounter(c) ? () => decrementCounter(c.id, c.value) : undefined}
+                                />
                             ))}
                         </div>
                     </div>
@@ -130,13 +159,15 @@ export default function Counter() {
 
 interface ICounterRow {
     counter: Counter | CounterHistory;
-    playSound: () => void
+    playSound: () => void;
+    onIncrement?: () => void;
+    onDecrement?: () => void;
 }
 function isLiveCounter(x: Counter | CounterHistory): x is Counter {
     return "lastIncrement" in x; // or: return "id" in x;
 }
 
-function CounterRow({ counter, playSound }: ICounterRow) {
+function CounterRow({ counter, playSound, onIncrement, onDecrement }: ICounterRow) {
     const [animating, setAnimating] = useState(false);
     const prevIncrement = useRef<number | null>(null);
     const live = isLiveCounter(counter);
@@ -160,15 +191,38 @@ function CounterRow({ counter, playSound }: ICounterRow) {
 
     return (
         <div
-            className={`flex w-140 text-5xl font-[Gabriola] font-bold leading-[34px] justify-between p-2 gap-4`} >
+            className="group flex w-140 items-center justify-between gap-4 p-2 text-5xl font-[Gabriola] font-bold leading-[34px]"
+        >
             <div className={`${animating && "animate-tada-color "}`} >{counter.name}</div>
-            <div className="relative">
-                <div
-                    className={`${animating && "animate-tada "} scale-150`}
-                    onAnimationEnd={() => setAnimating(false)}
-                >{counter.value}</div>
-                {animating && <Burst />}
+            <div className="flex items-center gap-3">
+                <div className="relative">
+                    <div
+                        className={`${animating && "animate-tada "} scale-150`}
+                        onAnimationEnd={() => setAnimating(false)}
+                    >{counter.value}</div>
+                    {animating && <Burst />}
+                </div>
 
+                {live && onDecrement && onIncrement && (
+                    <div className="flex items-center gap-1 opacity-0 transition-opacity duration-150 group-hover:opacity-100">
+                        <Button
+                            variant="b"
+                            type="button"
+                            className="h-8 w-8 border border-stone-400 bg-white p-0 text-lg leading-none shadow-lg"
+                            onClick={onDecrement}
+                        >
+                            -
+                        </Button>
+                        <Button
+                            variant="b"
+                            type="button"
+                            className="h-8 w-8 border border-stone-400 bg-white p-0 text-lg leading-none shadow-lg"
+                            onClick={onIncrement}
+                        >
+                            +
+                        </Button>
+                    </div>
+                )}
             </div>
         </div>
     );

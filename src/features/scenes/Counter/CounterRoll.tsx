@@ -10,29 +10,17 @@ const CARD_HEIGHT = 32;
 const CARD_GAP = 8;
 const ROW_STEP = CARD_HEIGHT + CARD_GAP;
 const WHEEL_STEP = 36;
-const DRAG_THRESHOLD = 6;
 
 interface CounterRollProps {
     scene: CounterScene;
     setScene: React.Dispatch<React.SetStateAction<CounterScene>>;
 }
 
-interface DragState {
-    pointerId: number;
-    startY: number;
-    startIndex: number;
-    targetIndex: number | null;
-    dragged: boolean;
-}
-
 export default function CounterRoll({ scene, setScene }: CounterRollProps) {
     const [selectedIndex, setSelectedIndex] = useState(0);
-    const [isDragging, setIsDragging] = useState(false);
     const [showControls, setShowControls] = useState(false);
     const [confirmReset, setConfirmReset] = useState(false);
     const wheelCarry = useRef(0);
-    const dragState = useRef<DragState | null>(null);
-    const suppressClickRef = useRef(false);
     const activeCount = scene.counters.filter((counter) => counter.show).length;
     const maxActive = activeCount >= 10;
     const selectedCounter = scene.counters[selectedIndex];
@@ -72,7 +60,6 @@ export default function CounterRoll({ scene, setScene }: CounterRollProps) {
     function onWheel(e: React.WheelEvent<HTMLDivElement>) {
         if (!scene.counters.length) return;
 
-        // e.preventDefault();
         wheelCarry.current += e.deltaY;
 
         if (Math.abs(wheelCarry.current) < WHEEL_STEP) return;
@@ -83,68 +70,10 @@ export default function CounterRoll({ scene, setScene }: CounterRollProps) {
         changeSelected(direction * steps);
     }
 
-    function onPointerDown(e: React.PointerEvent<HTMLDivElement>) {
-        if (!scene.counters.length) return;
-
-        suppressClickRef.current = false;
-        setIsDragging(false);
-        const target = e.target as HTMLElement | null;
-        const counterButton = target?.closest("[data-counter-index]");
-        const targetIndex = counterButton
-            ? Number(counterButton.getAttribute("data-counter-index"))
-            : null;
-
-        dragState.current = {
-            pointerId: e.pointerId,
-            startY: e.clientY,
-            startIndex: selectedIndex,
-            targetIndex: Number.isNaN(targetIndex) ? null : targetIndex,
-            dragged: false,
-        };
-
-        e.currentTarget.setPointerCapture(e.pointerId);
-    }
-
-    function onPointerMove(e: React.PointerEvent<HTMLDivElement>) {
-        const drag = dragState.current;
-        if (!drag || drag.pointerId !== e.pointerId) return;
-
-        const deltaY = e.clientY - drag.startY;
-        if (!drag.dragged && Math.abs(deltaY) >= DRAG_THRESHOLD) {
-            drag.dragged = true;
-            setIsDragging(true);
-        }
-
-        if (!drag.dragged) return;
-
-        const stepDelta = Math.round(deltaY / ROW_STEP);
-        const nextIndex = clampIndex(drag.startIndex - stepDelta);
-        setSelectedIndex(nextIndex);
-    }
-
-    function onPointerEnd(e: React.PointerEvent<HTMLDivElement>) {
-        const drag = dragState.current;
-        if (!drag || drag.pointerId !== e.pointerId) return;
-
-        suppressClickRef.current = drag.dragged;
-        if (!drag.dragged && drag.targetIndex != null) {
-            activateCounter(drag.targetIndex);
-            suppressClickRef.current = true;
-        }
-        setIsDragging(false);
-        dragState.current = null;
-        if (e.currentTarget.hasPointerCapture(e.pointerId)) {
-            e.currentTarget.releasePointerCapture(e.pointerId);
-        }
-    }
-
     function activateCounter(index: number) {
         const counter = scene.counters[index];
         if (!counter) return;
-        setSelectedIndex(index);
-        if (index === selectedIndex) {
-            toggleCounter(counter);
-        }
+        toggleCounter(counter);
     }
 
     function handleDayReset() {
@@ -160,195 +89,137 @@ export default function CounterRoll({ scene, setScene }: CounterRollProps) {
     if (!scene.counters.length) return null;
 
     return (
-        <div className="pointer-events-none absolute inset-0 z-20 flex items-center justify-end p-4 opacity-0 transition-opacity duration-200 group-hover:pointer-events-auto group-hover:opacity-100">
-            <div className="w-72 overflow-visible">
-                <div
-                    className={clsx(
-                        "relative overflow-visible select-none",
-                        isDragging ? "cursor-grabbing" : "cursor-grab"
-                    )}
-                    style={{
-                        height: VISIBLE_ROWS * ROW_STEP - CARD_GAP,
-                        userSelect: "none",
-                    }}
-                    onWheel={onWheel}
-                    onPointerDown={onPointerDown}
-                    onPointerMove={onPointerMove}
-                    onPointerUp={onPointerEnd}
-                    onPointerCancel={onPointerEnd}
-                >
+        <div className="absolute inset-y-0 left-0 z-20 w-1/2 group/counterroll">
+            <div className="flex h-full items-center justify-start p-4">
+                {/* <div className=" w-72 overflow-visible transition-opacity duration-200 "> */}
+                <div className="pointer-events-none w-72 overflow-visible opacity-0 transition-opacity duration-200 group-hover/counterroll:pointer-events-auto group-hover/counterroll:opacity-100">
 
-                    <div
-                        className="pointer-events-none absolute -inset-x-54  left-1/2 -translate-x-1/2 border border-amber-600/75 bg-amber-200/75"
-                        style={{
-                            top: ACTIVE_ROW * ROW_STEP - 4,
-                            height: CARD_HEIGHT + 8,
-                        }}
-                    >
-                     
-                    </div>
+                    <div className="relative">
 
-                    <div
-                        className="transition-transform duration-150 ease-out"
-                        style={{
-                            paddingTop: ACTIVE_ROW * ROW_STEP,
-                            paddingBottom: ACTIVE_ROW * ROW_STEP,
-                            transform: `translateY(-${selectedIndex * ROW_STEP}px)`,
-                        }}
-                    >
-                        {scene.counters.map((counter, index) => (
-                            <div
-                                key={counter.id}
-                                className={clsx(
-                                    "relative mb-[8px] h-[32px] last:mb-0",
-                                )}
-                            >
-                                <button
-                                    type="button"
-                                    data-counter-index={index}
-                                    className={clsx(
-                                        "flex h-full w-full select-none items-center border px-2 text-left font-mono text-lg shadow-md transition-all",
-                                        counter.show
-                                            ? "border-amber-200 text-stone-900 ring-2"
-                                            : "border-stone-200 text-stone-700",
-                                        index === selectedIndex && counter.show
-                                            ? "bg-yellow-100"
-                                            : "",
-                                        index !== selectedIndex && counter.show
-                                            ? "bg-white"
-                                            : "",
-                                        index === selectedIndex && !counter.show
-                                            ? "bg-stone-100"
-                                            : "",
-                                        index !== selectedIndex && !counter.show
-                                            ? "bg-stone-200"
-                                            : "",
-
-                                        !counter.show && maxActive
-                                            ? "cursor-not-allowed opacity-45"
-                                            : index === selectedIndex
-                                                ? "cursor-pointer hover:shadow-lg"
-                                                : "hover:shadow-lg"
-                                    )}
-                                    style={{
-                                        opacity: getCardOpacity(index, selectedIndex),
-                                        transform: `scale(${getCardScale(index, selectedIndex)})`,
-                                    }}
-                                    onClick={(e) => {
-                                        e.preventDefault();
-                                        if (suppressClickRef.current) {
-                                            suppressClickRef.current = false;
-                                        }
-                                    }}
-                                    onDragStart={(e) => e.preventDefault()}
-                                >
-                                    <span className="truncate">{counter.name || "Untitled"}</span>
-                                </button>
-
-                                {index === selectedIndex && counter.show && (
-                                    <>
-                                        <Button
-                                            variant="b"
-                                            type="button"
-                                            className="absolute top-1/2 -left-14 z-10 h-8 w-8 -translate-y-1/2 border border-stone-400 bg-white p-0 text-lg leading-none shadow-lg"
-                                            onPointerDown={(e) => {
-                                                e.stopPropagation();
-                                            }}
-                                            onClick={(e) => {
-                                                e.stopPropagation();
-                                                updateCounter(counter.id, {
-                                                    value: (counter.value || 0) - 1,
-                                                });
-                                            }}
-                                        >
-                                            -
-                                        </Button>
-                                        <Button
-                                            variant="b"
-                                            type="button"
-                                            className="absolute top-1/2 -right-14 z-10 h-8 w-8 -translate-y-1/2 border border-stone-400 bg-white p-0 text-lg leading-none shadow-lg"
-                                            onPointerDown={(e) => {
-                                                e.stopPropagation();
-                                            }}
-                                            onClick={(e) => {
-                                                e.stopPropagation();
-                                                updateCounter(counter.id, {
-                                                    value: counter.value ? counter.value + 1 : 1,
-                                                    lastIncrement: Date.now(),
-                                                });
-                                            }}
-                                        >
-                                            +
-                                        </Button>
-                                    </>
-                                )}
-                            </div>
-                        ))}
-                    </div>
-                </div>
-
-                {selectedCounter && (
-                    <div className="mt-4 flex items-start gap-2 relative"
-                    style={{transform: `translateY(-${ROW_STEP * 3}px)` }}>
-                        <Button
-                            variant="b"
-                            className="h-8 w-8 shrink-0 opacity-40 -translate-x-10 transition-opacity hover:opacity-100"
-                            
-                            onClick={() => setShowControls((prev) => !prev)}
-                        />
                         <div
-                            className="flex-1 rounded-2xl -translate-x-10 border border-amber-900/35 bg-amber-50/90 p-3 shadow-xl backdrop-blur-sm transition-opacity hover:opacity-100"
-                            style={{ opacity: showControls ? 1 : 0 }}
+                            className="relative overflow-visible select-none"
+                            style={{
+                                height: VISIBLE_ROWS * ROW_STEP - CARD_GAP,
+                                userSelect: "none",
+                            }}
+                            onWheel={onWheel}
                         >
-                            <input
-                                className="w-full rounded border border-stone-300 bg-white px-2 py-1 text-sm"
-                                value={selectedCounter.name}
-                                onChange={(e) => updateCounter(selectedCounter.id, { name: e.target.value })}
-                            />
 
-                            <div className="mt-3 flex items-center gap-2">
-                                <Button variant="b" className="flex-1" onClick={() => sortCheckedUp(scene, setScene)}>
-                                    Sort Checked
-                                </Button>
-                                <Button variant="b" className="flex-1" onClick={() => sortAlphaUp(scene, setScene)}>
-                                    Sort Alpha
-                                </Button>
-                            </div>
-
-                            <div className="mt-3 flex items-center justify-between gap-2">
-                                <div className="flex items-center gap-2">
-                                    <Button
-                                        variant="c"
-                                        className="w-20"
-                                        onClick={() => setConfirmReset((prev) => !prev)}
+                            <div
+                                className="transition-transform duration-150 ease-out"
+                                style={{
+                                    paddingTop: ACTIVE_ROW * ROW_STEP,
+                                    paddingBottom: ACTIVE_ROW * ROW_STEP,
+                                    transform: `translateY(-${selectedIndex * ROW_STEP}px)`,
+                                }}
+                            >
+                                {scene.counters.map((counter, index) => (
+                                    <div
+                                        key={counter.id}
+                                        className={clsx(
+                                            "relative mb-[8px] h-[32px] last:mb-0",
+                                        )}
                                     >
-                                        {confirmReset ? "Cancel" : "Day reset"}
-                                    </Button>
-                                    {confirmReset && (
-                                        <Button variant="c" className="w-16" onClick={handleDayReset}>
-                                            Sure?
-                                        </Button>
-                                    )}
-                                </div>
-                                <Button variant="b" className="h-8 w-8 p-0 text-lg leading-none" onClick={handleAddCounter}>
-                                    +
-                                </Button>
+                                        <button
+                                            type="button"
+                                            data-counter-index={index}
+                                            className={clsx(
+                                                "flex h-full w-full select-none items-center border px-2 text-left font-mono text-lg shadow-md transition-all",
+                                                counter.show
+                                                    ? "border-amber-200 text-stone-900 ring-2 bg-amber-50"
+                                                    : "border-stone-200 text-stone-700 bg-blue-50",
+
+
+                                                !counter.show && maxActive
+                                                    ? "cursor-not-allowed opacity-45"
+                                                    : index === selectedIndex
+                                                        ? "cursor-pointer hover:shadow-lg"
+                                                        : "hover:shadow-lg"
+                                            )}
+                                            style={{
+                                                opacity: getCardOpacity(index, selectedIndex),
+                                            }}
+                                            onClick={() => activateCounter(index)}
+                                        >
+                                            <span className="truncate">{counter.name || "Untitled"}</span>
+                                        </button>
+
+                                    </div>
+                                ))}
                             </div>
                         </div>
                     </div>
-                )}
+
+                    {selectedCounter && (
+                        <div
+                            className={clsx(
+                                "mt-4 flex items-start gap-2 relative",
+                                showControls ? "pointer-events-auto" : "pointer-events-none"
+                            )}
+                            style={{ transform: `translateY(-${ROW_STEP * 3}px)` }}>
+                            <Button
+                                variant="b"
+                                className="pointer-events-auto h-8 w-8 shrink-0 opacity-40 -translate-x-10 transition-opacity hover:opacity-100"
+
+                                onClick={() => setShowControls((prev) => !prev)}
+                            />
+                            <div
+                                className={clsx(
+                                    "flex-1 rounded-2xl -translate-x-10 border border-amber-900/35 bg-amber-50/90 p-3 shadow-xl backdrop-blur-sm transition-opacity hover:opacity-100",
+                                    showControls ? "pointer-events-auto" : "pointer-events-none"
+                                )}
+                                style={{ opacity: showControls ? 1 : 0 }}
+                            >
+                                <input
+                                    className="w-full rounded border border-stone-300 bg-white px-2 py-1 text-sm"
+                                    value={selectedCounter.name}
+                                    onChange={(e) => updateCounter(selectedCounter.id, { name: e.target.value })}
+                                />
+
+                                <div className="mt-3 flex items-center gap-2">
+                                    <Button variant="b" className="flex-1" onClick={() => sortCheckedUp(scene, setScene)}>
+                                        Sort Checked
+                                    </Button>
+                                    <Button variant="b" className="flex-1" onClick={() => sortAlphaUp(scene, setScene)}>
+                                        Sort Alpha
+                                    </Button>
+                                </div>
+
+                                <div className="mt-3 flex items-center justify-between gap-2">
+                                    <div className="flex items-center gap-2">
+                                        <Button
+                                            variant="c"
+                                            className="w-20"
+                                            onClick={() => setConfirmReset((prev) => !prev)}
+                                        >
+                                            {confirmReset ? "Cancel" : "Day reset"}
+                                        </Button>
+                                        {confirmReset && (
+                                            <Button variant="c" className="w-16" onClick={handleDayReset}>
+                                                Sure?
+                                            </Button>
+                                        )}
+                                    </div>
+                                    <Button variant="b" className="h-8 w-8 p-0 text-lg leading-none" onClick={handleAddCounter}>
+                                        +
+                                    </Button>
+                                </div>
+                            </div>
+                            <input
+                                type="range"
+                                min={0}
+                                max={Math.max(scene.counters.length - 1, 0)}
+                                value={selectedIndex}
+                                className="absolute pointer-events-auto top-10 -left-6 z-10 h-60 w-6 -translate-y-1/2 accent-amber-700"
+                                style={{ writingMode: "vertical-lr" }}
+                                onChange={(e) => setSelectedIndex(clampIndex(Number(e.target.value)))}
+                            />
+                        </div>
+                    )}
+                </div>
             </div>
         </div>
     );
-}
-
-function getCardScale(index: number, selectedIndex: number) {
-    const distance = Math.abs(index - selectedIndex);
-    if (distance === 0) return 1.1;
-    if (distance === 1) return 1;
-    return 0.95;
-    if (distance === 2) return 0.965;
-    return 0.84;
 }
 
 function getCardOpacity(index: number, selectedIndex: number) {

@@ -27,6 +27,7 @@ export const rheazonsData: RheazonEntry[] = [
                 "It's a tautology! A = A, where A = anger, and A = Atheist.",
                 "If I wasn't angry, then the Reddit atheists wouldn't let me in the clubhouse anymore.",
                 "I want to be taken seriously, but my tiny legs make me look ridiculous.",
+                "Sulfur changed their name.",
             ]
     },
     {
@@ -34,6 +35,7 @@ export const rheazonsData: RheazonEntry[] = [
             [
                 "Because my tax dollars are sending crows to crow school.",
                 "Because the numbers didn't really mean anything and the island was just purgatory all along."
+
             ]
     },
         {
