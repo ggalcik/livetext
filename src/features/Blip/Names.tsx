@@ -29,7 +29,7 @@ export default function Names() {
                     <div className="font-[Carter_One] border border-black inline-block shadow -rotate-2 p-4 text-center text-4xl bg-blue-800 text-amber-200">My favorite names today</div>
                     <div className="font-[Carter_One] border border-black inline-block shadow rotate-1 translate-x-[70%] -translate-y-[30%] p-2 text-center text-md bg-blue-700 text-amber-200">{toDisplayDate(today)}</div>
 
-                    <div className="flex flex-wrap items-center w-[80%] m-auto">
+                    <div className="flex flex-wrap justify-center gap-2 w-[80%] m-auto">
                         {lines.map((line, index) => (
                             <div
                                 key={`${index}-${line}`}
