@@ -194,7 +194,7 @@ function CounterRow({ counter, playSound, onIncrement, onDecrement }: ICounterRo
             className="group flex w-140 items-center justify-between gap-4 p-2 text-5xl font-[Gabriola] font-bold leading-[34px]"
         >
             <div className={`${animating && "animate-tada-color "}`} >{counter.name}</div>
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-3 relative">
                 <div className="relative">
                     <div
                         className={`${animating && "animate-tada "} scale-150`}
@@ -204,15 +204,7 @@ function CounterRow({ counter, playSound, onIncrement, onDecrement }: ICounterRo
                 </div>
 
                 {live && onDecrement && onIncrement && (
-                    <div className="flex items-center gap-1 opacity-0 transition-opacity duration-150 group-hover:opacity-100">
-                        <Button
-                            variant="b"
-                            type="button"
-                            className="h-8 w-8 border border-stone-400 bg-white p-0 text-lg leading-none shadow-lg"
-                            onClick={onDecrement}
-                        >
-                            -
-                        </Button>
+                    <div className="absolute right-12 bottom-0 flex flex-col items-center gap-1 opacity-0 transition-opacity duration-150 group-hover:opacity-100">
                         <Button
                             variant="b"
                             type="button"
@@ -220,7 +212,15 @@ function CounterRow({ counter, playSound, onIncrement, onDecrement }: ICounterRo
                             onClick={onIncrement}
                         >
                             +
+                        </Button>                        <Button
+                            variant="b"
+                            type="button"
+                            className="h-8 w-8 border border-stone-400 bg-white p-0 text-lg leading-none shadow-lg"
+                            onClick={onDecrement}
+                        >
+                            -
                         </Button>
+
                     </div>
                 )}
             </div>
