@@ -2,6 +2,7 @@ import Egregore from "./Egregore";
 import Goalpost from "./Goalpost";
 import HolyHonkers from "./HolyHonkers";
 import MammaMia from "./MammaMia";
+import Names from "./Names";
 import Orchestra from "./Orchestra";
 import Snail from "./Snail";
 import WhySoAngry from "./WhySoAngry";
@@ -23,6 +24,7 @@ export const BLIP_COMPONENTS: Record<IBlipType, BlipEntry> = {
     variants: ['1a', '1b', '2', '3', 'N']
   },
   'Mamma Mia': MammaMia,
+  Names,
   Orchestra,
   Goalpost,
   Egregore,
