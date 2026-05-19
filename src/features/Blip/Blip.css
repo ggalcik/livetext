@@ -343,6 +343,8 @@
 
     --animate-whyangry: whyangry 2.5s ease-out forwards;
     --animate-whyangry-exit: whyangry-exit 0.7s ease-in forwards;
+    --animate-names-enter: names-enter 0.5s ease-out forwards;
+    --animate-names-exit: names-exit 0.5s ease-in forwards;
     @keyframes whyangry {
 
         0%, 41.9% {
@@ -371,6 +373,34 @@
         0% {
             transform: translateY(0);
             
+        }
+
+        100% {
+            transform: translateY(-100%);
+        }
+    }
+
+    @keyframes names-enter {
+        0% {
+            transform: translateY(-100%);
+        }
+
+        72% {
+            transform: translateY(6%);
+        }
+
+        100% {
+            transform: translateY(0%);
+        }
+    }
+
+    @keyframes names-exit {
+        0% {
+            transform: translateY(0%);
+        }
+
+        28% {
+            transform: translateY(6%);
         }
 
         100% {

@@ -24,7 +24,11 @@ export const BLIP_COMPONENTS: Record<IBlipType, BlipEntry> = {
     variants: ['1a', '1b', '2', '3', 'N']
   },
   'Mamma Mia': MammaMia,
-  Names,
+  Names: {
+    component: Names,
+    opts: {},
+    handlesDeactivate: true,
+  },
   Orchestra,
   Goalpost,
   Egregore,

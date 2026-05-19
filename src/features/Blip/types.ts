@@ -25,6 +25,13 @@ export const WhySoAngryBlipSchema = z.object({
 });
 export type WhySoAngryBlip = z.infer<typeof WhySoAngryBlipSchema>;
 
+export const NamesBlipSchema = z.object({
+    names: z.string(),
+    currentDate: z.string(),
+    history: z.record(z.string()).optional(),
+});
+export type NamesBlip = z.infer<typeof NamesBlipSchema>;
+
 
 export type BlipProps = {
     endBlip: () => void,
