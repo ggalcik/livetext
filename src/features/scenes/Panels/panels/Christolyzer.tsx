@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 // import christolyzer from './assets/christolyzer.png';
 import christolyzer from './assets/christolyzer_booting.png';
 import christolyzerFail from './assets/christolyzer_red.png';
+import christolyzerWin from './assets/christolyzer_green.png';
 import christolyzerDarkLogo from './assets/christolyzer_darklogo2.png';
 import christolyzerOffLogo from './assets/christolyzer_offlogo.png';
 // import christolyzerDarkLogo from './assets/christolyzer_darklogo.png';
@@ -46,11 +47,11 @@ export function ChristolyzerBackground() {
     </div>
 }
 
-type QuizStage = 'init' | 1 | 2 | 3 | 4 | 5 | 'deciding' | 'fail';
+type QuizStage = 'init' | 1 | 2 | 3 | 4 | 5 | 'deciding' | 'fail' | 'win';
 
-const followingStage: Record<QuizStage, QuizStage | null> = {
+const followingStage: Partial<Record<QuizStage, QuizStage | null>> = {
     'init': 1,
-    1: 2,
+    1: 'deciding',
     2: 3,
     3: 4,
     4: 'deciding',
@@ -68,7 +69,7 @@ const yesnoBeep: Record<Choice, string> = {
 
 
 export function Christolyzer() {
-    const defaultDisplay = `Need to discern whether you're talking to a true Christian? Answer four questions to find out!
+    const defaultDisplay = `Are you a true Christian? Say which button to press on each answer to find out!
 
     Press "YES" to begin.`
     const helpDisplay = 'The Christ-O-Lyzer will ask four questions, and return the result "True Christian" if all answers are correct (based on responses previously provided by true Christians).';
@@ -134,6 +135,7 @@ export function Christolyzer() {
         computerClicksRef.current?.pause();
     }, []);
 
+    // bootup readout
     useEffect(() => {
         let frameOne = 0;
         let frameTwo = 0;
@@ -150,6 +152,7 @@ export function Christolyzer() {
         };
     }, []);
 
+    // bootup computing effect
     useEffect(() => {
         const computingStartTimer = window.setTimeout(() => {
             setComputing(true);
@@ -165,7 +168,8 @@ export function Christolyzer() {
             setComputing(false);
         };
     }, []);
-    
+
+    // ambient sounds
     useEffect(() => {
         computerBootRef.current = new Audio(computerBoot);
         computerAmbientRef.current = new Audio(computerAmbient);
@@ -195,18 +199,20 @@ export function Christolyzer() {
         };
     }, [startAmbient, stopAmbient]);
 
+    // ambient triggers for states
     useEffect(() => {
         if (!hasBootedRef.current) return;
 
-        if (quizStage === 'fail') {
+        if (quizStage === 'fail' || quizStage === 'win') {
             stopAmbient();
             return;
         }
-
         if (quizStage === 'init') {
             startAmbient();
         }
     }, [quizStage, startAmbient, stopAmbient]);
+
+    // computing noises
     useEffect(() => {
         if (!beepboopRef.current) {
             beepboopRef.current = new Audio(beepboop);
@@ -303,14 +309,14 @@ export function Christolyzer() {
         setChosen(null);
         setQuizStage(pendingStage);
 
-        if (typeof pendingStage === 'number' ) {
-        // if (typeof pendingStage === 'number' || pendingStage === 'deciding') {
-        // if (pendingStage === 2 || pendingStage === 3 || pendingStage === 4 || pendingStage === 5 || pendingStage === 'deciding') {
+        if (typeof pendingStage === 'number') {
+            // if (typeof pendingStage === 'number' || pendingStage === 'deciding') {
+            // if (pendingStage === 2 || pendingStage === 3 || pendingStage === 4 || pendingStage === 5 || pendingStage === 'deciding') {
             playComputerBeep();
         }
 
         if (pendingStage === 'deciding') {
-            setTimeout(() => { 
+            setTimeout(() => {
                 setQuizStage('fail');
                 setComputing(false);
                 yesnoBeepRef.current = new Audio(failBuzz);
@@ -327,31 +333,31 @@ export function Christolyzer() {
         setQuestionList(randomSample(christolyzerQuestions, 5));
     }
 
-    let readoutStatus:string|null = null;
-    if (typeof quizStage === 'number') readoutStatus = "Question "+quizStage;
+    let readoutStatus: string | null = null;
+    if (typeof quizStage === 'number') readoutStatus = "Question " + quizStage;
     if (quizStage === 'fail') readoutStatus = "** FAIL **";
 
-    return <div className="absolute w-full h-full overflow-hidden text-white animate-bootUp">
+    return <div className="absolute w-full h-full overflow-hidden text-white animate-bootUp [container-type:size]">
 
         <div className='theMainBox relative' >
             <img className="relative z-10 w-full" src={christolyzerBooting} />
             <img className="absolute animate-logoTopUp z-9 top-0 w-full" src={christolyzerBootingTop} />
             {/* <img className="relative z-10 w-full" src={christolyzer} /> */}
-            {quizStage === 'fail' && <img className="absolute animate-blink z-10 w-full top-0" src={christolyzerFail} />}
+            {/* {quizStage === 'fail' && <img className="absolute animate-blink z-10 w-full top-0" src={christolyzerFail} />} */}
+            {quizStage === 'fail' && <img className="absolute animate-blink z-10 w-full top-0" src={christolyzerWin} />}
             <img className="animate-logoFlicker absolute z-10 w-full top-0 pointer-events-none" src={christolyzerDarkLogo} />
             <img className="animate-logoPowerOn absolute z-10 w-full top-0 pointer-events-none" src={christolyzerOffLogo} />
             <img className="animate-screenOn absolute z-10 w-full top-0 pointer-events-none" src={christolyzerDarkScreen} />
 
             <div className={`theReadoutWrapper absolute z-1 top-0 left-0 w-full h-full pt-[12%] pl-[14%] pr-[15%] ${isReadoutAnimatingIn ? 'animate-logoTopUp' : ''}`}>
-                <div className='theReadoutBox relative border w-full h-[14%] overflow-hidden'>
-                     <div className='absolute w-full h-full bg-black'></div>
+                <div className='theReadoutBox relative border w-full h-[14%] overflow-hidden '>
+                    <div className='absolute w-full h-full bg-black'></div>
                     {computing && <div className='relative w-full h-full animate-computing'></div>}
-                    {readoutStatus && !computing && <div className='relative text-green-300 font-["Press_Start_2P"] text-3
-                    xl p-[3%] w-full animate-slideIn'>{readoutStatus}</div>}
+                    {readoutStatus && !computing && <div className='relative text-green-300 font-["Press_Start_2P"] text-[5cqw] p-[3%] w-full text-center animate-slideIn'>{readoutStatus}</div>}
                 </div>
             </div>
 
-            <div className={`theDisplayWrapper animate-textOn absolute z-10 top-[40%] left-0 w-full overflow-hidden pl-[12%] pr-[13%] h-[35%]
+            <div className={`theDisplayWrapper text-[2.8cqw] animate-textOn absolute z-10 top-[40%] left-0 w-full overflow-hidden pl-[12%] pr-[13%] h-[35%]
                 font-['Press_Start_2P'] text-gray-500`}>
                 {!showingHelp &&
                     <div
@@ -359,23 +365,23 @@ export function Christolyzer() {
                         onAnimationEnd={handleTextClearDone}
                     >
                         <div className='displayText h-full'>
-                            <div dangerouslySetInnerHTML={{ __html: textToHtmlBreaks(getDisplayText()) }} />
+                            <div className={`text-[2.8cqw] ${quizStage === 'deciding' && 'animate-deciding'}`} dangerouslySetInnerHTML={{ __html: textToHtmlBreaks(getDisplayText()) }} />
                             {isQuestion &&
-                            <>
-                                <div className='absolute bottom-0 flex w-full h-[35%]'>
-                                    <div className={`flex w-1/2 h-full items-center justify-center text-xl ${chosen === 'YES' ? 'bg-gray-500 text-white' : ''}`}>YES</div>
-                                    <div className={`flex w-1/2 h-full items-center justify-center text-xl ${chosen === 'NO' ? 'bg-gray-500 text-white' : ''}`}>NO</div>
-                                </div>
-                                <div className='absolute -bottom-20 flex w-full h-[35%]'>
-Processing...
-                                </div>
+                                <>
+                                    <div className='absolute bottom-0 flex w-full h-[35%]'>
+                                        <div className={`flex w-1/2 h-full items-center justify-center text-xl ${chosen === 'YES' ? 'bg-gray-500 text-white' : ''}`}>YES</div>
+                                        <div className={`flex w-1/2 h-full items-center justify-center text-xl ${chosen === 'NO' ? 'bg-gray-500 text-white' : ''}`}>NO</div>
+                                    </div>
+                                    <div className='absolute -bottom-20 flex w-full h-[35%]'>
+                                        Processing...
+                                    </div>
 
-                            </>
+                                </>
                             }
                         </div>
                     </div>
                 }
-                {showingHelp && <div className='theHelpDisplay'>{helpDisplay}</div>}
+                {showingHelp && <div className='theHelpDisplay text-[2.cqw]'>{helpDisplay}</div>}
 
             </div>
 

@@ -163,7 +163,16 @@
         }
 
         to {
-            transform: translateY(-100%);
+            transform: translateY(-110%);
+        }
+    }
+        @keyframes deciding {
+        from {
+            transform: translateY(-20%);
+        }
+
+        to {
+            transform: translateY(60%);
         }
     }
 }
@@ -211,4 +220,9 @@
 
 .displayTextClear {
     animation: displayTextClear 1s steps(8) forwards;
+}
+
+.animate-deciding {
+    animation: deciding 1s steps(3) infinite;
+
 }
