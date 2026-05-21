@@ -3,6 +3,7 @@ import glog from "../../components/glog";
 import { createBanner, createSpot, NO_ACTIVE_BANNER } from "./types";
 import type { LiveDataState, LiveDataAction, Banner } from "./types";
 import { LiveDataStateSchema, makeInitialLiveDataState } from './types';
+import { dispatchPersistentStateEvent } from "../../hooks/persistentEvents";
 
 import workingData from "./workingData.json";
 
@@ -48,7 +49,13 @@ export function liveDataReducerPersistence(
   const newState = liveDataReducer(state, action);
   if (newState.saveToStorage) {
     try {
-      localStorage.setItem("liveData", JSON.stringify(newState));
+      const serialized = JSON.stringify(newState);
+      localStorage.setItem("liveData", serialized);
+      dispatchPersistentStateEvent({
+        key: "liveData",
+        newValue: serialized,
+        sourceId: "liveDataReducer",
+      });
     } catch (e) {
       console.warn("Unable to save to localStorage", e);
     }

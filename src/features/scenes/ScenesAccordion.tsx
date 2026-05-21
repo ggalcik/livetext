@@ -4,7 +4,6 @@ import type { PopupState } from "../../context/LiveData/types";
 import { Accordion } from "../Accordion/Accordion";
 import SceneAdmin from "./SceneAdmin";
 import { usePersistentState } from "../../hooks/usePersistentState";
-import { openPopup } from "../Popup/PopupScene";
 import glog from "../../components/glog";
 
 
@@ -22,8 +21,6 @@ export default function ScenesAccordion({ popupState }: { popupState: PopupState
   function setSelectedScene(scene: SceneType) {
 
     setSceneAccordionData(prev => ({...prev,  sceneSelected: scene, adminSelected: scene}));
-    openPopup(scene);
-    // setSelectedAdmin(scene);
   }
 
   function clearTimers() {

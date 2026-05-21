@@ -7,6 +7,7 @@ import { rheazons as rheazonsData } from './data';
 import { usePersistentState } from '../../hooks/usePersistentState';
 import { WhySoAngryBlipSchema, type BlipProps, type Rheason, type WhySoAngryBlip } from './types';
 import clsx from 'clsx';
+import glog from '../../components/glog';
 
 
 const EXIT_DURATION_MS = 700;
@@ -53,6 +54,7 @@ export default function WhySoAngry({ endBlip, deactivateRequestId }: BlipProps) 
     }
 
     useEffect(() => {
+        glog('WhoSoAngry - intro sound');
         playSound();
     }, []);
 
