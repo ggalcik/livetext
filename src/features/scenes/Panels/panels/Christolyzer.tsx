@@ -11,14 +11,18 @@ import christolyzerOffLogo from './assets/christolyzer_offlogo.png';
 import christolyzerDarkScreen from './assets/christolyzer_darkscreen.png';
 import christolyzerBooting from './assets/christolyzer_booting.png';
 import christolyzerBootingTop from './assets/christolyzer_booting_readout.png';
+import jesusButton from './assets/jesus_button.png';
 import beepboop from './assets/beepboop.mp3';
 import yesBeep from './assets/yes.mp3';
 import noBeep from './assets/NO.mp3';
 import failBuzz from './assets/fail.mp3';
+import winDing from './assets/christolyzer_win.mp3';
+import priceIsRightTheme from './assets/Price is Right theme.mp3';
 import computerBoot from './assets/computer_boot.mp3';
 import computerAmbient from './assets/computer_ambient2.ogg';
 import computerBeep from './assets/computer_beep.mp3';
 import computerClicks from './assets/computer_clicks.mp3';
+import clsx from 'clsx';
 
 import './Christolyzer.css';
 import { randomSample, textToHtmlBreaks } from '../../../../helpers/helpers';
@@ -51,7 +55,7 @@ type QuizStage = 'init' | 1 | 2 | 3 | 4 | 5 | 'deciding' | 'fail' | 'win';
 
 const followingStage: Partial<Record<QuizStage, QuizStage | null>> = {
     'init': 1,
-    1: 'deciding',
+    1: 2,
     2: 3,
     3: 4,
     4: 'deciding',
@@ -235,6 +239,31 @@ export function Christolyzer() {
 
     }, [computing])
 
+    useEffect(() => {
+        if (quizStage !== 'win') return;
+
+        const winAudio = new Audio(winDing);
+        const themeAudio = new Audio(priceIsRightTheme);
+        let themeTimer = 0;
+        winAudio.volume = VOLUME;
+        themeAudio.volume = VOLUME;
+        winAudio.play().catch((err) => {
+            console.warn("Could not play win sound:", err);
+        });
+
+        themeTimer = window.setTimeout(() => {
+            themeAudio.play().catch((err) => {
+                console.warn("Could not play Price Is Right theme:", err);
+            });
+        }, 500);
+
+        return () => {
+            window.clearTimeout(themeTimer);
+            winAudio.pause();
+            themeAudio.pause();
+        };
+    }, [quizStage]);
+
     function getDisplayText() {
         if (quizStage === 'init') return defaultDisplay;
         if (quizStage === 'fail') return `*** NOT A TRUE CHRISTIAN
@@ -243,6 +272,10 @@ export function Christolyzer() {
         if (quizStage === 'deciding') return `
         
         Tabulating...`;
+          if (quizStage === 'win') return `*** YOU FOUND JESUS!
+        
+     Good News! Anyone who has found Jesus is a true Christian! Well done!`;
+
         if (typeof quizStage === 'number') return questionList[quizStage - 1];
 
         return "-- kzzktzt --";
@@ -280,7 +313,7 @@ export function Christolyzer() {
     }
 
     function prepNextStage(shouldCompute: boolean = true) {
-        const nextStage = followingStage[quizStage];
+        const nextStage = followingStage[quizStage] || null;
         if (quizStage !== 'init') setComputing(true);
         setPendingStage(nextStage);
         setIsClearingDisplayText(true);
@@ -336,21 +369,26 @@ export function Christolyzer() {
     let readoutStatus: string | null = null;
     if (typeof quizStage === 'number') readoutStatus = "Question " + quizStage;
     if (quizStage === 'fail') readoutStatus = "** FAIL **";
+    if (quizStage === 'win') readoutStatus = "__ t t t __";
 
     return <div className="absolute w-full h-full overflow-hidden text-white animate-bootUp [container-type:size]">
 
-        <div className='theMainBox relative' >
+        <div className='theMainBox relative [&>img]:pointer-events-none' >
+
+            <JesusButton stage={quizStage} computing={computing} handleJesus={() => setQuizStage('win')} />
+
+
             <img className="relative z-10 w-full" src={christolyzerBooting} />
             <img className="absolute animate-logoTopUp z-9 top-0 w-full" src={christolyzerBootingTop} />
             {/* <img className="relative z-10 w-full" src={christolyzer} /> */}
-            {/* {quizStage === 'fail' && <img className="absolute animate-blink z-10 w-full top-0" src={christolyzerFail} />} */}
-            {quizStage === 'fail' && <img className="absolute animate-blink z-10 w-full top-0" src={christolyzerWin} />}
+            {quizStage === 'fail' && <img className="absolute animate-blink z-10 w-full top-0" src={christolyzerFail} />}
+            {quizStage === 'win' && <img className="absolute animate-blink z-10 w-full top-0" src={christolyzerWin} />}
             <img className="animate-logoFlicker absolute z-10 w-full top-0 pointer-events-none" src={christolyzerDarkLogo} />
             <img className="animate-logoPowerOn absolute z-10 w-full top-0 pointer-events-none" src={christolyzerOffLogo} />
             <img className="animate-screenOn absolute z-10 w-full top-0 pointer-events-none" src={christolyzerDarkScreen} />
 
-            <div className={`theReadoutWrapper absolute z-1 top-0 left-0 w-full h-full pt-[12%] pl-[14%] pr-[15%] ${isReadoutAnimatingIn ? 'animate-logoTopUp' : ''}`}>
-                <div className='theReadoutBox relative border w-full h-[14%] overflow-hidden '>
+            <div className={`theReadoutWrapper absolute z-1 top-0 left-0 w-full h-1/2 pt-[12%] pl-[14%] pr-[15%] ${isReadoutAnimatingIn ? 'animate-logoTopUp' : ''}`}>
+                <div className='theReadoutBox relative border w-full h-1/2 overflow-hidden '>
                     <div className='absolute w-full h-full bg-black'></div>
                     {computing && <div className='relative w-full h-full animate-computing'></div>}
                     {readoutStatus && !computing && <div className='relative text-green-300 font-["Press_Start_2P"] text-[5cqw] p-[3%] w-full text-center animate-slideIn'>{readoutStatus}</div>}
@@ -446,4 +484,56 @@ export function Christolyzer() {
             </div>
         </div>
     </div>
+}
+
+
+function JesusButton({ stage, computing, handleJesus }: { stage: QuizStage, computing: boolean, handleJesus: () => void }) {
+    type JesusStage = 'out' | 'enter' | 'on' | 'blink' | 'exit';
+    const [jesusStage, setJesusStage] = useState<JesusStage>('out');
+
+    const animStateBreaks: Partial<Record<QuizStage, JesusStage>> = {
+        2: 'enter',
+        3: 'on',
+        4: 'exit'
+    }
+
+    useEffect(() => {
+        if ((animStateBreaks[stage] && computing)) {
+            setJesusStage(animStateBreaks[stage]);
+            return;
+        }
+
+        if (stage === 'init') setJesusStage('out');
+
+        
+    }, [stage, computing]);
+
+    const jesusStageClass =
+        jesusStage === 'enter' ? 'jesus-button-enter'
+            : jesusStage === 'on' || jesusStage === 'blink' ? 'jesus-button-on'
+                : jesusStage === 'exit' ? 'jesus-button-exit'
+                    : 'jesus-button-out';
+
+    return (
+        <div className={`absolute bottom-[4%] bg-gray-600 p-2 ${jesusStageClass}`}>
+            <Button
+                className={clsx(
+                    'p-2 h-auto bg-blue-600 hover:!bg-blue-500 rounded-xl relative shadow-xs shadow-black cursor-pointer transition-[filter] duration-[2000ms] ease-out',
+                    jesusStage === 'on' || jesusStage === 'blink' ? 'grayscale-0' : 'grayscale-[80%]'
+                )}
+                onClick={() => {handleJesus(); setJesusStage('blink')}}
+            >
+
+                <img
+                    src={jesusButton}
+                    className={clsx(
+                        'transition-[filter] duration-[2000ms] ease-out',
+                        jesusStage === 'on' ? 'brightness-100' : 'brightness-[.3]',
+                        jesusStage === 'blink' && 'animate-jesus-blink',
+                    )}
+                />
+
+            </Button>
+        </div>
+    );
 }

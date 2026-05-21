@@ -24,16 +24,29 @@
         }
     }
 
-    @keyframes animateBlink {
+    @keyframes animateJesusBlink {
 
         0%,
         49.99% {
-            opacity: 1;
+            filter: brightness(1);
         }
 
         50%,
         100% {
-            opacity: 0;
+            filter: brightness(0.5);
+        }
+    }
+
+        @keyframes animateBlink {
+
+        0%,
+        49.99% {
+            opacity: 1
+        }
+
+        50%,
+        100% {
+           opacity: 0
         }
     }
 
@@ -163,16 +176,40 @@
         }
 
         to {
-            transform: translateY(-110%);
+            transform: translateY(-100%);
         }
     }
-        @keyframes deciding {
+    @keyframes deciding {
         from {
             transform: translateY(-20%);
         }
 
         to {
             transform: translateY(60%);
+        }
+    }
+
+    @keyframes jesusButtonEnter {
+        0% {
+            left: 14%;
+        }
+
+        100% {
+            left: 4%;
+        }
+    }
+
+    @keyframes jesusButtonExit {
+        0% {
+            left: 4%;
+        }
+
+        20%, 40% {
+            left: 3%;
+        }
+
+        100% {
+            left: 14%;
         }
     }
 }
@@ -204,7 +241,10 @@
 
 .animate-blink {
     animation: animateBlink 1s infinite;
+}
 
+.animate-jesus-blink {
+    animation: animateJesusBlink 1.4s infinite;
 }
 
 .animate-slideIn {
@@ -225,4 +265,22 @@
 .animate-deciding {
     animation: deciding 1s steps(3) infinite;
 
+}
+
+.jesus-button-out {
+    left: 14%;
+}
+
+.jesus-button-enter {
+    left: 12%;
+    animation: jesusButtonEnter 3s ease-in-out forwards;
+}
+
+.jesus-button-on {
+    left: 4%;
+}
+
+.jesus-button-exit {
+    left: 4%;
+    animation: jesusButtonExit 0.7s ease-out forwards;
 }
