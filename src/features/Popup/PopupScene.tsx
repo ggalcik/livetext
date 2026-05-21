@@ -1,4 +1,3 @@
-
 import { useParams } from "react-router-dom";
 import { useEffect } from "react";
 import LiveTextPopup from "../scenes/LiveDisplay/LiveTextPopup";
@@ -20,11 +19,6 @@ import Intonation from "../scenes/Intonation/Intonation";
 
 export function openPopup(which?: string) {
   const appendURL = which ? "/" + which : "";
-      // const [popupData] = usePersistentState({
-      //     storageKey: 'popupData',
-      //     schema: PopupDataSchema,
-      //     fallback: { showBlip: false }
-      // });
 
   window.open(
     "/popup" + appendURL,
@@ -36,20 +30,17 @@ export function openPopup(which?: string) {
   // "width=800,height=600,menubar=no,toolbar=no,location=yes,status=no"
 };
 
-export default function PopupScene() {
-  const { name } = useParams<{ name?: SceneType }>();
-  const sceneName = name ?? "livetext"
-
-  useEffect(() => {
-    // Add class on mount
-    document.body.classList.add("popup");
-  }, []);
-
+export function PopupSceneContent({
+  sceneName,
+  embedded = false,
+}: {
+  sceneName: SceneType | "livetext";
+  embedded?: boolean;
+}) {
   return (
     <>
-
       <div className="absolute w-full h-full bg-black">
-        {sceneName === 'banners' && <LiveTextPopup />}
+        {sceneName === 'banners' && <LiveTextPopup embedded={embedded} />}
         {sceneName === 'philbronium' && <Philbronium controls={true} />}
         {sceneName === 'video' && <Video />}
         {sceneName === 'slides' && <Slides />}
@@ -63,4 +54,19 @@ export default function PopupScene() {
       <Blip />
     </>
   );
+}
+
+export default function PopupScene() {
+  const { name } = useParams<{ name?: SceneType }>();
+  const sceneName = name ?? "livetext";
+
+  useEffect(() => {
+    document.body.classList.add("popup");
+
+    return () => {
+      document.body.classList.remove("popup");
+    };
+  }, []);
+
+  return <PopupSceneContent sceneName={sceneName} />;
 }

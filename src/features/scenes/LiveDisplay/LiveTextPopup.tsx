@@ -3,32 +3,42 @@ import LiveText from "./LiveText";
 import {  type LiveDataState } from "../../../context/LiveData/types";
 import { loadInitialState } from "../../../context/LiveData/LiveDataReducer";
 import glog from "../../../components/glog";
+import { addPersistentStateListener } from "../../../hooks/persistentEvents";
 
-export default function LiveTextPopup() {
+export default function LiveTextPopup({ embedded = false }: { embedded?: boolean }) {
   const [state, setState] = useState<LiveDataState>(loadInitialState());
 
   useEffect(() => {
-    // Listen for localStorage updates
-    const handleStorage = (event: StorageEvent) => {
-      if (event.key !== "liveData") return;
+    const applySerializedState = (serializedState: string) => {
       try {
-        const newState = JSON.parse(event.newValue || "");
+        const newState = JSON.parse(serializedState);
         setState(newState);
-        // glog("LiveTextPopup");
       } catch {
         console.warn("Invalid JSON in LiveData localStorage");
       }
     };
 
+    const handleStorage = (event: StorageEvent) => {
+      if (event.key !== "liveData" || event.newValue == null) return;
+      applySerializedState(event.newValue);
+    };
+
+    const removePersistentListener = addPersistentStateListener((detail) => {
+      if (detail.key !== "liveData") return;
+      applySerializedState(detail.newValue);
+    });
+
     window.addEventListener("storage", handleStorage);
-    document.title = "Live text";
+    if (!embedded) {
+      document.title = "Live text";
+    }
    
-    // Clean up
     return () => {
       document.body.classList.remove("popup");
       window.removeEventListener("storage", handleStorage);
+      removePersistentListener();
     };
-  }, []);
+  }, [embedded]);
 
 
   return  <LiveText state={state} />;

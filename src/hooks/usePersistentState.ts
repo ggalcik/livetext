@@ -3,6 +3,7 @@ import { z } from "zod";
 import workingData, { type IWorkingData } from "../workingData";
 import type { PersistentDataKey } from "./types";
 import glog from "../components/glog";
+import { addPersistentStateListener, dispatchPersistentStateEvent } from "./persistentEvents";
 
 // Generic loader that infers T from the schema
 function loadState<S extends z.ZodTypeAny>({
@@ -88,17 +89,18 @@ export function usePersistentState<
   const [state, _setState] = useState<State>(() =>
     loadState({ storageKey, schema, fallback })
   );
-
-  // Prevent write-back when state is being updated due to a cross-tab storage event.
-  const skipNextPersistRef = useRef(false);
+  const instanceIdRef = useRef(`${storageKey}-${Math.random().toString(36).slice(2)}`);
+  const syncOriginRef = useRef<"local" | "external" | null>(null);
+  const hasMountedRef = useRef(false);
 
   /**
    * Single, safe update path:
    * - Always compute `next` from the real `prev` inside the state updater (avoids stale closure issues).
-   * - Write to localStorage immediately *here* (preserves your "commit now" behavior).
-   * - Optionally skip that write if the update came from cross-tab sync.
+   * - Mark the update origin so persistence can happen after React commits.
    */
   const setState = (update: State | ((prev: State) => State)) => {
+    syncOriginRef.current = "local";
+
     _setState(prev => {
       const next =
         typeof update === "function"
@@ -106,17 +108,6 @@ export function usePersistentState<
           : update;
 
       glog.ups(`[${storageKey}] setState`, { prev, next });
-
-      if (!skipNextPersistRef.current) {
-        try {
-          localStorage.setItem(storageKey, JSON.stringify(next));
-        } catch (e) {
-          console.warn(`Failed to save ${storageKey}`, e);
-        }
-      } else {
-        // consume the skip
-        skipNextPersistRef.current = false;
-      }
 
       return next;
     });
@@ -134,11 +125,9 @@ export function usePersistentState<
 
   // cross-tab sync (IMPORTANT: do not call setState here, or you'd write-back and can cause churn)
   useEffect(() => {
-    const onStorage = (e: StorageEvent) => {
-      if (e.key !== storageKey || e.newValue == null) return;
-
+    const applySerializedState = (serializedState: string) => {
       try {
-        const parsed: unknown = JSON.parse(e.newValue);
+        const parsed: unknown = JSON.parse(serializedState);
         const res = schema.safeParse(parsed);
 
         if (!res.success) {
@@ -146,8 +135,7 @@ export function usePersistentState<
           return;
         }
 
-        // Update state from other tab WITHOUT writing it back.
-        skipNextPersistRef.current = true;
+        syncOriginRef.current = "external";
         _setState(res.data);
 
         glog.ups(`[${storageKey}] storage sync applied`, { next: res.data });
@@ -156,9 +144,49 @@ export function usePersistentState<
       }
     };
 
+    const onStorage = (e: StorageEvent) => {
+      if (e.key !== storageKey || e.newValue == null) return;
+      applySerializedState(e.newValue);
+    };
+
+    const removePersistentListener = addPersistentStateListener((detail) => {
+      if (detail.key !== storageKey || detail.sourceId === instanceIdRef.current) return;
+      applySerializedState(detail.newValue);
+    });
+
     window.addEventListener("storage", onStorage);
-    return () => window.removeEventListener("storage", onStorage);
+    return () => {
+      window.removeEventListener("storage", onStorage);
+      removePersistentListener();
+    };
   }, [schema, storageKey]);
+
+  useEffect(() => {
+    if (!hasMountedRef.current) {
+      hasMountedRef.current = true;
+      syncOriginRef.current = null;
+      return;
+    }
+
+    if (syncOriginRef.current !== "local") {
+      syncOriginRef.current = null;
+      return;
+    }
+
+    try {
+      const serialized = JSON.stringify(state);
+      localStorage.setItem(storageKey, serialized);
+      dispatchPersistentStateEvent({
+        key: storageKey,
+        newValue: serialized,
+        sourceId: instanceIdRef.current,
+      });
+    } catch (e) {
+      console.warn(`Failed to save ${storageKey}`, e);
+    } finally {
+      syncOriginRef.current = null;
+    }
+  }, [state, storageKey]);
 
   if (dispatch) {
     return [state, setState, { dispatch }] as const;
