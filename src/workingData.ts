@@ -3098,7 +3098,7 @@ workingData.liveData = {
     "font": "50px/1.3 impact",
     "textAlign": "right",
     "color": "white",
-    "backgroundColor": "#f89",
+    "backgroundColor": "#833",
     "onBox": false,
     "textShadow": "4px 4px black"
   },
