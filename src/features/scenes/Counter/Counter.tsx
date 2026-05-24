@@ -28,7 +28,7 @@ export default function Counter() {
             ? activeCounters
             : scene.history[historyEntries[showCounterIdx - 1]];
 
-    const crampedStyle = gGlobal.layout.crampedPortrait ? 'scale-80' : '';
+    const crampedStyle = gGlobal.layout.crampedPortrait ? '<scale-7></scale-7>0' : '';
 
     const audioRef = useRef<HTMLAudioElement | null>(null);
 
@@ -131,9 +131,9 @@ export default function Counter() {
                     </div>
 
                     <div className="p-4 relative">
-                        <div className="absolute w-[100vw]">
+                        <div className="absolute -top-6  w-full">
                             <div className="text-lg font-[Ink_Free] font-bold -rotate-6 mt-2 text-black ">"Heard it all before" counters for</div>
-                            <div className="text-3xl leading-6 font-[Ink_Free] -rotate-2  font-bold  ml-35 mt-2 text-black ">
+                            <div className="text-3xl leading-6 font-[Ink_Free] -rotate-2  font-bold  ml-35 mt-6 text-black ">
                                 { currentDisplayDate() }
                             </div>
                         </div>

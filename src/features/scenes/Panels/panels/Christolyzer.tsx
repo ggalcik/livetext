@@ -371,7 +371,7 @@ export function Christolyzer() {
     if (quizStage === 'fail') readoutStatus = "** FAIL **";
     if (quizStage === 'win') readoutStatus = "__ t t t __";
 
-    return <div className="absolute w-full h-full overflow-hidden text-white animate-bootUp [container-type:size]">
+    return <div className="absolute w-full h-full overflow-hidden scale-85 origin-top text-white animate-bootUp [container-type:size]">
 
         <div className='theMainBox relative [&>img]:pointer-events-none' >
 
