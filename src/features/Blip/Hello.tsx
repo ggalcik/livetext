@@ -237,14 +237,14 @@ export default function Hello({ endBlip }: BlipProps) {
 
                     <div
                         className={clsx(
-                            "border-amber-700 relative border-8  p-3 px-12 font-[Carter_One] text-4xl text-blue-800 transition-[filter] duration-300",
+                            "border-amber-700 relative border-8  p-3 px-12 font-[Carter_One] text-4xl text-blue-800 transition-[filter] duration-100",
                             isHoldingCurrent ? "brightness-100 animate-hellosign-on" : "brightness-25 bg-stone-400"
                         )}
                     >
                         Hello.
                         <div
                             className={clsx(
-                                "absolute -top-4 -right-10 rotate-12 text-5xl -scale-x-100 transition-[filter] duration-300",
+                                "absolute -top-0 -right-14 rotate-12 text-5xl -scale-x-100 transition-[filter] duration-300",
                                 isHoldingCurrent
                                     ? firstWaveBright ? "brightness-100" : "brightness-75"
                                     : "brightness-100"
@@ -254,7 +254,7 @@ export default function Hello({ endBlip }: BlipProps) {
                         </div>
                         <div
                             className={clsx(
-                                "absolute top-4 -right-14 rotate-36 text-5xl -scale-x-100 transition-[filter] duration-300",
+                                "absolute top-10 -right-16 rotate-42 text-5xl -scale-x-100 transition-[filter] duration-300",
                                 isHoldingCurrent
                                     ? firstWaveBright ? "brightness-75" : "brightness-100"
                                     : "brightness-100"
