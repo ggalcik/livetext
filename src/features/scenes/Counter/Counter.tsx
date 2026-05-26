@@ -204,18 +204,18 @@ function CounterRow({ counter, playSound, onIncrement, onDecrement }: ICounterRo
                 </div>
 
                 {live && onDecrement && onIncrement && (
-                    <div className="absolute right-12 bottom-0 flex flex-col items-center gap-1 opacity-0 transition-opacity duration-150 group-hover:opacity-100">
+                    <div className="absolute -right-10 bottom-0 flex  items-center gap-10 opacity-0 transition-opacity duration-150 group-hover:opacity-100">
                         <Button
                             variant="b"
                             type="button"
-                            className="h-8 w-8 border border-stone-400 bg-white p-0 text-lg leading-none shadow-lg"
+                            className="h-8 w-8  font-[Gabriola]  p-0 text-lg leading-none shadow-lg "
                             onClick={onIncrement}
                         >
                             +
                         </Button>                        <Button
                             variant="b"
                             type="button"
-                            className="h-8 w-8 border border-stone-400 bg-white p-0 text-lg leading-none shadow-lg"
+                            className="h-8 w-8  font-[Gabriola]   p-0 text-lg leading-none shadow-lg"
                             onClick={onDecrement}
                         >
                             -
