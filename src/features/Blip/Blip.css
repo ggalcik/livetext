@@ -343,6 +343,9 @@
 
     --animate-whyangry: whyangry 2.5s ease-out forwards;
     --animate-whyangry-exit: whyangry-exit 0.7s ease-in forwards;
+    --animate-hello-panel-enter: hello-panel-enter 0.45s ease-out forwards;
+    --animate-hello-panel-exit: hello-panel-exit 0.45s ease-in forwards;
+    --animate-hello-card-reveal: hello-card-reveal 0.2s ease-out forwards;
     --animate-names-enter: names-enter 0.5s ease-out forwards;
     --animate-names-exit: names-exit 0.5s ease-in forwards;
     @keyframes whyangry {
@@ -405,6 +408,48 @@
 
         100% {
             transform: translateY(-100%);
+        }
+    }
+
+    @keyframes hello-panel-enter {
+        0% {
+            opacity: 0;
+            transform: translateX(120%);
+        }
+
+        100% {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+
+    @keyframes hello-panel-exit {
+        0% {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        100% {
+            opacity: 0;
+            transform: translateX(120%);
+        }
+    }
+
+    @keyframes hello-card-reveal {
+        0% {
+            opacity: 0;
+            transform: translateY(-22%) rotateX(-85deg) scale(0.97);
+            transform-origin: top center;
+        }
+
+        72% {
+            opacity: 1;
+            transform: translateY(4%) rotateX(8deg) scale(1);
+        }
+
+        100% {
+            opacity: 1;
+            transform: translateY(0) rotateX(0deg) scale(1);
         }
     }
 }
