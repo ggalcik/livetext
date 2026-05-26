@@ -348,6 +348,8 @@
     --animate-hello-card-reveal: hello-card-reveal 0.2s ease-out forwards;
     --animate-names-enter: names-enter 0.5s ease-out forwards;
     --animate-names-exit: names-exit 0.5s ease-in forwards;
+    --animate-hellosign-on: hellosign-on 1s ease-in-out infinite;
+
     @keyframes whyangry {
 
         0%, 41.9% {
@@ -420,6 +422,15 @@
         100% {
             opacity: 1;
             transform: translateX(0);
+        }
+    }
+    @keyframes hellosign-on {
+        0%, 100% {
+            background-color: #a6a09b;
+        }
+
+        50% {
+           background-color: white;
         }
     }
 

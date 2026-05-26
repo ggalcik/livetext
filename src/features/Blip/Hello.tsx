@@ -1,18 +1,26 @@
 import { format } from "date-fns";
-import { useEffect, useRef, useState, type KeyboardEvent } from "react";
+import { useCallback, useEffect, useRef, useState, type KeyboardEvent } from "react";
 import clsx from "clsx";
 import { MasterViewport } from "../../components/MasterViewport/MasterViewport";
 import { Button } from "../../components/Button";
 import { usePersistentState } from "../../hooks/usePersistentState";
 import { HelloBlipSchema, type BlipProps } from "./types";
+import flipClick from "./assets/flipclick.mp3";
+import namesIn from "./assets/names_in3.mp3";
+import namesOut from "./assets/names_out.mp3";
 import "./Blip.css";
 
 const REVEAL_STEP_MS = 100;
-const REVEAL_SETTLE_MS = 120;
 const REVEAL_RANDOM_COUNT = 4;
-const CURRENT_HOLD_MS = 2000;
+const CURRENT_HOLD_MS = 4000;
 const ENTER_ANIMATION_MS = 450;
 const EXIT_ANIMATION_MS = 450;
+
+type HelloRuntime = {
+    phase: "hidden" | "entering" | "revealing" | "holding" | "exiting";
+    current: string | null;
+    next: string | null;
+};
 
 function getTodayDate() {
     return format(new Date(), "yyyyMMdd");
@@ -23,9 +31,8 @@ function createDefaultState() {
         todayDate: getTodayDate(),
         allNames: [],
         selectedNames: [],
-        current: null,
-        next: null,
-        isPlaying: false,
+        waveRequestId: undefined,
+        waveActive: false,
     };
 }
 
@@ -35,58 +42,155 @@ export default function Hello({ endBlip }: BlipProps) {
         schema: HelloBlipSchema,
         fallback: createDefaultState(),
     });
-    const settleTimeoutRef = useRef<number | null>(null);
-    const exitTimeoutRef = useRef<number | null>(null);
-    const [isExiting, setIsExiting] = useState(false);
+    const [runtime, setRuntime] = useState<HelloRuntime>({
+        phase: "hidden",
+        current: null,
+        next: null,
+    });
     const [holdPhase, setHoldPhase] = useState(0);
-    const current = helloBlip.current ?? null;
-    const next = helloBlip.next ?? null;
-    const isPanelVisible = helloBlip.isPlaying || isExiting;
-    const isHoldingCurrent = current != null && next == null && !isExiting;
+    const currentRef = useRef<string | null>(null);
+    const runTokenRef = useRef(0);
+    const isMountedRef = useRef(true);
+    const lastHandledRequestRef = useRef<number | undefined>(undefined);
+    const audioInRef = useRef(new Audio(namesIn));
+    const audioOutRef = useRef(new Audio(namesOut));
+    const audioFlipRef = useRef(new Audio(flipClick));
+    const current = runtime.current;
+    const next = runtime.next;
+    const isExiting = runtime.phase === "exiting";
+    const isPanelVisible = runtime.phase !== "hidden";
+    const isHoldingCurrent = runtime.phase === "holding" && current != null;
     const firstWaveBright = holdPhase % 2 === 0;
 
     useEffect(() => {
-        setHelloBlip((prev) => {
-            if (!prev.current && !prev.next && !prev.isPlaying) {
-                return prev;
-            }
-
-            return {
-                ...prev,
-                current: null,
-                next: null,
-                isPlaying: false,
-            };
-        });
-    }, [setHelloBlip]);
+        currentRef.current = current;
+    }, [current]);
 
     useEffect(() => {
-        if (next == null) return;
+        return () => {
+            isMountedRef.current = false;
+            runTokenRef.current += 1;
+        };
+    }, []);
 
-        if (settleTimeoutRef.current !== null) {
-            window.clearTimeout(settleTimeoutRef.current);
-        }
+    const playEnterSound = useCallback(() => {
+        audioInRef.current.currentTime = 0;
+        audioInRef.current.play().catch((err) => {
+            console.warn("Could not play sound:", err);
+        });
+    }, []);
 
-        settleTimeoutRef.current = window.setTimeout(() => {
+    const playExitSound = useCallback(() => {
+        audioOutRef.current.currentTime = 0;
+        audioOutRef.current.play().catch((err) => {
+            console.warn("Could not play sound:", err);
+        });
+    }, []);
+
+    const playFlipSound = useCallback(() => {
+        audioFlipRef.current.currentTime = 0;
+        audioFlipRef.current.play().catch((err) => {
+            console.warn("Could not play sound:", err);
+        });
+    }, []);
+
+    const runWaveSequence = useCallback(async (token: number, targets: string[], allNames: string[]) => {
+        const initialCard = pickInitialRevealName(allNames, targets[0] ?? null);
+        playEnterSound();
+        setRuntime({
+            phase: "entering",
+            current: initialCard,
+            next: null,
+        });
+        if (!(await waitForRun(token, ENTER_ANIMATION_MS, isMountedRef, runTokenRef))) return;
+
+        let previousName = initialCard;
+
+        for (const target of targets) {
+            const revealSequence = buildRevealSequence(allNames, target, previousName);
+
+            for (const revealName of revealSequence) {
+                playFlipSound();
+                setRuntime((prev) => ({
+                    ...prev,
+                    phase: "revealing",
+                    next: revealName,
+                }));
+                if (!(await waitForRun(token, REVEAL_STEP_MS, isMountedRef, runTokenRef))) return;
+
+                setRuntime((prev) => ({
+                    ...prev,
+                    phase: "revealing",
+                    current: revealName,
+                    next: null,
+                }));
+                previousName = revealName;
+            }
+
+            setRuntime((prev) => ({
+                ...prev,
+                phase: "holding",
+                current: target,
+                next: null,
+            }));
+
+            if (!(await waitForRun(token, CURRENT_HOLD_MS, isMountedRef, runTokenRef))) return;
+
             setHelloBlip((prev) => {
-                if (prev.next !== next) return prev;
+                const nextHellos = new Set(prev.hellos ?? []);
+                nextHellos.add(target);
 
                 return {
                     ...prev,
-                    current: next,
-                    next: null,
+                    selectedNames: prev.selectedNames.filter((name) => name !== target),
+                    hellos: prev.allNames.filter((name) => nextHellos.has(name)),
                 };
             });
-            settleTimeoutRef.current = null;
-        }, REVEAL_STEP_MS);
+        }
 
-        return () => {
-            if (settleTimeoutRef.current !== null) {
-                window.clearTimeout(settleTimeoutRef.current);
-                settleTimeoutRef.current = null;
-            }
-        };
-    }, [next, setHelloBlip]);
+        playExitSound();
+        setRuntime((prev) => ({
+            ...prev,
+            phase: "exiting",
+            next: null,
+        }));
+        if (!(await waitForRun(token, EXIT_ANIMATION_MS, isMountedRef, runTokenRef))) return;
+
+        setHelloBlip((prev) => ({
+            ...prev,
+            waveActive: false,
+            waveRequestId: undefined,
+        }));
+        endBlip();
+    }, [endBlip, playEnterSound, playExitSound, playFlipSound, setHelloBlip]);
+
+    useEffect(() => {
+        const requestId = helloBlip.waveRequestId;
+        if (!helloBlip.waveActive || requestId == null) return;
+        if (requestId === lastHandledRequestRef.current) return;
+
+        lastHandledRequestRef.current = requestId;
+
+        const targets = [...helloBlip.selectedNames];
+        if (targets.length === 0) {
+            setHelloBlip((prev) => ({
+                ...prev,
+                waveActive: false,
+                waveRequestId: undefined,
+            }));
+            return;
+        }
+
+        const token = ++runTokenRef.current;
+        void runWaveSequence(token, targets, [...helloBlip.allNames]);
+    }, [
+        helloBlip.allNames,
+        helloBlip.selectedNames,
+        helloBlip.waveActive,
+        helloBlip.waveRequestId,
+        runWaveSequence,
+        setHelloBlip,
+    ]);
 
     useEffect(() => {
         if (!isHoldingCurrent) {
@@ -100,66 +204,18 @@ export default function Hello({ endBlip }: BlipProps) {
         }, 1000);
 
         return () => window.clearInterval(intervalId);
-    }, [current, isHoldingCurrent]);
-
-    useEffect(() => {
-        if (
-            !helloBlip.isPlaying ||
-            next != null ||
-            current == null ||
-            helloBlip.selectedNames.length > 0 ||
-            isExiting
-        ) {
-            return;
-        }
-
-        setIsExiting(true);
-    }, [current, helloBlip.isPlaying, helloBlip.selectedNames.length, isExiting, next]);
-
-    useEffect(() => {
-        if (!isExiting) return;
-
-        exitTimeoutRef.current = window.setTimeout(() => {
-            setHelloBlip((prev) => ({
-                ...prev,
-                current: null,
-                next: null,
-                isPlaying: false,
-            }));
-            endBlip();
-        }, EXIT_ANIMATION_MS);
-
-        return () => {
-            if (exitTimeoutRef.current !== null) {
-                window.clearTimeout(exitTimeoutRef.current);
-                exitTimeoutRef.current = null;
-            }
-        };
-    }, [endBlip, isExiting, setHelloBlip]);
-
-    useEffect(() => {
-        if (helloBlip.isPlaying) {
-            setIsExiting(false);
-        }
-    }, [helloBlip.isPlaying]);
-
-    useEffect(() => {
-        return () => {
-            if (exitTimeoutRef.current !== null) {
-                window.clearTimeout(exitTimeoutRef.current);
-            }
-        };
-    }, []);
+    }, [isHoldingCurrent]);
 
     return (
         <div className="absolute inset-0 text-white">
             <MasterViewport name="blip_hello">
                 <div
                     className={clsx(
-                        "flex h-full w-full flex-col items-center justify-center bg-black/40 px-[8%] py-[10%] backdrop-blur-sm transition-transform transition-opacity duration-450 ease-out",
+                        "flex h-full w-full flex-col items-center justify-center bg-black/40 px-[8%] py-[10%] backdrop-blur-sm",
                         !isPanelVisible && "invisible translate-x-[120%] opacity-0",
-                        isPanelVisible && !isExiting && "translate-x-0 opacity-100",
-                        isExiting && "translate-x-[120%] opacity-0"
+                        runtime.phase === "entering" && "animate-hello-panel-enter",
+                        isPanelVisible && !isExiting && runtime.phase !== "entering" && "translate-x-0 opacity-100",
+                        isExiting && "animate-hello-panel-exit"
                     )}
                 >
                     <div className="relative w-full border-16 border-amber-900 border-l-amber-700 border-t-amber-700">
@@ -181,8 +237,8 @@ export default function Hello({ endBlip }: BlipProps) {
 
                     <div
                         className={clsx(
-                            "border-amber-700 relative border-8 bg-stone-200 p-3 px-12 font-[Carter_One] text-4xl text-blue-800 transition-[filter] duration-300",
-                            isHoldingCurrent ? "brightness-100" : "brightness-25"
+                            "border-amber-700 relative border-8  p-3 px-12 font-[Carter_One] text-4xl text-blue-800 transition-[filter] duration-300",
+                            isHoldingCurrent ? "brightness-100 animate-hellosign-on" : "brightness-25 bg-stone-400"
                         )}
                     >
                         Hello.
@@ -194,7 +250,7 @@ export default function Hello({ endBlip }: BlipProps) {
                                     : "brightness-100"
                             )}
                         >
-                            👋
+                            {"\u{1F44B}"}
                         </div>
                         <div
                             className={clsx(
@@ -204,7 +260,7 @@ export default function Hello({ endBlip }: BlipProps) {
                                     : "brightness-100"
                             )}
                         >
-                            👋
+                            {"\u{1F44B}"}
                         </div>
                     </div>
                 </div>
@@ -220,8 +276,8 @@ export function HelloAdmin() {
         fallback: createDefaultState(),
     });
     const [isAdding, setIsAdding] = useState(false);
-    const [isRevealing, setIsRevealing] = useState(false);
     const [draftName, setDraftName] = useState("");
+    const isRevealing = helloBlip.waveActive === true;
 
     function toggleSelected(name: string) {
         setHelloBlip((prev) => {
@@ -262,53 +318,11 @@ export function HelloAdmin() {
     function handleWave() {
         if (isRevealing || helloBlip.selectedNames.length === 0) return;
 
-        const targets = [...helloBlip.selectedNames];
-        const allNames = [...helloBlip.allNames];
-
-        void revealSelectedNames(targets, allNames, helloBlip.current ?? null);
-    }
-
-    async function revealSelectedNames(targets: string[], allNames: string[], initialCurrent: string | null) {
-        setIsRevealing(true);
-
-        try {
-            setHelloBlip((prev) => ({
-                ...prev,
-                isPlaying: true,
-            }));
-
-            await wait(ENTER_ANIMATION_MS);
-
-            let previousName = initialCurrent;
-
-            for (const target of targets) {
-                const revealSequence = buildRevealSequence(allNames, target, previousName);
-
-                for (const revealName of revealSequence) {
-                    setHelloBlip((prev) => ({
-                        ...prev,
-                        next: revealName,
-                    }));
-                    await wait(REVEAL_SETTLE_MS);
-                    previousName = revealName;
-                }
-
-                await wait(CURRENT_HOLD_MS);
-
-                setHelloBlip((prev) => {
-                    const nextHellos = new Set(prev.hellos ?? []);
-                    nextHellos.add(target);
-
-                    return {
-                        ...prev,
-                        selectedNames: prev.selectedNames.filter((name) => name !== target),
-                        hellos: prev.allNames.filter((name) => nextHellos.has(name)),
-                    };
-                });
-            }
-        } finally {
-            setIsRevealing(false);
-        }
+        setHelloBlip((prev) => ({
+            ...prev,
+            waveActive: true,
+            waveRequestId: Date.now(),
+        }));
     }
 
     function handleInputKeyDown(evt: KeyboardEvent<HTMLInputElement>) {
@@ -339,8 +353,7 @@ export function HelloAdmin() {
                             disabled={isRevealing}
                             className={clsx(
                                 "ring-black",
-                                isSelected && "bg-amber-200 text-black ring-amber-300",
-                                // wasWaved && !isSelected && "border-stone-700 bg-stone-200 text-stone-900 ring-2 ring-stone-500"
+                                isSelected && "bg-amber-200 text-black ring-amber-300"
                             )}
                             onClick={() => toggleSelected(name)}
                         >
@@ -394,7 +407,7 @@ export function HelloAdmin() {
                     {isRevealing ? "Waving..." : "Wave"}
                 </Button>
                 <div className="text-sm text-black/70">
-                    Click to queue names in order. Wave flips through a few random cards, then lands on each queued name and holds it for five seconds.
+                    Click to queue names in order. Wave flips through a few random cards, then lands on each queued name and holds it for two seconds.
                 </div>
             </div>
         </div>
@@ -442,8 +455,25 @@ function pickRandomName(allNames: string[], target: string, previousName: string
     return candidates[Math.floor(Math.random() * candidates.length)];
 }
 
-function wait(ms: number) {
-    return new Promise<void>((resolve) => {
-        window.setTimeout(resolve, ms);
+function pickInitialRevealName(allNames: string[], firstTarget: string | null) {
+    const candidates = allNames.filter((name) => name !== firstTarget);
+
+    if (candidates.length > 0) {
+        return candidates[Math.floor(Math.random() * candidates.length)];
+    }
+
+    return firstTarget;
+}
+
+function waitForRun(
+    token: number,
+    ms: number,
+    isMountedRef: React.RefObject<boolean>,
+    runTokenRef: React.RefObject<number>
+) {
+    return new Promise<boolean>((resolve) => {
+        window.setTimeout(() => {
+            resolve(isMountedRef.current === true && runTokenRef.current === token);
+        }, ms);
     });
 }

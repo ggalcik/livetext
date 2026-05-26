@@ -36,9 +36,8 @@ export const HelloBlipSchema = z.object({
     todayDate: z.string(),
     allNames: z.array(z.string()),
     selectedNames: z.array(z.string()),
-    current: z.string().nullable().optional(),
-    next: z.string().nullable().optional(),
-    isPlaying: z.boolean().optional(),
+    waveRequestId: z.number().optional(),
+    waveActive: z.boolean().optional(),
     hellos: z.array(z.string()).optional(),
     history: z.record(z.string(), z.array(z.string())).optional(),
 });

@@ -103,9 +103,9 @@ const arc =  `A ${radius * 1} ${radius * 1} 0 ${largeArc} 1 ${x2} ${y2}`;
         >
             <svg width={innerSize} height={innerSize}>
                 {wedges}
-                <circle cx={radius} cy={radius} r={radius*.95} fill="transparent" stroke="white" stroke-width="2"/>
-                <circle cx={radius} cy={radius} r={radius*.90} fill="transparent" stroke="black" stroke-width="2"/>
-                <circle cx={radius} cy={radius} r={radius*.85} fill="transparent" stroke="white" stroke-width="2"/>
+                <circle cx={radius} cy={radius} r={radius*.95} fill="transparent" stroke="white" strokeWidth="2"/>
+                <circle cx={radius} cy={radius} r={radius*.90} fill="transparent" stroke="black" strokeWidth="2"/>
+                <circle cx={radius} cy={radius} r={radius*.85} fill="transparent" stroke="white" strokeWidth="2"/>
             </svg>
             <div
                 className="absolute text-center font-bold -translate-y-0.5"
