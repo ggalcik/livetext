@@ -12,7 +12,7 @@ import { gGlobal } from '../../../Global/global';
 
 
 export function ChalkboardBackground() {
-    return <div className="absolute top-0 left-0 w-full h-full bg-[length:100%_auto] bg-top bg-black bg-no-repeat opacity-80"
+    return <div className="absolute top-0 left-0 w-full h-full bg-top bg-top bg-black bg-no-repeat opacity-80"
         style={{ backgroundImage: `url(${chalkboardWall})` }}
     ></div>
 }
@@ -336,15 +336,16 @@ export function Chalkboard() {
     const { activeSet, activeBoard, currentSet, currentBoard } = getActives();
 
     return (
-        <div className={`bg-[length:100%_100%] w-full h-full scale-90`}
+        <div className={`bg-[length:100%_100%] relative w-full h-full scale-90`}
             style={{ backgroundImage: `url(${chalkboard})` }}
         >
-            <div className="pl-[12%] pr-[12%] py-[9%] h-full w-full box-border ">
+            {/* <div className="pl-[12%] pr-[12%] py-[9%] h-full w-full box-border "> */}
                 <textarea
                     spellCheck="false"
                     className={`
-                    h-full w-full text-white bg-transparent border-0 focus:outline-none
-                    text-xl font-bold  resize-none pl-4  placeholder-white 
+                        absolute top-[12%] left-[12%] h-[76%] w-[76%]
+                      text-white bg-transparent border-0 focus:outline-none
+                        text-xl font-bold  resize-none pl-4  placeholder-white 
                     `}
                     style={{ font: `${activeBoard.fontSize}px/1.2em '${BOARD_FONT}'`, 
                 }}
@@ -353,7 +354,7 @@ export function Chalkboard() {
                     onKeyDown={e => handleKeyDown(e)}
                     placeholder={boardDefault.text}
                 ></textarea>
-            </div>
+            {/* </div> */}
 
             <div className="top-2.5 ml-[12%] absolute">
                 {Array.from({ length: 8 }, (_, i) => boardLetter(i, currentBoard, () => setActive(i)))}

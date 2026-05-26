@@ -54,6 +54,7 @@ export default function CounterAdmin() {
 
     const [newName, setNewName] = useState("");
     const [newValue, setNewValue] = useState("");
+    const [searchVal, setSearchVal] = useState("");
 
     // Save to localStorage when scene changes
     useEffect(() => {
@@ -141,6 +142,7 @@ export default function CounterAdmin() {
             <div className="flex gap-2 py-4">
                 <Button onClick={() => sortCheckedUp(scene, setScene)}>Sort checked up</Button>
                 <Button onClick={() => sortAlphaUp(scene, setScene)}>Sort alpha up</Button>
+                <input className="border px-2" type="search" value={searchVal} onChange={(e) => setSearchVal(e.target.value)} />
             </div>
 
             <div className="lg:columns-2 space-y-1 scale-100 origin-top-left bg-green-100">
@@ -151,6 +153,7 @@ export default function CounterAdmin() {
                         onUpdate={updateCounter}
                         onDelete={deleteCounter}
                         maxActive={maxActive}
+                        searchText={searchVal}
                     />
                 ))}
 

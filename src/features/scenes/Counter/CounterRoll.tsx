@@ -14,6 +14,7 @@ export default function CounterRoll({ scene, setScene }: CounterRollProps) {
     const [editingIndex, setEditingIndex] = useState<number | null>(0);
     const [showControls, setShowControls] = useState(false);
     const [confirmReset, setConfirmReset] = useState(false);
+    const [searchText, setSearchText] = useState("");
     const scrollRef = useRef<HTMLDivElement | null>(null);
     const activeCount = scene.counters.filter((counter) => counter.show).length;
     const maxActive = activeCount >= 10;
@@ -83,61 +84,73 @@ export default function CounterRoll({ scene, setScene }: CounterRollProps) {
 
     return (
         <div className="absolute inset-y-0 -left-10 z-20 w-1/2 group/counterroll cursor-pointer">
-            <div className="flex h-full items-center justify-start p-4">
+            <div className="flex h-full mt-8 justify-start p-4">
                 <div className="pointer-events-none w-90 overflow-visible opacity-0 transition-opacity duration-200 group-hover/counterroll:pointer-events-auto group-hover/counterroll:opacity-100">
                     <div className="relative overflow-visible">
+                        <input
+                            type="search"
+                            value={searchText}
+                            onChange={(e) => setSearchText(e.target.value)}
+                            className="absolute left-0 -top-10 border bg-white px-2 py-1 text-sm"
+                        />
                         <div
                             ref={scrollRef}
-                            className="flex max-h-[380px] flex-col gap-2 overflow-y-auto overflow-x-hidden pr-2 select-none"
+                            className="flex max-h-[380px] flex-col gap-2 overflow-y-auto overflow-x-hidden pr-2 py-2 select-none"
                             onWheel={onWheel}
                         >
-                            {scene.counters.map((counter, index) => (
-                                <div
-                                    key={counter.id}
-                                    className="flex items-center gap-2 cursor-pointer"
-                                    onMouseEnter={() => {
-                                        if (!showControls) {
-                                            setHoveredIndex(index);
-                                        }
-                                    }}
-                                    onMouseLeave={() => {
-                                        if (!showControls) {
-                                            setHoveredIndex((prev) => (prev === index ? null : prev));
-                                        }
-                                    }}
-                                >
-                                    <div className="flex w-8 shrink-0 justify-center">
-                                        <Button
-                                            variant="b"
+                            {scene.counters.map((counter, index) => {
+                                const show =
+                                    !searchText.trim() ||
+                                    counter.name.toLowerCase().includes(searchText.trim().toLowerCase());
+
+                                return (
+                                    <div
+                                        key={counter.id}
+                                        className={clsx("flex items-center gap-2 cursor-pointer", !show && "hidden")}
+                                        onMouseEnter={() => {
+                                            if (!showControls) {
+                                                setHoveredIndex(index);
+                                            }
+                                        }}
+                                        onMouseLeave={() => {
+                                            if (!showControls) {
+                                                setHoveredIndex((prev) => (prev === index ? null : prev));
+                                            }
+                                        }}
+                                    >
+                                        <div className="flex w-8 shrink-0 justify-center">
+                                            <Button
+                                                variant="b"
+                                                type="button"
+                                                className={clsx(
+                                                    "h-7 w-7 p-0 transition-opacity duration-150",
+                                                    !showControls && hoveredIndex === index
+                                                        ? "pointer-events-auto opacity-35 hover:opacity-100"
+                                                        : "pointer-events-none opacity-0"
+                                                )}
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    toggleControls(index);
+                                                }}
+                                            />
+                                        </div>
+
+                                        <button
                                             type="button"
                                             className={clsx(
-                                                "h-7 w-7 p-0 transition-opacity duration-150",
-                                                !showControls && hoveredIndex === index
-                                                    ? "pointer-events-auto opacity-35 hover:opacity-100"
-                                                    : "pointer-events-none opacity-0"
+                                                "flex min-h-[32px] flex-1 items-center border  cursor-pointer px-2 text-left font-mono text-lg shadow-md transition-all hover:shadow-lg",
+                                                counter.show
+                                                    ? "border-amber-200 text-stone-900 bg-amber-50 ring-2"
+                                                    : "border-stone-200 text-stone-700 bg-blue-50",
+                                                !counter.show && maxActive ? "cursor-not-allowed opacity-45" : ""
                                             )}
-                                            onClick={(e) => {
-                                                e.stopPropagation();
-                                                toggleControls(index);
-                                            }}
-                                        />
+                                            onClick={() => activateCounter(counter)}
+                                        >
+                                            <span className="truncate">{counter.name || "Untitled"}</span>
+                                        </button>
                                     </div>
-
-                                    <button
-                                        type="button"
-                                        className={clsx(
-                                            "flex min-h-[32px] flex-1 items-center border  cursor-pointer px-2 text-left font-mono text-lg shadow-md transition-all hover:shadow-lg",
-                                            counter.show
-                                                ? "border-amber-200 text-stone-900 bg-amber-50 ring-2"
-                                                : "border-stone-200 text-stone-700 bg-blue-50",
-                                            !counter.show && maxActive ? "cursor-not-allowed opacity-45" : ""
-                                        )}
-                                        onClick={() => activateCounter(counter)}
-                                    >
-                                        <span className="truncate">{counter.name || "Untitled"}</span>
-                                    </button>
-                                </div>
-                            ))}
+                                );
+                            })}
                         </div>
 
                         {showControls && editingCounter && (

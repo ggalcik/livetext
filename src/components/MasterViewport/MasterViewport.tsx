@@ -15,6 +15,13 @@ interface Pointer {
     pyp: number;
 }
 
+interface DragState {
+    mode: 'box' | 'edge';
+    activeEdges: Partial<Record<keyof Edges, true>>;
+    startPointer: Pointer;
+    startEdges: Edges;
+}
+
 interface Edges {
     top: number;
     left: number;
@@ -29,15 +36,10 @@ const defaultEdges: Edges = {
     bottom: 100,
 };
 
-interface Window {
-    width: number; height: number
-}
-interface ViewportData {
-    edges: Edges;
-    windowSize: Window;
-}
-
-
+const BORDER_STOP = 2;
+const EDGE_NUDGE = 2;
+const EDGE_RANGE = 5;
+const MIN_SIZE = 4;
 
 function getNamedFromLocal(name: string): Edges {
     const saved = localStorage.getItem("MasterViewports");
@@ -59,39 +61,24 @@ export function MasterViewport({ children, name: sentName, needCtrl = false, res
     const [pointer, setPointer] = useState<Pointer | null>(null);
     const [edges, setEdges] = useState<Edges>(getNamedFromLocal(name));
     const [ctrlKey, setCtrlKey] = useState(false);
-    const [movingWhich, setMovingWhich] = useState<'box' | 'edge' | null>(null);
+    const [dragState, setDragState] = useState<DragState | null>(null);
 
     const [masterRef, { width: masterWidth, height: masterHeight }] = useMeasure<HTMLDivElement>();
-
-    function saveToLocal(name: string, windowSize?: Window) {
-        try {
-            const saved = localStorage.getItem("MasterViewports");
-            const parsed = saved ? JSON.parse(saved) : {};
-            parsed[name] = {
-                ...(parsed[name] || {}),
-                edges,
-                windowSize: windowSize ?? parsed[name]?.windowSize ?? { width: 0, height: 0 },
-            };
-            localStorage.setItem("MasterViewports", JSON.stringify(parsed));
-        } catch (err) {
-            console.error("Failed to save MasterViewports data", err);
-        }
-    }
 
     useEffect(() => {
         setEdges(getNamedFromLocal(name));
     }, [name]);
 
-    function handlePointer(p: Pointer | null) {
+    function handlePointer(p: Pointer | null, edgesToSave?: Edges) {
         setPointer(p);
         if (!p) {
-            setMovingWhich(null);
+            setDragState(null);
             try {
                 const saved = localStorage.getItem("MasterViewports");
                 const parsed = saved ? JSON.parse(saved) : {};
                 parsed[name] = {
                     ...(parsed[name] || {}),
-                    edges,
+                    edges: edgesToSave ?? edges,
                 };
                 localStorage.setItem("MasterViewports", JSON.stringify(parsed));
             } catch (err) {
@@ -100,55 +87,109 @@ export function MasterViewport({ children, name: sentName, needCtrl = false, res
         }
     }
 
+    function clamp(value: number, min: number, max: number) {
+        return Math.min(max, Math.max(min, value));
+    }
 
-    function doPanelMove(evt: React.MouseEvent) {
-        evt.preventDefault();
-        const EDGE_NUDGE = 2;
-        const EDGE_RANGE = 5;
+    function getPointerPercent(evt: React.MouseEvent): Pointer | null {
+        if (!masterWidth || !masterHeight) return null;
 
-        const newEdges = { ...edges };
+        const rect = evt.currentTarget.getBoundingClientRect();
+        const pxp = parseFloat(((((evt.clientX - rect.left) / masterWidth) * 100)).toFixed(1));
+        const pyp = parseFloat(((((evt.clientY - rect.top) / masterHeight) * 100)).toFixed(1));
 
-        const pxp = parseFloat(((evt.pageX / masterWidth) * 100).toFixed(1));
-        const pyp = parseFloat(((evt.pageY / masterHeight) * 100).toFixed(1));
+        return { pxp, pyp };
+    }
 
+    function getDragState(nextPointer: Pointer): DragState {
+        const { pxp, pyp } = nextPointer;
         const [fromTop, fromBottom] = [Math.abs(pyp - edges.top), Math.abs(pyp - edges.bottom)];
         const [fromLeft, fromRight] = [Math.abs(pxp - edges.left), Math.abs(pxp - edges.right)];
 
-        let newMovingWhich = movingWhich;
-
         if (!resizable) {
-            newMovingWhich = 'box';
-        } else if (!movingWhich) {
-            if (Math.min(fromTop, fromBottom, fromLeft, fromRight) > EDGE_RANGE)
-                newMovingWhich = 'box';
-            else
-                newMovingWhich = 'edge';
-            setMovingWhich(newMovingWhich);
+            return {
+                mode: 'box',
+                activeEdges: {},
+                startPointer: nextPointer,
+                startEdges: { ...edges },
+            };
         }
 
-        const BORDER_STOP = 2;
+        if (Math.min(fromTop, fromBottom, fromLeft, fromRight) > EDGE_RANGE) {
+            return {
+                mode: 'box',
+                activeEdges: {},
+                startPointer: nextPointer,
+                startEdges: { ...edges },
+            };
+        }
 
-        if (newMovingWhich === 'box') {
-            if (pointer != null) {
-                const [moveX, moveY] = [pxp - pointer.pxp, pyp - pointer.pyp];
-                if (newEdges.right + moveX > BORDER_STOP && newEdges.left + moveX < (100 - BORDER_STOP)) {
-                    newEdges.left += moveX;
-                    newEdges.right += moveX;
-                }
-                if (newEdges.bottom + moveY > BORDER_STOP && newEdges.top + moveY < (100 - BORDER_STOP)) {
-                    newEdges.top += moveY;
-                    newEdges.bottom += moveY;
-                }
-            }
+        return {
+            mode: 'edge',
+            activeEdges: {
+                ...(fromTop < fromBottom ? { top: true } : { bottom: true }),
+                ...(fromLeft < fromRight ? { left: true } : { right: true }),
+            },
+            startPointer: nextPointer,
+            startEdges: { ...edges },
+        };
+    }
+
+    function doPanelMove(evt: React.MouseEvent) {
+        evt.preventDefault();
+        const nextPointer = getPointerPercent(evt);
+        if (!nextPointer) return;
+
+        const activeDrag = dragState ?? getDragState(nextPointer);
+
+        if (!dragState) {
+            setDragState(activeDrag);
+        }
+
+        const moveX = nextPointer.pxp - activeDrag.startPointer.pxp;
+        const moveY = nextPointer.pyp - activeDrag.startPointer.pyp;
+        const newEdges = { ...activeDrag.startEdges };
+
+        if (activeDrag.mode === 'box') {
+            const width = activeDrag.startEdges.right - activeDrag.startEdges.left;
+            const height = activeDrag.startEdges.bottom - activeDrag.startEdges.top;
+
+            newEdges.left = clamp(activeDrag.startEdges.left + moveX, BORDER_STOP - width, 100 - BORDER_STOP);
+            newEdges.right = newEdges.left + width;
+            newEdges.top = clamp(activeDrag.startEdges.top + moveY, BORDER_STOP - height, 100 - BORDER_STOP);
+            newEdges.bottom = newEdges.top + height;
         } else {
-            if (fromTop < fromBottom) newEdges.top = pyp - EDGE_NUDGE;
-            else newEdges.bottom = pyp + EDGE_NUDGE;
-
-            if (fromLeft < fromRight) newEdges.left = pxp - EDGE_NUDGE;
-            else newEdges.right = pxp + EDGE_NUDGE;
+            if (activeDrag.activeEdges.top) {
+                newEdges.top = clamp(
+                    activeDrag.startEdges.top + moveY,
+                    BORDER_STOP - EDGE_NUDGE,
+                    activeDrag.startEdges.bottom - MIN_SIZE
+                );
+            }
+            if (activeDrag.activeEdges.bottom) {
+                newEdges.bottom = clamp(
+                    activeDrag.startEdges.bottom + moveY,
+                    activeDrag.startEdges.top + MIN_SIZE,
+                    100 + EDGE_NUDGE
+                );
+            }
+            if (activeDrag.activeEdges.left) {
+                newEdges.left = clamp(
+                    activeDrag.startEdges.left + moveX,
+                    BORDER_STOP - EDGE_NUDGE,
+                    activeDrag.startEdges.right - MIN_SIZE
+                );
+            }
+            if (activeDrag.activeEdges.right) {
+                newEdges.right = clamp(
+                    activeDrag.startEdges.right + moveX,
+                    activeDrag.startEdges.left + MIN_SIZE,
+                    100 + EDGE_NUDGE
+                );
+            }
         }
 
-        handlePointer({ pxp, pyp });
+        handlePointer(nextPointer);
         setEdges(newEdges);
     }
 
@@ -168,7 +209,7 @@ export function MasterViewport({ children, name: sentName, needCtrl = false, res
                 }}
                 onMouseUp={() => {
                     setPanelMoving(false);
-                    handlePointer(null);
+                    handlePointer(null, edges);
                 }}
                 onMouseMove={(e) => {
                     if (panelMoving) doPanelMove(e);

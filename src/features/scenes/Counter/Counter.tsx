@@ -28,7 +28,7 @@ export default function Counter() {
             ? activeCounters
             : scene.history[historyEntries[showCounterIdx - 1]];
 
-    const crampedStyle = gGlobal.layout.crampedPortrait ? 'scale-80' : '';
+    const crampedStyle = gGlobal.layout.crampedPortrait ? 'scale-70' : '';
 
     const audioRef = useRef<HTMLAudioElement | null>(null);
 
@@ -131,7 +131,7 @@ export default function Counter() {
                     </div>
 
                     <div className="p-4 relative">
-                        <div className="absolute w-[100vw]">
+                        <div className="absolute top-6  w-full">
                             <div className="text-lg font-[Ink_Free] font-bold -rotate-6 mt-2 text-black ">"Heard it all before" counters for</div>
                             <div className="text-3xl leading-6 font-[Ink_Free] -rotate-2  font-bold  ml-35 mt-2 text-black ">
                                 { currentDisplayDate() }
@@ -204,18 +204,18 @@ function CounterRow({ counter, playSound, onIncrement, onDecrement }: ICounterRo
                 </div>
 
                 {live && onDecrement && onIncrement && (
-                    <div className="absolute right-12 bottom-0 flex flex-col items-center gap-1 opacity-0 transition-opacity duration-150 group-hover:opacity-100">
+                    <div className="absolute -right-10 bottom-0 flex  items-center gap-10 opacity-0 transition-opacity duration-150 group-hover:opacity-100">
                         <Button
                             variant="b"
                             type="button"
-                            className="h-8 w-8 border border-stone-400 bg-white p-0 text-lg leading-none shadow-lg"
+                            className="h-8 w-8  font-[Gabriola]  p-0 text-lg leading-none shadow-lg "
                             onClick={onIncrement}
                         >
                             +
                         </Button>                        <Button
                             variant="b"
                             type="button"
-                            className="h-8 w-8 border border-stone-400 bg-white p-0 text-lg leading-none shadow-lg"
+                            className="h-8 w-8  font-[Gabriola]   p-0 text-lg leading-none shadow-lg"
                             onClick={onDecrement}
                         >
                             -

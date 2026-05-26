@@ -5,17 +5,24 @@ export default function CounterAdminRow({
   counter,
   onUpdate,
   onDelete,
-  maxActive
+  maxActive,
+  searchText
 }: {
   counter: Counter;
   onUpdate: (id: string, update: Partial<Counter>) => void;
   onDelete: (id: string) => void;
   maxActive: boolean;
+  searchText: string;
 }) {
   const [confirmDelete, setConfirmDelete] = useState(false);
+ const show =
+  !searchText.trim() ||
+  counter.name.toLowerCase().includes(searchText.trim().toLowerCase())
+    ? ""
+    : "hidden";
 
   return (
-    <div className="flex items-center gap-1">
+    <div className={`flex items-center gap-1 ${show}`}>
       <input
         type="checkbox"
         className="w-6 h-6 cursor-pointer bg-white"

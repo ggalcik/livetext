@@ -28,6 +28,7 @@ export const rheazonsData: RheazonEntry[] = [
                 "If I wasn't angry, then the Reddit atheists wouldn't let me in the clubhouse anymore.",
                 "I want to be taken seriously, but my tiny legs make me look ridiculous.",
                 "Sulfur changed their name.",
+                "I'm tired of seeing the same old anger reasons and no one is giving me any new ones.",
             ]
     },
     {
