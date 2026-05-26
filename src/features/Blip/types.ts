@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 export const blipTypes = [
-    'Why Angry', 'Holy Honkers', 'Orchestra', 'Snail', 'Goalpost', 'Mamma Mia', 'Egregore', 'Names'
+    'Why Angry', 'Holy Honkers', 'Orchestra', 'Snail', 'Goalpost', 'Mamma Mia', 'Egregore', 'Names', 'Hello'
 ] as const;
 
 export const blipTypeSchema = z.enum(blipTypes);
@@ -28,9 +28,18 @@ export type WhySoAngryBlip = z.infer<typeof WhySoAngryBlipSchema>;
 export const NamesBlipSchema = z.object({
     names: z.string(),
     currentDate: z.string(),
-    history: z.record(z.string()).optional(),
+    history: z.record(z.string(), z.string()).optional(),
 });
 export type NamesBlip = z.infer<typeof NamesBlipSchema>;
+
+export const HelloBlipSchema = z.object({
+    todayDate: z.string(),
+    allNames: z.array(z.string()),
+    selectedNames: z.array(z.string()),
+    hellos: z.array(z.string()).optional(),
+    history: z.record(z.string(), z.array(z.string())).optional(),
+});
+export type HelloBlip = z.infer<typeof HelloBlipSchema>;
 
 
 export type BlipProps = {
@@ -44,6 +53,7 @@ type BlipOpts = Record<string, string | boolean>;
 
 export type BlipConfig = {
     component: React.ComponentType<BlipProps>;
+    extendedComponent?: React.ComponentType;
     opts: BlipOpts;
     variants?: BlipVariant[];
     handlesDeactivate?: boolean;

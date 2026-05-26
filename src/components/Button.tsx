@@ -54,7 +54,7 @@ export const Button: React.FC<ButtonProps> = React.forwardRef<HTMLButtonElement,
         <button
             ref={ref}
             disabled={disabled}
-            className={`${twMerge(buttonVariants({ variant, size, mode, disabled }))} ${className ?? ''}`}
+            className={twMerge(buttonVariants({ variant, size, mode, disabled }), className)}
             {...rest}
         >
             {children}

@@ -50,49 +50,60 @@ export default function BlipAdmin() {
         return typeof variant === "string" ? variant : variant.variant;
     }
 
+    const activeEntry = blipData.showBlip ? BLIP_COMPONENTS[blipData.showBlip] : undefined;
+    const ExtendedComponent =
+        activeEntry && "component" in activeEntry ? activeEntry.extendedComponent : undefined;
+
     return (
-        <div className="flex gap-2 pt-2 pl-2 bg-green-200">
-            {blipTypes.map(blip => {
-                const isActive = blipData.showBlip === blip;
-                const registryEntry = BLIP_COMPONENTS[blip];
-                const variants = "component" in registryEntry ? registryEntry.variants : undefined;
+        <div className="bg-green-200">
+            <div className="flex gap-2 pt-2 pl-2">
+                {blipTypes.map(blip => {
+                    const isActive = blipData.showBlip === blip;
+                    const registryEntry = BLIP_COMPONENTS[blip];
+                    const variants = "component" in registryEntry ? registryEntry.variants : undefined;
 
-                return (
-                    <div key={`blip_${blip}`} className="group relative">
-                        <Button
-                            size="lg"
-                            className="ring-black"
-                            mode={isActive ? 'activated' : undefined}
-                            onClick={() => isActive ? requestDeactivateBlip(blip) : activateBlip(blip)}
-                        >{blip}</Button>
-                        {variants && (
-                            <div
-                                className={`absolute left-0 top-full z-20 min-w-full pt-1 ${isActive && blipData.showBlipVariant ? 'block' : 'hidden group-hover:block'
-                                    }`}
-                            >
-                                <div className="flex gap-1 rounded-lg bg-green-100 p-1 shadow-lg ring-1 ring-black/15">
-                                    {variants.map((variantEntry) => {
-                                        const variant = getVariantId(variantEntry);
-                                        const isVariantActive =
-                                            isActive && blipData.showBlipVariant === variant;
+                    return (
+                        <div key={`blip_${blip}`} className="group relative">
+                            <Button
+                                size="lg"
+                                className="ring-black"
+                                mode={isActive ? 'activated' : undefined}
+                                onClick={() => isActive ? requestDeactivateBlip(blip) : activateBlip(blip)}
+                            >{blip}</Button>
+                            {variants && (
+                                <div
+                                    className={`absolute left-0 top-full z-20 min-w-full pt-1 ${isActive && blipData.showBlipVariant ? 'block' : 'hidden group-hover:block'
+                                        }`}
+                                >
+                                    <div className="flex gap-1 rounded-lg bg-green-100 p-1 shadow-lg ring-1 ring-black/15">
+                                        {variants.map((variantEntry) => {
+                                            const variant = getVariantId(variantEntry);
+                                            const isVariantActive =
+                                                isActive && blipData.showBlipVariant === variant;
 
-                                        return (
-                                            <Button
-                                                key={`${blip}_${variant}`}
-                                                size="lg"
-                                                variant="b"
-                                                mode={isVariantActive ? 'activated' : undefined}
-                                                className="whitespace-nowrap ring-black"
-                                                onClick={() => isVariantActive ? requestDeactivateBlip(blip) : activateBlip(blip, variant)}
-                                            >{variant}</Button>
-                                        );
-                                    })}
+                                            return (
+                                                <Button
+                                                    key={`${blip}_${variant}`}
+                                                    size="lg"
+                                                    variant="b"
+                                                    mode={isVariantActive ? 'activated' : undefined}
+                                                    className="whitespace-nowrap ring-black"
+                                                    onClick={() => isVariantActive ? requestDeactivateBlip(blip) : activateBlip(blip, variant)}
+                                                >{variant}</Button>
+                                            );
+                                        })}
+                                    </div>
                                 </div>
-                            </div>
-                        )}
-                    </div>
-                );
-            }
+                            )}
+                        </div>
+                    );
+                }
+                )}
+            </div>
+            {ExtendedComponent && (
+                <div className="mt-2 border-t border-black/20 px-2 pt-2">
+                    <ExtendedComponent />
+                </div>
             )}
         </div>
     )

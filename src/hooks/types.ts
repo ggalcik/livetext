@@ -10,7 +10,8 @@ export const persistentDataKeys = [
     'vidclip',
     'blipData',
     'whySoAngryBlip',
-    'NamesBlip'
+    'NamesBlip',
+    'helloBlip'
 ];
 
 export const PersistentDataKeySchema = z.enum(persistentDataKeys);

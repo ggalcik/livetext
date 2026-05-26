@@ -1,5 +1,6 @@
 import Egregore from "./Egregore";
 import Goalpost from "./Goalpost";
+import Hello, { HelloAdmin } from "./Hello";
 import HolyHonkers from "./HolyHonkers";
 import MammaMia from "./MammaMia";
 import Names from "./Names";
@@ -22,6 +23,10 @@ export const BLIP_COMPONENTS: Record<IBlipType, BlipEntry> = {
     component: Names,
     opts: {},
     handlesDeactivate: true,
+  }, Hello: {
+    component: Hello,
+    extendedComponent: HelloAdmin,
+    opts: {},
   }, "Holy Honkers": {
     component: HolyHonkers, opts: {},
     variants: ['sailor', 'sulfur'],
