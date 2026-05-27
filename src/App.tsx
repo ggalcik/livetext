@@ -1,10 +1,8 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./App.css";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type MouseEvent as ReactMouseEvent } from "react";
 import { SingleWindow } from "./SingleWindow";
 import FontReference from "./features/FontReference/FontReference";
-
-import { version } from '../package.json';
 import ScenesAccordion from "./features/scenes/ScenesAccordion";
 import PopupScene, { PopupSceneContent } from "./features/Popup/PopupScene";
 import OverlaysAccordion from "./features/OverlaysAccordion";
@@ -16,8 +14,12 @@ function App() {
   const [adminWidth, setAdminWidth] = useState(66);
   const [isDraggingDivider, setIsDraggingDivider] = useState(false);
   const [isDividerLocked, setIsDividerLocked] = useState(false);
+  const [isPopupShifted, setIsPopupShifted] = useState(false);
   const [guideLineTop, setGuideLineTop] = useState(66);
   const splitPaneRef = useRef<HTMLDivElement | null>(null);
+  const dividerClickTimeoutRef = useRef<number | null>(null);
+  const dividerPointerStartRef = useRef<{ x: number; y: number } | null>(null);
+  const dividerDidDragRef = useRef(false);
   const [sceneAccordionData] = usePersistentState({
     storageKey: "SceneAccordion",
     schema: SceneAccordionDataSchema,
@@ -29,6 +31,12 @@ function App() {
 
     const handleMouseMove = (event: MouseEvent) => {
       if (!splitPaneRef.current) return;
+      if (dividerPointerStartRef.current) {
+        const { x, y } = dividerPointerStartRef.current;
+        if (Math.abs(event.clientX - x) > 3 || Math.abs(event.clientY - y) > 3) {
+          dividerDidDragRef.current = true;
+        }
+      }
 
       const bounds = splitPaneRef.current.getBoundingClientRect();
       const nextWidth = ((event.clientX - bounds.left) / bounds.width) * 100;
@@ -57,12 +65,52 @@ function App() {
     };
   }, [isDraggingDivider]);
 
-  function handleDividerMouseDown() {
+  useEffect(() => {
+    return () => {
+      if (dividerClickTimeoutRef.current !== null) {
+        window.clearTimeout(dividerClickTimeoutRef.current);
+      }
+    };
+  }, []);
+
+  function handleDividerMouseDown(event: ReactMouseEvent<HTMLDivElement>) {
     if (isDividerLocked) return;
+    dividerPointerStartRef.current = { x: event.clientX, y: event.clientY };
+    dividerDidDragRef.current = false;
     setIsDraggingDivider(true);
   }
 
+  function handleDividerClick(event: ReactMouseEvent<HTMLDivElement>) {
+    if (dividerClickTimeoutRef.current !== null) {
+      window.clearTimeout(dividerClickTimeoutRef.current);
+      dividerClickTimeoutRef.current = null;
+    }
+
+    if (event.detail !== 1) {
+      return;
+    }
+
+    if (dividerDidDragRef.current) {
+      dividerDidDragRef.current = false;
+      dividerPointerStartRef.current = null;
+      return;
+    }
+
+    dividerClickTimeoutRef.current = window.setTimeout(() => {
+      setIsPopupShifted((previous) => !previous);
+      dividerPointerStartRef.current = null;
+      dividerClickTimeoutRef.current = null;
+    }, 300);
+  }
+
   function toggleDividerLock() {
+    if (dividerClickTimeoutRef.current !== null) {
+      window.clearTimeout(dividerClickTimeoutRef.current);
+      dividerClickTimeoutRef.current = null;
+    }
+
+    dividerPointerStartRef.current = null;
+    dividerDidDragRef.current = false;
     setIsDraggingDivider(false);
     setIsDividerLocked((previous) => !previous);
   }
@@ -76,9 +124,9 @@ function App() {
             <SingleWindow
               render={(isActive) =>
                 isActive ? (
-                  <div ref={splitPaneRef} className="flex h-screen overflow-hidden g-stone-300">
+                  <div ref={splitPaneRef} className="flex h-screen overflow-hidden bg-gray-900">
                     <div
-                      className="relative h-full shrink-0 overflow-auto g-stone-100"
+                      className="relative h-full shrink-0 overflow-auto bg-white"
                       style={{ width: `${adminWidth}%` }}
                     >
                       {/* <div className="absolute top-4 right-4 z-10 border bg-white px-2">{version}</div> */}
@@ -97,6 +145,7 @@ function App() {
                             : 'cursor-move bg-stone-300 hover:bg-stone-200'}`}
                         style={{ top: `${guideLineTop}%` }}
                         onMouseDown={handleDividerMouseDown}
+                        onClick={handleDividerClick}
                         onDoubleClick={toggleDividerLock}
                         title={isDividerLocked ? "Divider locked. Double-click to unlock." : "Drag to resize/mark. Double-click to lock."}
                       >
@@ -104,7 +153,10 @@ function App() {
                       </div>
                     </div>
 
-                    <div className="relative h-full min-w-0 flex-1 overflow-hidden bg-black">
+                    <div
+                      className="relative h-full min-w-0 flex-1 overflow-hidden bg-black"
+                      style={{ marginLeft: isPopupShifted ? "50px" : undefined }}
+                    >
                       <div
                         className="pointer-events-none absolute left-0 right-0 z-20 border-t-2 border-dashed border-amber-300/80 -translate-y-5"
                         style={{ top: `${guideLineTop}%` }}

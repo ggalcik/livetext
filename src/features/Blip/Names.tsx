@@ -23,7 +23,8 @@ export default function Names({ endBlip, deactivateRequestId }: BlipProps) {
         schema: NamesBlipSchema,
         fallback: { names: "", currentDate: format(new Date(), "yyyyMMdd") }
     });
-    const today = format(Date.now(), "yyyyMMdd");
+    const today = format(new Date(), "yyyyMMdd");
+    const displayDate = blip.currentDate;
     const lastHandledDeactivateId = useRef<number | undefined>(undefined);
 
     const playExitSound = useCallback(() => {
@@ -86,14 +87,14 @@ export default function Names({ endBlip, deactivateRequestId }: BlipProps) {
                 )}>
 
                     <div className="font-[Carter_One] border border-black inline-block shadow-lg shadow-black -rotate-2 p-4 text-center text-4xl bg-blue-800 text-amber-200">My favorite names today</div>
-                    <div className="font-[Carter_One] border border-black inline-block shadow shadow-black rotate-1 translate-x-[70%] -translate-y-[30%] p-2 text-center text-md bg-blue-700 text-amber-200">{toDisplayDate(today)}</div>
+                    <div className="font-[Carter_One] border border-black inline-block shadow shadow-black rotate-1 translate-x-[70%] -translate-y-[30%] p-2 text-center text-md bg-blue-700 text-amber-200">{toDisplayDate(displayDate)}</div>
 
                     <div className="flex flex-wrap justify-center gap-2 w-[80%] m-auto">
                         {lines.map((line, index) => (
                             <div
                                 key={`${index}-${line}`}
                                 className="font-[Candara] border border-black inline-block  shadow-lg shadow-black text-shadow p-2 px-8 text-2xl"
-                                style={getDailyLineStyle(today, index)}
+                                style={getDailyLineStyle(displayDate, index)}
                             >
                                 {line}
                             </div>

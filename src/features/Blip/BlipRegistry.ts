@@ -23,15 +23,15 @@ export const BLIP_COMPONENTS: Record<IBlipType, BlipEntry> = {
     component: Names,
     opts: {},
     handlesDeactivate: true,
-  }, Hello: {
-    component: Hello,
-    extendedComponent: HelloAdmin,
-    opts: {},
   }, "Holy Honkers": {
     component: HolyHonkers, opts: {},
     variants: ['sailor', 'sulfur'],
   },
-  Orchestra,
+  Orchestra, Hello: {
+    component: Hello,
+    extendedComponent: HelloAdmin,
+    opts: {},
+  },
   'Mamma Mia': MammaMia,
 
 

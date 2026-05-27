@@ -238,7 +238,7 @@ export default function Hello({ endBlip }: BlipProps) {
                     <div
                         className={clsx(
                             "border-amber-700 relative border-8  p-3 px-12 font-[Carter_One] text-4xl text-blue-800 transition-[filter] duration-100",
-                            isHoldingCurrent ? "brightness-100 animate-hellosign-on" : "brightness-25 bg-stone-400"
+                            isHoldingCurrent ? "brightness-100 animate-hellosign-on" : "brightness-[20%] bg-stone-400"
                         )}
                     >
                         Hello.
@@ -340,7 +340,7 @@ export function HelloAdmin() {
     return (
         <div className="flex flex-col gap-3">
             <div className="flex flex-wrap gap-2">
-                {helloBlip.allNames.map((name) => {
+                {getAlphaSortedNames(helloBlip.allNames).map((name) => {
                     const isSelected = helloBlip.selectedNames.includes(name);
 
                     return (
@@ -353,7 +353,7 @@ export function HelloAdmin() {
                             disabled={isRevealing}
                             className={clsx(
                                 "ring-black",
-                                isSelected && "bg-amber-200 text-black ring-amber-300"
+                                isSelected && "bg-amber-200 text-black ring-amber-300 hover:bg-amber-200 hover:text-black"
                             )}
                             onClick={() => toggleSelected(name)}
                         >
@@ -418,7 +418,8 @@ function HelloCard({ name, className }: { name: string; className?: string }) {
     return (
         <div
             className={clsx(
-                "flex h-28 w-full items-center justify-center rounded-lg border border-black bg-amber-100 px-8 text-center font-[Atomic_Age] text-xl text-sky-900 shadow-2xl shadow-black",
+                "flex h-28 w-full items-center justify-center rounded-lg border border-black bg-amber-100 px-8 ",
+                "text-center font-[Gill_Sans_MT] font-bold [font-variant:small-caps] text-2xl text-sky-900 shadow-2xl shadow-black",
                 className
             )}
         >
@@ -463,6 +464,22 @@ function pickInitialRevealName(allNames: string[], firstTarget: string | null) {
     }
 
     return firstTarget;
+}
+
+function getAlphaSortedNames(names: string[]) {
+    return [...names].sort((a, b) =>
+        getLetterOnlySortKey(a).localeCompare(getLetterOnlySortKey(b)) || a.localeCompare(b)
+    );
+}
+
+function getLetterOnlySortKey(name: string) {
+    const lettersOnly = name
+        .normalize("NFKD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .replace(/[^a-z]/gi, "")
+        .toLowerCase();
+
+    return lettersOnly || name.toLowerCase();
 }
 
 function waitForRun(

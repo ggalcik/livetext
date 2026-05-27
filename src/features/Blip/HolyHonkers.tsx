@@ -47,12 +47,12 @@ export default function HolyHonkers({ endBlip, variant, opts }: BlipProps) {
 
     let imgStyle = 'w-2/3';
     if (isSulfur) imgStyle = 'w-5/6';
-    if (isSailor) imgStyle = 'w-2/3 -translate-y-[140px]';
+    if (isSailor) imgStyle = 'w-2/3 -translate-y-[0px]';
 
 
     return (
         <div className={clsx(`absolute `,
-        gGlobal.layout.crampedPortrait ? 'top-30' : 'bottom-0')}>
+        gGlobal.layout.crampedPortrait ? 'top-10' : 'bottom-0')}>
             <div className={` animate-honkers origin-bottom `}>
                 <img className={` ${imgStyle}  m-auto bottom-0`} src={theImage} />
             </div>
