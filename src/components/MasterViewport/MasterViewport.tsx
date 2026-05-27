@@ -197,7 +197,7 @@ export function MasterViewport({ children, name: sentName, needCtrl = false, res
         <>
             <div
                 ref={masterRef}
-                className={clsx("h-full w-full overflow-hidden relative z-0")}
+                className={clsx("h-full w-full overflow-hidden relative z-0 [container-type:size]")}
                 onKeyDown={(e) => { if (e.ctrlKey) setCtrlKey(true) }}
                 onKeyUp={() => setCtrlKey(false)}
                 onMouseLeave={() => setCtrlKey(false)}

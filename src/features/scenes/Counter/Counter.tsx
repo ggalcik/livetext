@@ -208,18 +208,19 @@ function CounterRow({ counter, playSound, onIncrement, onDecrement }: ICounterRo
                         <Button
                             variant="b"
                             type="button"
-                            className="h-8 w-8  font-[Gabriola]  p-0 text-lg leading-none shadow-lg "
-                            onClick={onIncrement}
-                        >
-                            +
-                        </Button>                        <Button
-                            variant="b"
-                            type="button"
-                            className="h-8 w-8  font-[Gabriola]   p-0 text-lg leading-none shadow-lg"
+                            className="h-8 w-8  font-[Gabriola]   p-0 text-6xl leading-none shadow-lg"
                             onClick={onDecrement}
                         >
                             -
-                        </Button>
+                        </Button>                        <Button
+                            variant="b"
+                            type="button"
+                            className="h-8 w-8  font-[Gabriola]  p-0 text-6xl leading-none shadow-lg "
+                            onClick={onIncrement}
+                        >
+                            +
+                        </Button>                        
+
 
                     </div>
                 )}

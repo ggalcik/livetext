@@ -14,7 +14,7 @@ import "./Blip.css";
 
 const REVEAL_STEP_MS = 100;
 const REVEAL_RANDOM_COUNT = 8;
-const CURRENT_HOLD_MS = 5000;
+const CURRENT_HOLD_MS = 7000;
 const ENTER_ANIMATION_MS = 450;
 const EXIT_ANIMATION_MS = 450;
 
@@ -228,11 +228,11 @@ export default function Hello({ endBlip }: BlipProps) {
         if (!isHoldingCurrent) return;
 
         if (firstWaveBright) {
-            playHelloWave1Sound();
+            playHelloWave2Sound();
             return;
         }
 
-        playHelloWave2Sound();
+        playHelloWave1Sound();
     }, [firstWaveBright, isHoldingCurrent, playHelloWave1Sound, playHelloWave2Sound]);
 
     return (
@@ -272,22 +272,29 @@ export default function Hello({ endBlip }: BlipProps) {
                     >
                         Hello.
                         <div className={clsx("absolute border-amber-900 border-4 -right-12 h-0 w-10 bottom-4  bg-white",
-                            "transition-transform duration-300",
+                        "transition-all  duration-300",
+                            // "translate-y-0",
+                                                        isHoldingCurrent
+                                ? firstWaveBright ? "translate-y-2" : "translate-y-0"
+                                : "translate-y-2")} 
+                          />
+                        <div className={clsx("absolute border-amber-700 border-4 -right-14 h-0 w-12 bottom-6  bg-white",
+                            "transition-transform origin-bottom-left duration-300",
                             isHoldingCurrent
-                                ? firstWaveBright ? "translate-y-2" : "-translate-y-2"
-                                : "translate-y-2")} />
-                        <div className={clsx("absolute border-amber-700 border-4 -right-10 h-0 w-10 bottom-4  bg-white",
-                            "-translate-y-2",
-                           )} />
+                                ? firstWaveBright ? "-rotate-4" : "-rotate-13"
+                                : "-rotate-4")} />
+                            {/* isHoldingCurrent
+                                ? firstWaveBright ? "-translate-y-2" : "-translate-y-4"
+                                : "-translate-y-2")} /> */}
                         <div
                             className={clsx(
-                                "absolute -top-0 -right-[1.5em] origin-bottom text-6xl -scale-x-100 transition-[rotate] duration-300",
+                                "absolute -top-2 -right-20 origin-bottom text-6xl -scale-x-100 transition-[rotate_transform]  duration-300",
                                 isHoldingCurrent
-                                    ? firstWaveBright ? "rotate-12" : "rotate-36"
-                                    : "rotate-12"
+                                    ? firstWaveBright ? "rotate-60" : "rotate-32 -translate-x-1"
+                                    : "rotate-60"
                             )}
                         >
-                            {"\u{1F44B}"}
+                            🖐️
                         </div>
 
                         {/* <div
