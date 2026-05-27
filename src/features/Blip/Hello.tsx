@@ -6,13 +6,15 @@ import { Button } from "../../components/Button";
 import { usePersistentState } from "../../hooks/usePersistentState";
 import { HelloBlipSchema, type BlipProps } from "./types";
 import flipClick from "./assets/flipclick.mp3";
+import helloWave1 from "./assets/hello_wave1.mp3";
+import helloWave2 from "./assets/hello_wave2.mp3";
 import namesIn from "./assets/names_in3.mp3";
 import namesOut from "./assets/names_out.mp3";
 import "./Blip.css";
 
 const REVEAL_STEP_MS = 100;
-const REVEAL_RANDOM_COUNT = 4;
-const CURRENT_HOLD_MS = 4000;
+const REVEAL_RANDOM_COUNT = 8;
+const CURRENT_HOLD_MS = 5000;
 const ENTER_ANIMATION_MS = 450;
 const EXIT_ANIMATION_MS = 450;
 
@@ -55,6 +57,8 @@ export default function Hello({ endBlip }: BlipProps) {
     const audioInRef = useRef(new Audio(namesIn));
     const audioOutRef = useRef(new Audio(namesOut));
     const audioFlipRef = useRef(new Audio(flipClick));
+    const audioHelloWave1Ref = useRef(new Audio(helloWave1));
+    const audioHelloWave2Ref = useRef(new Audio(helloWave2));
     const current = runtime.current;
     const next = runtime.next;
     const isExiting = runtime.phase === "exiting";
@@ -90,6 +94,20 @@ export default function Hello({ endBlip }: BlipProps) {
     const playFlipSound = useCallback(() => {
         audioFlipRef.current.currentTime = 0;
         audioFlipRef.current.play().catch((err) => {
+            console.warn("Could not play sound:", err);
+        });
+    }, []);
+
+    const playHelloWave1Sound = useCallback(() => {
+        audioHelloWave1Ref.current.currentTime = 0;
+        audioHelloWave1Ref.current.play().catch((err) => {
+            console.warn("Could not play sound:", err);
+        });
+    }, []);
+
+    const playHelloWave2Sound = useCallback(() => {
+        audioHelloWave2Ref.current.currentTime = 0;
+        audioHelloWave2Ref.current.play().catch((err) => {
             console.warn("Could not play sound:", err);
         });
     }, []);
@@ -206,6 +224,17 @@ export default function Hello({ endBlip }: BlipProps) {
         return () => window.clearInterval(intervalId);
     }, [isHoldingCurrent]);
 
+    useEffect(() => {
+        if (!isHoldingCurrent) return;
+
+        if (firstWaveBright) {
+            playHelloWave1Sound();
+            return;
+        }
+
+        playHelloWave2Sound();
+    }, [firstWaveBright, isHoldingCurrent, playHelloWave1Sound, playHelloWave2Sound]);
+
     return (
         <div className="absolute inset-0 text-white">
             <MasterViewport name="blip_hello">
@@ -242,7 +271,26 @@ export default function Hello({ endBlip }: BlipProps) {
                         )}
                     >
                         Hello.
+                        <div className={clsx("absolute border-amber-900 border-4 -right-12 h-0 w-10 bottom-4  bg-white",
+                            "transition-transform duration-300",
+                            isHoldingCurrent
+                                ? firstWaveBright ? "translate-y-2" : "-translate-y-2"
+                                : "translate-y-2")} />
+                        <div className={clsx("absolute border-amber-700 border-4 -right-10 h-0 w-10 bottom-4  bg-white",
+                            "-translate-y-2",
+                           )} />
                         <div
+                            className={clsx(
+                                "absolute -top-0 -right-[1.5em] origin-bottom text-6xl -scale-x-100 transition-[rotate] duration-300",
+                                isHoldingCurrent
+                                    ? firstWaveBright ? "rotate-12" : "rotate-36"
+                                    : "rotate-12"
+                            )}
+                        >
+                            {"\u{1F44B}"}
+                        </div>
+
+                        {/* <div
                             className={clsx(
                                 "absolute -top-0 -right-14 rotate-12 text-5xl -scale-x-100 transition-[filter] duration-300",
                                 isHoldingCurrent
@@ -261,7 +309,7 @@ export default function Hello({ endBlip }: BlipProps) {
                             )}
                         >
                             {"\u{1F44B}"}
-                        </div>
+                        </div> */}
                     </div>
                 </div>
             </MasterViewport>
@@ -277,6 +325,8 @@ export function HelloAdmin() {
     });
     const [isAdding, setIsAdding] = useState(false);
     const [draftName, setDraftName] = useState("");
+    const [isDeleting, setIsDeleting] = useState(false);
+    const [namesToDelete, setNamesToDelete] = useState<string[]>([]);
     const isRevealing = helloBlip.waveActive === true;
 
     function toggleSelected(name: string) {
@@ -290,6 +340,14 @@ export function HelloAdmin() {
                     : [...prev.selectedNames, name],
             };
         });
+    }
+
+    function toggleDeleteSelection(name: string) {
+        setNamesToDelete((prev) =>
+            prev.includes(name)
+                ? prev.filter((entry) => entry !== name)
+                : [...prev, name]
+        );
     }
 
     function addName() {
@@ -315,8 +373,35 @@ export function HelloAdmin() {
         setIsAdding(false);
     }
 
+    function beginDelete() {
+        setIsDeleting(true);
+        setNamesToDelete([]);
+    }
+
+    function cancelDelete() {
+        setIsDeleting(false);
+        setNamesToDelete([]);
+    }
+
+    function confirmDelete() {
+        if (namesToDelete.length === 0) {
+            cancelDelete();
+            return;
+        }
+
+        const namesToDeleteSet = new Set(namesToDelete);
+
+        setHelloBlip((prev) => ({
+            ...prev,
+            allNames: prev.allNames.filter((name) => !namesToDeleteSet.has(name)),
+            selectedNames: prev.selectedNames.filter((name) => !namesToDeleteSet.has(name)),
+            hellos: prev.hellos?.filter((name) => !namesToDeleteSet.has(name)),
+        }));
+        cancelDelete();
+    }
+
     function handleWave() {
-        if (isRevealing || helloBlip.selectedNames.length === 0) return;
+        if (isRevealing || isDeleting || helloBlip.selectedNames.length === 0) return;
 
         setHelloBlip((prev) => ({
             ...prev,
@@ -342,6 +427,7 @@ export function HelloAdmin() {
             <div className="flex flex-wrap gap-2">
                 {getAlphaSortedNames(helloBlip.allNames).map((name) => {
                     const isSelected = helloBlip.selectedNames.includes(name);
+                    const isMarkedForDelete = namesToDelete.includes(name);
 
                     return (
                         <Button
@@ -349,13 +435,14 @@ export function HelloAdmin() {
                             type="button"
                             size="lg"
                             variant="b"
-                            mode={isSelected ? "activated" : "normal"}
+                            mode={!isDeleting && isSelected ? "activated" : "normal"}
                             disabled={isRevealing}
                             className={clsx(
                                 "ring-black",
-                                isSelected && "bg-amber-200 text-black ring-amber-300 hover:bg-amber-200 hover:text-black"
+                                isDeleting && isMarkedForDelete && "bg-red-200 text-black ring-red-300 hover:bg-red-200 hover:text-black",
+                                !isDeleting && isSelected && "bg-amber-200 text-black ring-amber-300 hover:bg-amber-200 hover:text-black"
                             )}
-                            onClick={() => toggleSelected(name)}
+                            onClick={() => isDeleting ? toggleDeleteSelection(name) : toggleSelected(name)}
                         >
                             {name}
                         </Button>
@@ -401,14 +488,33 @@ export function HelloAdmin() {
                     size="lg"
                     className="ring-black"
                     mode={helloBlip.selectedNames.length > 0 ? "activated" : "normal"}
-                    disabled={helloBlip.selectedNames.length === 0 || isRevealing}
+                    disabled={helloBlip.selectedNames.length === 0 || isRevealing || isDeleting}
                     onClick={handleWave}
                 >
                     {isRevealing ? "Waving..." : "Wave"}
                 </Button>
-                <div className="text-sm text-black/70">
-                    Click to queue names in order. Wave flips through a few random cards, then lands on each queued name and holds it for two seconds.
-                </div>
+                <Button
+                    type="button"
+                    size="lg"
+                    variant={isDeleting ? "c" : "b"}
+                    className="ring-black"
+                    disabled={isRevealing}
+                    onClick={() => isDeleting ? cancelDelete() : beginDelete()}
+                >
+                    {isDeleting ? "Cancel" : "Delete"}
+                </Button>
+                {isDeleting && (
+                    <Button
+                        type="button"
+                        size="lg"
+                        variant="c"
+                        className="ring-black"
+                        disabled={isRevealing}
+                        onClick={confirmDelete}
+                    >
+                        Delete
+                    </Button>
+                )}
             </div>
         </div>
     );

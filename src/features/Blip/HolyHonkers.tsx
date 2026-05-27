@@ -47,7 +47,7 @@ export default function HolyHonkers({ endBlip, variant, opts }: BlipProps) {
 
     let imgStyle = 'w-2/3';
     if (isSulfur) imgStyle = 'w-5/6';
-    if (isSailor) imgStyle = 'w-2/3 -translate-y-[0px]';
+    if (isSailor) imgStyle = 'w-2/3';
 
 
     return (

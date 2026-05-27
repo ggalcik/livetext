@@ -101,7 +101,7 @@ export default function BlipAdmin() {
                 )}
             </div>
             {ExtendedComponent && (
-                <div className="mt-2 border-t border-black/20 px-2 pt-2">
+                <div className="mt-2 border-t border-black/20 p-2">
                     <ExtendedComponent />
                 </div>
             )}
