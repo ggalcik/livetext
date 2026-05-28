@@ -228,7 +228,7 @@ export default function Hello({ endBlip }: BlipProps) {
         if (!isHoldingCurrent) return;
 
         if (firstWaveBright) {
-            playHelloWave2Sound();
+           // playHelloWave2Sound();
             return;
         }
 

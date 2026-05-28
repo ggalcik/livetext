@@ -20,6 +20,7 @@ function App() {
   const dividerClickTimeoutRef = useRef<number | null>(null);
   const dividerPointerStartRef = useRef<{ x: number; y: number } | null>(null);
   const dividerDidDragRef = useRef(false);
+  const dividerPendingDragRef = useRef(false);
   const [sceneAccordionData] = usePersistentState({
     storageKey: "SceneAccordion",
     schema: SceneAccordionDataSchema,
@@ -27,15 +28,22 @@ function App() {
   });
 
   useEffect(() => {
-    if (!isDraggingDivider) return;
-
     const handleMouseMove = (event: MouseEvent) => {
       if (!splitPaneRef.current) return;
-      if (dividerPointerStartRef.current) {
-        const { x, y } = dividerPointerStartRef.current;
-        if (Math.abs(event.clientX - x) > 3 || Math.abs(event.clientY - y) > 3) {
-          dividerDidDragRef.current = true;
-        }
+      if (!dividerPointerStartRef.current) return;
+
+      const { x, y } = dividerPointerStartRef.current;
+      const hasMovedEnough =
+        Math.abs(event.clientX - x) > 3 || Math.abs(event.clientY - y) > 3;
+
+      if (!hasMovedEnough) {
+        return;
+      }
+
+      if (dividerPendingDragRef.current) {
+        dividerPendingDragRef.current = false;
+        dividerDidDragRef.current = true;
+        setIsDraggingDivider(true);
       }
 
       const bounds = splitPaneRef.current.getBoundingClientRect();
@@ -48,20 +56,32 @@ function App() {
     };
 
     const stopDragging = () => {
+      dividerPendingDragRef.current = false;
       setIsDraggingDivider(false);
     };
-
-    document.body.style.cursor = "col-resize";
-    document.body.style.userSelect = "none";
 
     window.addEventListener("mousemove", handleMouseMove);
     window.addEventListener("mouseup", stopDragging);
 
     return () => {
-      document.body.style.cursor = "";
-      document.body.style.userSelect = "";
       window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("mouseup", stopDragging);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!isDraggingDivider) {
+      document.body.style.cursor = "";
+      document.body.style.userSelect = "";
+      return;
+    }
+
+    document.body.style.cursor = "col-resize";
+    document.body.style.userSelect = "none";
+
+    return () => {
+      document.body.style.cursor = "";
+      document.body.style.userSelect = "";
     };
   }, [isDraggingDivider]);
 
@@ -77,7 +97,7 @@ function App() {
     if (isDividerLocked) return;
     dividerPointerStartRef.current = { x: event.clientX, y: event.clientY };
     dividerDidDragRef.current = false;
-    setIsDraggingDivider(true);
+    dividerPendingDragRef.current = true;
   }
 
   function handleDividerClick(event: ReactMouseEvent<HTMLDivElement>) {
@@ -93,12 +113,14 @@ function App() {
     if (dividerDidDragRef.current) {
       dividerDidDragRef.current = false;
       dividerPointerStartRef.current = null;
+      dividerPendingDragRef.current = false;
       return;
     }
 
     dividerClickTimeoutRef.current = window.setTimeout(() => {
       setIsPopupShifted((previous) => !previous);
       dividerPointerStartRef.current = null;
+      dividerPendingDragRef.current = false;
       dividerClickTimeoutRef.current = null;
     }, 300);
   }
@@ -111,6 +133,7 @@ function App() {
 
     dividerPointerStartRef.current = null;
     dividerDidDragRef.current = false;
+    dividerPendingDragRef.current = false;
     setIsDraggingDivider(false);
     setIsDividerLocked((previous) => !previous);
   }

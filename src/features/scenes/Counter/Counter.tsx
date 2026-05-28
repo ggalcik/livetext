@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { MasterViewport } from "../../../components/MasterViewport/MasterViewport";
-import { Button } from "../../../components/Button";
 import { format, parse } from "date-fns";
 import './Counter.css';
 import { CounterSceneSchema, type Counter, type CounterHistory } from "./types";
@@ -204,24 +203,23 @@ function CounterRow({ counter, playSound, onIncrement, onDecrement }: ICounterRo
                 </div>
 
                 {live && onDecrement && onIncrement && (
-                    <div className="absolute -right-10 bottom-0 flex  items-center gap-10 opacity-0 transition-opacity duration-150 group-hover:opacity-100">
-                        <Button
-                            variant="b"
+                    <div className="absolute -right-12 top-0 translate-y-[-50%] flex items-center gap-14 opacity-0 transition-opacity duration-150 group-hover:opacity-100">
+                        <button
                             type="button"
-                            className="h-8 w-8  font-[Gabriola]   p-0 text-6xl leading-none shadow-lg"
+                            className="cursor-pointer bg-transparent p-0 font-[Gabriola] text-8xl leading-none text-inherit"
                             onClick={onDecrement}
+                            aria-label={`Decrease ${counter.name}`}
                         >
                             -
-                        </Button>                        <Button
-                            variant="b"
+                        </button>
+                        <button
                             type="button"
-                            className="h-8 w-8  font-[Gabriola]  p-0 text-6xl leading-none shadow-lg "
+                            className="cursor-pointer bg-transparent p-0 font-[Gabriola] text-8xl leading-none text-inherit"
                             onClick={onIncrement}
+                            aria-label={`Increase ${counter.name}`}
                         >
                             +
-                        </Button>                        
-
-
+                        </button>
                     </div>
                 )}
             </div>
