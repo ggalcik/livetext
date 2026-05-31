@@ -4,6 +4,7 @@ import orchestraRising from "../../local/panels/orchestra_rising.mp4";
 import orchestraFiller from "../../local/video/orchestra_filler.mp4";
 import applauseVid from "../../local/panels/end_applause.mp4";
 import booYouSuckVid from "../../local/panels/boo_you_suck.mp4";
+import orchestraImg from "./assets/orchestra.png";
 
 import { Button } from "../../components/Button";
 import type { BlipProps } from "./types";
@@ -11,8 +12,9 @@ import './Blip.css';
 
 import { gGlobal } from "../Global/global";
 import clsx from "clsx";
+import { MasterViewport } from "../../components/MasterViewport/MasterViewport";
 const DELAY_SECONDS = 3;
-
+const START_SLIDE = 0;
 
 type ClipChoice = "applause" | "boo";
 
@@ -27,6 +29,7 @@ export default function Orchestra({ endBlip }: BlipProps) {
   const [showControls, setShowControls] = useState(true);
   const [countdown, setCountdown] = useState<number | null>(null);
   const [fillerStartTime] = useState(() => 60 + Math.random() * (25 * 60 - 60));
+  const [currentSlide, setCurrentSlide] = useState(START_SLIDE);
 
   // null means we're still on orchestraRising
   const [selectedChoice, setSelectedChoice] = useState<ClipChoice | null>(null);
@@ -65,6 +68,8 @@ export default function Orchestra({ endBlip }: BlipProps) {
     // safety cleanup if component unmounts mid-countdown
     return () => window.clearInterval(intervalId);
   }
+
+
 
   // Keep the audible track separate while the filler video is visible.
   useEffect(() => {
@@ -118,10 +123,24 @@ export default function Orchestra({ endBlip }: BlipProps) {
     }
   }
 
+  // rotate picture animations
+  useEffect(() => {
+    // return; 
+
+    const interval = setInterval(() => {
+      setCurrentSlide(p => (p + 1) % 5)
+      // setCurrentSlide(1)
+    }, 10000);
+
+    return (() => clearInterval(interval))
+
+  }, [isRising, currentSlide]);
+
+
   return (
-    <div className="w-full h-full bg-black opacity-0 animate-fadein-orchestra">
+    <div className="w-full h-full relative bg-black opacity-0 animate-fadein-orchestra">
       {/* Controls at the top */}
-      <div className={clsx("absolute left-0 right-0 p-4 flex flex-col gap-3",
+      <div className={clsx("absolute left-0 right-0 p-4 flex z-10 flex-col gap-3",
         gGlobal.layout.crampedPortrait ? 'bottom-0' : 'top-0')}>
         {showControls && (
           <div className="flex flex-wrap gap-4">
@@ -159,17 +178,64 @@ export default function Orchestra({ endBlip }: BlipProps) {
       </div>
 
 
-      <div className={clsx("absolute w-[160%] top-10 left-0 right-0",
+      {/* <div className={clsx("absolute w-[160%] top-10 left-0 right-0",
         gGlobal.layout.crampedPortrait ? 'top-0' : 'bottom-0'
       )}>
-        <video ref={audioRef} className="hidden" playsInline />
+        <video ref={audioRef} className="hidden" playsInline           onEnded={handleEnded} />
         <video
           ref={videoRef}
           className="absolute -translate-x-[20%] w-[150%] "
           onEnded={handleEnded}
           playsInline
         />
-      </div>
+      </div> */}
+
+      {!selectedChoice &&
+
+        <MasterViewport name={"Blip_Orchestra"} needCtrl={true}>
+
+          <div className="absolute w-full h-full">
+            <img src={orchestraImg} className={clsx("absolute transition-opacity duration-5000",
+              currentSlide === 4 ? 'opacity-100  animate-orchestra-4' : 'opacity-0',
+              "scale-300 origin-bottom-right bottom-0 left-0"
+            )} />
+            <img src={orchestraImg} className={clsx("absolute transition-opacity duration-5000",
+              currentSlide === 3 ? 'opacity-100 animate-orchestra-3' : 'opacity-0',
+              "scale-400 origin-bottom-left bottom-0 left-0"
+            )} />
+            <img src={orchestraImg} className={clsx("absolute transition-opacity duration-5000",
+              currentSlide === 2 ? 'opacity-100 animate-orchestra-2' : 'opacity-0',
+              "scale-150 origin-top-right",
+              "top-0 right-0"
+            )} />
+            <img src={orchestraImg} className={clsx("absolute transition-opacity duration-5000",
+              currentSlide === 1 ? 'opacity-100 animate-orchestra-1' : 'opacity-0',
+              "scale-400 origin-bottom-left ",
+              "bottom-0 left-0"
+            )} />
+            <img src={orchestraImg} className={clsx("absolute transition-opacity duration-5000",
+              currentSlide === 0 ? 'opacity-100  animate-orchestra-0' : 'opacity-0',
+              "scale-130 origin-bottom animate-orchestra-0 translate-y-10",
+              "bottom-0 left-0"
+            )} />
+          </div>
+        </MasterViewport>
+
+      }
+
+      {/* <video ref={audioRef} className="hidden" playsInline onEnded={handleEnded} /> */}
+      {selectedChoice &&
+        <div className={clsx("absolute w-[160%] top-10 left-0 right-0",
+          gGlobal.layout.crampedPortrait ? 'top-0' : 'bottom-0'
+        )}>
+          <video
+            ref={videoRef}
+            className="absolute -translate-x-[20%] w-[150%] "
+            onEnded={handleEnded}
+            playsInline
+          />
+        </div>
+      }
     </div>
   );
 }

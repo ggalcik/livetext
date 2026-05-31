@@ -153,6 +153,14 @@
     }
 
     --animate-fadein-orchestra: fadein 10s linear forwards;
+
+    --animate-orchestra-0: orchestra-0 14s linear forwards;
+    --animate-orchestra-1: orchestra-1 14s linear forwards;
+    --animate-orchestra-2: orchestra-2 14s linear forwards;
+    --animate-orchestra-3: orchestra-3 14s linear forwards;
+    --animate-orchestra-4: orchestra-4 14s linear forwards;
+
+
     --animate-intonation-text: fadein 1.2s ease-out forwards;
 
     --animate-snail-blip: snail-blip 8s linear forwards;
@@ -160,6 +168,57 @@
     --animate-snail-universe: snail-universe 10s linear forwards;
 
     --animate-snail: snail 10s linear forwards;
+
+    @keyframes orchestra-0 {
+        0% {
+            transform: scale(130%);
+        }
+
+        100% {
+            transform: scale(180%);
+        }
+    }
+
+    @keyframes orchestra-1 {
+        0% {
+            transform: translate(-20%, 10%)
+        }
+
+        100% {
+            transform: translate(-40%, 10%)
+        }
+    }
+
+    @keyframes orchestra-2 {
+        0% {
+            transform: scale(400%) translate(30%, -20%)
+        }
+
+        100% {
+            transform: scale(260%) translate(40%, -40%)
+        }
+    }
+
+    @keyframes orchestra-3 {
+        0% {
+            transform: translate(-20%, 20%)
+        }
+
+        100% {
+            transform: translate(-40%, 20%)
+        }
+    }
+
+    @keyframes orchestra-4 {
+        0% {
+            transform: translate(0%, 0);
+        }
+
+        100% {
+            transform: translate(20%, 0);
+        }
+    }
+
 
     @keyframes snail-blip {
 
@@ -352,22 +411,24 @@
 
     @keyframes whyangry {
 
-        0%, 41.9% {
+        0%,
+        41.9% {
             transform: translateY(120%);
             opacity: 0.0;
         }
-        
+
         42% {
             transform: translateY(120%);
             opacity: 0.0;
         }
 
-        84%, 88% {
+        84%,
+        88% {
             transform: translateY(10%);
         }
 
 
- 
+
         100% {
             transform: translateY(0);
             opacity: 1;
@@ -377,7 +438,7 @@
     @keyframes whyangry-exit {
         0% {
             transform: translateY(0);
-            
+
         }
 
         100% {
@@ -424,13 +485,14 @@
             transform: translateX(0);
         }
     }
+
     @keyframes hellosign-on {
         from {
             background-color: #a6a09b;
         }
 
-       to {
-           background-color: white;
+        to {
+            background-color: white;
         }
     }
 

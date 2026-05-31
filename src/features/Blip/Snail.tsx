@@ -78,7 +78,7 @@ export default function Snail({ endBlip, variant, opts }: BlipProps) {
                     <div className="animate-snail-text-2 opacity-0  text-5xl">Ontological</div>
                     <div className="animate-snail-text-3 opacity-0  text-5xl">Snail</div>
                     <div className="animate-snail-text-4 opacity-0  text-2xl">that</div>
-                    <div className="animate-snail-text-5 opacity-0  text-5xl">Farts</div>
+                    <div className="animate-snail-text-5 opacity-0  text-5xl">Expresses</div>
                     <div className="animate-snail-text-6 opacity-0  text-5xl">Universes</div>
                 </div>
             }

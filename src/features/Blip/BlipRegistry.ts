@@ -19,22 +19,21 @@ export const BLIP_COMPONENTS: Record<IBlipType, BlipEntry> = {
   Snail: {
     component: Snail, opts: {},
     variants: ['1a', '1b', '2', '3', 'N']
-  }, Names: {
-    component: Names,
+  }, Hello: {
+    component: Hello,
+    extendedComponent: HelloAdmin,
     opts: {},
-    handlesDeactivate: true,
   }, "Holy Honkers": {
     component: HolyHonkers, opts: {},
     variants: ['sailor', 'sulfur'],
   },
-  Orchestra, Hello: {
-    component: Hello,
-    extendedComponent: HelloAdmin,
+  Orchestra,
+  Names: {
+    component: Names,
     opts: {},
+    handlesDeactivate: true,
   },
   'Mamma Mia': MammaMia,
-
-
   Goalpost,
   Egregore,
 }; 

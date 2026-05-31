@@ -50,6 +50,7 @@ export default function Hello({ endBlip }: BlipProps) {
         next: null,
     });
     const [holdPhase, setHoldPhase] = useState(0);
+    const helloBlipRef = useRef(helloBlip);
     const currentRef = useRef<string | null>(null);
     const runTokenRef = useRef(0);
     const isMountedRef = useRef(true);
@@ -65,6 +66,10 @@ export default function Hello({ endBlip }: BlipProps) {
     const isPanelVisible = runtime.phase !== "hidden";
     const isHoldingCurrent = runtime.phase === "holding" && current != null;
     const firstWaveBright = holdPhase % 2 === 0;
+
+    useEffect(() => {
+        helloBlipRef.current = helloBlip;
+    }, [helloBlip]);
 
     useEffect(() => {
         currentRef.current = current;
@@ -112,8 +117,10 @@ export default function Hello({ endBlip }: BlipProps) {
         });
     }, []);
 
-    const runWaveSequence = useCallback(async (token: number, targets: string[], allNames: string[]) => {
-        const initialCard = pickInitialRevealName(allNames, targets[0] ?? null);
+    const runWaveSequence = useCallback(async (token: number) => {
+        const initialTargets = [...helloBlipRef.current.selectedNames];
+        const initialAllNames = [...helloBlipRef.current.allNames];
+        const initialCard = pickInitialRevealName(initialAllNames, initialTargets[0] ?? null);
         playEnterSound();
         setRuntime({
             phase: "entering",
@@ -124,7 +131,14 @@ export default function Hello({ endBlip }: BlipProps) {
 
         let previousName = initialCard;
 
-        for (const target of targets) {
+        while (true) {
+            const { selectedNames, allNames } = helloBlipRef.current;
+            const target = selectedNames[0];
+
+            if (target == null) {
+                break;
+            }
+
             const revealSequence = buildRevealSequence(allNames, target, previousName);
 
             for (const revealName of revealSequence) {
@@ -154,14 +168,25 @@ export default function Hello({ endBlip }: BlipProps) {
 
             if (!(await waitForRun(token, CURRENT_HOLD_MS, isMountedRef, runTokenRef))) return;
 
+            const nextHellos = new Set(helloBlipRef.current.hellos ?? []);
+            nextHellos.add(target);
+            const nextSelectedNames = helloBlipRef.current.selectedNames.filter((name) => name !== target);
+            const nextHelloState = {
+                ...helloBlipRef.current,
+                selectedNames: nextSelectedNames,
+                hellos: helloBlipRef.current.allNames.filter((name) => nextHellos.has(name)),
+            };
+
+            helloBlipRef.current = nextHelloState;
+
             setHelloBlip((prev) => {
-                const nextHellos = new Set(prev.hellos ?? []);
-                nextHellos.add(target);
+                const persistedNextHellos = new Set(prev.hellos ?? []);
+                persistedNextHellos.add(target);
 
                 return {
                     ...prev,
                     selectedNames: prev.selectedNames.filter((name) => name !== target),
-                    hellos: prev.allNames.filter((name) => nextHellos.has(name)),
+                    hellos: prev.allNames.filter((name) => persistedNextHellos.has(name)),
                 };
             });
         }
@@ -189,8 +214,7 @@ export default function Hello({ endBlip }: BlipProps) {
 
         lastHandledRequestRef.current = requestId;
 
-        const targets = [...helloBlip.selectedNames];
-        if (targets.length === 0) {
+        if (helloBlip.selectedNames.length === 0) {
             setHelloBlip((prev) => ({
                 ...prev,
                 waveActive: false,
@@ -200,9 +224,8 @@ export default function Hello({ endBlip }: BlipProps) {
         }
 
         const token = ++runTokenRef.current;
-        void runWaveSequence(token, targets, [...helloBlip.allNames]);
+        void runWaveSequence(token);
     }, [
-        helloBlip.allNames,
         helloBlip.selectedNames,
         helloBlip.waveActive,
         helloBlip.waveRequestId,
@@ -228,12 +251,36 @@ export default function Hello({ endBlip }: BlipProps) {
         if (!isHoldingCurrent) return;
 
         if (firstWaveBright) {
-           // playHelloWave2Sound();
+            // playHelloWave2Sound();
             return;
         }
 
         playHelloWave1Sound();
     }, [firstWaveBright, isHoldingCurrent, playHelloWave1Sound, playHelloWave2Sound]);
+
+    useEffect(() => {
+        if (helloBlip.waveActive) return;
+        if (runtime.phase === "hidden" || runtime.phase === "exiting") return;
+
+        const token = ++runTokenRef.current;
+
+        void (async () => {
+            playExitSound();
+            setRuntime((prev) => ({
+                ...prev,
+                phase: "exiting",
+                next: null,
+            }));
+
+            if (!(await waitForRun(token, EXIT_ANIMATION_MS, isMountedRef, runTokenRef))) return;
+
+            setRuntime({
+                phase: "hidden",
+                current: null,
+                next: null,
+            });
+        })();
+    }, [helloBlip.waveActive, playExitSound, runtime.phase]);
 
     return (
         <div className="absolute inset-0 text-white">
@@ -271,21 +318,36 @@ export default function Hello({ endBlip }: BlipProps) {
                         )}
                     >
                         Hello.
-                        <div className={clsx("absolute border-amber-900 border-4 -right-12 h-0 w-10 bottom-4  bg-white",
-                        "transition-all  duration-300",
+                        {/* underbar */}
+                        <div className={clsx("absolute bg-amber-900 border-amber-900 border-4 -right-12 h-0 w-10 bottom-1  ",
+                            "transition-all  duration-300",
                             // "translate-y-0",
-                                                        isHoldingCurrent
-                                ? firstWaveBright ? "translate-y-2" : "translate-y-0"
-                                : "translate-y-2")} 
-                          />
-                        <div className={clsx("absolute border-amber-700 border-4 -right-14 h-0 w-12 bottom-6  bg-white",
+                            //                         isHoldingCurrent
+                            // ? firstWaveBright ? "translate-y-2" : "translate-y-0"
+                            // : "translate-y-2"
+                        )}
+                        />
+                        {/* overbar */}
+                        <div className={clsx("absolute bg-amber-700 border-amber-700 border-4 -right-18 h-0 w-16 bottom-6  ",
                             "transition-transform origin-bottom-left duration-300",
+                            // isHoldingCurrent
+                            //     ? firstWaveBright ? "-rotate-4" : "-rotate-32"
+                            //     : "-rotate-4")} />
                             isHoldingCurrent
-                                ? firstWaveBright ? "-rotate-4" : "-rotate-13"
-                                : "-rotate-4")} />
-                            {/* isHoldingCurrent
                                 ? firstWaveBright ? "-translate-y-2" : "-translate-y-4"
-                                : "-translate-y-2")} /> */}
+                                : "-translate-y-2")} />
+                        {/* circle */}
+                        <div className={clsx("absolute bg-amber-800 border-amber-800 shadow-lg shadow-black border-4 rounded-full -right-15 h-8 w-8 -bottom-2  ",
+                            "transition-transform origin-center duration-300",
+                            'flex font-sans text-2xl text-black justify-center align-center',
+                            isHoldingCurrent
+                                ? firstWaveBright ? "-rotate-4" : "-rotate-32"
+                                : "-rotate-4"
+                        )} >X</div>
+                        {/* isHoldingCurrent
+                                ? firstWaveBright ? "-rotate-4" : "-rotate-32"
+                              : "-rotate-4")} /> */}
+                        {/* hand  */}
                         <div
                             className={clsx(
                                 "absolute -top-2 -right-20 origin-bottom text-6xl -scale-x-100 transition-[rotate_transform]  duration-300",
@@ -330,11 +392,12 @@ export function HelloAdmin() {
         schema: HelloBlipSchema,
         fallback: createDefaultState(),
     });
-    const [isAdding, setIsAdding] = useState(false);
+    // const [isAdding, setIsAdding] = useState(false);
     const [draftName, setDraftName] = useState("");
     const [isDeleting, setIsDeleting] = useState(false);
     const [namesToDelete, setNamesToDelete] = useState<string[]>([]);
     const isRevealing = helloBlip.waveActive === true;
+    const normalizedDraftName = normalizeSearchText(draftName);
 
     function toggleSelected(name: string) {
         setHelloBlip((prev) => {
@@ -408,7 +471,17 @@ export function HelloAdmin() {
     }
 
     function handleWave() {
-        if (isRevealing || isDeleting || helloBlip.selectedNames.length === 0) return;
+        if (isRevealing) {
+            setHelloBlip((prev) => ({
+                ...prev,
+                selectedNames: [],
+                waveActive: false,
+                waveRequestId: undefined,
+            }));
+            return;
+        }
+
+        if (isDeleting || helloBlip.selectedNames.length === 0) return;
 
         setHelloBlip((prev) => ({
             ...prev,
@@ -431,10 +504,38 @@ export function HelloAdmin() {
 
     return (
         <div className="flex flex-col gap-3">
-            <div className="flex flex-wrap gap-2">
+            <div className="flex gap-3">
+                <Button
+                    type="button"
+                    size="lg"
+                    className="ring-black"
+                    mode={helloBlip.selectedNames.length > 0 ? "activated" : "normal"}
+                    disabled={isRevealing ? false : helloBlip.selectedNames.length === 0 || isDeleting}
+                    onClick={handleWave}
+                >
+                    {isRevealing ? "Stop" : "Wave"}
+                </Button>
+                
+                <input
+                    autoFocus
+                    type="text"
+                    value={draftName}
+                    onChange={(evt) => setDraftName(evt.target.value)}
+                    onKeyDown={handleInputKeyDown}
+                    className="h-9 rounded-lg border border-black px-3 text-black bg-white"
+                />
+
+            </div>
+
+            <div className="columns-5">
+                {/* <div className="flex flex-wrap gap-2"> */}
                 {getAlphaSortedNames(helloBlip.allNames).map((name) => {
                     const isSelected = helloBlip.selectedNames.includes(name);
                     const isMarkedForDelete = namesToDelete.includes(name);
+                    const isDraftMatch =
+                        // isAdding &&
+                        normalizedDraftName.length > 0 &&
+                        normalizeSearchText(name).includes(normalizedDraftName);
 
                     return (
                         <Button
@@ -443,11 +544,12 @@ export function HelloAdmin() {
                             size="lg"
                             variant="b"
                             mode={!isDeleting && isSelected ? "activated" : "normal"}
-                            disabled={isRevealing}
+                            // disabled={isRevealing}
                             className={clsx(
-                                "ring-black",
+                                "ring-black text-left mb-1 h-auto",
                                 isDeleting && isMarkedForDelete && "bg-red-200 text-black ring-red-300 hover:bg-red-200 hover:text-black",
-                                !isDeleting && isSelected && "bg-amber-200 text-black ring-amber-300 hover:bg-amber-200 hover:text-black"
+                                !isDeleting && isSelected && "bg-amber-200 text-black ring-amber-300 hover:bg-amber-200 hover:text-black",
+                                !isDeleting && !isSelected && isDraftMatch && "bg-amber-200 text-black ring-sky-300 hover:bg-sky-100 hover:text-black"
                             )}
                             onClick={() => isDeleting ? toggleDeleteSelection(name) : toggleSelected(name)}
                         >
@@ -456,51 +558,11 @@ export function HelloAdmin() {
                     );
                 })}
 
-                {isAdding ? (
-                    <div className="flex items-center gap-2">
-                        <input
-                            autoFocus
-                            type="text"
-                            value={draftName}
-                            onChange={(evt) => setDraftName(evt.target.value)}
-                            onKeyDown={handleInputKeyDown}
-                            className="h-9 rounded-lg border border-black px-3 text-black"
-                        />
-                        <Button
-                            type="button"
-                            size="lg"
-                            variant="c"
-                            className="ring-black"
-                            onClick={cancelAdd}
-                        >
-                            X
-                        </Button>
-                    </div>
-                ) : (
-                    <Button
-                        type="button"
-                        size="lg"
-                        disabled={isRevealing}
-                        className="min-w-10 ring-black"
-                        onClick={() => setIsAdding(true)}
-                    >
-                        +
-                    </Button>
-                )}
+            
             </div>
 
             <div className="flex items-center gap-2">
-                <Button
-                    type="button"
-                    size="lg"
-                    className="ring-black"
-                    mode={helloBlip.selectedNames.length > 0 ? "activated" : "normal"}
-                    disabled={helloBlip.selectedNames.length === 0 || isRevealing || isDeleting}
-                    onClick={handleWave}
-                >
-                    {isRevealing ? "Waving..." : "Wave"}
-                </Button>
-                <Button
+<Button
                     type="button"
                     size="lg"
                     variant={isDeleting ? "c" : "b"}
@@ -581,18 +643,23 @@ function pickInitialRevealName(allNames: string[], firstTarget: string | null) {
 
 function getAlphaSortedNames(names: string[]) {
     return [...names].sort((a, b) =>
-        getLetterOnlySortKey(a).localeCompare(getLetterOnlySortKey(b)) || a.localeCompare(b)
+        getAlphaNumericSortKey(a).localeCompare(getAlphaNumericSortKey(b), undefined, { numeric: true }) ||
+        a.localeCompare(b, undefined, { numeric: true })
     );
 }
 
-function getLetterOnlySortKey(name: string) {
-    const lettersOnly = name
+function getAlphaNumericSortKey(name: string) {
+    const alphaNumericOnly = name
         .normalize("NFKD")
         .replace(/[\u0300-\u036f]/g, "")
-        .replace(/[^a-z]/gi, "")
+        .replace(/[^a-z0-9]/gi, "")
         .toLowerCase();
 
-    return lettersOnly || name.toLowerCase();
+    return alphaNumericOnly || name.toLowerCase();
+}
+
+function normalizeSearchText(text: string) {
+    return text.trim().toLowerCase();
 }
 
 function waitForRun(

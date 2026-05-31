@@ -29,6 +29,9 @@ export const rheazonsData: RheazonEntry[] = [
                 "I want to be taken seriously, but my tiny legs make me look ridiculous.",
                 "Sulfur changed their name.",
                 "I'm tired of seeing the same old anger reasons and no one is giving me any new ones.",
+                "My custom fedora has been backordered for weeks and I haven't been able to show my face at any Warhammer expos.",
+
+"Jesus was going to handle the wine for my wedding, but all the water turned into Bud Lite Lime."
             ]
     },
     {
