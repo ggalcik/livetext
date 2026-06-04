@@ -138,7 +138,7 @@ export default function Orchestra({ endBlip }: BlipProps) {
 
 
   return (
-    <div className="w-full h-full relative bg-black opacity-0 animate-fadein-orchestra">
+    <div className="w-full h-full relative xbg-black xopacity-0 xanimate-fadein-orchestra">
       {/* Controls at the top */}
       <div className={clsx("absolute left-0 right-0 p-4 flex z-10 flex-col gap-3",
         gGlobal.layout.crampedPortrait ? 'bottom-0' : 'top-0')}>
@@ -190,7 +190,7 @@ export default function Orchestra({ endBlip }: BlipProps) {
         />
       </div> */}
 
-      {!selectedChoice &&
+      {!selectedChoice && false && 
 
         <MasterViewport name={"Blip_Orchestra"} needCtrl={true}>
 
@@ -215,7 +215,7 @@ export default function Orchestra({ endBlip }: BlipProps) {
             )} />
             <img src={orchestraImg} className={clsx("absolute transition-opacity duration-5000",
               currentSlide === 0 ? 'opacity-100  animate-orchestra-0' : 'opacity-0',
-              "scale-130 origin-bottom animate-orchestra-0 translate-y-10",
+              " origin-bottom animate-orchestra-0 translate-y-10",
               "bottom-0 left-0"
             )} />
           </div>
@@ -223,7 +223,7 @@ export default function Orchestra({ endBlip }: BlipProps) {
 
       }
 
-      {/* <video ref={audioRef} className="hidden" playsInline onEnded={handleEnded} /> */}
+      <video ref={audioRef} className="hidden" playsInline onEnded={handleEnded} />
       {selectedChoice &&
         <div className={clsx("absolute w-[160%] top-10 left-0 right-0",
           gGlobal.layout.crampedPortrait ? 'top-0' : 'bottom-0'

@@ -470,6 +470,13 @@ export function HelloAdmin() {
         cancelDelete();
     }
 
+    function resetWaves() {
+        setHelloBlip((prev) => ({
+            ...prev,
+            hellos: [],
+        }));
+    }
+
     function handleWave() {
         if (isRevealing) {
             setHelloBlip((prev) => ({
@@ -524,6 +531,16 @@ export function HelloAdmin() {
                     onKeyDown={handleInputKeyDown}
                     className="h-9 rounded-lg border border-black px-3 text-black bg-white"
                 />
+                <Button
+                    type="button"
+                    size="lg"
+                    variant="b"
+                    className="ml-auto ring-black"
+                    disabled={(helloBlip.hellos?.length ?? 0) === 0}
+                    onClick={resetWaves}
+                >
+                    Reset waves
+                </Button>
 
             </div>
 
@@ -532,6 +549,7 @@ export function HelloAdmin() {
                 {getAlphaSortedNames(helloBlip.allNames).map((name) => {
                     const isSelected = helloBlip.selectedNames.includes(name);
                     const isMarkedForDelete = namesToDelete.includes(name);
+                    const wasWaved = helloBlip.hellos?.includes(name) ?? false;
                     const isDraftMatch =
                         // isAdding &&
                         normalizedDraftName.length > 0 &&
@@ -541,14 +559,15 @@ export function HelloAdmin() {
                         <Button
                             key={name}
                             type="button"
-                            size="lg"
+                            size="med"
                             variant="b"
                             mode={!isDeleting && isSelected ? "activated" : "normal"}
                             // disabled={isRevealing}
                             className={clsx(
-                                "ring-black text-left mb-1 h-auto",
+                                "ring-black text-left mb-1 py-0.5 h-auto",
                                 isDeleting && isMarkedForDelete && "bg-red-200 text-black ring-red-300 hover:bg-red-200 hover:text-black",
                                 !isDeleting && isSelected && "bg-amber-200 text-black ring-amber-300 hover:bg-amber-200 hover:text-black",
+                                !isDeleting && !isSelected && wasWaved && "bg-stone-200 text-black ring-stone-300 hover:bg-stone-200 hover:text-black",
                                 !isDeleting && !isSelected && isDraftMatch && "bg-amber-200 text-black ring-sky-300 hover:bg-sky-100 hover:text-black"
                             )}
                             onClick={() => isDeleting ? toggleDeleteSelection(name) : toggleSelected(name)}

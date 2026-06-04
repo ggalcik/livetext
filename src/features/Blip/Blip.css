@@ -154,11 +154,11 @@
 
     --animate-fadein-orchestra: fadein 10s linear forwards;
 
-    --animate-orchestra-0: orchestra-0 14s linear forwards;
-    --animate-orchestra-1: orchestra-1 14s linear forwards;
-    --animate-orchestra-2: orchestra-2 14s linear forwards;
-    --animate-orchestra-3: orchestra-3 14s linear forwards;
-    --animate-orchestra-4: orchestra-4 14s linear forwards;
+    --animate-orchestra-0: orchestra-0 14s linear ;
+    --animate-orchestra-1: orchestra-1 14s linear ;
+    --animate-orchestra-2: orchestra-2 14s linear ;
+    --animate-orchestra-3: orchestra-3 14s linear ;
+    --animate-orchestra-4: orchestra-4 14s linear ;
 
 
     --animate-intonation-text: fadein 1.2s ease-out forwards;
