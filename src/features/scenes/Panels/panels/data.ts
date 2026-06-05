@@ -37,25 +37,25 @@ export const rheazonsData: RheazonEntry[] = [
                 "Because my tax dollars are sending crows to crow school.",
                 "Because the numbers didn't really mean anything and the island was just purgatory all along."
             ]
-    }, 
+    },
     {
         'DX Josh':
         [
             "The remote isn't working and spinning the batteries isn't helping anymore."
         ]
-    }, 
+    },
     {
         'geomiles61':
         [
             "The council rejected my request for my landscaping plans with a burning bush theme."
         ]
-    }, 
+    },
     {
         'Gray eyes':
         [
             "I forgot all of the Mason handshakes and now I have to buy my babies at full price."
         ]
-    }, 
+    },
     {
         'WithoutClaire':
         [

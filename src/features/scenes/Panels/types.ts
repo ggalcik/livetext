@@ -1,10 +1,11 @@
 import { z } from 'zod';
 
 export const panelTypes = [
-    'Chalkboard', 
-    'Hypotheticheck', 
-    'Aaaamennn', 
-    'Christolyzer'
+    'Chalkboard',
+    'Hypotheticheck',
+    'Aaaamennn',
+    'Christolyzer',
+    'Winner'
 ] as const;
 
 export const IPanelTypeSchema = z.enum(panelTypes);
@@ -59,4 +60,3 @@ export const IPanelSceneSchema = z.object({
 });
 
 export type IPanelScene = z.infer<typeof IPanelSceneSchema>;
-

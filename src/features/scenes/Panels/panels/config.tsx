@@ -6,6 +6,7 @@ import { HolyHonkers, HolyHonkersBackground } from "./HolyHonkers";
 import { Chalkboard, ChalkboardAdmin, ChalkboardBackground } from "./Chalkboard";
 import { Hypotheticheck, HypotheticheckAdmin, HypotheticheckBackground } from "./Hypotheticheck";
 import { Christolyzer, ChristolyzerAdmin, ChristolyzerBackground } from "./Christolyzer";
+import { Winner, WinnerAdmin, WinnerBackground } from "./Winner";
 
 export const panels: IPanels = {
 
@@ -35,7 +36,10 @@ export const panels: IPanels = {
         element: <Aaaaamennnn />,
         backgroundElement: <AaaaamennnnBackground />,
     },
-
-
-
+    'Winner': {
+        noViewport: true,
+        element: <Winner />,
+        backgroundElement: <WinnerBackground />,
+        adminElement: <WinnerAdmin />,
+    },
 }
