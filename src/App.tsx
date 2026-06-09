@@ -181,7 +181,7 @@ function App() {
                       style={{ marginLeft: isPopupShifted ? "50px" : undefined }}
                     >
                       <div
-                        className="pointer-events-none absolute left-0 right-0 z-20 border-t-2 border-dashed border-amber-300/80 -translate-y-5"
+                        className="pointer-events-none absolute left-0 right-0 z-20 border-t-2 border-dashed border-amber-300/80 -translate-y-5 opacity-40"
                         style={{ top: `${guideLineTop}%` }}
                       />
                       <PopupSceneContent

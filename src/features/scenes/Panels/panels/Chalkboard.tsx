@@ -12,7 +12,7 @@ import { gGlobal } from '../../../Global/global';
 
 
 export function ChalkboardBackground() {
-    return <div className="absolute top-0 left-0 w-full h-full bg-top bg-top bg-black bg-no-repeat opacity-80"
+    return <div className="absolute top-0 left-0 w-full h-full bg-top bg-black bg-no-repeat opacity-80"
         style={{ backgroundImage: `url(${chalkboardWall})` }}
     ></div>
 }
