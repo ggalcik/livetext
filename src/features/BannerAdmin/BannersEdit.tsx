@@ -14,7 +14,6 @@ interface IBannersEdit {
 export default function BannersEdit({ popupState, type }: IBannersEdit) {
   const { state, dispatch } = useLiveData();
   // const { visiblePopup, setVisiblePopup } = popupState;
-  const [isInTextarea, setIsInTextArea] = useState<number | null>(null);
   const [moveAnim, setMoveAnim] = useState<[string, string] | null>(null);
 
   const banners = type === 'rotating' ? state.banners : state.spots;
@@ -56,11 +55,9 @@ export default function BannersEdit({ popupState, type }: IBannersEdit) {
                 isActive={isActive}
                 moveAnim={(dir) => setMoveAnim([item.id, dir])} />
 
-              <AutoResizeTextarea
+                <AutoResizeTextarea
                 className="border p-2 w-full overflow-hidden bg-white"
                 value={item.text}
-                onFocus={() => setIsInTextArea(idx)}
-                onBlur={() => setIsInTextArea(null)}
                 onChange={(evt) =>
                   dispatch({
                     type: "banner/change",

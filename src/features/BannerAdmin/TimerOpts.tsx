@@ -1,7 +1,6 @@
 import clsx from "clsx";
 import type { LiveDataAction, Timer, TimerKey } from "../../context/LiveData/types";
 import RotateCountdown from "./RotateCountdown";
-import DisplayCountdown from "../../components/DisplayCountdown";
 
 interface ITimerOptsProps {
     timer: Timer;

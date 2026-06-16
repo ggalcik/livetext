@@ -3,6 +3,16 @@ import { MasterViewport } from "../../../components/MasterViewport/MasterViewpor
 import type { VideoSceneDataType } from "./types";
 import noVideo from "../../../assets/media-player-svgrepo-com.png";
 
+const videoModules = import.meta.glob("/src/local/video/*.mp4", {
+    eager: true,
+    import: "default",
+}) as Record<string, string>;
+
+const videoFiles = Object.keys(videoModules).map((path) => {
+    const parts = path.split("/");
+    const file = parts[parts.length - 1];
+    return { file, url: videoModules[path] };
+});
 
 const STORAGE_KEY = "videoScene";
 
@@ -82,7 +92,7 @@ export default function LiveVideoPlayer() {
 
     if (!sceneData?.live) return <NoVideo/>;
 
-    const videoUrl = `/src/local/video/${sceneData.live}`; // adjust to your file import scheme
+    const videoUrl = videoFiles.find((f) => f.file === sceneData.live)?.url ?? null;
 
     const handlePlayPause = () => {
         const video = videoRef.current;
@@ -121,14 +131,15 @@ export default function LiveVideoPlayer() {
 
 
             <MasterViewport name="video" needCtrl={true}>
-                <video
-                    ref={videoRef}
-                    src={videoUrl}
-                    loop={sceneData.opts.loop}
-                    autoPlay={sceneData.opts.autoplay}
-
-                    className="max-w-full border max-h-full"
-                />
+                {videoUrl && (
+                    <video
+                        ref={videoRef}
+                        src={videoUrl}
+                        loop={sceneData.opts.loop}
+                        autoPlay={sceneData.opts.autoplay}
+                        className="max-w-full border max-h-full"
+                    />
+                )}
             </MasterViewport>
 
             <div className="absolute w-11/12 top-4 right-4 flex items-center gap-2">

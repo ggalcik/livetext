@@ -3,7 +3,6 @@ import React from "react";
 import ItemDisplay from "./ItemDisplay";
 import { initialLiveDataState } from "../../../context/LiveData/LiveDataReducer";
 import type { Banner} from "../../../context/LiveData/types";
-import ItemDisplayWrong from "./ItemDisplayWrong";
 
 type ItemTransitionProps =
   | {

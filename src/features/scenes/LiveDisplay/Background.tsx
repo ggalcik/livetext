@@ -42,9 +42,6 @@ const backgroundMap: Record<BackgroundType, string> = {
 const baseClass =
   "absolute font-[Impact] text-red-300 animate-pulse text-2xl text-shadow-lg/80";
 
-const tssx = <div className="leading-normal text-red-800"></div>;
-
-
 const angerData = [
   ["So angry!!", "top-0 right-0 rotate-10"],
   ["grrr!", "top-5 right-25 -rotate-10"],

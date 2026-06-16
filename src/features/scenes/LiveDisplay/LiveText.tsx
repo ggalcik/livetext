@@ -1,4 +1,4 @@
-import { CSSTransition, TransitionGroup } from "react-transition-group";
+import { TransitionGroup } from "react-transition-group";
 import { NO_ACTIVE_BANNER, NO_ACTIVE_SPOT } from "../../../context/LiveData/types";
 import type { LiveDataState } from "../../../context/LiveData/types";
 import { initialLiveDataState } from "../../../context/LiveData/LiveDataReducer";
@@ -7,12 +7,8 @@ import Background from "./Background";
 import { MasterViewport } from "../../../components/MasterViewport/MasterViewport";
 
 import "./ItemTransitions.css";
-import { useEffect, useRef } from "react";
-import glog from "../../../components/glog";
 import { ItemTransition } from "./ItemTransition";
 import { ProgressWheel } from "../../../components/ProgressWheel";
-import RotateCountdown from "../../BannerAdmin/RotateCountdown";
-import { useLiveData } from "../../../context/LiveData";
 
 
 export default function LiveText({ state }: { state: LiveDataState }) {

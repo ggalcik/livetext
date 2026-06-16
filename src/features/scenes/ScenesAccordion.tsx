@@ -4,7 +4,6 @@ import type { PopupState } from "../../context/LiveData/types";
 import { Accordion } from "../Accordion/Accordion";
 import SceneAdmin from "./SceneAdmin";
 import { usePersistentState } from "../../hooks/usePersistentState";
-import glog from "../../components/glog";
 
 
 export default function ScenesAccordion({ popupState }: { popupState: PopupState }) {

@@ -2,10 +2,9 @@ import { useEffect, useRef, useState } from "react";
 
 // import noVideo from "../../../assets/media-player-svgrepo-com.png";
 import { MasterViewport } from "../../components/MasterViewport/MasterViewport";
-import { vidclipDefault, type VidSettings } from "./types";
+import { resolvePublicAssetPath } from "../../helpers/assetPaths";
+import type { VidSettings } from "./types";
 import PlayerControls from "./PlayerControls";
-import { VIDDIR } from "./config";
-import glog from "../../components/glog";
 
 interface IPlayer {
     vidSettings: VidSettings,
@@ -15,7 +14,7 @@ interface IPlayer {
 export default function Player({ vidSettings, handleVidStop}: IPlayer) {
     const [progress, setProgress] = useState(0);
     const videoRef = useRef<HTMLVideoElement>(null);
-    const { filename, loop, stayOnDone } = vidSettings;
+    const { filename, loop } = vidSettings;
 
 
 
@@ -33,7 +32,7 @@ export default function Player({ vidSettings, handleVidStop}: IPlayer) {
         return () => video.removeEventListener("timeupdate", update);
     }, [vidSettings]);
 
-    const videoUrl = `${VIDDIR}/${filename}`; // adjust to your file import scheme
+    const videoUrl = filename ? resolvePublicAssetPath(`video/${filename}`) : "";
 
 
     return (

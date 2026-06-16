@@ -1,5 +1,3 @@
-import { useEffect } from "react";
-import glog from "../../components/glog";
 import { gGlobal } from "../Global/global";
 
 interface IPlayerControls {

@@ -1,8 +1,7 @@
-import React, { useEffect, useState, forwardRef, type JSX } from "react";
+import React, { type JSX } from "react";
 import clsx from "clsx";
-import type { Banner, BannerCSS, BannerType } from "../../../context/LiveData/types";
+import type { Banner, BannerCSS } from "../../../context/LiveData/types";
 import { dateStr } from "../../../components/util";
-import glog from "../../../components/glog";
 
 interface ItemDisplayProps {
   banner: Banner;
@@ -70,20 +69,6 @@ function DisplayTextDivs(text: string): JSX.Element[] {
     );
   });
 }
-
-
-  function liveTextDisplay(text: string) {
-    if (!text.trim()) return "[no text]";
-    // return (textToDisplayIncorrect(text));
-
-
-    let newText = text;
-    // let newText = `${extra} ${text}`;
-    newText = newText.replace('[[d]]', dateStr('iii MMM d yyyy G'));
-    return newText.replace(/(?:\r\n|\r|\n)/g, "<br>");
-  }
-
-
 
 
   const returnItem = (

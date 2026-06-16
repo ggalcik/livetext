@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 import orchestraRising from "../../local/panels/orchestra_rising.mp4";
 import orchestraFiller from "../../local/video/orchestra_filler.mp4";

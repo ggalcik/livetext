@@ -1,7 +1,6 @@
 import { useRef, useState } from "react";
 import { MasterViewport } from "../../../components/MasterViewport/MasterViewport";
 
-const STEPS = 256;
 const DEFAULT_RED = [1];
 const DEFAULT_BLUE = [256];
 const DEFAULT_MARKS = { red: DEFAULT_RED, blue: DEFAULT_BLUE };

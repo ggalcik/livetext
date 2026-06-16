@@ -1,8 +1,6 @@
-import type { IPanel, IPanels } from "../types";
+import type { IPanels } from "../types";
 import dling from '/src/assets/ding.mp3';
-import { WhySoAngry, WhySoAngryAdmin, WhySoAngryBackground } from "./WhySoAngry";
 import { Aaaaamennnn, AaaaamennnnBackground } from "./Aaaamennnn";
-import { HolyHonkers, HolyHonkersBackground } from "./HolyHonkers";
 import { Chalkboard, ChalkboardAdmin, ChalkboardBackground } from "./Chalkboard";
 import { Hypotheticheck, HypotheticheckAdmin, HypotheticheckBackground } from "./Hypotheticheck";
 import { Christolyzer, ChristolyzerAdmin, ChristolyzerBackground } from "./Christolyzer";

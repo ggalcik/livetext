@@ -18,14 +18,17 @@ export default function BannerDisplay({ banner, defaultCSS, initialCSS }: Banner
   }, [banner]);
 
   function getVal<K extends keyof BannerCSS>(field: K): BannerCSS[K] {
-    const val = banner.bannerCSS[field] || defaultCSS[field] || initialCSS[field];
+    const val =
+      banner.bannerCSS[field] ??
+      defaultCSS[field] ??
+      initialCSS[field];
 
     if (val === undefined) {
       if (field === "textAlign") return "left" as BannerCSS[K];
       if (field === "onBox") return false as BannerCSS[K];
       return "" as BannerCSS[K];
     }
-    return val;
+    return val as BannerCSS[K];
   }
 
   function liveTextDisplay(text: string) {

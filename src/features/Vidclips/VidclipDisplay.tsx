@@ -1,10 +1,7 @@
 import { useEffect, useState } from "react";
-import { MasterViewport } from "../../components/MasterViewport/MasterViewport";
 import { usePersistentState } from "../../hooks/usePersistentState";
-import LiveVideoPlayer from "../scenes/Video/Video";
 import Player from "./Player";
 import { vidclipDefault, VidclipSchema, type VidSettings } from "./types";
-import glog from "../../components/glog";
 
 export default function VidclipDisplay() {
 

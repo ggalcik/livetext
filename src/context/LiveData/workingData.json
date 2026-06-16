@@ -1,121 +1,154 @@
- {
+{
   "backgroundOn": true,
   "backgroundImage": "Angry",
   "banners": [
     {
+      "id": "36igfjji49dvso03kby",
+      "text": "I'M AN ATHEIST AND I'M TOLD GOD IS ALL-LOVING\nGreat! So I'm going to heaven. Thanks, God!\nI will only take disagreements from true Christians on this[[font-size:60%;color:#fbb]]",
+      "bannerCSS": {
+        "font": "bold 40px/1.2 'Franklin Gothic Book'",
+        "textAlign": "left",
+        "backgroundColor": "#422",
+        "onBox": true,
+        "textShadow": "2px 2px black"
+      },
+      "type": "rotating",
+      "on": false
+    },
+    {
+      "id": "1vpr9zzmyml1oz8ako21",
+      "text": "I've done things God can't \n• Never required a blood sacrifice to forgive[[font-size:60%;color:#ffb]]\n• Coveted my neighbor's ox[[font-size:60%;color:#ffb]]\n• Said slavery is bad[[font-size:60%;color:#ffb]]\nI will only take disagreements from true Christians on this[[font-size:50%;color:#fbb]]\n",
+      "bannerCSS": {
+        "font": "bold 48px 'Agency FB', sans-serif",
+        "textAlign": "left",
+        "backgroundColor": "#448",
+        "onBox": true,
+        "textShadow": "2px 2px black"
+      },
+      "type": "rotating",
+      "on": false
+    },
+    {
+      "id": "x7effzfbaopj6a3ivb",
+      "text": "Christians: how excited are you for the end of the world?\nA) Very excited[[font-size:120%;color:#ffb]]\nB) The most excited[[font-size:120%;color:#ffb]]\nI will only discuss with true Christians[[font-size:90%;color:#bfb]]",
+      "bannerCSS": {
+        "padding": "30px",
+        "font": "30px/1.2 Impact",
+        "textAlign": "left",
+        "backgroundColor": "#32d",
+        "onBox": true,
+        "textShadow": "2px 2px black"
+      },
+      "type": "rotating",
+      "on": false
+    },
+    {
+      "id": "n81922wrp3dy3dxq93kuj",
+      "text": "If you can convince me that gold has objective value,[[color: #ffb;]]\nyou might be able to convince me there's an objective morality[[font-size: 70%;]]",
+      "bannerCSS": {
+        "font": "8cqw/1.2 'Berlin Sans FB','Agency FB'",
+        "onBox": true,
+        "textShadow": "1px 3px black"
+      },
+      "type": "rotating",
+      "on": false
+    },
+    {
+      "id": "xvaupymt0zw4m4fu80du",
+      "text": "Christians: \"something can come from nothing\"\nAtheists: \"no it can't, that's weird\"\nI will only take arguments from true Christians on this[[font-size: 50%;color:#bbb;font-weight: bold;font-family:sans-serif]]",
+      "bannerCSS": {
+        "font": "bold 7cqw/1.2 \"Calibri\"",
+        "textAlign": "left",
+        "backgroundColor": "#400",
+        "onBox": true
+      },
+      "type": "rotating",
+      "on": false
+    },
+    {
+      "id": "kq16qfvdcox9lombhndpj",
+      "text": "Your red letter bible is useless, there's no way we could know the exact words Jesus said\nI will only take arguments from true Christians on this[[font-size: 50%;color:#bf9;font-weight: bold;font-family:sans-serif]]",
+      "bannerCSS": {
+        "font": "bold 7cqw/1 \"Calibri\"",
+        "onBox": true,
+        "textShadow": "2px 2px black"
+      },
+      "type": "rotating",
+      "on": true
+    },
+    {
+      "id": "jo8krwp2yji2i85ic66h",
+      "text": "How could Eve have known that God wasn't lying?\n\nI will only take arguments from true Christians on this[[font-size: 50%;color:#bbb;font-weight: bold;font-family:sans-serif]]",
+      "bannerCSS": {
+        "font": "bold 40px/1 \"Calibri\"",
+        "backgroundColor": "#833",
+        "onBox": true
+      },
+      "type": "rotating",
+      "on": false
+    },
+    {
+      "id": "uw2ub58u3ikxhvfojoyak",
+      "text": "For God so loved his creation that he sent His only Son to sacrifice nothing at all[[font-size:80%]]\nThere is no objective morality, god did not write morality on our hearts[[color:yellow;]]\nThe bible is not a primary source of truth[[color:#4f5;font-style:italic;font-size:80%]]\nThe Bible only really says that God created the solar system, maybe[[color:yellow]]\ngod says slavery is a-o-k, seems bad[[font-size:80%;font-style:italic]]",
+      "bannerCSS": {
+        "font": "bold 36px 'Agency FB', sans-serif",
+        "textAlign": "center",
+        "backgroundColor": "#f33",
+        "onBox": true,
+        "textShadow": "1px 1px black"
+      },
+      "type": "rotating",
+      "on": false
+    },
+    {
+      "id": "xgmzqk4d7ei1gamb8qkm4",
+      "text": "The Elliot Fine-Tuning Defeater shows that the fine-tuning argument for the existence of god is self-defeating\n\nI will only take arguments from true Christians on this[[font-size: 50%;color:#bbb;font-weight: bold;font-family:sans-serif]]",
+      "bannerCSS": {
+        "font": "bold 34px/1 \"Calibri\"",
+        "color": "yellow",
+        "backgroundColor": "#234",
+        "onBox": true
+      },
+      "type": "rotating",
+      "on": false
+    },
+    {
+      "id": "yhe9xrhgqgodsj3t7wsu",
+      "text": "For God so loved his creation that he sent His only Son to sacrifice nothing at all\nI will only take disagreements from true Christians on this[[font-size:70%;color:#fbb]]",
+      "bannerCSS": {
+        "font": "bold 46px 'Agency FB', sans-serif",
+        "textAlign": "center",
+        "backgroundColor": "#f33",
+        "onBox": true,
+        "textShadow": "2px 1px black"
+      },
+      "type": "rotating",
+      "on": false
+    },
+    {
       "id": "lj1fgnhok49ay20hmxgn",
-      "text": "I AM AN ATHEIST\nchange my mind[[font-size: 70%]]",
+      "text": "The Problem of Suffering is simple[[font-size:70%;color:#fbb]]\nGOD DOESN'T CARE ABOUT YOU\nHis divine Plan means anything you think is bad is actually good[[font-size:70%;color:#fbb]]\nthis will be obvious to any true Christian[[font-size:50%]]",
       "bannerCSS": {
         "padding": "40px",
-        "font": "bold 50px \"arial rounded mt\"",
+        "font": "bold 46px 'Agency FB', sans-serif",
         "textAlign": "center",
+        "color": "#aff",
         "backgroundColor": "#82e",
         "onBox": true,
         "textShadow": "2px 2px black"
       },
       "type": "rotating",
-      "on": true
-    },
-    {
-      "id": "don42klcnx21w3erkxpi",
-      "text": "DON'T PRAY FOR ME\nIf you think prayer works,[[font-size:70%]]\nTAKE THE TIME TO PRAY FOR SOMEONE WHO REALLY NEEDS IT, DAMNIT",
-      "bannerCSS": {
-        "font": "34px/1.3 Arial black",
-        "textAlign": "center",
-        "color": "#ffc",
-        "backgroundColor": "#f00",
-        "onBox": true,
-        "textShadow": "4px 4px black"
-      },
-      "type": "rotating",
-      "on": true
+      "on": false
     },
     {
       "id": "lpokrtniy3",
-      "text": "P1: Jesus is eternal and unchanging\nP2: Sacrifice requires change\n\nC: Jesus sacrificed nothing",
+      "text": "Philbros all love Raisin Bran\n--CarpWrangler[[font-size: 60%;text-align:right;]]",
       "bannerCSS": {
         "padding": "40px 30px",
-        "font": "30px/1.3 Trebuchet MS",
-        "textAlign": "left",
+        "font": "43px/1.3 'Bernard MT Condensed'",
+        "textAlign": "center",
         "color": "#ff8",
-        "backgroundColor": "#88f",
-        "onBox": true,
-        "textShadow": "2px 2px black"
-      },
-      "type": "rotating",
-      "on": true
-    },
-    {
-      "id": "pd3a0sa8scwegy140878",
-      "text": "The worst theist arguments:[[font-size: 120%;text-decoration: underline]]\n\n1. What year is it?\n2. You can't see air \n3. Satan believes in God\n4. Atheists only exist with God",
-      "bannerCSS": {
-        "padding": "40px",
-        "font": "bold 24px/1.4 'Segoe Print',sans-serif",
-        "textAlign": "left",
-        "backgroundColor": "#282",
-        "onBox": true,
-        "textShadow": "1px 1px black"
-      },
-      "type": "rotating",
-      "on": true
-    },
-    {
-      "id": "1svu7nnxu8",
-      "text": "Slavery is bad[[font-size: 80%]]\nWE ALL* AGREE\nGod* doesn't, though[[font-size: 70%]]",
-      "bannerCSS": {
-        "padding": "40px",
-        "font": "bold 50px/1.3 'Berlin Sans FB'",
-        "textAlign": "center",
-        "backgroundColor": "#040",
-        "onBox": true
-      },
-      "type": "rotating",
-      "on": true
-    },
-    {
-      "id": "z8pu0pnk2bql1x5d2xrk",
-      "text": "If God knows everything then he doesn't have free will",
-      "bannerCSS": {
-        "padding": "30px",
-        "font": "46px/1.3 Impact",
-        "backgroundColor": "#222",
-        "onBox": true
-      },
-      "type": "rotating",
-      "on": true
-    },
-    {
-      "id": "puxg1uk3xrj7n2999fcl",
-      "text": "Show Me Your God Gives You An Objective Morality\nand he will give you one dollar[[font-size:60%]]",
-      "bannerCSS": {
-        "padding": "40px",
-        "font": "50px/1.3 Cooper",
-        "textAlign": "center",
-        "onBox": true,
-        "textShadow": "1px 1px black"
-      },
-      "type": "rotating",
-      "on": false
-    },
-    {
-      "id": "qrn3yw970d",
-      "text": "Your gifts add time to the timer and force me to endure more of this nonsense",
-      "bannerCSS": {
-        "font": "50px/1.3 Ariel",
-        "textAlign": "center",
-        "backgroundColor": "green",
-        "onBox": true
-      },
-      "type": "rotating",
-      "on": false
-    },
-    {
-      "id": "extkdesg59",
-      "text": "It takes more faith to have faith than to not have faith\nand you can quote me on that[[font-size: 70%]]",
-      "bannerCSS": {
-        "padding": "40px",
-        "font": "40px/1.3 sans-serif",
-        "textAlign": "center",
+        "backgroundColor": "#482",
         "onBox": true,
         "textShadow": "2px 2px black"
       },
@@ -124,9 +157,9 @@
     },
     {
       "id": "np2rjzecxd",
-      "text": "If God's rampage wasn't in the bible, you'd think he was a villain in a bad action movie",
+      "text": "GOD DID NOT WRITE MORALITY ON OUR HEARTS\nor he's really bad at it[[font-size: 70%]]",
       "bannerCSS": {
-        "font": "bold 50px/1.3 \"Agency FB\"",
+        "font": "60px/1.1 \"Berlin Sans FB\"",
         "textAlign": "center",
         "color": "#ff8",
         "backgroundColor": "#88f",
@@ -137,14 +170,134 @@
       "on": false
     },
     {
-      "id": "sjdqh5awxl",
-      "text": "Evolution has written on our hearts that there is no afterlife",
+      "id": "un69o347oflbzlv5kap58",
+      "text": "Why did God want Adam to live a life of ignorance?\nif you're a true Christian, explain that[[font-size: 50%;color:#faa]]",
       "bannerCSS": {
-        "font": "bold 50px/1.3 \"Calibri\"",
+        "font": "50px/1.1 \"Berlin Sans FB\"",
+        "textAlign": "center",
+        "backgroundColor": "#33e",
+        "onBox": true
+      },
+      "type": "rotating",
+      "on": false
+    },
+    {
+      "id": "1svu7nnxu8",
+      "text": "WE ALL* AGREE: Slavery is bad[[font-size: 80%]]\nGod** doesn't, though[[font-size: 70%]]\n* I am amazed to learn we all don't[[font-size: 40%;color:gray;text-align:right;text-shadow:0 0]]\n** of the Bible[[font-size: 40%;color:gray;text-align:right;text-shadow:0 0]]",
+      "bannerCSS": {
+        "padding": "20px",
+        "font": "60px/1.3 'Berlin Sans FB'",
+        "textAlign": "center",
+        "backgroundColor": "#040",
+        "onBox": true
+      },
+      "type": "rotating",
+      "on": false
+    },
+    {
+      "id": "z8pu0pnk2bql1x5d2xrk",
+      "text": "I'M AN ATHEIST[[font-size: 80%;color:gray]]\nGO AWAY[[font-size: 80%;color:gray]]",
+      "bannerCSS": {
+        "padding": "30px",
+        "font": "96px/1.3 Impact",
+        "textAlign": "center",
+        "color": "#faa",
+        "backgroundColor": "#222",
+        "onBox": true
+      },
+      "type": "rotating",
+      "on": false
+    },
+    {
+      "id": "tqj9jttpwupgvkdsgewf",
+      "text": "Jesus sacrificed nothing at all[[color:white]]\n[[line-height: 1]]\nwhat was the point of all that[[font-size: 70%;color:#faa]]\n[[line-height: 1]]\nI will only take arguments from true Christians on this[[font-size: 50%;color:#bbb;font-weight: bold;font-family:sans-serif]]",
+      "bannerCSS": {
+        "textAlign": "center",
+        "color": "#faa",
+        "backgroundColor": "#222",
+        "onBox": true
+      },
+      "type": "rotating",
+      "on": false
+    },
+    {
+      "id": "yjflr540p3at3v5rlg6w",
+      "text": "Do you think prayers work?[[font-weight:500;line-height:1]]\n[[font-weight:500;line-height:0.5]]\nMany people have prayed for me to find faith, so what's the problem[[font-size: 50%;]]",
+      "bannerCSS": {
+        "padding": "20px",
+        "font": "70px/1.3 'cALIBRI'",
+        "textAlign": "center",
+        "backgroundColor": "#399",
+        "onBox": true,
+        "textShadow": "2px 2px black"
+      },
+      "type": "rotating",
+      "on": false
+    },
+    {
+      "id": "bgumcbez1v9lqidnnnt5",
+      "text": "I don't have any sins,\nsin doesn't exist\n I will only take disagreements[[font-size: 50%;color:#aaa]]\nfrom true Christians[[font-size: 60%;color:#aaa]]",
+      "bannerCSS": {
+        "font": "50px Impact",
+        "textAlign": "center",
+        "backgroundColor": "#222",
+        "onBox": true
+      },
+      "type": "rotating",
+      "on": false
+    },
+    {
+      "id": "don42klcnx21w3erkxpi",
+      "text": "DON'T PRAY FOR ME\nIf you think prayer works, bring your[[font-size:60%]]\n\"THOUGHTS and PRAYERS\"[[font-size:80%]]\n to SOMEONE WHO REALLY NEEDS IT",
+      "bannerCSS": {
+        "font": "31px/1.3 Arial black",
+        "textAlign": "center",
+        "color": "#ff5",
+        "backgroundColor": "#f00",
+        "onBox": true,
+        "textShadow": "2px 2px #880"
+      },
+      "type": "rotating",
+      "on": false
+    },
+    {
+      "id": "sjdqh5awxl",
+      "text": "GOD'S OKAY WITH SLAVERY[[line-height: 1;]]\nseems kinda bad[[font-size: 60%;]]\nI will take arguments from true Christians [[font-size: 40%;;color:#faa]]",
+      "bannerCSS": {
+        "font": "bold 60px/1.3 \"Calibri\"",
         "textAlign": "center",
         "backgroundColor": "#400",
         "onBox": true,
         "textShadow": "2px 2px black"
+      },
+      "type": "rotating",
+      "on": false
+    },
+    {
+      "id": "pd3a0sa8scwegy140878",
+      "text": "The worst theist arguments:[[font-size: 120%;text-decoration: underline]]\n\n1. What year is it?\n2. You can't see air \n3. Satan believes in God\n4. Atheists only exist with God",
+      "bannerCSS": {
+        "padding": "40px",
+        "font": "bold 22px/1.4 'Segoe Print',sans-serif",
+        "textAlign": "left",
+        "backgroundColor": "#282",
+        "onBox": true,
+        "textShadow": "1px 1px black"
+      },
+      "type": "rotating",
+      "on": false
+    },
+    {
+      "id": "extkdesg59",
+      "text": "Faith is belief that can't be proven wrong[[font-size: 90%;line-height:1]]\nI do not have faith in scientific results, I have belief in them[[font-size: 70%;font-weight:bold;padding-top:20px]]",
+      "bannerCSS": {
+        "padding": "30px",
+        "font": "40px/1.3 serif",
+        "textAlign": "center",
+        "color": "#614",
+        "backgroundColor": "#f4f4f4",
+        "onBox": true,
+        "textShadow": "0px 0px black"
       },
       "type": "rotating",
       "on": false
@@ -155,48 +308,72 @@
     "font": "50px/1.3 impact",
     "textAlign": "right",
     "color": "white",
-    "backgroundColor": "#f89",
+    "backgroundColor": "#886",
     "onBox": false,
     "textShadow": "4px 4px black"
   },
-  "displayBanners": false,
-  "activeBanner": 1,
+  "displayBanners": true,
+  "activeBanner": 5,
   "spots": [
     {
       "id": "6lymdetz1yf",
-      "text": "I am 130 % angry!!!@![[line-height:1]]\nstats don't lie![[font-size: 40%; transform: translate(10%)]]",
+      "text": "I am 123% angy!!!@![[line-height:1]]\nstats don't lie![[font-size: 40%; transform: translate(10%)]]",
       "bannerCSS": {
         "padding": "60px 20px",
-        "font": "bold 70px/1.3  \"Agency FB\"",
+        "font": "bold 90px/1.3  \"Agency FB\"",
         "backgroundColor": "red",
         "onBox": true
       },
       "type": "spot"
     },
     {
-      "id": "jdrhx3cda8",
-      "text": "My favorite names today!\n\nFartnickle33\nAnniwoozle",
+      "id": "kd6oq6vwc6hnclysw7g3",
+      "text": "Today's question for true Christians:[[font-size: 60%;color:#ccf]]\nIf God doesn't exist,  why do you believe in him?",
       "bannerCSS": {
-        "color": "",
-        "backgroundColor": "#770077",
+        "padding": "20px 40px",
+        "font": "bold 50px/1.3 sans-serif",
         "onBox": true
       },
       "type": "spot"
     },
     {
-      "id": "8hzswknvgj",
-      "text": "The worst theist arguments:\n1. What year is it?\n2. You can't see air \n3. Satan believes in God\n4. Atheists only exist with God",
+      "id": "a1hffj1ufkiwbgyqh2ff4",
+      "text": "Question for believers 2500 years ago:[[font-size: 60%;color:#ccf]]\nIf Zeus doesn't exist,  why do you believe in him?",
       "bannerCSS": {
-        "textAlign": "left",
-        "backgroundColor": "#282"
+        "padding": "20px 40px",
+        "font": "bold 50px/1.3 sans-serif",
+        "backgroundColor": "#777"
       },
       "type": "spot"
     },
     {
-      "id": "fy8ix4pfughvowunnv6na",
-      "text": "Sulfur.",
+      "id": "91h8vbxdp5xnj3lbj15h",
+      "text": "Today's slightly rephrased question for believers:[[font-size: 60%;color:#ccf]]\nLet's say God doesn't exist. Why would you believe in him?",
       "bannerCSS": {
-        "padding": "100px"
+        "padding": "20px 40px",
+        "font": "bold 50px/1.3 sans-serif"
+      },
+      "type": "spot"
+    },
+    {
+      "id": "1ewd0h4si8bdjuqpfn5hh",
+      "text": "Today's question, turned around to atheists:[[font-size: 60%;color:#fdd]]\nIf God exists, why don't you believe in him?",
+      "bannerCSS": {
+        "padding": "20px 40px",
+        "font": "bold 50px/1.3 sans-serif",
+        "backgroundColor": "red",
+        "textShadow": "2px 2px black"
+      },
+      "type": "spot"
+    },
+    {
+      "id": "idv8sgsqhwjlts5kedpgi",
+      "text": "Today's actual, hidden question for believers:[[font-size: 60%;color:#afa]]\nIf you believe in God, can you engage with a hypothetical question?",
+      "bannerCSS": {
+        "padding": "20px 40px",
+        "font": "bold 44px/1.3 sans-serif",
+        "color": "",
+        "backgroundColor": "#494"
       },
       "type": "spot"
     },
@@ -216,7 +393,10 @@
     {
       "id": "kgggs3adazort5pt61kq",
       "text": "I am, in fact, an agnostic atheist.\nThis is not a contradiction.\nPlease refer to your local Google searching contraption for more details.",
-      "bannerCSS": {},
+      "bannerCSS": {
+        "font": "bold 50px sans-serif",
+        "textAlign": "right"
+      },
       "type": "spot"
     }
   ],
@@ -229,17 +409,17 @@
     "onBox": true,
     "textShadow": "4px 4px #444"
   },
-  "displaySpots": true,
-  "activeSpot": 2,
+  "displaySpots": false,
+  "activeSpot": 0,
   "timer": {
-    "on": false,
-    "interval": 11,
-    "countdown": null,
+    "on": true,
+    "interval": 61,
+    "countdown": 14,
     "waiting": false
   },
   "breakTimer": {
     "on": true,
-    "interval": 21,
+    "interval": 15,
     "countdown": 1,
     "waiting": true
   },

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import aaaamennnn from '../../../../../src/local/soundboard/aaaamennnn.mp3';
 import gregorius from './assets/in_nominae_gregorius_no.png';
 // import gregorius from './assets/in_nominae_gregorius_6.png';

@@ -1,10 +1,10 @@
 
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 import { TextWave } from '../../../../components/TextWave';
 import {hypothetichecks} from './data';
 import './Hypotheticheck.css';
-import { AudioController } from '../../../../components/AudioController';
 import { useAudio } from '../../../../hooks/useAudio';
+import { resolvePublicAssetPath } from '../../../../helpers/assetPaths';
 
 export function HypotheticheckBackground() {
 
@@ -18,7 +18,7 @@ export function HypotheticheckAdmin() {
 }
 
 export function Hypotheticheck() {
-    const audio = useAudio('/local/soundboard/cash_register.mp3');
+    const audio = useAudio(resolvePublicAssetPath("local/soundboard/cash_register.mp3"));
 
     useEffect(() => {
         audio.play();

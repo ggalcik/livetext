@@ -2,7 +2,6 @@ import { useEffect, useRef } from "react";
 import type { BlipProps } from "./types";
 import egregore1 from "../../features/scenes/Panels/panels/assets/egregore1.png";
 import egregore2 from "../../features/scenes/Panels/panels/assets/egregore2.png";
-import egregore3 from "../../features/scenes/Panels/panels/assets/egregore3.png";
 import egregore4 from "../../features/scenes/Panels/panels/assets/egregore4.png";
 import egregore_sound from "./assets/egregore 6.mp3"
 import './Blip.css';

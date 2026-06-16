@@ -1,6 +1,4 @@
-import type { Vidclip, VidSettings } from "./types";
-
-export const VIDDIR = '../../../video';
+import type { VidSettings } from "./types";
 
 export const VIDCLIPS:Record<string, VidSettings> = {
     "Molly's back e1": {

@@ -5,16 +5,17 @@ import { whoWantsToStarfield } from "../data";
 import './WhoWantsTo.css';
 import medallion from '../assets/whowants.png'
 import { AudioController } from "../../../components/AudioController";
-import { whoWantsToDefault, WhoWantsToSchema, type WhoWantsToAnswer, type WhoWantsToRound, type WhoWantsToStage } from "./types";
+import type { WhoWantsToAnswer, WhoWantsToRound, WhoWantsToStage } from "./types";
 import clsx from "clsx";
 import { useWhoWantsState } from "./helpers";
 import { gGlobal } from "../../Global/global";
+import { resolvePublicAssetPath } from "../../../helpers/assetPaths";
 
-const million_start = "/local/scenes/whowantsto/million 1-start w claps.mp3";
-const million_chat = "/local/scenes/whowantsto/million 2-ask.mp3";
-const million_tense = "/local/scenes/whowantsto/million 3-answer.mp3";
-const million_win = "/local/scenes/whowantsto/million 4-win.mp3";
-const million_lose = "/local/scenes/whowantsto/crowd lose.mp3";
+const million_start = resolvePublicAssetPath("local/scenes/whowantsto/million 1-start w claps.mp3");
+const million_chat = resolvePublicAssetPath("local/scenes/whowantsto/million 2-ask.mp3");
+const million_tense = resolvePublicAssetPath("local/scenes/whowantsto/million 3-answer.mp3");
+const million_win = resolvePublicAssetPath("local/scenes/whowantsto/million 4-win.mp3");
+const million_lose = resolvePublicAssetPath("local/scenes/whowantsto/crowd lose.mp3");
 
 const vid = true;
 const volume = 1;
@@ -92,11 +93,6 @@ export default function WhoWantsTo() {
         showText?: boolean,
         mode?: WhoBoxMode,
     }
-
-    function WhoText(str: string) {
-
-    }
-
 
     interface IWhoBoxOuter {
         children: React.ReactNode;

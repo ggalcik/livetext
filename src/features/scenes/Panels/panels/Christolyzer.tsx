@@ -1,8 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 // import aaaamennnn from '../../../../../src/local/soundboard/aaaamennnn.mp3';
 // import gregorius from './assets/in_nominae_gregorius_no.png';
-// import christolyzer from './assets/christolyzer.png';
-import christolyzer from './assets/christolyzer_booting.png';
 import christolyzerFail from './assets/christolyzer_red.png';
 import christolyzerWin from './assets/christolyzer_green.png';
 import christolyzerDarkLogo from './assets/christolyzer_darklogo2.png';

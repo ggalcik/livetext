@@ -1,10 +1,7 @@
 import clsx from "clsx";
 import { useState } from "react";
 import type { SceneType } from "../scenes/types";
-import PopupScene, { openPopup } from "../Popup/PopupScene";
-import { panelTypes } from "../scenes/Panels/types";
 import MiniSelect from "../scenes/Panels/MiniSelect";
-import glog from "../../components/glog";
 
 interface IAccordion<T extends string> {
     label: string;
@@ -30,8 +27,8 @@ export function Accordion<T extends string>({
     setSelectedLink,
     selectedRadio,
     setSelectedRadio,
-    boomerangRadio,
-    boomerangTarget,
+    boomerangRadio: _boomerangRadio,
+    boomerangTarget: _boomerangTarget,
     delay,
     boom = null,
     startOpen = false }: IAccordion<T>) {
@@ -51,13 +48,6 @@ export function Accordion<T extends string>({
         //     setIsOpen(true);
         // }
     }
-    // TODO: ugh doesn't apply to accordion, but is there a point to generalizing
-    function handleSceneSelect(evt: React.ChangeEvent<HTMLInputElement>, scene: T) {
-        // evt.preventDefault();
-        setSelectedRadio && setSelectedRadio(scene);
-    }
-
-
     return (
         <div className="">
             <div className={clsx("border-b cursor-pointer text-xs flex", {

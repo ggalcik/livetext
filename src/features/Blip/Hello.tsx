@@ -435,12 +435,12 @@ export function HelloAdmin() {
             };
         });
         setDraftName("");
-        setIsAdding(false);
+        // setIsAdding(false);
     }
 
     function cancelAdd() {
         setDraftName("");
-        setIsAdding(false);
+        // setIsAdding(false);
     }
 
     function beginDelete() {

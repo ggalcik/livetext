@@ -1,10 +1,7 @@
-import { MasterViewport } from "../../../components/MasterViewport/MasterViewport";
-
 import { IIntonementSceneSchema, type IIntonementType } from "./types";
 import snailWindow from './assets/snail_window.jpg';
 import { usePersistentState } from "../../../hooks/usePersistentState";
-import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
-import glog from "../../../components/glog";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { afterChants } from "./data";
 import { AudioController } from "../../../components/AudioController";
 import Snail from "../../Blip/Snail";

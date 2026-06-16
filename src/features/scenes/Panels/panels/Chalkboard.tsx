@@ -3,7 +3,6 @@ import chalkboard from './assets/chalkboard.png';
 import chalkboardWall from './assets/chalkboard_wall.png';
 import { usePersistentState } from '../../../../hooks/usePersistentState';
 import { boardDefault, defaultChalkboardPanel, IChalkboardPanelSchema, CHALKBOARD_FONTSIZE_MIN, CHALKBOARD_FONTSIZE_MAX } from './types';
-import glog from '../../../../components/glog';
 import './Chalkboard.css'
 import { useEffect, useState } from 'react';
 import plinkIn from './assets/plink_in.mp3';
@@ -184,9 +183,6 @@ export function Chalkboard() {
         };
     }, []);
 
-    const active = chalkboardPanel.active;
-
-
     function getActives() {
         const activeSet = chalkboardPanel.boardSets[chalkboardPanel.active];
         // glog("activeSet chalkboardPanel %o ", chalkboardPanel);
@@ -197,7 +193,7 @@ export function Chalkboard() {
     }
 
     function setActive(sel: number) {
-        const { activeSet, currentSet, currentBoard } = getActives();
+        const { currentSet } = getActives();
 
 
         const newSets = [...chalkboardPanel.boardSets];
@@ -333,7 +329,7 @@ export function Chalkboard() {
     };
 
 
-    const { activeSet, activeBoard, currentSet, currentBoard } = getActives();
+    const { activeBoard, currentSet, currentBoard } = getActives();
 
     return (
         <div className={`bg-[length:100%_100%] relative w-full h-full scale-90`}

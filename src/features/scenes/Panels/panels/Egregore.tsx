@@ -1,9 +1,7 @@
-import { useCallback, useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 // import aaaamennnn from '../../../../../src/local/soundboard/aaaamennnn.mp3';
 // import gregorius from './assets/in_nominae_gregorius_no.png';
 // import gregorius from './assets/in_nominae_gregorius_6.png';
-import egregore1 from './assets/egregore1.png';
-import egregore2 from './assets/egregore2.png';
 import egregore3 from './assets/egregore3.png';
 import './Egregore.css';
 
@@ -19,9 +17,6 @@ export function EgregoreBackground() {
 }
 
 export function Egregore() {
-
-
-  const audioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
     // audioRef.current = new Audio(aaaamennnn);

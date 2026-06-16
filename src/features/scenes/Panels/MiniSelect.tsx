@@ -1,16 +1,12 @@
 import { usePersistentState } from "../../../hooks/usePersistentState";
 import { IPanelSceneSchema, panelTypes, type IPanelType } from "./types"
-import { panels } from './panels/config';
-
 
 interface IMiniSelectProps {
     activate: () => void;
     boom?: ((delay: number) => void) | null;
 }
 
-export default function MiniSelect({ activate, boom }: IMiniSelectProps) {
-
-    const whatever = 'this';
+export default function MiniSelect({ activate, boom: _boom }: IMiniSelectProps) {
 
     const [panelScene, setPanelScene] = usePersistentState({
         storageKey: 'panelsScene',

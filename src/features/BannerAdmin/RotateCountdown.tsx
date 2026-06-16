@@ -1,7 +1,5 @@
 import { useEffect, useRef } from "react";
-import clsx from "clsx";
 import { useLiveData } from "../../context/LiveData";
-import type { Timer } from "../../context/LiveData/types";
 import glog from "../../components/glog";
 import DisplayCountdown from "../../components/DisplayCountdown";
 

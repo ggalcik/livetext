@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { persistentDataKeys } from "../../hooks/types";
 
 const STORAGE_KEYS = ["MasterViewports", "fontList", "liveData", "videoScene", "counterScene", "panelsScene"] as const;

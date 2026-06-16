@@ -3,6 +3,7 @@ import { z } from 'zod';
 import { Button } from '../../../../components/Button';
 import { MasterViewport } from '../../../../components/MasterViewport/MasterViewport';
 import { usePersistentState } from '../../../../hooks/usePersistentState';
+import winnerVideo from '../../../../local/video/winner.mp4';
 
 const winnerPanelStorageKey = 'winnerPanel' as const;
 
@@ -88,7 +89,7 @@ export function Winner() {
             <div className="w-full">
                 <video
                     ref={videoRef}
-                    src="/src/local/video/winner.mp4"
+                    src={winnerVideo}
                     className="block w-full h-auto"
                     playsInline
                     onEnded={() => setWinnerPanel((previous) => ({ ...previous, playing: false }))}

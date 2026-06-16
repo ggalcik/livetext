@@ -3,6 +3,7 @@ import captions from "./captions.json";
 import type { Caption } from "./types";
 import { MasterViewport } from "../../../components/MasterViewport/MasterViewport";
 import { gGlobal } from "../../Global/global";
+import { resolvePublicAssetPath } from "../../../helpers/assetPaths";
 
 /**
  * Canvas-based caption player: renders timed text onto <canvas> for tighter timing (<= 100ms).
@@ -16,6 +17,7 @@ const BOX_SIZE = 400; // px
 const FONT_BASIS = 300;
 const FONT_FAMILY = 'Elephant';
 const FONT_SIZE = 24; // px
+const atemporalAudio = resolvePublicAssetPath("local/soundboard/philbro_atemporal.mp3");
 const FONT_COLOR = "#FFF085";
 
 interface ICanvasCaptionPlayer {
@@ -35,7 +37,7 @@ export default function CanvasCaptionPlayer({ which, controls }:ICanvasCaptionPl
   // lazy-init audio
   function ensureAudio() {
     if (!audioRef.current) {
-      const el = new Audio("/local/soundboard/philbro_atemporal.mp3");
+      const el = new Audio(atemporalAudio);
       el.preload = "auto";
       el.onloadedmetadata = () => setDuration(el.duration || 0);
       el.onended = () => {

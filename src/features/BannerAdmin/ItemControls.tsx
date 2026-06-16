@@ -3,9 +3,7 @@ import BannerFormat from "./BannerFormat";
 import type { Banner, PopupState } from "../../context/LiveData/types";
 import { useLiveData } from "../../context/LiveData";
 import { useState } from "react";
-import clsx from "clsx";
 import { Button } from "../../components/Button";
-import glog from "../../components/glog";
 
 
 interface IItemControls {

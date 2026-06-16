@@ -7,7 +7,6 @@ import snailFart from './assets/Galaxy.png';
 import nyeh from './assets/nyeh.png';
 import type { BlipProps } from './types';
 import './Blip.css';
-import glog from '../../components/glog';
 import { gGlobal } from '../Global/global';
 
 import chant1a from './assets/snail_choral_1a.mp3';

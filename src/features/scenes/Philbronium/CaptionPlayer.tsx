@@ -1,8 +1,11 @@
 import { useRef, useState } from "react";
 import captions from "./captions.json";
 import type { Caption } from "./types";
+import { resolvePublicAssetPath } from "../../../helpers/assetPaths";
 
 const BOX_SIZE = 300;
+const atemporalCaptions = captions.atemporal as Caption[];
+const atemporalAudio = resolvePublicAssetPath("local/soundboard/philbro_atemporal.mp3");
 
 export default function CaptionPlayer() {
   const [playing, setPlaying] = useState(false);
@@ -12,7 +15,7 @@ export default function CaptionPlayer() {
 
   function togglePlay() {
     if (!audioRef.current) {
-      audioRef.current = new Audio("/local/soundboard/philbro_atemporal.mp3");
+      audioRef.current = new Audio(atemporalAudio);
 
       audioRef.current.onloadedmetadata = () => {
         setDuration(audioRef.current?.duration ?? 0);
@@ -87,7 +90,7 @@ export default function CaptionPlayer() {
         className="relative bg-black overflow-hidden"
         style={{ width: BOX_SIZE, height: BOX_SIZE, font: '20px Elephant' }}
       >
-        {(captions as Caption[])
+        {atemporalCaptions
           .filter((c) => elapsed >= c.start && elapsed <= (c.end + (c.fadeOut || 0)))
           .map((c, i) => {
             let opacity = 1;

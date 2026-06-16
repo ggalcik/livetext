@@ -1,5 +1,5 @@
 import { useEffect, useMemo } from "react";
-import { SlidesSceneSchema, SlidesSceneFallback, type SlidesScene } from "./types";
+import { SlidesSceneSchema, SlidesSceneFallback } from "./types";
 import { usePersistentState } from "../../../hooks/usePersistentState";
 
 export function SlidesAdmin() {

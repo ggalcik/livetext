@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { overlays, type OverlayType } from "./scenes/types";
 import { Accordion } from "./Accordion/Accordion";
-import glog from "../components/glog";
 import Soundboard from "./Soundboard/Soundboard";
 import Data from "./Data/Data";
 import FontReference from "./FontReference/FontReference";

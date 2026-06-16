@@ -1,10 +1,8 @@
 import { Button } from "../../../components/Button";
 import { usePersistentState } from "../../../hooks/usePersistentState"
-import glog from "../../../components/glog";
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState } from "react";
 import { IIntonementSceneSchema, intonementSections, type IIntonementType } from './types';
 import { intonations } from './data';
-import clsx from "clsx";
 
 const ADVANCE_DELAY = 1500;
 
@@ -90,7 +88,7 @@ export default function IntonationsAdmin() {
                 </Button>
 
                 <div className="border inline-flex bg-green-200 flex-col gap-2 p-2">
-                    {intonementSections.map((intonement, i) => {
+                    {intonementSections.map((intonement) => {
                         return (
                             <div key={intonement}>
                                 <Button className={

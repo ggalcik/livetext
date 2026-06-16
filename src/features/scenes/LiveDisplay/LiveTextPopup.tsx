@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import LiveText from "./LiveText";
 import {  type LiveDataState } from "../../../context/LiveData/types";
 import { loadInitialState } from "../../../context/LiveData/LiveDataReducer";
-import glog from "../../../components/glog";
 import { addPersistentStateListener } from "../../../hooks/persistentEvents";
 
 export default function LiveTextPopup({ embedded = false }: { embedded?: boolean }) {

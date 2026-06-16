@@ -1,45 +1,6 @@
 import clsx from "clsx";
 import type { BannerCSS, BannerType, LiveDataAction } from "../../context/LiveData/types";
-import { useEffect, useRef, useState, type CSSProperties } from "react";
-
-
-// when I want to put arbitrary css into a text box
-function parseStyleString(css: string): CSSProperties {
-  return css
-    .split(';')
-    .map(p => p.trim())
-    .filter(Boolean)
-    .reduce<CSSProperties>((acc, part) => {
-      const [prop, val] = part.split(':').map(s => s.trim());
-      if (!prop || !val) return acc;
-
-      const isValid = prop in document.body.style;
-      if (!isValid) return acc;  // skip unsupported property
-
-      const camel = prop.replace(/-([a-z])/g, (_, ch) => ch.toUpperCase());
-      (acc as any)[camel] = val;
-      return acc;
-    }, {});
-}
-
-function CssEditorBox() {
-  const [cssText, setCssText] = useState("padding: 10px; background-color: pink;");
-  const styleObj = parseStyleString(cssText);
-
-  return (
-    <div>
-      <textarea
-        value={cssText}
-        onChange={(e) => setCssText(e.target.value)}
-        rows={5}
-        className="block w-full p-2 border"
-      />
-      <div style={styleObj}>
-        <p>This box reflects your CSS!</p>
-      </div>
-    </div>
-  );
-}
+import { useEffect, useRef } from "react";
 
 interface LiveTextFormatOpts {
   bannerType: BannerType;

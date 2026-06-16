@@ -1,14 +1,9 @@
 import { MasterViewport } from "../../../components/MasterViewport/MasterViewport";
 
-import { IPanelSceneSchema, type IPanels, type IPanelType } from "./types";
+import { IPanelSceneSchema } from "./types";
 import { panels } from './panels/config';
 import { usePersistentState } from "../../../hooks/usePersistentState";
-import { useEffect, type ReactNode } from "react";
-import glog from "../../../components/glog";
-
-interface IPanelsProps {
-    which: IPanelType;
-}
+import type { ReactNode } from "react";
 
 export default function Panels() {
     const [panelScene] = usePersistentState({
@@ -16,11 +11,6 @@ export default function Panels() {
         schema: IPanelSceneSchema,
         fallback: { active: null }
     })
-
-        useEffect(() => {
-        
-    }, [panelScene.active]);
-
 
     const showPanel = panelScene.active?.panel;
     const element = showPanel ? panels[showPanel].element as ReactNode : <></>

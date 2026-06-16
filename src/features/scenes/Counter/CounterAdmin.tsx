@@ -1,46 +1,10 @@
 import { useState, useEffect } from "react";
-import { CounterSceneSchema, type Counter, type CounterScene } from "./types";
+import { CounterSceneSchema, type Counter } from "./types";
 import CounterAdminRow from "./CounterAdminRow";
 import { Button } from "../../../components/Button";
 import { usePersistentState } from "../../../hooks/usePersistentState";
 import { parse, format } from "date-fns";
 import { addCounter, doDayReset, sortAlphaUp, sortCheckedUp, todayKey } from "./counterHelpers";
-
-function DateSelector({
-    scene,
-    setScene,
-}: {
-    scene: CounterScene;
-    setScene: React.Dispatch<React.SetStateAction<CounterScene>>;
-}) {
-    const dates = Object.keys(scene.history ?? {}).sort().reverse();
-
-    const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        setScene({
-            ...scene,
-            showDate: e.target.value, // save directly in main state
-        });
-    };
-
-    return (
-        <div className="border p-2 max-w-xs">
-            <select
-                value={scene.showDate ?? "current"}
-                onChange={handleChange}
-                size={5} // shows 5 rows, scrollable
-                className="w-full border rounded"
-            >
-                <option value="current">current</option>
-                {dates.map((d) => (
-                    <option key={d} value={d}>
-                        {d}
-                    </option>
-                ))}
-            </select>
-        </div>
-    );
-}
-
 
 export default function CounterAdmin() {
 

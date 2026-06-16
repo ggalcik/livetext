@@ -115,16 +115,6 @@ export default function VideoSelector() {
     return () => video.removeEventListener("loadedmetadata", trySeek);
   }, [sceneData.preview, sceneData.files]);
 
-    const timeCode = (): string => {
-        const video = videoRef.current;
-        if (!video || !video.currentTime) return "";
-        const min = Math.floor(video.currentTime / 60);
-        const sec = Math.floor(video.currentTime % 60)
-            .toString()
-            .padStart(2, "0");
-        return `${min}:${sec}`;
-    }
-
   return (
     <div className="p-4 space-y-4">
       <div className="grid grid-cols-1 md:grid-cols-2 items-start gap-4">

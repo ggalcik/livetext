@@ -2,13 +2,12 @@ import { Button } from "../../../components/Button";
 import { usePersistentState } from "../../../hooks/usePersistentState"
 import { IPanelSceneSchema, panelTypes, type IPanelType } from "./types"
 import { panels } from './panels/config';
-import glog from "../../../components/glog";
-import { useEffect, type ReactNode } from "react";
+import type { ReactNode } from "react";
 
 interface IPanelsAdminProps {
     boomerang: ((delay: number) => void) | null;
 }
-export default function PanelsAdmin({ boomerang }: IPanelsAdminProps) {
+export default function PanelsAdmin({ boomerang: _boomerang }: IPanelsAdminProps) {
     const [panelScene, setPanelScene] = usePersistentState({
         storageKey: 'panelsScene',
         schema: IPanelSceneSchema,
@@ -23,12 +22,6 @@ export default function PanelsAdmin({ boomerang }: IPanelsAdminProps) {
             }
         )
     }
-
-    useEffect(() => {
-        return () => {
-            //  setPanelScene({ active: null })
-        };
-    }, [panelScene.active]);
 
     const activePanel = panelScene.active?.panel || null;
     const adminElement = activePanel && panels[activePanel].adminElement ? panels[activePanel]?.adminElement as ReactNode : null;

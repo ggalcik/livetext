@@ -1,8 +1,7 @@
-import React, { useEffect, useState, forwardRef } from "react";
+import React from "react";
 import clsx from "clsx";
-import type { Banner, BannerCSS, BannerType } from "../../../context/LiveData/types";
+import type { Banner, BannerCSS } from "../../../context/LiveData/types";
 import { dateStr } from "../../../components/util";
-import glog from "../../../components/glog";
 
 interface ItemDisplayProps {
   banner: Banner;
@@ -49,16 +48,6 @@ export default function ItemDisplay({ banner, defaultCSS, initialCSS, ref }: Ite
 
   function getTextLines(text: string): string[] {
     return text.split(/\r\n|\r|\n/);
-  }
-
-  function textToDisplay(text: string): string {
-    const lines = getTextLines(text);
-    const newLines = lines.map((line, idx) => {
-        <div key={idx}>{line}</div>
-      }
-    )
-
-    return newLines.join('');
   }
 
   function textToDisplayIncorrect(text: string): string {

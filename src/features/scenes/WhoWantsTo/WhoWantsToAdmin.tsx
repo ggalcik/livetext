@@ -7,7 +7,6 @@ import { useEffect, useState } from "react";
 import React from "react";
 import InlineEdit from "./InlineEdit";
 import { HoldToConfirmButton } from "../../../components/HoldToConfirmButton";
-import glog from "../../../components/glog";
 
 export default function WhoWantsToAdmin() {
 

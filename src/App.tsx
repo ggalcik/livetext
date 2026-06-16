@@ -1,13 +1,11 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./App.css";
 import { useEffect, useRef, useState, type MouseEvent as ReactMouseEvent } from "react";
 import { SingleWindow } from "./SingleWindow";
-import FontReference from "./features/FontReference/FontReference";
-import ScenesAccordion from "./features/scenes/ScenesAccordion";
-import PopupScene, { PopupSceneContent } from "./features/Popup/PopupScene";
 import OverlaysAccordion from "./features/OverlaysAccordion";
-import { usePersistentState } from "./hooks/usePersistentState";
+import ScenesAccordion from "./features/scenes/ScenesAccordion";
+import { SceneDisplay } from "./features/scenes/SceneDisplay";
 import { SceneAccordionDataSchema } from "./features/scenes/types";
+import { usePersistentState } from "./hooks/usePersistentState";
 
 function App() {
   const [visiblePopup, setVisiblePopup] = useState<string | null>(null);
@@ -139,71 +137,50 @@ function App() {
   }
 
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <SingleWindow
-              render={(isActive) =>
-                isActive ? (
-                  <div ref={splitPaneRef} className="flex h-screen overflow-hidden bg-gray-900">
-                    <div
-                      className="relative h-full shrink-0 overflow-auto bg-white"
-                      style={{ width: `${adminWidth}%` }}
-                    >
-                      {/* <div className="absolute top-4 right-4 z-10 border bg-white px-2">{version}</div> */}
+    <SingleWindow
+      render={(isActive) =>
+        isActive ? (
+          <div ref={splitPaneRef} className="flex h-screen overflow-hidden bg-gray-900">
+            <div
+              className="relative h-full shrink-0 overflow-auto bg-white"
+              style={{ width: `${adminWidth}%` }}
+            >
+              <OverlaysAccordion />
+              <ScenesAccordion popupState={{ visiblePopup, setVisiblePopup }} />
+            </div>
 
-                      {/* <div className="p-4 pr-18"> */}
-                        <OverlaysAccordion />
-                        <ScenesAccordion popupState={{ visiblePopup, setVisiblePopup }} />
-                      {/* </div> */}
-                    </div>
+            <div className="relative h-full w-0 shrink-0">
+              <div
+                className={`absolute z-30 flex h-8 w-8 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-sm border-2 border-stone-700 bg-stone-300 text-lg shadow-md select-none
+                  ${isDividerLocked
+                    ? "cursor-not-allowed bg-stone-600"
+                    : "cursor-move bg-stone-300 hover:bg-stone-200"}`}
+                style={{ top: `${guideLineTop}%` }}
+                onMouseDown={handleDividerMouseDown}
+                onClick={handleDividerClick}
+                onDoubleClick={toggleDividerLock}
+                title={isDividerLocked ? "Divider locked. Double-click to unlock." : "Drag to resize/mark. Double-click to lock."}
+              >
+                {isDividerLocked ? "L" : " "}
+              </div>
+            </div>
 
-                    <div className="relative h-full w-0 shrink-0">
-                      <div
-                        className={`absolute z-30 flex h-8 w-8 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-sm border-2 border-stone-700 bg-stone-300 text-lg shadow-md select-none 
-                          ${isDividerLocked 
-                            ? 'cursor-not-allowed bg-stone-600' 
-                            : 'cursor-move bg-stone-300 hover:bg-stone-200'}`}
-                        style={{ top: `${guideLineTop}%` }}
-                        onMouseDown={handleDividerMouseDown}
-                        onClick={handleDividerClick}
-                        onDoubleClick={toggleDividerLock}
-                        title={isDividerLocked ? "Divider locked. Double-click to unlock." : "Drag to resize/mark. Double-click to lock."}
-                      >
-                        {isDividerLocked ? "🔒" : " "}
-                      </div>
-                    </div>
-
-                    <div
-                      className="relative h-full min-w-0 flex-1 overflow-hidden bg-black"
-                      style={{ marginLeft: isPopupShifted ? "50px" : undefined }}
-                    >
-                      <div
-                        className="pointer-events-none absolute left-0 right-0 z-20 border-t-2 border-dashed border-amber-300/80 -translate-y-5 opacity-40"
-                        style={{ top: `${guideLineTop}%` }}
-                      />
-                      <PopupSceneContent
-                        sceneName={sceneAccordionData.sceneSelected}
-                        embedded
-                      />
-                    </div>
-                  </div>
-                ) : (
-                  <div className="p-10">another window opened, reload to yoink</div>
-                )
-              }
-            />
-          }
-        />
-        <Route path="/popup/:name?" element={<PopupScene />} />
-        {/* <Route path="/popup" element={<LiveTextPopup initialState={state} />} /> */}
-        <Route path="/fonts" element={<FontReference />}>
-
-        </Route>
-      </Routes>
-    </BrowserRouter>
+            <div
+              className="relative h-full min-w-0 flex-1 overflow-hidden bg-black"
+              style={{ marginLeft: isPopupShifted ? "50px" : undefined }}
+            >
+              <div
+                className="pointer-events-none absolute left-0 right-0 z-20 border-t-2 border-dashed border-amber-300/80 -translate-y-5 opacity-40"
+                style={{ top: `${guideLineTop}%` }}
+              />
+              <SceneDisplay sceneName={sceneAccordionData.sceneSelected} embedded />
+            </div>
+          </div>
+        ) : (
+          <div className="p-10">another window opened, reload to yoink</div>
+        )
+      }
+    />
   );
 }
 
