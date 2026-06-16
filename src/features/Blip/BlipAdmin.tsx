@@ -55,8 +55,8 @@ export default function BlipAdmin() {
         activeEntry && "component" in activeEntry ? activeEntry.extendedComponent : undefined;
 
     return (
-        <div className="bg-green-200">
-            <div className="flex gap-2 pt-2 pl-2">
+        <div className="">
+            <div className="bg-green-200 flex gap-2 p-2">
                 {blipTypes.map(blip => {
                     const isActive = blipData.showBlip === blip;
                     const registryEntry = BLIP_COMPONENTS[blip];
@@ -101,7 +101,7 @@ export default function BlipAdmin() {
                 )}
             </div>
             {ExtendedComponent && (
-                <div className="mt-2 border-t border-black/20 p-2">
+                <div className="bg-green-50 mt-2 border-t border-black/20 p-2">
                     <ExtendedComponent />
                 </div>
             )}
