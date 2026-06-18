@@ -91,7 +91,8 @@ export const hypothetichecks = [
 ]
 
 export const christolyzerQuestions = [
-    "Is it acceptable to pray for Mary's intercession?",
+        "Is God all-loving?",
+    "Is it acceptable to pray to Mary to talk to God on our behalf?",
     "Is it possible for non-Christians to get into heaven?",
     "Is it a sin to be homosexual?",
     "Are we all guilty of Adam's sin? (not just 'suffering the consequences': are we each guilty of the sin)",
