@@ -90,17 +90,14 @@ export function usePersistentState<
     loadState({ storageKey, schema, fallback })
   );
   const instanceIdRef = useRef(`${storageKey}-${Math.random().toString(36).slice(2)}`);
-  const syncOriginRef = useRef<"local" | "external" | null>(null);
-  const hasMountedRef = useRef(false);
 
   /**
    * Single, safe update path:
    * - Always compute `next` from the real `prev` inside the state updater (avoids stale closure issues).
-   * - Mark the update origin so persistence can happen after React commits.
+   * - Persist and broadcast immediately so other same-window hook instances
+   *   can observe the change even if this component unmounts right after.
    */
   const setState = (update: State | ((prev: State) => State)) => {
-    syncOriginRef.current = "local";
-
     _setState(prev => {
       const next =
         typeof update === "function"
@@ -108,6 +105,18 @@ export function usePersistentState<
           : update;
 
       glog.ups(`[${storageKey}] setState`, { prev, next });
+
+      try {
+        const serialized = JSON.stringify(next);
+        localStorage.setItem(storageKey, serialized);
+        dispatchPersistentStateEvent({
+          key: storageKey,
+          newValue: serialized,
+          sourceId: instanceIdRef.current,
+        });
+      } catch (e) {
+        console.warn(`Failed to save ${storageKey}`, e);
+      }
 
       return next;
     });
@@ -135,7 +144,6 @@ export function usePersistentState<
           return;
         }
 
-        syncOriginRef.current = "external";
         _setState(res.data);
 
         glog.ups(`[${storageKey}] storage sync applied`, { next: res.data });
@@ -160,33 +168,6 @@ export function usePersistentState<
       removePersistentListener();
     };
   }, [schema, storageKey]);
-
-  useEffect(() => {
-    if (!hasMountedRef.current) {
-      hasMountedRef.current = true;
-      syncOriginRef.current = null;
-      return;
-    }
-
-    if (syncOriginRef.current !== "local") {
-      syncOriginRef.current = null;
-      return;
-    }
-
-    try {
-      const serialized = JSON.stringify(state);
-      localStorage.setItem(storageKey, serialized);
-      dispatchPersistentStateEvent({
-        key: storageKey,
-        newValue: serialized,
-        sourceId: instanceIdRef.current,
-      });
-    } catch (e) {
-      console.warn(`Failed to save ${storageKey}`, e);
-    } finally {
-      syncOriginRef.current = null;
-    }
-  }, [state, storageKey]);
 
   if (dispatch) {
     return [state, setState, { dispatch }] as const;

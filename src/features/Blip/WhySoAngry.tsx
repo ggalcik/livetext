@@ -8,12 +8,75 @@ import { usePersistentState } from '../../hooks/usePersistentState';
 import { WhySoAngryBlipSchema, type BlipProps, type Rheason, type WhySoAngryBlip } from './types';
 import clsx from 'clsx';
 import glog from '../../components/glog';
+import { Button } from '../../components/Button';
+import { BlipDataSchema } from './types';
+import { produce } from 'immer';
 
 
 const EXIT_DURATION_MS = 700;
 const WHY_SO_ANGRY_STORAGE_KEY = 'whySoAngryBlip';
+const PICK_VARIANT = "Pick";
 
-export default function WhySoAngry({ endBlip, deactivateRequestId }: BlipProps) {
+export function WhySoAngryPick() {
+    const [whySoAngryBlip] = usePersistentState({
+        storageKey: WHY_SO_ANGRY_STORAGE_KEY,
+        schema: WhySoAngryBlipSchema,
+        fallback: { used: [] }
+    });
+    const [blipData, setBlipData] = usePersistentState({
+        storageKey: 'blipData',
+        schema: BlipDataSchema,
+        fallback: {}
+    });
+
+    if (blipData.showBlip !== "Why Angry" || blipData.showBlipVariant !== PICK_VARIANT) {
+        return null;
+    }
+
+    function selectRheason(index: number) {
+        setBlipData(produce((draft) => {
+            if (draft.showBlip !== "Why Angry" || draft.showBlipVariant !== PICK_VARIANT) {
+                return;
+            }
+
+            if (draft.showBlipSelection === index) {
+                draft.deactivateRequestId = Date.now();
+                return;
+            }
+
+            draft.showBlipSelection = index;
+            draft.deactivateRequestId = undefined;
+        }));
+    }
+
+    return (
+        <div className="columns-3 gap-2">
+            {rheazonsData.map((rheason, index) => {
+                const isSelected = blipData.showBlipSelection === index;
+                const isUsed = whySoAngryBlip.used.some((usedRheason) => isSameRheazon(usedRheason, rheason));
+
+                return (
+                    <Button
+                        key={`${rheason.person}-${index}`}
+                        type="button"
+                        size="med"
+                        variant="b"
+                        mode={isSelected ? "activated" : "normal"}
+                        className={clsx(
+                            "mb-2 h-auto w-full break-inside-avoid whitespace-normal py-1 text-left ring-black",
+                            isUsed && "bg-stone-200 hover:bg-stone-200"
+                        )}
+                        onClick={() => selectRheason(index)}
+                    >
+                        {rheason.saying}
+                    </Button>
+                );
+            })}
+        </div>
+    );
+}
+
+export default function WhySoAngry({ endBlip, deactivateRequestId, variant, selection }: BlipProps) {
     const audioInRef = useRef(new Audio(typewriter));
     const audioOutRef = useRef(new Audio(typewriterOut));
     const year = new Date().getFullYear();
@@ -23,10 +86,11 @@ export default function WhySoAngry({ endBlip, deactivateRequestId }: BlipProps) 
         fallback: { used: [] }
     });
     const [isExiting, setIsExiting] = useState(false);
-    const [activeRheason, setActiveRheason] = useState<Rheason | null>(null);
+    const [hasExitRequested, setHasExitRequested] = useState(false);
     const lastHandledDeactivateId = useRef<number | undefined>(undefined);
 
     const playSound = useCallback(() => {
+        audioInRef.current.currentTime = 0;
         audioInRef.current.play().catch((err) => {
             console.warn("Could not play sound:", err);
         });
@@ -53,14 +117,49 @@ export default function WhySoAngry({ endBlip, deactivateRequestId }: BlipProps) 
         return nextRheazon;
     }
 
-    useEffect(() => {
-        glog('WhoSoAngry - intro sound');
-        playSound();
-    }, []);
+    function activateSpecificRheason(rheason: Rheason, includeInUsed = false) {
+        setIsExiting(false);
+        setHasExitRequested(false);
+        setWhySoAngryBlip((prev) => ({
+            used: includeInUsed
+                ? [...prev.used, rheason]
+                : prev.used,
+            active: rheason,
+        }));
+    }
 
     useEffect(() => {
-        setActiveRheason(getNextRheazon());
-    }, []);
+        if (!variant) {
+            const nextRheason = getNextRheazon();
+            activateSpecificRheason(nextRheason);
+        }
+    }, [variant]);
+
+    useEffect(() => {
+        if (variant !== PICK_VARIANT || selection == null) {
+            return;
+        }
+
+        const selectedRheason = rheazonsData[selection];
+        if (!selectedRheason) {
+            return;
+        }
+
+        activateSpecificRheason(selectedRheason);
+    }, [selection, variant]);
+
+    useEffect(() => {
+        if (whySoAngryBlip.active) {
+            glog('WhoSoAngry - intro sound');
+            playSound();
+        }
+    }, [playSound, whySoAngryBlip.active]);
+
+    useEffect(() => {
+        if (hasExitRequested && !whySoAngryBlip.active) {
+            endBlip();
+        }
+    }, [endBlip, hasExitRequested, whySoAngryBlip.active]);
 
     useEffect(() => {
         if (!deactivateRequestId || deactivateRequestId === lastHandledDeactivateId.current) {
@@ -68,21 +167,30 @@ export default function WhySoAngry({ endBlip, deactivateRequestId }: BlipProps) 
         }
 
         lastHandledDeactivateId.current = deactivateRequestId;
+
+        if (!whySoAngryBlip.active) {
+            endBlip();
+            return;
+        }
+
         setIsExiting(true);
         playExitSound();
 
         const timeoutId = window.setTimeout(() => {
-            endBlip();
+            setHasExitRequested(true);
+            setWhySoAngryBlip((prev) => ({
+                used: prev.used,
+            }));
         }, EXIT_DURATION_MS);
 
         return () => window.clearTimeout(timeoutId);
-    }, [deactivateRequestId, endBlip, playExitSound]);
+    }, [deactivateRequestId, endBlip, playExitSound, whySoAngryBlip.active]);
 
-    if (!activeRheason) {
+    if (!whySoAngryBlip.active) {
         return null;
     }
 
-    const { person, saying } = activeRheason;
+    const { person, saying } = whySoAngryBlip.active;
 
     return (
         <div className={clsx(

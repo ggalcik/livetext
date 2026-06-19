@@ -18,6 +18,7 @@ export default function Blip() {
     setBlipData(produce((draft) => {
       draft.showBlip = undefined;
       draft.showBlipVariant = undefined;
+      draft.showBlipSelection = undefined;
       draft.deactivateRequestId = undefined;
     }));
 
@@ -47,6 +48,7 @@ export default function Blip() {
         endBlip={endBlip}
         deactivateRequestId={blipData.deactivateRequestId}
         variant={variant}
+        selection={blipData.showBlipSelection}
         opts={opts}
       />
     </div>

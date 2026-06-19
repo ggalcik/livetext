@@ -6,7 +6,7 @@ import MammaMia from "./MammaMia";
 import Names from "./Names";
 import Orchestra from "./Orchestra";
 import Snail from "./Snail";
-import WhySoAngry from "./WhySoAngry";
+import WhySoAngry, { WhySoAngryPick } from "./WhySoAngry";
 import type { BlipEntry, IBlipType } from "./types";
 
 
@@ -14,6 +14,10 @@ export const BLIP_COMPONENTS: Record<IBlipType, BlipEntry> = {
   "Why Angry": {
     component: WhySoAngry,
     opts: {},
+    variants: ["Pick"],
+    variantExtendedComponents: {
+      Pick: WhySoAngryPick,
+    },
     handlesDeactivate: true,
   },
   Snail: {

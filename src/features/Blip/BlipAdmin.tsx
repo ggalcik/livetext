@@ -18,6 +18,7 @@ export default function BlipAdmin() {
         setBlipData(produce((draft) => {
             draft.showBlip = undefined;
             draft.showBlipVariant = undefined;
+            draft.showBlipSelection = undefined;
             draft.deactivateRequestId = undefined;
         }));
     };
@@ -26,6 +27,7 @@ export default function BlipAdmin() {
         setBlipData(produce((draft) => {
             draft.showBlip = showBlip;
             draft.showBlipVariant = showBlipVariant;
+            draft.showBlipSelection = undefined;
             draft.deactivateRequestId = undefined;
         }));
     };
@@ -51,8 +53,15 @@ export default function BlipAdmin() {
     }
 
     const activeEntry = blipData.showBlip ? BLIP_COMPONENTS[blipData.showBlip] : undefined;
+    const activeVariantExtendedComponent =
+        activeEntry &&
+        "component" in activeEntry &&
+        blipData.showBlipVariant
+            ? activeEntry.variantExtendedComponents?.[blipData.showBlipVariant]
+            : undefined;
     const ExtendedComponent =
-        activeEntry && "component" in activeEntry ? activeEntry.extendedComponent : undefined;
+        activeVariantExtendedComponent ??
+        (activeEntry && "component" in activeEntry ? activeEntry.extendedComponent : undefined);
 
     return (
         <div className="">

@@ -10,6 +10,7 @@ export type IBlipType = z.infer<typeof blipTypeSchema>;
 export const BlipDataSchema = z.object({
     showBlip: blipTypeSchema.optional(),
     showBlipVariant: z.string().optional(),
+    showBlipSelection: z.number().optional(),
     deactivateRequestId: z.number().optional(),
 });
 export type BlipData = z.infer<typeof BlipDataSchema>;
@@ -21,6 +22,7 @@ export const RheasonSchema = z.object({
 export type Rheason = z.infer<typeof RheasonSchema>;
 
 export const WhySoAngryBlipSchema = z.object({
+    active: RheasonSchema.optional(),
     used: z.array(RheasonSchema),
 });
 export type WhySoAngryBlip = z.infer<typeof WhySoAngryBlipSchema>;
@@ -48,6 +50,7 @@ export type BlipProps = {
     endBlip: () => void,
     deactivateRequestId?: number,
     variant?: string,
+    selection?: number,
     opts?: Record<string, string|boolean>,
 };
 
@@ -56,6 +59,7 @@ type BlipOpts = Record<string, string | boolean>;
 export type BlipConfig = {
     component: React.ComponentType<BlipProps>;
     extendedComponent?: React.ComponentType;
+    variantExtendedComponents?: Record<string, React.ComponentType>;
     opts: BlipOpts;
     variants?: BlipVariant[];
     handlesDeactivate?: boolean;
