@@ -2,6 +2,7 @@ import React, { type JSX } from "react";
 import clsx from "clsx";
 import type { Banner, BannerCSS } from "../../../context/LiveData/types";
 import { dateStr } from "../../../components/util";
+import { combineBannerCSS, parseBannerCSS } from "../../../context/LiveData/bannerCss";
 
 interface ItemDisplayProps {
   banner: Banner;
@@ -14,28 +15,9 @@ interface ItemDisplayProps {
 
 
 export default function ItemDisplay({ banner, defaultCSS, initialCSS, ref }: ItemDisplayProps) {
-
-
-  function fallback(...values: (string | boolean | null | undefined)[]): string | boolean | undefined {
-    return values.find(v => v != null && v !== "") ?? undefined;
-  }
-
-  function getVal<K extends keyof BannerCSS>(field: K): BannerCSS[K] {
-    const val =
-      fallback(banner.bannerCSS[field],
-        defaultCSS[field],
-        initialCSS[field]
-      );
-
-    if (val !== undefined) {
-      return val as BannerCSS[K];
-    }
-    if (field === "textAlign") return "left" as BannerCSS[K];
-    if (field === "onBox") return false as BannerCSS[K];
-
-    // fallback for string-like fields
-    return "" as BannerCSS[K];
-  }
+  const bannerStyle = parseBannerCSS(
+    combineBannerCSS(initialCSS, defaultCSS, banner.bannerCSS)
+  );
 
 function DisplayTextDivs(text: string): JSX.Element[] {
   return text.split(/\r\n|\r|\n/).map((line, idx) => {
@@ -75,13 +57,7 @@ function DisplayTextDivs(text: string): JSX.Element[] {
 
     <div
       ref={ref}
-      style={{
-        padding: getVal("padding"),
-        textAlign: getVal("textAlign") as React.CSSProperties["textAlign"],
-
-        backgroundColor: getVal("onBox") ? getVal("backgroundColor") : "transparent"
-
-      }}
+      style={bannerStyle}
       className={clsx('opacity-100',
 
         "absolute",
@@ -90,13 +66,7 @@ function DisplayTextDivs(text: string): JSX.Element[] {
       )}
     >
       <div
-        style={{
-          backgroundColor: getVal("backgroundColor"),
-          textShadow: getVal("textShadow"),
-          color: getVal("color"),
-          font: getVal("font"),
-          // backgroundColor: getVal("onBox") ? getVal("backgroundColor") : "transparent",
-        }}
+        style={{}}
       >
         {DisplayTextDivs(banner.text)}
       </div>

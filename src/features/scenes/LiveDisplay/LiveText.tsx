@@ -9,6 +9,7 @@ import { MasterViewport } from "../../../components/MasterViewport/MasterViewpor
 import "./ItemTransitions.css";
 import { ItemTransition } from "./ItemTransition";
 import { ProgressWheel } from "../../../components/ProgressWheel";
+import { combineBannerCSS } from "../../../context/LiveData/bannerCss";
 
 
 export default function LiveText({ state }: { state: LiveDataState }) {
@@ -20,14 +21,14 @@ export default function LiveText({ state }: { state: LiveDataState }) {
   const activeBannerIndex = state.activeBanner;
   const activeSpotIndex = state.activeSpot;
 
-  const defaultBannerCSS = {
-    ...initialLiveDataState.defaultBannerCSS,
-    ...state.defaultBannerCSS,
-  };
-  const defaultSpotCSS = {
-    ...initialLiveDataState.defaultSpotCSS,
-    ...state.defaultSpotCSS,
-  };
+  const defaultBannerCSS = combineBannerCSS(
+    initialLiveDataState.defaultBannerCSS,
+    state.defaultBannerCSS
+  );
+  const defaultSpotCSS = combineBannerCSS(
+    initialLiveDataState.defaultSpotCSS,
+    state.defaultSpotCSS
+  );
 
   const showBanner =
     activeBannerIndex !== NO_ACTIVE_BANNER &&

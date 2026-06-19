@@ -1,5 +1,3 @@
-
-import BannerFormat from "./BannerFormat";
 import type { Banner, PopupState } from "../../context/LiveData/types";
 import { useLiveData } from "../../context/LiveData";
 import { useState } from "react";
@@ -21,6 +19,8 @@ export default function ItemControls({ item, idx, total, popupState, isActive = 
     const { state, dispatch } = useLiveData();
     const [confirmDelete, setConfirmDelete] = useState(false);
     const activeType = item.type === 'rotating' ? 'activeBanner' : 'activeSpot';
+    const formatKey = `${item.type}_${idx}`;
+    const isFormatting = visiblePopup === formatKey;
 
     function handleDelete(idx: number) {
         if (confirmDelete) {
@@ -65,34 +65,17 @@ export default function ItemControls({ item, idx, total, popupState, isActive = 
                     }}>S</Button>
             }
             <Button
+                mode={isFormatting ? "activated" : undefined}
                 onClick={() => {
-                    if (visiblePopup === `${item.type}_${idx}`) {
+                    if (isFormatting) {
                         setVisiblePopup(null);
                     } else {
-                        setVisiblePopup(`${item.type}_${idx}`);
+                        setVisiblePopup(formatKey);
                     }
                 }}
             >
                 Format
             </Button>
-            {/* // TODO: this relative box is causing formatting issues when active
-        //  */}
-            {visiblePopup == `${item.type}_${idx}` && (
-                <div className="relative z-10">
-                    <div className="absolute top-1/2 -translate-y-1/2">
-                        <BannerFormat
-                            bannerType={item.type}
-                            idx={idx}
-                            css={item.type === 'rotating' ?
-                                state.banners[idx].bannerCSS :
-                                state.spots[idx].bannerCSS}
-                            dispatch={dispatch}
-                            defaultCSS={item.type === 'rotating' ? state.defaultBannerCSS : state.defaultSpotCSS}
-                            hideThis={() => setVisiblePopup(null)}
-                        />
-                    </div>
-                </div>
-            )}
 
             <Button
                 type="button"
