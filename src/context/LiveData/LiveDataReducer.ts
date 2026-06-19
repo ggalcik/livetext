@@ -4,10 +4,27 @@ import { createBanner, createSpot, NO_ACTIVE_BANNER } from "./types";
 import type { LiveDataState, LiveDataAction, Banner } from "./types";
 import { LiveDataStateSchema, makeInitialLiveDataState } from './types';
 import { dispatchPersistentStateEvent } from "../../hooks/persistentEvents";
+import { normalizeBannerCSS } from "./bannerCss";
 
 import workingData from "./workingData.json";
 
 export const initialLiveDataState = makeInitialLiveDataState();
+
+function loadApplicationDefaultState(): LiveDataState {
+  try {
+    const result = LiveDataStateSchema.safeParse(workingData);
+    if (result.success) {
+      return result.data;
+    }
+    console.warn("Invalid workingData.json:", result.error.format());
+  } catch (e) {
+    console.warn("Unable to load workingData.json", e);
+  }
+
+  return initialLiveDataState;
+}
+
+const applicationDefaultState = loadApplicationDefaultState();
 
 export function loadInitialState(): LiveDataState {
   // 1. Try localStorage
@@ -17,7 +34,11 @@ export function loadInitialState(): LiveDataState {
       const parsed = JSON.parse(stored);
       const result = LiveDataStateSchema.safeParse(parsed);
       if (result.success) {
-        return result.data;
+        return {
+          ...result.data,
+          defaultBannerCSS: applicationDefaultState.defaultBannerCSS,
+          defaultSpotCSS: applicationDefaultState.defaultSpotCSS,
+        };
       } else {
         console.warn("Invalid localStorage data:", result.error.format());
       }
@@ -26,16 +47,9 @@ export function loadInitialState(): LiveDataState {
     console.warn("Unable to load from localStorage", e);
   }
 
-  // 2. Try workingData.json
-  try {
-    const result = LiveDataStateSchema.safeParse(workingData);
-    if (result.success) {
-      return result.data;
-    } else {
-      console.warn("Invalid workingData.json:", result.error.format());
-    }
-  } catch (e) {
-    console.warn("Unable to load workingData.json", e);
+  // 2. Try application defaults
+  if (applicationDefaultState) {
+    return applicationDefaultState;
   }
 
   // 3. Fallback
@@ -111,12 +125,13 @@ export function liveDataReducer(state: LiveDataState, action: LiveDataAction): L
       const bannersKey = action.payload.type === 'rotating' ? 'banners' : 'spots';
       const activeKey = action.payload.type === 'rotating' ? 'activeBanner' : 'activeSpot';
       const activeBanner = (bannersKey === 'banners' ? state.activeBanner : state.activeSpot) ?? 0;
-
       const addAtIdx = action.payload.idx;
+      const defaultCSS =
+        bannersKey === "banners" ? state.defaultBannerCSS : state.defaultSpotCSS;
 
       const newBanners = [
         ...state[bannersKey].slice(0, addAtIdx),
-        bannersKey === 'banners' ? createBanner() : createSpot(),
+        bannersKey === 'banners' ? createBanner(defaultCSS) : createSpot(defaultCSS),
         ...state[bannersKey].slice(addAtIdx),
       ];
       return {
@@ -196,6 +211,41 @@ export function liveDataReducer(state: LiveDataState, action: LiveDataAction): L
         ...state,
         [key]: items,
         [activeKey]: newActive,
+      };
+    }
+    case "banner/sortActiveFirst": {
+      const { type } = action.payload;
+      const key = type === "rotating" ? "banners" : "spots";
+      const activeKey = type === "rotating" ? "activeBanner" : "activeSpot";
+      const items = state[key];
+
+      if (type !== "rotating") {
+        return state;
+      }
+
+      const activeItemId =
+        state[activeKey] === null ? null : items[state[activeKey]]?.id ?? null;
+
+      const sortedItems = [
+        ...items.filter(
+          (item): item is typeof item & { type: "rotating" } =>
+            item.type === "rotating" && item.on
+        ),
+        ...items.filter(
+          (item): item is typeof item & { type: "rotating" } =>
+            item.type === "rotating" && !item.on
+        ),
+      ];
+
+      const newActive =
+        activeItemId === null
+          ? state[activeKey]
+          : sortedItems.findIndex((item) => item.id === activeItemId);
+
+      return {
+        ...state,
+        [key]: sortedItems,
+        [activeKey]: newActive === -1 ? state[activeKey] : newActive,
       };
     }
     case "banner/toggle":
@@ -320,23 +370,14 @@ export function liveDataReducer(state: LiveDataState, action: LiveDataAction): L
 
     case "bannerCSS": {
       if (action.payload.banner === "default") {
-        return {
-          ...state,
-          defaultBannerCSS: {
-            ...state.defaultBannerCSS,
-            ...action.payload.cssPayload,
-          },
-        };
+        return state;
       }
 
       const updatedBanners = state.banners.map((banner, index) => {
         if (index !== action.payload.banner) return banner;
         return {
           ...banner,
-          bannerCSS: {
-            ...banner.bannerCSS,
-            ...action.payload.cssPayload,
-          },
+          bannerCSS: normalizeBannerCSS(action.payload.css),
         };
       });
 
@@ -348,23 +389,14 @@ export function liveDataReducer(state: LiveDataState, action: LiveDataAction): L
 
     case "spotCSS": {
       if (action.payload.spot === "default") {
-        return {
-          ...state,
-          defaultSpotCSS: {
-            ...state.defaultSpotCSS,
-            ...action.payload.cssPayload,
-          },
-        };
+        return state;
       }
 
       const updatedSpots = state.spots.map((spot, index) => {
         if (index !== action.payload.spot) return spot;
         return {
           ...spot,
-          bannerCSS: {
-            ...spot.bannerCSS,
-            ...action.payload.cssPayload,
-          },
+          bannerCSS: normalizeBannerCSS(action.payload.css),
         };
       });
 

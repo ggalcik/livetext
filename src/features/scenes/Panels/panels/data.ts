@@ -40,27 +40,27 @@ export const rheazonsData: RheazonEntry[] = [
     },
     {
         'DX Josh':
-        [
-            "The remote isn't working and spinning the batteries isn't helping anymore."
-        ]
+            [
+                "The remote isn't working and spinning the batteries isn't helping anymore."
+            ]
     },
     {
         'geomiles61':
-        [
-            "The council rejected my request for my landscaping plans with a burning bush theme."
-        ]
+            [
+                "The council rejected my request for my landscaping plans with a burning bush theme."
+            ]
     },
     {
         'Gray eyes':
-        [
-            "I forgot all of the Mason handshakes and now I have to buy my babies at full price."
-        ]
+            [
+                "I forgot all of the Mason handshakes and now I have to buy my babies at full price."
+            ]
     },
     {
         'WithoutClaire':
-        [
-            "Because Noah took a pair of koalas on the ark, and those things are bastards."
-        ]
+            [
+                "Because Noah took a pair of koalas on the ark, and those things are bastards."
+            ]
     }
 ]
 
@@ -91,7 +91,7 @@ export const hypothetichecks = [
 ]
 
 export const christolyzerQuestions = [
-        "Is God all-loving?",
+    "Is God all-loving?",
     "Is it acceptable to pray to Mary to talk to God on our behalf?",
     "Is it possible for non-Christians to get into heaven?",
     "Is it a sin to be homosexual?",

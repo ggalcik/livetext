@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import clsx from "clsx";
-import type { BannerCSS, LiveDataState } from "./context/LiveData/types";
+import type { LiveDataState } from "./context/LiveData/types";
+import { combineBannerCSS, parseBannerCSS } from "./context/LiveData/bannerCss";
 
 interface BannerSlideProps {
   banner: LiveDataState["banners"][number];
@@ -16,20 +17,9 @@ export default function BannerDisplay({ banner, defaultCSS, initialCSS }: Banner
       setSlideIn(true);
     });
   }, [banner]);
-
-  function getVal<K extends keyof BannerCSS>(field: K): BannerCSS[K] {
-    const val =
-      banner.bannerCSS[field] ??
-      defaultCSS[field] ??
-      initialCSS[field];
-
-    if (val === undefined) {
-      if (field === "textAlign") return "left" as BannerCSS[K];
-      if (field === "onBox") return false as BannerCSS[K];
-      return "" as BannerCSS[K];
-    }
-    return val as BannerCSS[K];
-  }
+  const bannerStyle = parseBannerCSS(
+    combineBannerCSS(initialCSS, defaultCSS, banner.bannerCSS)
+  );
 
   function liveTextDisplay(text: string) {
     if (!text.trim()) return "[no text]";
@@ -39,10 +29,7 @@ export default function BannerDisplay({ banner, defaultCSS, initialCSS }: Banner
   return (
     <div
       style={{
-        // border: "1px dashed green",
-        padding: getVal("padding"),
-        textAlign: getVal("textAlign") as React.CSSProperties["textAlign"],
-        // backgroundColor: getVal("onBox") ? getVal("backgroundColor") : "transparent" ,
+        ...bannerStyle,
       }}
       className={clsx(
         "transition-transform duration-300 ease-in-out ",
@@ -52,17 +39,12 @@ export default function BannerDisplay({ banner, defaultCSS, initialCSS }: Banner
     >
       {/* <mark className="text-stroke-black text-stroke-1" */}
       <div
-        style={{
-          backgroundColor: getVal("onBox") ? getVal("backgroundColor") : "transparent",
-        }}
+        style={{}}
       >
         <mark
           className=""
           style={{
-            textShadow: getVal("textShadow"),
-            color: getVal("color"),
-            font: getVal("font"),
-            backgroundColor: getVal("backgroundColor"),
+            backgroundColor: bannerStyle.backgroundColor,
             boxDecorationBreak: "clone",
             padding: "5px 10px",
           }}

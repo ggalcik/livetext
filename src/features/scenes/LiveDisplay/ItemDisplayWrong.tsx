@@ -2,6 +2,7 @@ import React from "react";
 import clsx from "clsx";
 import type { Banner, BannerCSS } from "../../../context/LiveData/types";
 import { dateStr } from "../../../components/util";
+import { combineBannerCSS, parseBannerCSS } from "../../../context/LiveData/bannerCss";
 
 interface ItemDisplayProps {
   banner: Banner;
@@ -12,28 +13,9 @@ interface ItemDisplayProps {
 }
 
 export default function ItemDisplay({ banner, defaultCSS, initialCSS, ref }: ItemDisplayProps) {
-
-
-  function fallback(...values: (string | boolean | null | undefined)[]): string | boolean | undefined {
-    return values.find(v => v != null && v !== "") ?? undefined;
-  }
-
-  function getVal<K extends keyof BannerCSS>(field: K): BannerCSS[K] {
-    const val =
-      fallback(banner.bannerCSS[field],
-        defaultCSS[field],
-        initialCSS[field]
-      );
-
-    if (val !== undefined) {
-      return val as BannerCSS[K];
-    }
-    if (field === "textAlign") return "left" as BannerCSS[K];
-    if (field === "onBox") return false as BannerCSS[K];
-
-    // fallback for string-like fields
-    return "" as BannerCSS[K];
-  }
+  const bannerStyle = parseBannerCSS(
+    combineBannerCSS(initialCSS, defaultCSS, banner.bannerCSS)
+  );
 
   function liveTextDisplay(text: string) {
     if (!text.trim()) return "[no text]";
@@ -61,10 +43,7 @@ export default function ItemDisplay({ banner, defaultCSS, initialCSS, ref }: Ite
     <div
       ref={ref}
       style={{
-        padding: getVal("padding"),
-        textAlign: getVal("textAlign") as React.CSSProperties["textAlign"],
-
-        backgroundColor: getVal("onBox") ? getVal("backgroundColor") : "transparent"
+        ...bannerStyle,
 
       }}
       className={clsx('opacity-100',
@@ -75,17 +54,12 @@ export default function ItemDisplay({ banner, defaultCSS, initialCSS, ref }: Ite
       )}
     >
       <div
-        style={{
-          backgroundColor: getVal("onBox") ? getVal("backgroundColor") : "transparent",
-        }}
+        style={{}}
       >
         <mark
           className=""
           style={{
-            textShadow: getVal("textShadow"),
-            color: getVal("color"),
-            font: getVal("font"),
-            backgroundColor: getVal("backgroundColor"),
+            backgroundColor: bannerStyle.backgroundColor,
             boxDecorationBreak: "clone",
             padding: "5px 10px",
           }}

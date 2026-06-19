@@ -1,5 +1,8 @@
 import { z } from "zod";
 import { someDumbID } from "../../components/util";
+import { normalizeBannerCSS, type BannerCSS } from "./bannerCss";
+import { DEFAULT_BANNER_CSS, DEFAULT_SPOT_CSS } from "./defaultBannerCss";
+export type { BannerCSS } from "./bannerCss";
 
 export const MasterViewportSchema = z.object({
   top: z.number(),
@@ -12,22 +15,13 @@ export type MasterViewport = z.infer<typeof MasterViewportSchema>;
 export const BannerTypeSchema = z.enum(["rotating" , "spot"]);
 export type BannerType = z.infer<typeof BannerTypeSchema>;
 
-export const BannerCSSSchema = z.object({
-  padding: z.string(),
-  font: z.string(),
-  textAlign: z.enum(["left", "center", "right"]),
-  color: z.string(),
-  backgroundColor: z.string(),
-  onBox: z.boolean().optional(),
-  textShadow: z.string(),
-});
-export type BannerCSS = z.infer<typeof BannerCSSSchema>;
+export const BannerCSSSchema = z.preprocess(normalizeBannerCSS, z.string());
 
 // Define your shared fields
 const bannerBase = z.object({
   id: z.string(),
   text: z.string(),
-  bannerCSS: BannerCSSSchema.partial(),
+  bannerCSS: BannerCSSSchema,
 });
 
 // Define the rotating variant (includes `on`)
@@ -128,24 +122,8 @@ export function makeInitialLiveDataState(): LiveDataState {
 
     saveToStorage: true,
 
-    defaultBannerCSS: {
-      padding: "10px",
-      font: "bold 20px/1 sans-serif",
-      textAlign: "right",
-      color: "white",
-      backgroundColor: "#ff6467",
-      onBox: false,
-      textShadow: "4px 4px #444",
-    },
-    defaultSpotCSS: {
-      padding: "10px",
-      font: "bold 20px/1 sans-serif",
-      textAlign: "center",
-      color: "white",
-      backgroundColor: "#ff6467",
-      onBox: false,
-      textShadow: "4px 4px #444",
-    },
+    defaultBannerCSS: DEFAULT_BANNER_CSS,
+    defaultSpotCSS: DEFAULT_SPOT_CSS,
   }
 };
 
@@ -153,32 +131,32 @@ export const NO_ACTIVE_BANNER = null;
 export const NO_ACTIVE_SPOT = null;
 
 
-export function createBanner(): Banner {
+export function createBanner(defaultCSS = ""): Banner {
   return {
     id: someDumbID(),
     type: "rotating",
     text: "",
-    bannerCSS: {},
+    bannerCSS: defaultCSS,
     on: false,
   };
 }
 
-export function createRotatingBanner(): Banner {
+export function createRotatingBanner(defaultCSS = ""): Banner {
   return {
     id: someDumbID(),
     type: "rotating",
     text: "",
-    bannerCSS: {},
+    bannerCSS: defaultCSS,
     on: false,
   };
 }
 
-export function createSpot(): Banner {
+export function createSpot(defaultCSS = ""): Banner {
   return {
     id: someDumbID(),
     type: "spot",
     text: "",
-    bannerCSS: {},
+    bannerCSS: defaultCSS,
   };
 }
 
@@ -198,6 +176,7 @@ export type LiveDataAction =
   | { type: "banner/solo", payload: { type: BannerType }  }
   | { type: "banner/soloOne", payload: { type: BannerType; idx: number }  }
   | { type: "banner/move"; payload: { type: BannerType; dir: number; idx: number } }
+  | { type: "banner/sortActiveFirst"; payload: { type: BannerType } }
   | { type: "spot/add" }
   | { type: "spot/toggle" }
   | { type: "spot/solo", payload: { type: BannerType; idx: number } }
@@ -205,8 +184,8 @@ export type LiveDataAction =
   | { type: "timer/toggle"; payload: { which: TimerKey } }
   | { type: "timer/off"; payload: { which: TimerKey } }
   | { type: "localStorage/toggle" }
-  | { type: "bannerCSS"; payload: { banner: "default" | number; cssPayload: Partial<BannerCSS> } }
-  | { type: "spotCSS"; payload: { spot: "default" | number; cssPayload: Partial<BannerCSS> } }
+  | { type: "bannerCSS"; payload: { banner: "default" | number; css: BannerCSS } }
+  | { type: "spotCSS"; payload: { spot: "default" | number; css: BannerCSS } }
   | { type: "dateMark"; payload: { dateMark: string } };
 
 export interface PopupState {

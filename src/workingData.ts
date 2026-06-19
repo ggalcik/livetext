@@ -2892,305 +2892,162 @@ workingData.liveData = {
     {
       "id": "lj1fgnhok49ay20hmxgn",
       "text": "I'm not going to repent for sins[[font-size:0%]]\nI have no sins to repent for, sin doesn't exist[[font-size:0%]]\nHow do you know that Jesus suffered?",
-      "bannerCSS": {
-        "padding": "40px",
-        "font": "bold 50px \"arial rounded mt\"",
-        "textAlign": "center",
-        "backgroundColor": "#82e",
-        "onBox": true,
-        "textShadow": "2px 2px black"
-      },
+      "bannerCSS": "padding: 40px;\nfont: bold 50px \"arial rounded mt\";\ntext-align: center;\nbackground-color: #82e;\ntext-shadow: 2px 2px black",
       "type": "rotating",
       "on": true
     },
     {
       "id": "lpokrtniy3",
       "text": "Philbros all love raisin bran\n--CarpWrangler[[font-size: 60%;text-align:right;]]",
-      "bannerCSS": {
-        "padding": "40px 30px",
-        "font": "43px/1.3 'Bernard MT Condensed'",
-        "textAlign": "center",
-        "color": "#ff8",
-        "backgroundColor": "#482",
-        "onBox": true,
-        "textShadow": "2px 2px black"
-      },
+      "bannerCSS": "padding: 40px 30px;\nfont: 43px/1.3 'Bernard MT Condensed';\ntext-align: center;\ncolor: #ff8;\nbackground-color: #482;\ntext-shadow: 2px 2px black",
       "type": "rotating",
       "on": true
     },
     {
       "id": "1svu7nnxu8",
       "text": "Slavery is bad[[font-size: 80%]]\nWE ALL* AGREE\nGod** doesn't, though[[font-size: 70%]]\n* I am amazed to learn we all don't[[font-size: 40%;color:gray;text-align:right;text-shadow:0 0]]\n** of the Bible[[font-size: 40%;color:gray;text-align:right;text-shadow:0 0]]",
-      "bannerCSS": {
-        "padding": "20px",
-        "font": "50px/1.3 'Berlin Sans FB'",
-        "textAlign": "center",
-        "backgroundColor": "#040",
-        "onBox": true
-      },
+      "bannerCSS": "padding: 20px;\nfont: 50px/1.3 'Berlin Sans FB';\ntext-align: center;\nbackground-color: #040",
       "type": "rotating",
       "on": false
     },
     {
       "id": "3e3leoffqjm8tgrdxg",
       "text": "How could Eve have known that God wasn't lying?",
-      "bannerCSS": {
-        "font": "bold 50px \"Agency FB\"",
-        "textAlign": "center",
-        "color": "yellow",
-        "backgroundColor": "#24f",
-        "onBox": true,
-        "textShadow": "2px 1px black"
-      },
+      "bannerCSS": "font: bold 50px \"Agency FB\";\ntext-align: center;\ncolor: yellow;\nbackground-color: #24f;\ntext-shadow: 2px 1px black",
       "type": "rotating",
       "on": true
     },
     {
       "id": "z8pu0pnk2bql1x5d2xrk",
       "text": "Jesus sacrificed nothing[[font-size: 0%;color:gray]]\nhe still lives, right?[[font-size: 0%;color:gray]]\nI'M AN ATHEIST\nGO AWAY",
-      "bannerCSS": {
-        "padding": "30px",
-        "font": "66px/1.3 Impact",
-        "textAlign": "center",
-        "backgroundColor": "#222",
-        "onBox": true
-      },
+      "bannerCSS": "padding: 30px;\nfont: 66px/1.3 Impact;\ntext-align: center;\nbackground-color: #222",
       "type": "rotating",
       "on": true
     },
     {
       "id": "yjflr540p3at3v5rlg6w",
       "text": "Do you think prayers work?[[font-weight:500;line-height:1]]\n[[font-weight:500;line-height:0.5]]\nMany people have prayed for me to find faith, so what's the problem[[font-size: 50%;]]",
-      "bannerCSS": {
-        "padding": "20px",
-        "font": "70px/1.3 'cALIBRI'",
-        "textAlign": "center",
-        "backgroundColor": "#399",
-        "onBox": true,
-        "textShadow": "2px 2px black"
-      },
+      "bannerCSS": "padding: 20px;\nfont: 70px/1.3 'cALIBRI';\ntext-align: center;\nbackground-color: #399;\ntext-shadow: 2px 2px black",
       "type": "rotating",
       "on": true
     },
     {
       "id": "np2rjzecxd",
       "text": "If God's rampage wasn't in the bible, you'd think he was a villain in a bad action movie",
-      "bannerCSS": {
-        "font": "bold 40px/1.3 \"Agency FB\"",
-        "textAlign": "center",
-        "color": "#ff8",
-        "backgroundColor": "#88f",
-        "onBox": true,
-        "textShadow": "2px 2px black"
-      },
+      "bannerCSS": "font: bold 40px/1.3 \"Agency FB\";\ntext-align: center;\ncolor: #ff8;\nbackground-color: #88f;\ntext-shadow: 2px 2px black",
       "type": "rotating",
       "on": false
     },
     {
       "id": "don42klcnx21w3erkxpi",
       "text": "DON'T PRAY FOR ME\nIf you think prayer works, bring your[[font-size:60%]]\n\"THOUGHTS and PRAYERS\"[[font-size:80%]]\n to SOMEONE WHO REALLY NEEDS IT",
-      "bannerCSS": {
-        "font": "31px/1.3 Arial black",
-        "textAlign": "center",
-        "color": "#ff5",
-        "backgroundColor": "#f00",
-        "onBox": true,
-        "textShadow": "2px 2px #880"
-      },
+      "bannerCSS": "font: 31px/1.3 Arial black;\ntext-align: center;\ncolor: #ff5;\nbackground-color: #f00;\ntext-shadow: 2px 2px #880",
       "type": "rotating",
       "on": false
     },
     {
       "id": "sjdqh5awxl",
       "text": "Evolution has written on our hearts that there is no afterlife",
-      "bannerCSS": {
-        "font": "bold 50px/1.3 \"Calibri\"",
-        "textAlign": "center",
-        "backgroundColor": "#400",
-        "onBox": true,
-        "textShadow": "2px 2px black"
-      },
+      "bannerCSS": "font: bold 50px/1.3 \"Calibri\";\ntext-align: center;\nbackground-color: #400;\ntext-shadow: 2px 2px black",
       "type": "rotating",
       "on": false
     },
     {
       "id": "l8jmodrqe4fk36q18d08",
       "text": "What do you think nonbelievers aren't considering?\n* (C) 2025 Bored Agnostic. All Rights Reserved.[[font-size: 40%;color:gray;text-align:right;text-shadow:0 0]]",
-      "bannerCSS": {
-        "padding": "40px",
-        "font": "50px/1.1 'Palatino Linotype'",
-        "backgroundColor": "#228",
-        "onBox": true,
-        "textShadow": "2px 2px black"
-      },
+      "bannerCSS": "padding: 40px;\nfont: 50px/1.1 'Palatino Linotype';\nbackground-color: #228;\ntext-shadow: 2px 2px black",
       "type": "rotating",
       "on": false
     },
     {
       "id": "pd3a0sa8scwegy140878",
       "text": "The worst theist arguments:[[font-size: 120%;text-decoration: underline]]\n\n1. What year is it?\n2. You can't see air \n3. Satan believes in God\n4. Atheists only exist with God",
-      "bannerCSS": {
-        "padding": "40px",
-        "font": "bold 22px/1.4 'Segoe Print',sans-serif",
-        "textAlign": "left",
-        "backgroundColor": "#282",
-        "onBox": true,
-        "textShadow": "1px 1px black"
-      },
+      "bannerCSS": "padding: 40px;\nfont: bold 22px/1.4 'Segoe Print',sans-serif;\ntext-align: left;\nbackground-color: #282;\ntext-shadow: 1px 1px black",
       "type": "rotating",
       "on": false
     },
     {
       "id": "thfj4tqmlo41a2n6cz6k",
       "text": "ATHEISM IS\nUNSTOPPABLE*!!!\n* The Brandon Martin Memorial Asterisk[[font-size: 30%;color:gray;text-align:right;text-shadow:0 0]]",
-      "bannerCSS": {
-        "padding": "40px",
-        "font": "bold 50px \"arial rounded mt\"",
-        "textAlign": "center",
-        "color": "#26f",
-        "backgroundColor": "white",
-        "onBox": true,
-        "textShadow": "1px 1px black"
-      },
+      "bannerCSS": "padding: 40px;\nfont: bold 50px \"arial rounded mt\";\ntext-align: center;\ncolor: #26f;\nbackground-color: white;\ntext-shadow: 1px 1px black",
       "type": "rotating",
       "on": false
     },
     {
       "id": "e96ggclgn7jloldqeflz",
       "text": "In Exodus, Santa was directed by God to go to all the homes in Egypt in a single night except to pass over the ones marked with lamb's blood\nprove me wrong[[font-size: 70%;color:#eee]]",
-      "bannerCSS": {
-        "font": "bold 30px \"arial rounded mt\"",
-        "textAlign": "center",
-        "color": "",
-        "backgroundColor": "#8a8",
-        "onBox": true,
-        "textShadow": "1px 1px black"
-      },
+      "bannerCSS": "font: bold 30px \"arial rounded mt\";\ntext-align: center;\nbackground-color: #8a8;\ntext-shadow: 1px 1px black",
       "type": "rotating",
       "on": false
     },
     {
       "id": "extkdesg59",
       "text": "Faith is belief that can't be proven wrong[[font-size: 90%;line-height:1]]\nI do not have faith in scientific results, I have belief in them[[font-size: 70%;font-weight:bold;padding-top:20px]]",
-      "bannerCSS": {
-        "padding": "30px",
-        "font": "40px/1.3 serif",
-        "textAlign": "center",
-        "color": "#614",
-        "backgroundColor": "#f4f4f4",
-        "onBox": true,
-        "textShadow": "0px 0px black"
-      },
+      "bannerCSS": "padding: 30px;\nfont: 40px/1.3 serif;\ntext-align: center;\ncolor: #614;\nbackground-color: #f4f4f4;\ntext-shadow: 0px 0px black",
       "type": "rotating",
       "on": false
     }
   ],
-  "defaultBannerCSS": {
-    "padding": "20px ",
-    "font": "50px/1.3 impact",
-    "textAlign": "right",
-    "color": "white",
-    "backgroundColor": "#833",
-    "onBox": false,
-    "textShadow": "4px 4px black"
-  },
+  "defaultBannerCSS": "padding: 20px ;\nfont: 50px/1.3 impact;\ntext-align: right;\ncolor: white;\nbackground-color: #833;\ntext-shadow: 4px 4px black",
   "displayBanners": true,
   "activeBanner": 4,
   "spots": [
     {
       "id": "6lymdetz1yf",
       "text": "I am 132% angy!!!@![[line-height:1]]\nstats don't lie![[font-size: 40%; transform: translate(10%)]]",
-      "bannerCSS": {
-        "padding": "60px 20px",
-        "font": "bold 90px/1.3  \"Agency FB\"",
-        "backgroundColor": "red",
-        "onBox": true
-      },
+      "bannerCSS": "padding: 60px 20px;\nfont: bold 90px/1.3  \"Agency FB\";\nbackground-color: red",
       "type": "spot"
     },
     {
       "id": "jdrhx3cda8",
       "text": "My favorite names today![[color:#8ff;font-size:80%]]\n\n\nqueue.tea.3.14 /Ash\n",
-      "bannerCSS": {
-        "padding": "40px",
-        "color": "",
-        "backgroundColor": "#770077",
-        "onBox": true
-      },
+      "bannerCSS": "padding: 40px;\nbackground-color: #770077",
       "type": "spot"
     },
     {
       "id": "wokmhjuzx6an2dm3u3dr",
       "text": "beautifool wins!\n\nFATALITY!!!",
-      "bannerCSS": {},
+      "bannerCSS": "",
       "type": "spot"
     },
     {
       "id": "8hzswknvgj",
       "text": "The worst theist arguments:\n1. What year is it?\n2. You can't see air \n3. Satan believes in God\n4. Atheists only exist with God",
-      "bannerCSS": {
-        "textAlign": "left",
-        "backgroundColor": "#282"
-      },
+      "bannerCSS": "text-align: left;\nbackground-color: #282",
       "type": "spot"
     },
     {
       "id": "fy8ix4pfughvowunnv6na",
       "text": "Sulfur.",
-      "bannerCSS": {
-        "padding": "100px"
-      },
+      "bannerCSS": "padding: 100px",
       "type": "spot"
     },
     {
       "id": "8oonsofz61",
       "text": "Shroudenfreude (/SHROW-den-froy'-da/) n. 1. The amusement you feel at someone defending the Shroud of Turin.",
-      "bannerCSS": {
-        "padding": "50px",
-        "font": "30px/1.4 serif",
-        "color": "#444",
-        "backgroundColor": "#f8f8f8",
-        "onBox": true,
-        "textShadow": "0 0 "
-      },
+      "bannerCSS": "padding: 50px;\nfont: 30px/1.4 serif;\ncolor: #444;\nbackground-color: #f8f8f8;\ntext-shadow: 0 0 ",
       "type": "spot"
     },
     {
       "id": "7qsgjzcugk7gtk4ubi3n",
       "text": "©opyright 2025[[transform: translate( -20%, 100%)]]\nPope Rhizic the Antifascist.[[transform: translate( -20%, 100%)]]\nAll Rights Reserved.[[transform: translate( -20%, 100%)]]",
-      "bannerCSS": {
-        "padding": "80px",
-        "font": "30px serif",
-        "textAlign": "left",
-        "color": "#444",
-        "backgroundColor": "#eee",
-        "onBox": true,
-        "textShadow": "0 0"
-      },
+      "bannerCSS": "padding: 80px;\nfont: 30px serif;\ntext-align: left;\ncolor: #444;\nbackground-color: #eee;\ntext-shadow: 0 0",
       "type": "spot"
     },
     {
       "id": "kgggs3adazort5pt61kq",
       "text": "I am, in fact, an agnostic atheist.\nThis is not a contradiction.\nPlease refer to your local Google searching contraption for more details.",
-      "bannerCSS": {},
+      "bannerCSS": "",
       "type": "spot"
     },
     {
       "id": "sn9vacq1eo42xcbjzdcg",
       "text": "soup -> humans it feasible.[[font-size: 50%]]\nWell NOT choosing itself is a choice of free will isn’t?[[font-size: 50%]]\n you're asking people to anger you, sad![[font-size: 50%]]\nyou are ready sinin",
-      "bannerCSS": {},
+      "bannerCSS": "",
       "type": "spot"
     }
   ],
-  "defaultSpotCSS": {
-    "padding": "40px 10px",
-    "font": "bold 30px/1.4 sans-serif",
-    "textAlign": "center",
-    "color": "white",
-    "backgroundColor": "blue",
-    "onBox": true,
-    "textShadow": "4px 4px #444"
-  },
+  "defaultSpotCSS": "padding: 40px 10px;\nfont: bold 30px/1.4 sans-serif;\ntext-align: center;\ncolor: white;\nbackground-color: blue;\ntext-shadow: 4px 4px #444",
   "displaySpots": false,
   "activeSpot": 1,
   "timer": {
