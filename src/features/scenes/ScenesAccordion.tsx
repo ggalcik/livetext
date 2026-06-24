@@ -4,6 +4,7 @@ import type { PopupState } from "../../context/LiveData/types";
 import { Accordion } from "../Accordion/Accordion";
 import SceneAdmin from "./SceneAdmin";
 import { usePersistentState } from "../../hooks/usePersistentState";
+import useTitle from "../../hooks/useTitle";
 
 
 export default function ScenesAccordion({ popupState }: { popupState: PopupState }) {
@@ -12,6 +13,8 @@ export default function ScenesAccordion({ popupState }: { popupState: PopupState
     schema: SceneAccordionDataSchema,
     fallback: { adminSelected: "banners", sceneSelected: "banners" },
   });
+
+  useTitle(sceneAccordionData.sceneSelected);
 
   const switchTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const countdownInterval = useRef<ReturnType<typeof setInterval> | null>(null);
