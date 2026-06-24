@@ -88,6 +88,12 @@ export default function WhoWantsTo() {
 
     }, [whoScene.stage]);
 
+    useEffect(() => {
+        return () => {
+            audioRef.current?.stop();
+        };
+    }, []);
+
     type WhoBoxMode = "none" | "norm" | "good" | "chosen";
     interface IWhoBoxOpts {
         showText?: boolean,
