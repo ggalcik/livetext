@@ -85,6 +85,7 @@ export const hypothetichecks = [
     "If God told you to do something that you thought was disgusting, would you do it?",
     "If you died tomorrow and saw God and he said you can ask him any single question you wanted, what would you ask?",
     "Was Satan forgiven when Jesus was crucified?",
+    "Let's say being an atheist meant you would pass to oblivion after death. God gives you the ability to turn atheists into believers, which gives them access to the afterlife. Would you use it?",
     "Could God have made coveting okay?",
     "If you saw someone being mugged and you had the ability to stop it, should you?",
     "If you were able to ask Jesus one question, what would it be?"

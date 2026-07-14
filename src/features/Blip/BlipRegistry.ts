@@ -22,7 +22,7 @@ export const BLIP_COMPONENTS: Record<IBlipType, BlipEntry> = {
   },
   Snail: {
     component: Snail, opts: {},
-    variants: ['1a', '1b', '2', '3', 'N']
+    variants: ['1a', '1b', '2', '3', 'N', 'Xeno']
   }, Hello: {
     component: Hello,
     extendedComponent: HelloAdmin,

@@ -138,7 +138,7 @@ export default function Orchestra({ endBlip }: BlipProps) {
 
 
   return (
-    <div className="w-full h-full relative xbg-black xopacity-0 xanimate-fadein-orchestra">
+    <div className="w-full h-full relative bg-black opacity-0 animate-fadein-orchestra">
       {/* Controls at the top */}
       <div className={clsx("absolute left-0 right-0 p-4 flex z-10 flex-col gap-3",
         gGlobal.layout.crampedPortrait ? 'bottom-0' : 'top-0')}>
@@ -178,7 +178,7 @@ export default function Orchestra({ endBlip }: BlipProps) {
       </div>
 
 
-      {/* <div className={clsx("absolute w-[160%] top-10 left-0 right-0",
+      <div className={clsx("absolute w-[160%] top-10 left-0 right-0",
         gGlobal.layout.crampedPortrait ? 'top-0' : 'bottom-0'
       )}>
         <video ref={audioRef} className="hidden" playsInline           onEnded={handleEnded} />
@@ -188,7 +188,7 @@ export default function Orchestra({ endBlip }: BlipProps) {
           onEnded={handleEnded}
           playsInline
         />
-      </div> */}
+      </div>
 
       {!selectedChoice && false && 
 

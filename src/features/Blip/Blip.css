@@ -291,6 +291,7 @@
     }
 
     --animate-nyeh: nyeh 10s linear forwards;
+    --animate-xeno: nyeh 15s linear forwards;
 
     @keyframes nyeh {
 

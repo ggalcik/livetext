@@ -84,7 +84,7 @@ export default function BlipAdmin() {
                                     className={`absolute left-0 top-full z-20 min-w-full pt-1 ${isActive && blipData.showBlipVariant ? 'block' : 'hidden group-hover:block'
                                         }`}
                                 >
-                                    <div className="flex gap-1 rounded-lg bg-green-100 p-1 shadow-lg ring-1 ring-black/15">
+                                    <div className="flex flex-col gap-1 rounded-lg bg-green-100 p-1 shadow-lg ring-1 ring-black/15">
                                         {variants.map((variantEntry) => {
                                             const variant = getVariantId(variantEntry);
                                             const isVariantActive =
