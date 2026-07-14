@@ -27,15 +27,15 @@ function showOverlay(overlay: OverlayType) {
 
 
 export default function OverlaysAccordion() {
-  const [selectedOverlay, setSelectedOverlay] = useState<OverlayType>('vidclips')
+  const [selectedOverlay, setSelectedOverlay] = useState<OverlayType>('overcards')
 
   return (
     <Accordion
       label="overlays"
+      startOpen
       linkLabels={overlays}
       selectedLink={selectedOverlay}
       setSelectedLink={setSelectedOverlay}>
-
       {showOverlay(selectedOverlay)}
 
     </Accordion>

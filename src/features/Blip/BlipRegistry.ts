@@ -1,3 +1,4 @@
+import Analogy from "./Analogy";
 import Egregore from "./Egregore";
 import Goalpost from "./Goalpost";
 import Hello, { HelloAdmin } from "./Hello";
@@ -37,6 +38,7 @@ export const BLIP_COMPONENTS: Record<IBlipType, BlipEntry> = {
     opts: {},
     handlesDeactivate: true,
   },
+  Analogy,
   'Mamma Mia': MammaMia,
   Goalpost,
   Egregore,
