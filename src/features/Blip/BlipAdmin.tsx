@@ -65,7 +65,7 @@ export default function BlipAdmin() {
 
     return (
         <div className="">
-            <div className="bg-green-200 flex gap-2 p-2">
+            <div className="bg-green-200 flex flex-wrap gap-2 p-2">
                 {blipTypes.map(blip => {
                     const isActive = blipData.showBlip === blip;
                     const registryEntry = BLIP_COMPONENTS[blip];

@@ -26,7 +26,7 @@ export default function VidclipAdmin() {
 
 
     return (
-<div className="flex gap-2 p-2 bg-green-200">
+<div className="flex flex-wrap gap-2 p-2 bg-green-200">
 
 
         {Object.keys(VIDCLIPS).map((vidkey) => {
