@@ -14,9 +14,9 @@ export default function BannerAdmin({ popupState }: { popupState: PopupState }) 
     const { state, dispatch } = useLiveData();
     const { visiblePopup, setVisiblePopup } = popupState;
     return (
-        <div className=" grid h-[100vh] grid-cols-1 md:grid-cols-2 grid-rows-[10vh_10vh_auto] gap-4 p-4">
+        <div className=" grid h-[100vh] grid-cols-1 md:grid-cols-2 grid-rows-[10vh_auto_auto] gap-4 p-4">
             <TopOpts />
-            <div className="h-32">
+            <div className="">
                 <BannerOpts />
             </div>
             <div className="">
