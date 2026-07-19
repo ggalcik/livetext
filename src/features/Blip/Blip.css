@@ -412,6 +412,34 @@
 
     --animate-analogy-enter: names-enter 0.5s ease-out forwards;
     --animate-analogy-blink: analogy-blink 1s steps(2) infinite;
+    --animate-why-do-this-enter: why-do-this-enter 5s ease-out forwards;
+    --animate-why-do-this-exit: why-do-this-exit 5s linear forwards;
+
+    @keyframes why-do-this-enter {
+        0% {
+            opacity: 0;
+            transform: translateY(100%);
+        }
+
+        33.333% {
+            opacity: 1;
+        }
+
+        100% {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes why-do-this-exit {
+        from {
+            opacity: 1;
+        }
+
+        to {
+            opacity: 0;
+        }
+    }
 
     @keyframes whyangry {
 
