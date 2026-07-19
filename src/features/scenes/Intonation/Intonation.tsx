@@ -7,7 +7,12 @@ import { AudioController } from "../../../components/AudioController";
 import Snail from "../../Blip/Snail";
 import { gGlobal } from "../../Global/global";
 import { intonations } from "./data";
+import atheistChurchAmbient from "./assets/atheist_church_ambient.mp3";
 import "./Intonation.css";
+
+const AMBIENT_VOLUME = 0.2;
+const AMBIENT_DUCKED_VOLUME = 0.02;
+const VOLUME_TRANSITION_MS = 1000;
 
 export default function Intonation() {
     const [intonationScene] = usePersistentState({
@@ -25,11 +30,50 @@ export default function Intonation() {
     const [snailRun, setSnailRun] = useState(0);
 
     const audioRef = useRef<AudioController | null>(null);
+    const ambientAudioRef = useRef<HTMLAudioElement | null>(null);
 
     if (!audioRef.current) {
         audioRef.current = new AudioController();
         audioRef.current.setVolume(0.3);
     }
+
+    useEffect(() => {
+        const ambientAudio = new Audio(atheistChurchAmbient);
+        ambientAudio.loop = true;
+        ambientAudio.volume = AMBIENT_VOLUME;
+        ambientAudioRef.current = ambientAudio;
+        void ambientAudio.play().catch(() => {
+            // Autoplay may be blocked until the browser receives user input.
+        });
+
+        return () => {
+            ambientAudio.pause();
+            ambientAudio.currentTime = 0;
+            ambientAudioRef.current = null;
+        };
+    }, []);
+
+    useEffect(() => {
+        const ambientAudio = ambientAudioRef.current;
+        if (!ambientAudio) return;
+
+        const startVolume = ambientAudio.volume;
+        const targetVolume = showSnail ? AMBIENT_DUCKED_VOLUME : AMBIENT_VOLUME;
+        const startTime = performance.now();
+        let animationFrame: number;
+
+        const transitionVolume = (now: number) => {
+            const progress = Math.min((now - startTime) / VOLUME_TRANSITION_MS, 1);
+            ambientAudio.volume = startVolume + (targetVolume - startVolume) * progress;
+
+            if (progress < 1) {
+                animationFrame = requestAnimationFrame(transitionVolume);
+            }
+        };
+
+        animationFrame = requestAnimationFrame(transitionVolume);
+        return () => cancelAnimationFrame(animationFrame);
+    }, [showSnail]);
 
     const handleSnailEnd = useCallback(() => {
         setShowSnail(false);

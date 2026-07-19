@@ -10,13 +10,13 @@ export default function Analogy(_: BlipProps) {
 
     useEffect(() => {
         audioInRef.current.currentTime = 0;
-        // audioInRef.current.play().catch((err) => {
-        //     console.warn("Could not play sound:", err);
-        // });
+        audioInRef.current.play().catch((err) => {
+            console.warn("Could not play sound:", err);
+        });
 
-        // return () => {
-        //     audioInRef.current.pause();
-        // };
+        return () => {
+            audioInRef.current.pause();
+        };
     }, []);
 
     return (
