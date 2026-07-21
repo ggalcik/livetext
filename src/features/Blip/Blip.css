@@ -422,7 +422,7 @@
         }
 
         to {
-            transform: translateY(calc(-100% - 80cqh));
+            transform: translateY(calc(-100% - 100cqh));
         }
     }
 
