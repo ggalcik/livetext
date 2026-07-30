@@ -6,9 +6,9 @@ import type { BlipProps } from "./types";
 import "./Blip.css";
 
 const AUDIO_VOLUME = 0.3;
-const EXIT_DURATION_MS = 3000;
+const EXIT_DURATION_MS = 5000;
 const EARLY_DEACTIVATION_WINDOW_MS = 10_000;
-const AUTO_DEACTIVATION_DELAY_MS = 28_000;
+const AUTO_DEACTIVATION_DELAY_MS = 36_000;
 
 export default function WhyDoThis({ endBlip, deactivateRequestId }: BlipProps) {
     const [isExiting, setIsExiting] = useState(false);
@@ -96,26 +96,29 @@ export default function WhyDoThis({ endBlip, deactivateRequestId }: BlipProps) {
                         animationDuration: `${EXIT_DURATION_MS}ms`,
                     } as CSSProperties : undefined}
                     className={clsx(
-                        "flex h-full w-full flex-col bg-[#00f] [container-type:size]",
+                        "why-do-this-crt flex h-full w-full flex-col bg-[#00f] [container-type:size]",
                         isExiting ? "animate-why-do-this-exit" : "animate-why-do-this-enter"
                     )}
                 >
                     <div className="relative z-20 flex shrink-0 items-center justify-center p-[4cqw] text-center font-[Bahnschrift] text-[clamp(2rem,8cqh,6rem)] leading-none font-bold">
                         <div className="border-2 border-white  p-[2cqw]">
-                        <div className="border-2 border-white bg-white text-blue-900 w-full  p-[6cqw]">Top Ten Reasons Why Greg Does These Lives:</div></div>
+                        <div className="why-do-this-crt-text border-2 border-white bg-white text-blue-900 w-full  p-[6cqw]">Top Ten Reasons Why Greg Does These Lives:</div></div>
                     </div>
                     <div className="relative z-10 min-h-0 flex-1 overflow-hidden [container-type:size] font-[Bahnschrift] text-[clamp(1.5rem,6cqh,5rem)] leading-tight font-bold indent-[5cqh_hanging_each-line]">
                         <div className="absolute top-full left-0 flex w-full flex-col px-[6cqw] animate-why-do-this-scroll text-yellow-400">
-                            <div className="text-yellow-400">1: To show by example that not all online atheists are angry and mean</div>
-                            <div className="text-yellow-400">2: To give perspective on my view of atheism (or religion? or anything?) if someone is interested</div>
-                            <div className="text-yellow-400">3: I can sit in my office and turn on my computer and have interesting discussions just come to me with minimal effort</div>
-                            <div className="text-yellow-400">4: I like performing for a camera</div>
-                            <div className="text-yellow-400">5: Some people seem to like listening to me talk about these things and my ego likes that</div>
-                            <div className="text-yellow-400">6: How people structure their thoughts and logic around something I think is untrue is interesting to me</div>
-                            <div className="text-yellow-400">7: I can disagree with someone about religion and not get upset about it (unlike politics)</div>
-                            <div className="text-yellow-400">8: It's good practice in staying calm in the face of someone being rude or awful</div>
-                            <div className="text-yellow-400">9: I write the code that does these animations and it's a whole fulfilling hobby in itself</div>
-                            <div className="text-yellow-400">10: My regulars! I love that people enjoy listening to me enough to keep coming back, and I seem to attract nice people</div>
+                            <div className="why-do-this-crt-text flex flex-col">
+                                <div className="text-yellow-400 mb-4">1: To show by example that not all online atheists are angry and mean</div>
+                                <div className="text-yellow-400 mb-4">2: To give perspective on my view of atheism (or religion? or anything?) if someone is interested</div>
+                                <div className="text-yellow-400 mb-4">3: I can sit in my office and turn on my computer and have interesting discussions just come to me with minimal effort</div>
+                                <div className="text-yellow-400 mb-4">4: I like performing for a camera</div>
+                                <div className="text-yellow-400 mb-4">5: Some people seem to like listening to me talk about these things and my ego likes that</div>
+                                <div className="text-yellow-400 mb-4">6: How people structure their thoughts and logic around something I think is untrue is interesting to me</div>
+                                <div className="text-yellow-400 mb-4">7: I can disagree with someone about religion and not get upset about it (unlike politics)</div>
+                                <div className="text-yellow-400 mb-4">8: It's good practice in staying calm in the face of someone being rude or awful</div>
+                                <div className="text-yellow-400 mb-4">9: I write the code that does these animations and it's a whole fulfilling hobby in itself</div>
+                                <div className="text-yellow-400 mb-4">10: My regulars! I love that people enjoy listening to me enough to keep coming back, and I seem to attract people who get along with the vibe of what I'm doing</div>
+                                <div className="text-yellow-400 mb-4 mt-16 text-center">Thanks for watching!</div>
+                            </div>
                         </div>
                     </div>
                 </div>

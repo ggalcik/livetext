@@ -88,7 +88,8 @@ export const hypothetichecks = [
     "Let's say being an atheist meant you would pass to oblivion after death. God gives you the ability to turn atheists into believers, which gives them access to the afterlife. Would you use it?",
     "Could God have made coveting okay?",
     "If you saw someone being mugged and you had the ability to stop it, should you?",
-    "If you were able to ask Jesus one question, what would it be?"
+    "If you were able to ask Jesus one question, what would it be?",
+    "If you could go back in time and save Jesus, would you?"
 ]
 
 export const christolyzerQuestions = [

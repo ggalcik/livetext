@@ -21,31 +21,31 @@ export const BLIP_COMPONENTS: Record<IBlipType, BlipEntry> = {
       Pick: WhySoAngryPick,
     },
     handlesDeactivate: true,
+  }, Hello: {
+    component: Hello,
+    extendedComponent: HelloAdmin,
+    opts: {},
+  },
+  Snail: {
+    component: Snail, opts: {},
+    variants: ['1a', '1b', '2', '3', 'N', 'Xeno']
+  }, "Holy Honkers": {
+    component: HolyHonkers, opts: {},
+    variants: ['sailor', 'sulfur'],
+  },
+  Orchestra,
+  Egregore,
+  Names: {
+    component: Names,
+    opts: {},
+    handlesDeactivate: true,
   },
   "Why Do This": {
     component: WhyDoThis,
     opts: {},
     handlesDeactivate: true,
   },
-  Snail: {
-    component: Snail, opts: {},
-    variants: ['1a', '1b', '2', '3', 'N', 'Xeno']
-  }, Hello: {
-    component: Hello,
-    extendedComponent: HelloAdmin,
-    opts: {},
-  }, "Holy Honkers": {
-    component: HolyHonkers, opts: {},
-    variants: ['sailor', 'sulfur'],
-  },
-  Orchestra,
-  Names: {
-    component: Names,
-    opts: {},
-    handlesDeactivate: true,
-  },
   Analogy,
-  'Mamma Mia': MammaMia,
+  // 'Mamma Mia': MammaMia,
   Goalpost,
-  Egregore,
 }; 

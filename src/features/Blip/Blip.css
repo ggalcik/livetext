@@ -414,7 +414,7 @@
     --animate-analogy-blink: analogy-blink 1s steps(2) infinite;
     --animate-why-do-this-enter: why-do-this-enter 5s ease-out forwards;
     --animate-why-do-this-exit: why-do-this-exit 1s linear forwards;
-    --animate-why-do-this-scroll: why-do-this-scroll 20s linear 5.5s forwards;
+    --animate-why-do-this-scroll: why-do-this-scroll 30s linear 5.5s forwards;
 
     @keyframes why-do-this-scroll {
         from {
@@ -429,7 +429,7 @@
     @keyframes why-do-this-enter {
         0% {
             opacity: 0;
-            transform: translateY(100%);
+            transform: translateX(100%);
         }
 
         33.333% {
@@ -438,7 +438,7 @@
 
         100% {
             opacity: 1;
-            transform: translateY(0);
+            transform: translateX(0);
         }
     }
 
@@ -620,4 +620,78 @@
 
 .egregore-wave>span:nth-child(8) {
     animation-delay: 560ms;
+}
+
+.why-do-this-crt {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+}
+
+.why-do-this-crt::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 40;
+    pointer-events: none;
+    background: repeating-linear-gradient(
+        to bottom,
+        transparent 0,
+        transparent 3px,
+        rgb(0 0 0 / 18%) 4px
+    );
+    mix-blend-mode: multiply;
+}
+
+.why-do-this-crt::after {
+    content: "";
+    position: absolute;
+    inset: -30% 0;
+    z-index: 41;
+    pointer-events: none;
+    background: linear-gradient(
+        to bottom,
+        transparent 35%,
+        rgb(255 255 255 / 20%) 50%,
+        transparent 65%
+    );
+    animation: why-do-this-crt-roll 8s linear infinite;
+}
+
+.why-do-this-crt-text {
+    text-shadow:
+        -2px 0 rgb(255 40 40 / 65%),
+        2px 0 rgb(40 220 255 / 65%),
+        0 0 8px currentColor;
+    animation: why-do-this-crt-jitter 4s steps(1) infinite;
+}
+
+@keyframes why-do-this-crt-roll {
+    from {
+        transform: translateY(-40%);
+    }
+
+    to {
+        transform: translateY(40%);
+    }
+}
+
+@keyframes why-do-this-crt-jitter {
+    0%,
+    91%,
+    94%,
+    100% {
+        transform: translateX(0);
+        filter: brightness(1);
+    }
+
+    92% {
+        transform: translateX(-3px);
+        filter: brightness(1.3);
+    }
+
+    93% {
+        transform: translateX(2px);
+        filter: brightness(0.85);
+    }
 }

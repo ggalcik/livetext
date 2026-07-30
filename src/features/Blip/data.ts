@@ -61,6 +61,12 @@ export const rheazonsData: RheazonEntry[] = [
         ]
     }, 
     {
+        'Skeptic Panda': 
+        [
+            "There was that one time in 2008 that I had to wait an extra 15 seconds for an elevator."
+        ]
+    }, 
+    {
         'WithoutClaire':
         [
             "Because Noah took a pair of koalas on the ark, and those things are bastards."
