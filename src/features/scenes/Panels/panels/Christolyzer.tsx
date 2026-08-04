@@ -270,7 +270,7 @@ export function Christolyzer() {
         if (quizStage === 'deciding') return `
         
         Tabulating...`;
-          if (quizStage === 'win') return `*** YOU FOUND JESUS!
+        if (quizStage === 'win') return `*** YOU FOUND JESUS!
         
      Good News! Anyone who has found Jesus is a true Christian! Well done!`;
 
@@ -377,7 +377,7 @@ export function Christolyzer() {
 
 
             <img className="relative z-10 w-full" src={christolyzerBooting} />
-            <img className="absolute animate-logoTopUp z-9 top-0 w-full" src={christolyzerBootingTop} />
+            {/* <img className="absolute animate-logoTopUp z-100 top-0 w-full" src={christolyzerBootingTop} /> */}
             {/* <img className="relative z-10 w-full" src={christolyzer} /> */}
             {quizStage === 'fail' && <img className="absolute animate-blink z-10 w-full top-0" src={christolyzerFail} />}
             {quizStage === 'win' && <img className="absolute animate-blink z-10 w-full top-0" src={christolyzerWin} />}
@@ -385,11 +385,16 @@ export function Christolyzer() {
             <img className="animate-logoPowerOn absolute z-10 w-full top-0 pointer-events-none" src={christolyzerOffLogo} />
             <img className="animate-screenOn absolute z-10 w-full top-0 pointer-events-none" src={christolyzerDarkScreen} />
 
-            <div className={`theReadoutWrapper absolute z-1 top-0 left-0 w-full h-1/2 pt-[12%] pl-[14%] pr-[15%] ${isReadoutAnimatingIn ? 'animate-logoTopUp' : ''}`}>
-                <div className='theReadoutBox relative border w-full h-1/2 overflow-hidden '>
-                    <div className='absolute w-full h-full bg-black'></div>
-                    {computing && <div className='relative w-full h-full animate-computing'></div>}
-                    {readoutStatus && !computing && <div className='relative text-green-300 font-["Press_Start_2P"] text-[5cqw] p-[3%] w-full text-center animate-slideIn'>{readoutStatus}</div>}
+            <div className={`theReadoutWrapper xbg-amber-400 absolute z-1 top-0 left-0 w-full  pointer-events-none ${isReadoutAnimatingIn ? 'animate-logoTopUp' : ''}`}>
+                {/* <div className={`theReadoutWrapper xbg-amber-400 absolute z-100 top-0 left-0 w-full h-1/2 pt-[12%] pl-[14%] pr-[15%] ${isReadoutAnimatingIn ? 'animate-logoTopUp' : ''}`}> */}
+                <img className="theSpacer relative xanimate-logoTopUp w-full z-100 xopacity-30" src={christolyzerBootingTop} />
+                <div className='theReadoutBoxContainer absolute z-99 w-[71%] h-[12%] top-0 left-0 mt-[12%] ml-[14%] overflow-hidden'>
+
+                    <div className='theReadoutBox absolute top-0 border w-full h-full '>
+                        <div className='absolute w-full h-full bg-black'></div>
+                        {computing && <div className='relative w-full h-full animate-computing'></div>}
+                        {readoutStatus && !computing && <div className='relative text-green-300 font-["Press_Start_2P"] text-[5cqw] p-[3%] w-full text-center animate-slideIn'>{readoutStatus}</div>}
+                    </div>
                 </div>
             </div>
 
@@ -503,7 +508,7 @@ function JesusButton({ stage, computing, handleJesus }: { stage: QuizStage, comp
 
         if (stage === 'init') setJesusStage('out');
 
-        
+
     }, [stage, computing]);
 
     const jesusStageClass =
@@ -519,7 +524,7 @@ function JesusButton({ stage, computing, handleJesus }: { stage: QuizStage, comp
                     'p-2 h-auto bg-blue-600 hover:!bg-blue-500 rounded-xl relative shadow-xs shadow-black cursor-pointer transition-[filter] duration-[2000ms] ease-out',
                     jesusStage === 'on' || jesusStage === 'blink' ? 'grayscale-0' : 'grayscale-[80%]'
                 )}
-                onClick={() => {handleJesus(); setJesusStage('blink')}}
+                onClick={() => { handleJesus(); setJesusStage('blink') }}
             >
 
                 <img
