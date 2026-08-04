@@ -14,6 +14,7 @@ import beepboop from './assets/beepboop.mp3';
 import yesBeep from './assets/yes.mp3';
 import noBeep from './assets/NO.mp3';
 import failBuzz from './assets/fail.mp3';
+import skipGlitch from './assets/christolyzer_glitch.mp3';
 import winDing from './assets/christolyzer_win.mp3';
 import priceIsRightTheme from './assets/Price is Right theme.mp3';
 import computerBoot from './assets/computer_boot.mp3';
@@ -71,7 +72,7 @@ const yesnoBeep: Record<Choice, string> = {
 
 
 export function Christolyzer() {
-    const defaultDisplay = `Are you a true Christian? Say which button to press on each answer to find out!
+    const defaultDisplay = `Are you a true Christian? Say which button to press on each answer to find out! You may skip one uncomfortable question.
 
     Press "YES" to begin.`
     const helpDisplay = 'The Christ-O-Lyzer will ask four questions, and return the result "True Christian" if all answers are correct (based on responses previously provided by true Christians).';
@@ -83,6 +84,8 @@ export function Christolyzer() {
     const [pendingStage, setPendingStage] = useState<QuizStage | null>(null);
     const [isClearingDisplayText, setIsClearingDisplayText] = useState(false);
     const [isReadoutAnimatingIn, setIsReadoutAnimatingIn] = useState(false);
+    const [skipUsed, setSkipUsed] = useState(false);
+    const [isSkipping, setIsSkipping] = useState(false);
     const isQuestion = typeof quizStage === 'number';
     const [chosen, setChosen] = useState<null | Choice>(null);
     const [questionList, setQuestionList] = useState<string[]>(() => randomSample(christolyzerQuestions, 5));
@@ -292,6 +295,8 @@ export function Christolyzer() {
         setConfirmingReset(false);
         setShowingHelp(false);
         setChosen(null);
+        setSkipUsed(false);
+        setIsSkipping(false);
         selectQuestions();
     }
 
@@ -308,6 +313,21 @@ export function Christolyzer() {
         }
 
         prepNextStage(false);
+    }
+
+    function handleSkip() {
+        if (typeof quizStage !== 'number' || skipUsed || computing || isClearingDisplayText || chosen) return;
+
+        const skipAudio = new Audio(skipGlitch);
+        skipAudio.volume = VOLUME;
+        skipAudio.play().catch((err) => {
+            console.warn("Could not play skip sound:", err);
+        });
+
+        setSkipUsed(true);
+        setIsSkipping(true);
+        setPendingStage(quizStage);
+        setIsClearingDisplayText(true);
     }
 
     function prepNextStage(shouldCompute: boolean = true) {
@@ -337,6 +357,11 @@ export function Christolyzer() {
 
     function handleAdvanceStage() {
         if (!pendingStage) return;
+
+        if (isSkipping && typeof quizStage === 'number') {
+            setQuestionList((questions) => questions.filter((_, index) => index !== quizStage - 1));
+        }
+
         setChosen(null);
         setQuizStage(pendingStage);
 
@@ -358,6 +383,7 @@ export function Christolyzer() {
         setComputing(pendingStage === 'deciding');
         setPendingStage(null);
         setIsClearingDisplayText(false);
+        setIsSkipping(false);
     }
 
     function selectQuestions() {
@@ -409,7 +435,7 @@ export function Christolyzer() {
                                         <div className={`flex w-1/2 h-full items-center justify-center text-xl ${chosen === 'NO' ? 'bg-gray-500 text-white' : ''}`}>NO</div>
                                     </div>
                                     <div className='absolute -bottom-20 flex w-full h-[35%]'>
-                                        Processing...
+                                        {isSkipping ? '*** SKIPPED***' : 'Processing...'}
                                     </div>
 
                                 </>
@@ -421,13 +447,14 @@ export function Christolyzer() {
 
             </div>
 
-            <div className="absolute z-20 bottom-[4%] left-[14%] flex h-[14%] w-[72%] items-center">
-                <div className="flex basis-[80%] justify-center gap-6 pr-2 font-bold">
+            <div className="absolute flex justify-center left-1/2 -translate-x-1/2 z-20 bottom-[4%] h-[14%] w-[60%] ">
+                <div className="grid grid-cols-[5fr_5fr_2fr] gap-3 font-bold">
                     <Button
                         type="button"
                         size="lg"
-                        disabled={showingHelp || quizStage === 'fail' || quizStage === 'deciding'}
-                        className="inline-flex h-16 min-w-[7rem] items-center justify-center !bg-green-600 px-10 py-0 font-sans text-xl leading-none text-white shadow-[inset_0_2px_0_rgba(255,255,255,0.3),0_3px_0_rgba(0,0,0,0.35)] hover:!bg-green-500 active:translate-y-0.5 active:shadow-[inset_0_2px_0_rgba(255,255,255,0.2),0_1px_0_rgba(0,0,0,0.35)]"
+                        disabled={showingHelp || computing || isClearingDisplayText || chosen !== null || quizStage === 'fail' || quizStage === 'deciding'}
+                        className="inline-flex h-16 w-full items-center justify-center !bg-green-600 px-5 py-0 font-sans text-xl leading-none text-white
+                        shadow-[inset_0_2px_0_rgba(255,255,255,0.3),0_3px_0_rgba(0,0,0,0.35)] hover:!bg-green-500 active:translate-y-0.5 active:shadow-[inset_0_2px_0_rgba(255,255,255,0.2),0_1px_0_rgba(0,0,0,0.35)]"
                         onClick={(event) => {
                             event.stopPropagation();
                             handleChoice('YES');
@@ -439,8 +466,9 @@ export function Christolyzer() {
                         type="button"
                         variant="c"
                         size="lg"
-                        disabled={showingHelp || typeof quizStage !== 'number'}
-                        className="inline-flex h-16 min-w-[7rem] items-center justify-center px-10 py-0 font-sans text-xl leading-none text-white shadow-[inset_0_2px_0_rgba(255,255,255,0.3),0_3px_0_rgba(0,0,0,0.35)] active:translate-y-0.5 active:shadow-[inset_0_2px_0_rgba(255,255,255,0.2),0_1px_0_rgba(0,0,0,0.35)]"
+                        disabled={showingHelp || computing || isClearingDisplayText || chosen !== null || typeof quizStage !== 'number'}
+                        className="inline-flex h-16 w-full items-center justify-center px-5 py-0 font-sans text-xl leading-none text-white
+                        shadow-[inset_0_2px_0_rgba(255,255,255,0.3),0_3px_0_rgba(0,0,0,0.35)] active:translate-y-0.5 active:shadow-[inset_0_2px_0_rgba(255,255,255,0.2),0_1px_0_rgba(0,0,0,0.35)]"
                         onClick={(event) => {
                             event.stopPropagation();
                             handleChoice('NO');
@@ -448,14 +476,26 @@ export function Christolyzer() {
                     >
                         NO
                     </Button>
+                    <Button
+                        type="button"
+                        size="lg"
+                        disabled={showingHelp || !isQuestion || skipUsed || computing || isClearingDisplayText || chosen !== null}
+                        className="inline-flex h-16 w-full items-center justify-center !bg-blue-700 px-3 py-0 font-sans text-sm leading-none text-white shadow-[inset_0_2px_0_rgba(255,255,255,0.3),0_3px_0_rgba(0,0,0,0.35)] hover:!bg-blue-500 active:translate-y-0.5 active:shadow-[inset_0_2px_0_rgba(255,255,255,0.2),0_1px_0_rgba(0,0,0,0.35)]"
+                        onClick={(event) => {
+                            event.stopPropagation();
+                            handleSkip();
+                        }}
+                    >
+                        SKIP ONE
+                    </Button>
                 </div>
 
-                <div className="flex basis-[20%] flex-col items-start gap-1 pl-2">
+                <div className="absolute bg-gray-500 scale-80 p-2 right-[-23%] xopacity-0 top-0 flex flex-col items-start gap-1 ">
                     <Button
                         type="button"
                         variant={confirmingReset ? "c" : undefined}
                         disabled={showingHelp}
-                        className={`inline-flex w-[80%] items-center justify-center px-2 font-sans text-sm leading-none text-white ${confirmingReset ? "" : "!bg-blue-700 hover:!bg-blue-600"}`}
+                        className={`inline-flex w-full items-center justify-center px-2 font-sans text-sm leading-none text-white ${confirmingReset ? "" : "!bg-blue-700 hover:!bg-blue-600"}`}
                         onClick={(event) => {
                             event.stopPropagation();
                             setConfirmingReset((previous) => !previous);
@@ -466,7 +506,7 @@ export function Christolyzer() {
                     <Button
                         type="button"
                         variant={confirmingReset ? "c" : undefined}
-                        className={`inline-flex w-[80%] items-center justify-center px-2 font-sans text-sm leading-none text-white ${confirmingReset ? "" : "!bg-blue-700 hover:!bg-blue-600"} ${showingHelp ? "ring-blue-300" : ""}`}
+                        className={`inline-flex w-full items-center justify-center px-2 font-sans text-sm leading-none text-white ${confirmingReset ? "" : "!bg-blue-700 hover:!bg-blue-600"} ${showingHelp ? "ring-blue-300" : ""}`}
                         onClick={(event) => {
                             event.stopPropagation();
                             if (confirmingReset) {
