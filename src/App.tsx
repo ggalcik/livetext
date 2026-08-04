@@ -45,7 +45,7 @@ function App() {
       }
 
       const bounds = splitPaneRef.current.getBoundingClientRect();
-      const nextWidth = ((event.clientX - bounds.left) / bounds.width) * 100;
+      const nextWidth = ((bounds.right - event.clientX) / bounds.width) * 100;
       const nextGuideLineTop = ((event.clientY - bounds.top) / bounds.height) * 100;
       const clampedWidth = Math.min(80, Math.max(20, nextWidth));
       const clampedGuideLineTop = Math.min(95, Math.max(5, nextGuideLineTop));
@@ -142,11 +142,14 @@ function App() {
         isActive ? (
           <div ref={splitPaneRef} className="flex h-screen overflow-hidden bg-gray-900">
             <div
-              className="relative h-full shrink-0 overflow-auto bg-white"
-              style={{ width: `${adminWidth}%` }}
+              className="relative h-full min-w-0 flex-1 overflow-hidden bg-black"
+              style={{ marginRight: isPopupShifted ? "50px" : undefined }}
             >
-              <OverlaysAccordion />
-              <ScenesAccordion popupState={{ visiblePopup, setVisiblePopup }} />
+              <div
+                className="pointer-events-none absolute left-0 right-0 z-20 border-t-2 border-dashed border-amber-300/80 -translate-y-5 opacity-40"
+                style={{ top: `${guideLineTop}%` }}
+              />
+              <SceneDisplay sceneName={sceneAccordionData.sceneSelected} embedded />
             </div>
 
             <div className="relative h-full w-0 shrink-0">
@@ -166,14 +169,11 @@ function App() {
             </div>
 
             <div
-              className="relative h-full min-w-0 flex-1 overflow-hidden bg-black"
-              style={{ marginLeft: isPopupShifted ? "50px" : undefined }}
+              className="relative h-full shrink-0 overflow-auto bg-white"
+              style={{ width: `${adminWidth}%` }}
             >
-              <div
-                className="pointer-events-none absolute left-0 right-0 z-20 border-t-2 border-dashed border-amber-300/80 -translate-y-5 opacity-40"
-                style={{ top: `${guideLineTop}%` }}
-              />
-              <SceneDisplay sceneName={sceneAccordionData.sceneSelected} embedded />
+              <OverlaysAccordion />
+              <ScenesAccordion popupState={{ visiblePopup, setVisiblePopup }} />
             </div>
           </div>
         ) : (

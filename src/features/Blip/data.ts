@@ -5,13 +5,13 @@ export const rheazonsData: RheazonEntry[] = [
     {
         'Pope Rhizic, Emperor of Antifa':
             [
-                "The power of the holy spirit isn't enough to open this pickle jar.",
+                // "The power of the holy spirit isn't enough to open this pickle jar.",
                 "My toaster keeps burning the Virgin Mary into my bread.",
                 "The cat keeps spelling 'He is Risen!' when she walks across the keyboard.",
                 "I keep committing sins, but Jesus keeps forgiving me.",
                 "The neighbor's Wi-Fi is named 'JesusLovesYou' & it has stronger signal than mine.",
-                "I keep getting 'Hogwarts Letters' but I don't believe in magic either.",
-                "The dryer demon that steals half my socks.",
+                // "I keep getting 'Hogwarts Letters' but I don't believe in magic either.",
+                // "The dryer demon that steals half my socks.",
                 "I can't eat Trix anymore, because I'm not a kid.",
                 "Caught a leprechaun, but all he gave me was an AOL disc with 180 free hours of internet.",
                 "If my anger gets below 55% I'm rigged to explode!",
@@ -24,21 +24,20 @@ export const rheazonsData: RheazonEntry[] = [
                 "Because I really needed help from Jesus, but when I turned around there was only one set of footprints. He ran off when I needed him the most!",
                 "The kids are walking on my azaleas again.",
                 "You become an atheist, you get the anger for free.",
-                "It's a tautology! A = A, where A = anger, and A = Atheist.",
+                // "It's a tautology! A = A, where A = anger, and A = Atheist.",
                 "If I wasn't angry, then the Reddit atheists wouldn't let me in the clubhouse anymore.",
-                "I want to be taken seriously, but my tiny legs make me look ridiculous.",
-                "Sulfur changed their name.",
+                // "I want to be taken seriously, but my tiny legs make me look ridiculous.",
+                // "Sulfur changed their name.",
                 "I'm tired of seeing the same old anger reasons and no one is giving me any new ones.",
                 "My custom fedora has been backordered for weeks and I haven't been able to show my face at any Warhammer expos.",
-
-"Jesus was going to handle the wine for my wedding, but all the water turned into Bud Lite Lime."
+                "Jesus was going to handle the wine for my wedding, but all the water turned into Bud Lite Lime."
             ]
     },
     {
         'The Other Mike':
             [
-                "Because my tax dollars are sending crows to crow school.",
-                "Because the numbers didn't really mean anything and the island was just purgatory all along."
+                // "Because my tax dollars are sending crows to crow school.",
+                // "Because the numbers didn't really mean anything and the island was just purgatory all along."
 
             ]
     },
@@ -70,6 +69,12 @@ export const rheazonsData: RheazonEntry[] = [
         'WithoutClaire':
         [
             "Because Noah took a pair of koalas on the ark, and those things are bastards."
+        ]
+    },
+    {
+        'Randy Fitz':
+        [
+            "I sneezed last week and someone said “bless you”, but I caught a cold anyway."
         ]
     }
 ]
