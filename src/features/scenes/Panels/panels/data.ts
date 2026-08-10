@@ -101,10 +101,11 @@ export const christolyzerQuestions = [
     "Does God make decisions about what is good? (As opposed to: what is good is simply part of God's nature)",
     "Did Noah's flood actually happen as a historical event?",
     "Was the world literally created in six days (as we commonly measure days)?",
-    "If God were to appear before a nonbeliever, should they then believe?",
+    "If God appeared in front of a nonbeliever, shoukld they then believe in God?",
     "Is Hell a spiritual place of eternal, conscious torment?",
     "Is it necessary for another human to be involved in the process of confessing your sins?",
     "Does the Bible contain any errors?",
     "Is it okay to pray for people when they ask you not to?",
-    "Should a Christian approve generally of the work that the ICE agency is doing in America?"
+    "Should a Christian approve generally of the work that the ICE agency is doing in America?",
+    "When you refer to the son of God, should you use the name 'Jesus'?"
 ]

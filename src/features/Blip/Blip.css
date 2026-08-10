@@ -414,7 +414,7 @@
     --animate-analogy-blink: analogy-blink 1s steps(2) infinite;
     --animate-why-do-this-enter: why-do-this-enter 5s ease-out forwards;
     --animate-why-do-this-exit: why-do-this-exit 1s linear forwards;
-    --animate-why-do-this-scroll: why-do-this-scroll 40s linear 5.5s forwards;
+    --animate-why-do-this-scroll: why-do-this-scroll 38s linear 5.5s forwards;
 
     @keyframes why-do-this-scroll {
         from {

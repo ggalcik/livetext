@@ -190,31 +190,31 @@ export default function Orchestra({ endBlip }: BlipProps) {
         />
       </div>
 
-      {!selectedChoice && false && 
+      {!selectedChoice && true && 
 
         <MasterViewport name={"Blip_Orchestra"} needCtrl={true}>
 
           <div className="absolute w-full h-full">
             <img src={orchestraImg} className={clsx("absolute transition-opacity duration-5000",
-              currentSlide === 4 ? 'opacity-100  animate-orchestra-4' : 'opacity-0',
+              currentSlide === 4 ? 'opacity-100  xanimate-orchestra-4' : 'opacity-0',
               "scale-300 origin-bottom-right bottom-0 left-0"
             )} />
             <img src={orchestraImg} className={clsx("absolute transition-opacity duration-5000",
-              currentSlide === 3 ? 'opacity-100 animate-orchestra-3' : 'opacity-0',
+              currentSlide === 3 ? 'opacity-100 xanimate-orchestra-3' : 'opacity-0',
               "scale-400 origin-bottom-left bottom-0 left-0"
             )} />
             <img src={orchestraImg} className={clsx("absolute transition-opacity duration-5000",
-              currentSlide === 2 ? 'opacity-100 animate-orchestra-2' : 'opacity-0',
+              currentSlide === 2 ? 'opacity-100 xanimate-orchestra-2' : 'opacity-0',
               "scale-150 origin-top-right",
               "top-0 right-0"
             )} />
             <img src={orchestraImg} className={clsx("absolute transition-opacity duration-5000",
-              currentSlide === 1 ? 'opacity-100 animate-orchestra-1' : 'opacity-0',
+              currentSlide === 1 ? 'opacity-100 xanimate-orchestra-1' : 'opacity-0',
               "scale-400 origin-bottom-left ",
               "bottom-0 left-0"
             )} />
             <img src={orchestraImg} className={clsx("absolute transition-opacity duration-5000",
-              currentSlide === 0 ? 'opacity-100  animate-orchestra-0' : 'opacity-0',
+              currentSlide === 0 ? 'opacity-100  xanimate-orchestra-0' : 'opacity-0',
               " origin-bottom animate-orchestra-0 translate-y-10",
               "bottom-0 left-0"
             )} />
@@ -224,7 +224,7 @@ export default function Orchestra({ endBlip }: BlipProps) {
       }
 
       <video ref={audioRef} className="hidden" playsInline onEnded={handleEnded} />
-      {selectedChoice &&
+      {selectedChoice && false &&
         <div className={clsx("absolute w-[160%] top-10 left-0 right-0",
           gGlobal.layout.crampedPortrait ? 'top-0' : 'bottom-0'
         )}>

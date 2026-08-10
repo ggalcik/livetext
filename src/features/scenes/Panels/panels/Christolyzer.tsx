@@ -562,7 +562,8 @@ function JesusButton({ stage, computing, handleJesus }: { stage: QuizStage, comp
             <Button
                 className={clsx(
                     'p-2 h-auto bg-blue-600 hover:!bg-blue-500 rounded-xl relative shadow-xs shadow-black cursor-pointer transition-[filter] duration-[2000ms] ease-out',
-                    jesusStage === 'on' || jesusStage === 'blink' ? 'grayscale-0' : 'grayscale-[80%]'
+                    jesusStage === 'on' || jesusStage === 'blink' ? 'brightness-[1]' : 'brightness-[.5]'
+                    // jesusStage === 'on' || jesusStage === 'blink' ? 'grayscale-0' : 'grayscale-[80%]'
                 )}
                 onClick={() => { handleJesus(); setJesusStage('blink') }}
             >
@@ -571,7 +572,7 @@ function JesusButton({ stage, computing, handleJesus }: { stage: QuizStage, comp
                     src={jesusButton}
                     className={clsx(
                         'transition-[filter] duration-[2000ms] ease-out',
-                        jesusStage === 'on' ? 'brightness-100' : 'brightness-[.3]',
+                        // jesusStage === 'on' ? 'brightness-100' : 'brightness-[.3]',
                         jesusStage === 'blink' && 'animate-jesus-blink',
                     )}
                 />

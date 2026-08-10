@@ -8,7 +8,7 @@ import "./Blip.css";
 const AUDIO_VOLUME = 0.3;
 const EXIT_DURATION_MS = 5000;
 const EARLY_DEACTIVATION_WINDOW_MS = 10_000;
-const AUTO_DEACTIVATION_DELAY_MS = 46_000;
+const AUTO_DEACTIVATION_DELAY_MS = 44_000;
 
 export default function WhyDoThis({ endBlip, deactivateRequestId }: BlipProps) {
     const [isExiting, setIsExiting] = useState(false);
