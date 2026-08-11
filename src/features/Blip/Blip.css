@@ -415,6 +415,17 @@
     --animate-why-do-this-enter: why-do-this-enter 5s ease-out forwards;
     --animate-why-do-this-exit: why-do-this-exit 1s linear forwards;
     --animate-why-do-this-scroll: why-do-this-scroll 38s linear 5.5s forwards;
+    --animate-why-do-this-thanks: why-do-this-thanks 5s ease-out 39s both;
+
+    @keyframes why-do-this-thanks {
+        from {
+            transform: translateY(55cqh);
+        }
+
+        to {
+            transform: translateY(16.667cqh);
+        }
+    }
 
     @keyframes why-do-this-scroll {
         from {

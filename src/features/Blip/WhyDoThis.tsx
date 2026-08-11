@@ -6,7 +6,7 @@ import type { BlipProps } from "./types";
 import "./Blip.css";
 
 const AUDIO_VOLUME = 0.3;
-const EXIT_DURATION_MS = 5000;
+const EXIT_DURATION_MS = 3000;
 const EARLY_DEACTIVATION_WINDOW_MS = 10_000;
 const AUTO_DEACTIVATION_DELAY_MS = 44_000;
 
@@ -96,7 +96,7 @@ export default function WhyDoThis({ endBlip, deactivateRequestId }: BlipProps) {
                         animationDuration: `${EXIT_DURATION_MS}ms`,
                     } as CSSProperties : undefined}
                     className={clsx(
-                        "why-do-this-crt flex h-full w-full flex-col bg-[#00f] [container-type:size]",
+                        "why-do-this-crt relative flex h-full w-full flex-col overflow-hidden bg-[#00f] [container-type:size]",
                         isExiting ? "animate-why-do-this-exit" : "animate-why-do-this-enter"
                     )}
                 >
@@ -117,9 +117,11 @@ export default function WhyDoThis({ endBlip, deactivateRequestId }: BlipProps) {
                                 <div className="text-yellow-400 mb-4">8: It's good practice in staying calm in the face of someone being rude or awful</div>
                                 <div className="text-yellow-400 mb-4">9: I write the code that does these animations and it's a whole fulfilling hobby in itself</div>
                                 <div className="text-yellow-400 mb-4">10: My regulars! I love that people enjoy listening to me enough to keep coming back, and I seem to attract people who get along with the vibe of what I'm doing</div>
-                                <div className="text-yellow-400 mb-4 mt-16 text-center">Thanks for watching!</div>
                             </div>
                         </div>
+                    </div>
+                    <div className="pointer-events-none absolute inset-0 z-30 flex items-center justify-center px-[6cqw] text-center font-[Bahnschrift] text-[clamp(1.5rem,6cqh,5rem)] leading-tight font-bold text-yellow-400 animate-why-do-this-thanks">
+                        <div className="why-do-this-crt-text">Thanks for watching!</div>
                     </div>
                 </div>
             </MasterViewport>
