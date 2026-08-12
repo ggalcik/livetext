@@ -128,10 +128,24 @@ export function liveDataReducer(state: LiveDataState, action: LiveDataAction): L
       const addAtIdx = action.payload.idx;
       const defaultCSS =
         bannersKey === "banners" ? state.defaultBannerCSS : state.defaultSpotCSS;
+      const source = action.payload.copyFromIdx === undefined
+        ? undefined
+        : state[bannersKey][action.payload.copyFromIdx];
+      const blankBanner = bannersKey === 'banners'
+        ? createBanner(defaultCSS)
+        : createSpot(defaultCSS);
+      const newBanner = source
+        ? {
+            ...blankBanner,
+            text: source.text,
+            bannerCSS: source.bannerCSS,
+            ...(blankBanner.type === 'rotating' ? { on: false } : {}),
+          } as Banner
+        : blankBanner;
 
       const newBanners = [
         ...state[bannersKey].slice(0, addAtIdx),
-        bannersKey === 'banners' ? createBanner(defaultCSS) : createSpot(defaultCSS),
+        newBanner,
         ...state[bannersKey].slice(addAtIdx),
       ];
       return {

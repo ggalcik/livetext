@@ -166,7 +166,7 @@ export type LiveDataAction =
   | { type: "background/toggle" }
   | { type: "background/change"; payload: { which: BackgroundType } }
   | { type: "masterViewportCSS/padding"; payload: { padding: string } }
-  | { type: "banner/add"; payload: { type: BannerType; idx: number } }
+  | { type: "banner/add"; payload: { type: BannerType; idx: number; copyFromIdx?: number } }
   | { type: "banner/change"; payload: { type: BannerType; idx: number; text: string } }
   | { type: "banner/delete"; payload: { type: BannerType; idx: number } }
   | { type: "banner/setActive"; payload: { type: BannerType; idx: number } }

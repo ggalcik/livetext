@@ -79,7 +79,10 @@ export default function ItemControls({ item, idx, total, popupState, isActive = 
 
             <Button
                 type="button"
-                onClick={() => dispatch({ type: "banner/add", payload: { type: item.type, idx: idx + 1 } })}
+                onClick={() => dispatch({
+                    type: "banner/add",
+                    payload: { type: item.type, idx: idx + 1, copyFromIdx: idx },
+                })}
             >
                 Add
             </Button>
