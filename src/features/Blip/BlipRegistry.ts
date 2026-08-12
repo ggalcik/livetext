@@ -35,7 +35,7 @@ export const BLIP_COMPONENTS: Record<IBlipType, BlipEntry> = {
   },
   Orchestra,
   Egregore,
-  Names: {
+  "Fav names": {
     component: Names,
     opts: {},
     handlesDeactivate: true,

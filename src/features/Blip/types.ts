@@ -3,7 +3,7 @@ import { z } from 'zod';
 export const blipTypes = [
     'Why Angry', 'Why Do This', 'Holy Honkers', 'Orchestra', 'Snail', 'Goalpost', 
     'Mamma Mia',
-     'Egregore', 'Names', 'Hello', 'Analogy'
+     'Egregore', 'Fav names', 'Hello', 'Analogy'
 ] as const;
 
 export const blipTypeSchema = z.enum(blipTypes);
