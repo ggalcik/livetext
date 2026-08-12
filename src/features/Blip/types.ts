@@ -2,7 +2,7 @@ import { z } from 'zod';
 
 export const blipTypes = [
     'Why Angry', 'Why Do This', 'Holy Honkers', 'Orchestra', 'Snail', 'Goalpost', 
-    // 'Mamma Mia',
+    'Mamma Mia',
      'Egregore', 'Names', 'Hello', 'Analogy'
 ] as const;
 

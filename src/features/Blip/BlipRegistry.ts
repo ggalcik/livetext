@@ -46,6 +46,6 @@ export const BLIP_COMPONENTS: Record<IBlipType, BlipEntry> = {
     handlesDeactivate: true,
   },
   Analogy,
-  // 'Mamma Mia': MammaMia,
+  'Mamma Mia': MammaMia,
   Goalpost,
 }; 
