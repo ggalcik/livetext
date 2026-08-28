@@ -16,6 +16,7 @@ export const rheazonsData: RheazonEntry[] = [
                 "Caught a leprechaun, but all he gave me was an AOL disc with 180 free hours of internet.",
                 "If my anger gets below 55% I'm rigged to explode!",
                 "Jesus leaves my messages on read but never replies.",
+                "I'm a 99th Degree Triple Secret Illuminati Master and I'm not allowed to tell anyone."
             ]
     },
     {
@@ -30,7 +31,8 @@ export const rheazonsData: RheazonEntry[] = [
                 // "Sulfur changed their name.",
                 "I'm tired of seeing the same old anger reasons and no one is giving me any new ones.",
                 "My custom fedora has been backordered for weeks and I haven't been able to show my face at any Warhammer expos.",
-                "Jesus was going to handle the wine for my wedding, but all the water turned into Bud Lite Lime."
+                "Jesus was going to handle the wine for my wedding, but all the water turned into Bud Lite Lime.",
+                "I used to love Chick Fil A and Hobby Lobby but God ruined them for me."
             ]
     },
     {
@@ -44,7 +46,9 @@ export const rheazonsData: RheazonEntry[] = [
         {
         'DX Josh':
         [
-            "The remote isn't working and spinning the batteries isn't helping anymore."
+            "The remote isn't working and spinning the batteries isn't helping anymore.",
+            "I keep getting Rogaine ads and I'm starting to take it personally.",
+"I spent all morning coveting an ox, and it turned out it was just a cow.",
         ]
     }, 
     {
