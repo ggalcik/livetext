@@ -1,5 +1,6 @@
 import { useCallback, useEffect } from 'react';
 import snailAudio from './assets/snail universe.mp3';
+import snailUniverseOBS from './assets/snail universe obs.mp3';
 import snailAudioNyehless from './assets/snail nyehless.mp3';
 import snailBackdrop from './assets/snail_backdrop.jpg';
 import snailIdol from './assets/Snail.png';
@@ -28,14 +29,16 @@ const variantAudio: Record<string, string> = {
 
 
 
-export default function Snail({ endBlip, variant, opts }: BlipProps) {
+export default function Snail({ endBlip, source, variant, opts }: BlipProps) {
     const shell = variant === 'shell';
+    const isObs = source === 'OBS';
+    
     const reverse = opts?.reverse;
     // const playAudio = (opts?.variant && typeof opts.variant === 'string') ? variantAudio[opts.variant] : snailAudio;
     useEffect(() => {
         const timeout = setTimeout(() => {
             endBlip();
-        }, 8000);
+        }, isObs ? 12000 : 8000);
 
         return () => clearTimeout(timeout);
     }, [endBlip]);
@@ -53,9 +56,20 @@ export default function Snail({ endBlip, variant, opts }: BlipProps) {
         audio.currentTime = 0;
     }, []);
 
+    function getMainAudio() {
+        switch (true) {
+            case (isObs): 
+                return snailUniverseOBS;
+            case (!!variant):
+                return snailAudioNyehless;
+            default:
+                return snailAudio;
+        }
+    }
+
     useEffect(() => {
         if (shell) return;
-        const background = new Audio(variant ? snailAudioNyehless : snailAudio);
+        const background = new Audio(getMainAudio());
         const choir = variant && variantAudio[variant] && new Audio(variantAudio[variant]);
         playSound(background);
         const choirTimeout = choir

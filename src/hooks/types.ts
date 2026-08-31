@@ -1,6 +1,7 @@
 import { z } from 'zod';
 
 export const persistentDataKeys = [
+    "adminAccordionState",
     "SceneAccordion",
     "counterScene",
     "panelsScene",

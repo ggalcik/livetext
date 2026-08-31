@@ -9,10 +9,11 @@ import clsx from 'clsx';
 import { gGlobal } from '../Global/global';
 
 
-export default function HolyHonkers({ endBlip, variant, opts }: BlipProps) {
+export default function HolyHonkers({ endBlip, variant, source, opts }: BlipProps) {
     const isSulfur = opts?.alt || variant === 'sulfur';
     const isSailor = variant === 'sailor';
     const theImage = isSulfur ? sulfur : (isSailor ? sailor : honkers);
+    const isObs = source === 'OBS';
 
     useEffect(() => {
         const timeout = setTimeout(() => {
@@ -52,7 +53,7 @@ export default function HolyHonkers({ endBlip, variant, opts }: BlipProps) {
 
     return (
         <div className={clsx(`absolute `,
-        gGlobal.layout.crampedPortrait ? 'top-10' : 'bottom-0')}>
+        gGlobal.layout.crampedPortrait && !isObs ? 'top-10' : 'bottom-0')}>
             <div className={` animate-honkers origin-bottom `}>
                 <img className={` ${imgStyle}  m-auto bottom-0`} src={theImage} />
             </div>

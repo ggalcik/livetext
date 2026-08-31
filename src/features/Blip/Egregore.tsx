@@ -7,29 +7,31 @@ import egregore_sound from "./assets/egregore 6.mp3"
 import './Blip.css';
 import { gGlobal } from "../Global/global";
 
-export default function Egregore({ endBlip }: BlipProps) {
+export default function Egregore({ endBlip, source }: BlipProps) {
+    const isObs = source === 'OBS';
+
+    const audioRef = useRef<HTMLAudioElement | null>(null);
 
 
-      const audioRef = useRef<HTMLAudioElement | null>(null);
 
-  useEffect(() => {
-    audioRef.current = new Audio(egregore_sound);
-    const audio = audioRef.current;
-    audio.volume = 0.7;
-    audio.play().catch((err) => {
-      console.warn("Could not play sound:", err);
-    });
+    useEffect(() => {
+        audioRef.current = new Audio(egregore_sound);
+        const audio = audioRef.current;
+        audio.volume = 0.7;
+        audio.play().catch((err) => {
+            console.warn("Could not play sound:", err);
+        });
 
-    return () => {
-      audio.pause();
-      audio.currentTime = 0;
-    };
-  }, []);
+        return () => {
+            audio.pause();
+            audio.currentTime = 0;
+        };
+    }, []);
 
     useEffect(() => {
         const timeout = setTimeout(() => {
             endBlip();
-        }, 9000);
+        }, 10000);
 
         return () => clearTimeout(timeout);
     }, [endBlip]);
@@ -40,9 +42,9 @@ export default function Egregore({ endBlip }: BlipProps) {
             <img className="animate-fadein-egregore1 absolute border-8 border-transparent top-0" src={egregore1} />
             <img className="animate-fadein-egregore2 opacity-0 absolute border-8 border-amber-600 top-0" src={egregore2} />
             <img className="animate-fadein-egregore4 opacity-0 absolute border-8 border-transparent top-0" src={egregore4} />
-            <div className="egregore-wave animate-charwave-container opacity-0
-                absolute top-[45%] left-[50%] -translate-x-[50%] text-center w-full
-                text-8xl font-bold font-[Old_English_Text_MT] text-blue-500 tracking-widest mix-blend-screen">
+            <div className={`egregore-wave animate-charwave-container opacity-0
+                absolute top-[45%] left-[50%] -translate-x-[50%] text-center w-full ${isObs ? 'scale-80' : 'scale-100'}
+                text-8xl font-bold font-[Old_English_Text_MT] text-blue-500 tracking-widest mix-blend-screen`}>
                 <span>e</span>
                 <span>g</span>
                 <span>r</span>
@@ -52,9 +54,9 @@ export default function Egregore({ endBlip }: BlipProps) {
                 <span>r</span>
                 <span>e</span>
             </div>
-            <div className="egregore-wave animate-charwave-container opacity-0
-                absolute top-[45%] left-[50%] -translate-x-[50%] text-center w-full scale-110
-                text-8xl font-bold font-[Old_English_Text_MT] text-red-600 tracking-widest mix-blend-exclusion">
+            <div className={`egregore-wave animate-charwave-container opacity-0
+                absolute top-[45%] left-[50%] -translate-x-[50%] text-center w-full ${isObs ? 'scale-90' : 'scale-110'}
+                text-8xl font-bold font-[Old_English_Text_MT] text-red-600 tracking-widest mix-blend-exclusion`}>
                 <span>e</span>
                 <span>g</span>
                 <span>r</span>

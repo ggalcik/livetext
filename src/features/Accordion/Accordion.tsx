@@ -1,7 +1,11 @@
 import clsx from "clsx";
 import { useState } from "react";
+import { z } from "zod";
 import type { SceneType } from "../scenes/types";
 import MiniSelect from "../scenes/Panels/MiniSelect";
+import { usePersistentState } from "../../hooks/usePersistentState";
+
+const AdminAccordionStateSchema = z.record(z.string(), z.boolean());
 
 interface IAccordion<T extends string> {
     label: string;
@@ -32,7 +36,19 @@ export function Accordion<T extends string>({
     delay,
     boom = null,
     startOpen = false }: IAccordion<T>) {
-    const [isOpen, setIsOpen] = useState(startOpen);
+    const [accordionState, setAccordionState] = usePersistentState({
+        storageKey: "adminAccordionState",
+        schema: AdminAccordionStateSchema,
+        fallback: {},
+    });
+    const isOpen = accordionState[label] ?? startOpen;
+    const setIsOpen = (update: boolean | ((previous: boolean) => boolean)) => {
+        setAccordionState(previous => {
+            const previousOpen = previous[label] ?? startOpen;
+            const nextOpen = typeof update === "function" ? update(previousOpen) : update;
+            return { ...previous, [label]: nextOpen };
+        });
+    };
     const [showMiniSelect, setShowMiniSelect] = useState(false);
 
     function handleSceneClick(evt: React.MouseEvent, scene: T) {

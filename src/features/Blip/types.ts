@@ -50,6 +50,7 @@ export type HelloBlip = z.infer<typeof HelloBlipSchema>;
 
 export type BlipProps = {
     endBlip: () => void,
+    source?: "OBS",
     deactivateRequestId?: number,
     variant?: string,
     selection?: number,

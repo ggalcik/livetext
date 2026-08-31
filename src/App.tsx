@@ -2,6 +2,7 @@ import "./App.css";
 import { useEffect, useRef, useState, type MouseEvent as ReactMouseEvent } from "react";
 import { SingleWindow } from "./SingleWindow";
 import OverlaysAccordion from "./features/OverlaysAccordion";
+import ObsSourceAccordion from "./features/ObsSource/ObsSourceAccordion";
 import ScenesAccordion from "./features/scenes/ScenesAccordion";
 import { SceneDisplay } from "./features/scenes/SceneDisplay";
 import { SceneAccordionDataSchema } from "./features/scenes/types";
@@ -173,6 +174,7 @@ function App() {
               style={{ width: `${adminWidth}%` }}
             >
               <OverlaysAccordion />
+              <ObsSourceAccordion />
               <ScenesAccordion popupState={{ visiblePopup, setVisiblePopup }} />
             </div>
           </div>
