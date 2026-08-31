@@ -10,7 +10,9 @@ import { gGlobal } from '../Global/global';
 
 
 
-export default function MammaMia({ endBlip }: BlipProps) {
+export default function MammaMia({ endBlip, source }: BlipProps) {
+    const isObs = source === 'OBS';
+
     useEffect(() => {
         const timeout = setTimeout(() => {
             endBlip();
@@ -44,6 +46,7 @@ export default function MammaMia({ endBlip }: BlipProps) {
     return (
         <div className={clsx("absolute  left-1/2 -translate-x-1/2 origin-top -rotate-20 text-white",
             gGlobal.layout.crampedPortrait ? 'bottom-1/8' : '-bottom-1/8')}
+            data-source={isObs ? 'obs' : 'app'}
             style={{ transform: `rotate(${randDeg}deg)` }}>
             <div className='relative animate-mario '>
                 <img src={mammaMiaMario} className='' />

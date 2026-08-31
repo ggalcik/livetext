@@ -169,6 +169,12 @@
 
     --animate-snail: snail 10s linear forwards;
 
+    --animate-over-snail-blip: over-snail-blip 10s linear forwards;
+
+    --animate-over-snail-universe: over-snail-universe 10s linear forwards;
+
+    --animate-over-snail: over-snail 12s linear forwards;
+
     @keyframes orchestra-0 {
         0% {
             transform: scale(130%);
@@ -254,6 +260,48 @@
 
         100% {
             transform: translate(-600px, -120px) scale(1.4);
+        }
+    }
+
+    @keyframes over-snail-blip {
+
+        0%,
+        100% {
+            opacity: 0;
+        }
+
+
+        20%,
+        80% {
+            opacity: 1;
+        }
+    }
+
+    @keyframes over-snail-universe {
+
+        0% {
+            transform: translate(0, -80px);
+             opacity: 0
+        }
+20% { opacity: 0 }
+30% { opacity: 1 }
+        100% {
+            transform: translate(60px, 0px);
+        }
+    }
+
+    @keyframes over-snail {
+
+        0% {
+            transform: translate(200px, -000px) scale(0.6);
+            opacity: 0
+        }
+        10% {
+            opacity: 1
+        }
+
+        100% {
+            transform: translate(-1000px, -220px) scale(2);
         }
     }
 

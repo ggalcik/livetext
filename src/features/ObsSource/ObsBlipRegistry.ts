@@ -1,6 +1,7 @@
 import Egregore from "../Blip/Egregore";
 import HolyHonkers from "../Blip/HolyHonkers";
-import Snail from "../Blip/Snail";
+import MammaMia from "../Blip/MammaMia";
+import OverSnail from "../Blip/OverSnail";
 import type { BlipProps, BlipVariant } from "../Blip/types";
 
 export type ObsBlipConfig = {
@@ -18,8 +19,11 @@ export const OBS_BLIPS = {
     component: HolyHonkers,
     variants: ["sailor"],
   },
+  "Mamma Mia": {
+    component: MammaMia,
+  },
   Snail: {
-    component: Snail,
+    component: OverSnail,
     variants: ["1a", "1b", "2", "3", "N", "Xeno"],
   },
 } satisfies Record<string, ObsBlipConfig>;
