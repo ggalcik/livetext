@@ -111,7 +111,7 @@ export default function Counter() {
                 <CounterRoll scene={scene} setScene={setScene} />
           
                 <input type="range" min="0" max={historySliderRange}
-                    className={clsx("absolute top-6 -left-6 z-10 hover:opacity-100 w-6 text-red-400",
+                    className={clsx("absolute top-6 right-0 z-10 hover:opacity-100 w-6 text-red-400",
                         {"opacity-0" : showCounterIdx == 0 })
                     }
                     style={{ writingMode: 'vertical-lr' }}
