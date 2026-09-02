@@ -15,6 +15,7 @@ const EXIT_DURATION_MS = 500;
 export default function Names({ endBlip, deactivateRequestId }: BlipProps) {
     const [confirmReset, setConfirmReset] = useState(false);
     const [isExiting, setIsExiting] = useState(false);
+    const [showNamesIndex, setShowNamesIndex] = useState(0);
     const audioInRef = useRef(new Audio(namesIn));
     const audioOutRef = useRef(new Audio(namesOut));
     const crampedStyle = gGlobal.layout.crampedPortrait;
@@ -24,7 +25,10 @@ export default function Names({ endBlip, deactivateRequestId }: BlipProps) {
         fallback: { names: "", currentDate: format(new Date(), "yyyyMMdd") }
     });
     const today = format(new Date(), "yyyyMMdd");
-    const displayDate = blip.currentDate;
+    const historyEntries = blip.history ? Object.keys(blip.history).reverse() : [];
+    const historyDate = showNamesIndex ? historyEntries[showNamesIndex - 1] : undefined;
+    const displayDate = historyDate ?? blip.currentDate;
+    const displayNames = historyDate && blip.history ? blip.history[historyDate] : blip.names;
     const lastHandledDeactivateId = useRef<number | undefined>(undefined);
 
     const playExitSound = useCallback(() => {
@@ -51,9 +55,10 @@ export default function Names({ endBlip, deactivateRequestId }: BlipProps) {
             },
         }));
         setConfirmReset(false);
+        setShowNamesIndex(0);
     }
 
-    const lines = blip.names
+    const lines = displayNames
         .split(/\r?\n/)
         .map((line) => line.trim())
         .filter((line) => line.length > 0);
@@ -80,13 +85,30 @@ export default function Names({ endBlip, deactivateRequestId }: BlipProps) {
 
     return (
         <div className="absolute w-full h-full text-white">
-            <MasterViewport name="blip_names">
+            <MasterViewport name="blip_names" needCtrl>
                 <div className={clsx(
-                    "w-full h-full backdrop-blur-sm bg-black/50 [container-type:size] text-center",
+                    "group/names w-full h-full backdrop-blur-sm bg-black/50 [container-type:size] text-center",
                     isExiting ? "animate-names-exit" : "animate-names-enter"
                 )}>
+                    {historyEntries.length > 0 && (
+                        <input
+                            type="range"
+                            min="0"
+                            max={historyEntries.length}
+                            className="pointer-events-none absolute right-0 top-6 z-10 w-6 opacity-0 transition-opacity group-hover/names:pointer-events-auto group-hover/names:opacity-100"
+                            style={{ writingMode: "vertical-lr" }}
+                            value={showNamesIndex}
+                            onChange={(event) => setShowNamesIndex(Number(event.target.value))}
+                            aria-label="Names history"
+                        />
+                    )}
 
-                    <div className="font-[Carter_One] border border-black inline-block shadow-lg shadow-black -rotate-2 p-4 text-center text-4xl bg-blue-800 text-amber-200">My favorite names today</div>
+                    <div className={clsx(
+                        "font-[Carter_One] border border-black inline-block shadow-lg shadow-black -rotate-2 p-4 text-center text-4xl text-amber-200",
+                        showNamesIndex ? "bg-stone-700" : "bg-blue-800"
+                    )}>
+                        {showNamesIndex ? "My favorite names on:" : "My favorite names today"}
+                    </div>
                     <div className="font-[Carter_One] border border-black inline-block shadow shadow-black rotate-1 translate-x-[70%] -translate-y-[30%] p-2 text-center text-md bg-blue-700 text-amber-200">{toDisplayDate(displayDate)}</div>
 
                     <div className="flex flex-wrap justify-center gap-2 w-[80%] m-auto">
