@@ -10,7 +10,6 @@ interface CounterRollProps {
 }
 
 export default function CounterRoll({ scene, setScene }: CounterRollProps) {
-    const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
     const [editingIndex, setEditingIndex] = useState<number | null>(0);
     const [showControls, setShowControls] = useState(false);
     const [confirmReset, setConfirmReset] = useState(false);
@@ -22,7 +21,6 @@ export default function CounterRoll({ scene, setScene }: CounterRollProps) {
 
     useEffect(() => {
         if (!scene.counters.length) {
-            setHoveredIndex(null);
             setEditingIndex(null);
             setShowControls(false);
             return;
@@ -68,30 +66,37 @@ export default function CounterRoll({ scene, setScene }: CounterRollProps) {
         setEditingIndex(scene.counters.length);
     }
 
-    function toggleControls(index: number) {
+    function toggleControls() {
         setConfirmReset(false);
-
-        if (showControls && editingIndex === index) {
-            setShowControls(false);
-            return;
-        }
-
-        setEditingIndex(index);
-        setShowControls(true);
+        setShowControls((prev) => !prev);
     }
 
     if (!scene.counters.length) return null;
 
     return (
-        <div className="absolute inset-y-0 -left-10 z-20 w-1/2 group/counterroll cursor-pointer">
+        <div className="absolute inset-y-0 -left-10 top-10 z-20 w-1/2 scale-90 group/counterroll cursor-pointer">
             <div className="flex h-full mt-8 justify-start p-4">
-                <div className="pointer-events-none w-90 overflow-visible opacity-0 transition-opacity duration-200 group-hover/counterroll:pointer-events-auto group-hover/counterroll:opacity-100">
-                    <div className="relative overflow-visible">
+                <div className="relative w-90 overflow-visible">
+                    <div
+                        className={clsx(
+                            "overflow-visible transition-opacity duration-200",
+                            showControls
+                                ? "pointer-events-auto opacity-100"
+                                : "pointer-events-none opacity-0 group-hover/counterroll:pointer-events-auto group-hover/counterroll:opacity-100"
+                        )}
+                    >
+                        <Button
+                            variant="b"
+                            type="button"
+                            aria-label={showControls ? "Hide counter controls" : "Show counter controls"}
+                            className="pointer-events-auto absolute left-0 -top-10 z-10 h-7 w-7 p-0 opacity-100"
+                            onClick={toggleControls}
+                        />
                         <input
                             type="search"
                             value={searchText}
                             onChange={(e) => setSearchText(e.target.value)}
-                            className="absolute left-0 -top-10 border bg-white px-2 py-1 text-sm"
+                            className="absolute left-10 -top-10 border bg-white px-2 py-1 text-sm"
                         />
                         <div
                             ref={scrollRef}
@@ -107,34 +112,7 @@ export default function CounterRoll({ scene, setScene }: CounterRollProps) {
                                     <div
                                         key={counter.id}
                                         className={clsx("flex items-center gap-2 cursor-pointer", !show && "hidden")}
-                                        onMouseEnter={() => {
-                                            if (!showControls) {
-                                                setHoveredIndex(index);
-                                            }
-                                        }}
-                                        onMouseLeave={() => {
-                                            if (!showControls) {
-                                                setHoveredIndex((prev) => (prev === index ? null : prev));
-                                            }
-                                        }}
                                     >
-                                        <div className="flex w-8 shrink-0 justify-center">
-                                            <Button
-                                                variant="b"
-                                                type="button"
-                                                className={clsx(
-                                                    "h-7 w-7 p-0 transition-opacity duration-150",
-                                                    !showControls && hoveredIndex === index
-                                                        ? "pointer-events-auto opacity-35 hover:opacity-100"
-                                                        : "pointer-events-none opacity-0"
-                                                )}
-                                                onClick={(e) => {
-                                                    e.stopPropagation();
-                                                    toggleControls(index);
-                                                }}
-                                            />
-                                        </div>
-
                                         <button
                                             type="button"
                                             className={clsx(
@@ -144,7 +122,10 @@ export default function CounterRoll({ scene, setScene }: CounterRollProps) {
                                                     : "border-stone-200 text-stone-700 bg-blue-50",
                                                 !counter.show && maxActive ? "cursor-not-allowed opacity-45" : ""
                                             )}
-                                            onClick={() => activateCounter(counter)}
+                                            onClick={() => {
+                                                setEditingIndex(index);
+                                                activateCounter(counter);
+                                            }}
                                         >
                                             <span className="truncate">{counter.name || "Untitled"}</span>
                                         </button>
@@ -154,17 +135,8 @@ export default function CounterRoll({ scene, setScene }: CounterRollProps) {
                         </div>
 
                         {showControls && editingCounter && (
-                            <div className="pointer-events-auto absolute top-[calc(100%+12px)] left-0 right-0 flex items-start gap-2">
-                                <Button
-                                    variant="b"
-                                    type="button"
-                                    className="h-7 w-7 shrink-0 p-0 opacity-100"
-                                    onClick={() => {
-                                        setConfirmReset(false);
-                                        setShowControls(false);
-                                    }}
-                                />
-                                <div className="flex-1 rounded-2xl border border-amber-900/35 bg-amber-50/90 p-3 shadow-xl backdrop-blur-sm">
+                            <div className="pointer-events-auto absolute top-0 left-10 right-0">
+                                <div className="rounded-2xl border border-amber-900/35 bg-amber-50/90 p-3 shadow-xl backdrop-blur-sm">
                                     <input
                                         className="w-full rounded border border-stone-300 bg-white px-2 py-1 text-sm"
                                         value={editingCounter.name}
