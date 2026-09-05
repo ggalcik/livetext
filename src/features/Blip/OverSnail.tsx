@@ -1,4 +1,5 @@
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
+import OverSnailReverse from './OverSnailReverse';
 import snailUniverseOBS from './assets/snail universe obs.mp3';
 import snailBackdrop from './assets/snail_backdrop.jpg';
 import snailIdol from './assets/Snail.png';
@@ -24,9 +25,10 @@ const variantAudio: Record<string, string> = {
     'Xeno': chantXeno
 }
 
-export default function OverSnail({ endBlip, variant, opts }: BlipProps) {
+const OVER_SNAIL_REVERSE_RATE = 0.7;
+
+export function OverSnailDefault({ endBlip, variant }: BlipProps) {
     const shell = variant === 'shell';
-    const reverse = opts?.reverse;
 
     useEffect(() => {
         const timeout = setTimeout(() => {
@@ -68,10 +70,10 @@ export default function OverSnail({ endBlip, variant, opts }: BlipProps) {
 
     return (
         <>
-        <div className={`w-full h-full relative animate-over-snail-blip  origin-bottom ${reverse && '-scale-x-100'}`}>
+        <div className="w-full h-full relative animate-over-snail-blip origin-bottom">
             <img src={snailBackdrop} className={`absolute bottom-20 ${shell ? 'scale-300' : 'scale-150'} animate-over-snail-universe`} />
             {!shell &&
-                <div className="absolute right-1/6 bottom-1/2 flex flex-col items-end font-[Broadway] text-white drop-shadow-xl drop-shadow-black">
+                <div className="absolute left-1/6 bottom-1/2 flex flex-col items-end font-[Broadway] text-white drop-shadow-xl drop-shadow-black">
                     <div className="animate-snail-text-1 opacity-0 text-2xl">The</div>
                     <div className="animate-snail-text-2 opacity-0 text-5xl">Ontological</div>
                     <div className="animate-snail-text-3 opacity-0 text-5xl">Snail</div>
@@ -88,4 +90,10 @@ export default function OverSnail({ endBlip, variant, opts }: BlipProps) {
          <img src={snailIdol} className="absolute animate-over-snail -bottom-0 x-right-20 origin-bottom-right rotate-12 scale-60" />
             </>
     );
+}
+
+export default function OverSnail(props: BlipProps) {
+    const showReverse = useRef(Math.random() < OVER_SNAIL_REVERSE_RATE).current;
+
+    return showReverse ? <OverSnailReverse {...props} /> : <OverSnailDefault {...props} />;
 }

@@ -4,6 +4,7 @@ import { BlipDataSchema, type BlipVariant, type IBlipType } from "./types"
 import { Button } from "../../components/Button";
 import { produce } from "immer";
 import { BLIP_COMPONENTS } from "./BlipRegistry";
+import { OBS_BLIPS } from "../ObsSource/ObsBlipRegistry";
 
 export default function BlipAdmin() {
     const [blipData, setBlipData] = usePersistentState({
@@ -68,6 +69,7 @@ export default function BlipAdmin() {
             <div className="bg-green-200 flex flex-wrap gap-2 p-2">
                 {blipTypes.map(blip => {
                     const isActive = blipData.showBlip === blip;
+                    const hasObsVersion = blip in OBS_BLIPS;
                     const registryEntry = BLIP_COMPONENTS[blip];
                     const variants = "component" in registryEntry ? registryEntry.variants : undefined;
 
@@ -75,7 +77,7 @@ export default function BlipAdmin() {
                         <div key={`blip_${blip}`} className="group relative">
                             <Button
                                 size="lg"
-                                className="ring-black"
+                                className={`ring-black ${hasObsVersion ? 'opacity-60 hover:bg-blue-900' : ''}`}
                                 mode={isActive ? 'activated' : undefined}
                                 onClick={() => isActive ? requestDeactivateBlip(blip) : activateBlip(blip)}
                             >{blip}</Button>
