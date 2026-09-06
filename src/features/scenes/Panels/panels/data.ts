@@ -41,7 +41,8 @@ export const rheazonsData: RheazonEntry[] = [
     {
         'DX Josh':
             [
-                "The remote isn't working and spinning the batteries isn't helping anymore."
+                "The remote isn't working and spinning the batteries isn't helping anymore.",
+                "I spent all day coveting an ox, but it turned out it was just a cow."
             ]
     },
     {
@@ -66,6 +67,12 @@ export const rheazonsData: RheazonEntry[] = [
         'RestingOppFace':
             [
                 "Because I finally got a response to my prayers, but the first thing I heard was \"Press 1 for English\"."
+            ]
+    },
+    {
+        'Jon Rademacher':
+            [
+                "God finally responded to my prayers, but he just told me I should be an atheist."
             ]
     }
 ]
