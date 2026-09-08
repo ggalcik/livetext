@@ -73,7 +73,7 @@ export function OverSnailDefault({ endBlip, variant }: BlipProps) {
         <div className="w-full h-full relative animate-over-snail-blip origin-bottom">
             <img src={snailBackdrop} className={`absolute bottom-20 ${shell ? 'scale-300' : 'scale-150'} animate-over-snail-universe`} />
             {!shell &&
-                <div className="absolute left-1/6 bottom-1/2 flex flex-col items-end font-[Broadway] text-white drop-shadow-xl drop-shadow-black">
+                <div className="absolute right-1/6 bottom-1/2 flex flex-col items-end font-[Broadway] text-white drop-shadow-xl drop-shadow-black">
                     <div className="animate-snail-text-1 opacity-0 text-2xl">The</div>
                     <div className="animate-snail-text-2 opacity-0 text-5xl">Ontological</div>
                     <div className="animate-snail-text-3 opacity-0 text-5xl">Snail</div>

@@ -75,7 +75,7 @@ export default function ObsPage() {
   }, []);
 
   return (
-    <main className="relative h-screen w-screen overflow-hidden bg-transparent">
+    <main className="relative  overflow-hidden bg-transparent w-[600px] h-[800px]">
       {command && ActiveBlip && (
         <div key={command.eventId} className="absolute inset-0 overflow-hidden">
           <ActiveBlip
