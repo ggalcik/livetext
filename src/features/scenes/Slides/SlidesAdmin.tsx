@@ -1,8 +1,10 @@
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { SlidesSceneSchema, SlidesSceneFallback } from "./types";
 import { usePersistentState } from "../../../hooks/usePersistentState";
+import { getObsRelayUrl, type ObsMessage } from "../../ObsSource/messages";
 
 export function SlidesAdmin() {
+    const obsSocketRef = useRef<WebSocket | null>(null);
     const [panelScene, setPanelScene] = usePersistentState({
         storageKey: "slidesScene",
         schema: SlidesSceneSchema,
@@ -45,9 +47,54 @@ export function SlidesAdmin() {
             appendedSlides.some((s, i) => panelScene.slides[i]?.filename !== s.filename);
 
         if (changed) {
-            setPanelScene({ slides: appendedSlides });
+            setPanelScene({ ...panelScene, slides: appendedSlides });
         }
     }, [availableFilenames, panelScene.slides, setPanelScene]);
+
+    useEffect(() => {
+        let socket: WebSocket | null = null;
+        let reconnectTimer: number | null = null;
+        let disposed = false;
+
+        const sendSceneState = () => {
+            if (socket?.readyState !== WebSocket.OPEN) return;
+
+            const message: ObsMessage = panelScene.obsVisible && panelScene.selected
+                ? {
+                    type: "scene/show",
+                    scene: "slides",
+                    data: { filename: panelScene.selected },
+                }
+                : { type: "scene/hide", scene: "slides" };
+            socket.send(JSON.stringify(message));
+        };
+
+        const connect = () => {
+            socket = new WebSocket(getObsRelayUrl());
+            obsSocketRef.current = socket;
+            socket.onopen = sendSceneState;
+            socket.onmessage = (event) => {
+                try {
+                    const message = JSON.parse(event.data) as ObsMessage;
+                    if (message.type === "scene/request") sendSceneState();
+                } catch {
+                    console.warn("Ignored an invalid OBS relay message");
+                }
+            };
+            socket.onclose = () => {
+                if (obsSocketRef.current === socket) obsSocketRef.current = null;
+                if (!disposed) reconnectTimer = window.setTimeout(connect, 1500);
+            };
+            socket.onerror = () => socket?.close();
+        };
+
+        connect();
+        return () => {
+            disposed = true;
+            if (reconnectTimer !== null) window.clearTimeout(reconnectTimer);
+            socket?.close();
+        };
+    }, [panelScene.obsVisible, panelScene.selected]);
 
     // --- Reorder functions ---
     const moveUp = (index: number) => {
@@ -77,10 +124,14 @@ export function SlidesAdmin() {
         setPanelScene({ ...panelScene, selected: fname });
     }
 
+    const toggleObs = () => {
+        setPanelScene({ ...panelScene, obsVisible: !panelScene.obsVisible });
+    };
+
     // --- Render ---
     return (
-        <div className="h-120 w-max overflow-y-auto p-4 border flex flex-col gap-2">
-
+        <div className="flex items-start gap-3">
+          <div className="h-120 w-max overflow-y-auto p-4 border flex flex-col gap-2">
             {panelScene.slides.map((slide, index) => {
                 const module = images[`/src/local/slides/${slide.filename}`];
                 const imgSrc = module?.default ?? "";
@@ -128,7 +179,17 @@ export function SlidesAdmin() {
                     </div>
                 );
             })}
+          </div>
 
+            <label className="flex items-center gap-2 bg-white p-2 font-bold">
+                <input
+                className=" w-8 h-8"
+                    type="checkbox"
+                    checked={panelScene.obsVisible}
+                    onChange={toggleObs}
+                />
+                OBS
+            </label>
         </div>
 
     );

@@ -1,9 +1,24 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { getObsRelayUrl, type ObsMessage } from "./messages";
 import { getObsVariant, OBS_BLIPS, type ObsBlipConfig } from "./ObsBlipRegistry";
+import { OBS_SCENES, type ObsSceneConfig } from "./ObsSceneRegistry";
+import type { ObsInsets } from "./types";
+
+function layerStyle(insets?: ObsInsets): React.CSSProperties {
+  return insets
+    ? {
+        position: "absolute",
+        top: insets.top,
+        right: insets.right,
+        bottom: insets.bottom,
+        left: insets.left,
+      }
+    : { position: "absolute", inset: 0 };
+}
 
 export default function ObsPage() {
   const [command, setCommand] = useState<Extract<ObsMessage, { type: "blip/play" }> | null>(null);
+  const [scene, setScene] = useState<Extract<ObsMessage, { type: "scene/show" }> | null>(null);
   const commandRef = useRef(command);
   const socketRef = useRef<WebSocket | null>(null);
   const activeConfig = command ? OBS_BLIPS[command.blip] as ObsBlipConfig : null;
@@ -11,6 +26,10 @@ export default function ObsPage() {
   const activeVariant = activeConfig
     ? getObsVariant(activeConfig, command?.variant)
     : undefined;
+  const activeSceneConfig = scene
+    ? OBS_SCENES[scene.scene] as ObsSceneConfig
+    : null;
+  const ActiveScene = activeSceneConfig?.component ?? null;
 
   const finishActiveBlip = useCallback(() => {
     const finished = commandRef.current;
@@ -39,6 +58,10 @@ export default function ObsPage() {
     const connect = () => {
       activeSocket = new WebSocket(getObsRelayUrl());
       socketRef.current = activeSocket;
+      activeSocket.onopen = () => {
+        const request: ObsMessage = { type: "scene/request" };
+        activeSocket?.send(JSON.stringify(request));
+      };
       activeSocket.onmessage = (event) => {
         try {
           const message = JSON.parse(event.data) as ObsMessage;
@@ -54,6 +77,10 @@ export default function ObsPage() {
             setCommand((current) => current?.eventId === message.eventId ? null : current);
             const reply: ObsMessage = { ...message, type: "blip/status", status: "ended" };
             activeSocket?.send(JSON.stringify(reply));
+          } else if (message.type === "scene/show" && message.scene in OBS_SCENES) {
+            setScene(message);
+          } else if (message.type === "scene/hide" && message.scene in OBS_SCENES) {
+            setScene((current) => current?.scene === message.scene ? null : current);
           }
         } catch {
           console.warn("Ignored an invalid OBS relay message");
@@ -76,8 +103,17 @@ export default function ObsPage() {
 
   return (
     <main className="relative  overflow-hidden bg-transparent w-[600px] h-[800px]">
+      {scene && ActiveScene && (
+        <div style={layerStyle(activeSceneConfig?.insets)}>
+          <ActiveScene data={scene.data} />
+        </div>
+      )}
       {command && ActiveBlip && (
-        <div key={command.eventId} className="absolute inset-0 overflow-hidden">
+        <div
+          key={command.eventId}
+          className="overflow-hidden"
+          style={layerStyle(activeConfig?.insets)}
+        >
           <ActiveBlip
             source="OBS"
             endBlip={finishActiveBlip}

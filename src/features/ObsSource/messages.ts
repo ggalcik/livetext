@@ -1,4 +1,5 @@
 import type { ObsBlipName } from "./ObsBlipRegistry";
+import type { ObsSceneName } from "./ObsSceneRegistry";
 
 export type ObsMessage =
   | {
@@ -19,6 +20,18 @@ export type ObsMessage =
       eventId: string;
       variant?: string;
       status: "started" | "ended";
+    }
+  | {
+      type: "scene/show";
+      scene: ObsSceneName;
+      data?: Record<string, unknown>;
+    }
+  | {
+      type: "scene/hide";
+      scene: ObsSceneName;
+    }
+  | {
+      type: "scene/request";
     };
 
 export const OBS_RELAY_PORT = 5174;

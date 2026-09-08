@@ -3,8 +3,9 @@ import HolyHonkers from "../Blip/HolyHonkers";
 import MammaMia from "../Blip/MammaMia";
 import OverSnail from "../Blip/OverSnail";
 import type { BlipProps, BlipVariant } from "../Blip/types";
+import type { ObsLayerConfig } from "./types";
 
-export type ObsBlipConfig = {
+export type ObsBlipConfig = ObsLayerConfig & {
   component: React.ComponentType<BlipProps>;
   label?: string;
   variants?: BlipVariant[];
