@@ -15,6 +15,11 @@ export type ObsMessage =
       variant?: string;
     }
   | {
+      type: "blip/action";
+      blip: ObsBlipName;
+      action: string;
+    }
+  | {
       type: "blip/status";
       blip: ObsBlipName;
       eventId: string;

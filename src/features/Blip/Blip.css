@@ -763,6 +763,21 @@
     overflow: hidden;
 }
 
+.over-orchestra-rising {
+    animation: over-orchestra-slide-in 35s linear both;
+    will-change: transform;
+}
+
+@keyframes over-orchestra-slide-in {
+    from {
+        transform: translateX(-100%);
+    }
+
+    to {
+        transform: translateX(0);
+    }
+}
+
 .why-do-this-crt::before {
     content: "";
     position: absolute;

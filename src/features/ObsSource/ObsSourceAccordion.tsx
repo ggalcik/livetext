@@ -81,6 +81,18 @@ export default function ObsSourceAccordion() {
     socket.send(JSON.stringify(command));
   };
 
+  const sendBlipAction = (blip: ObsBlipName, action: string) => {
+    const socket = socketRef.current;
+    if (!socket || socket.readyState !== WebSocket.OPEN) return;
+    const message: ObsMessage = { type: "blip/action", blip, action };
+    socket.send(JSON.stringify(message));
+  };
+
+  const activeConfig = activeBlip
+    ? OBS_BLIPS[activeBlip.blip] as ObsBlipConfig
+    : null;
+  const ExtendedComponent = activeConfig?.extendedComponent;
+
   return (
     <Accordion label="OBS source">
       <div className="space-y-2">
@@ -138,6 +150,13 @@ export default function ObsSourceAccordion() {
               );
             })}
         </div>
+        {activeBlip && ExtendedComponent && (
+          <div className="border-t border-black/20 bg-green-50 p-2">
+            <ExtendedComponent
+              sendAction={(action) => sendBlipAction(activeBlip.blip, action)}
+            />
+          </div>
+        )}
         <div className="text-xs text-gray-600">
           Browser source: <code>http://localhost:5173/OBS</code>
         </div>

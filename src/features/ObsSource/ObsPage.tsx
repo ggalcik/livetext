@@ -19,6 +19,7 @@ function layerStyle(insets?: ObsInsets): React.CSSProperties {
 export default function ObsPage() {
   const [command, setCommand] = useState<Extract<ObsMessage, { type: "blip/play" }> | null>(null);
   const [scene, setScene] = useState<Extract<ObsMessage, { type: "scene/show" }> | null>(null);
+  const [blipAction, setBlipAction] = useState<{ action: string; requestId: number } | null>(null);
   const commandRef = useRef(command);
   const socketRef = useRef<WebSocket | null>(null);
   const activeConfig = command ? OBS_BLIPS[command.blip] as ObsBlipConfig : null;
@@ -66,6 +67,7 @@ export default function ObsPage() {
         try {
           const message = JSON.parse(event.data) as ObsMessage;
           if (message.type === "blip/play" && message.blip in OBS_BLIPS) {
+            setBlipAction(null);
             commandRef.current = message;
             setCommand(message);
             const reply: ObsMessage = { ...message, type: "blip/status", status: "started" };
@@ -77,6 +79,13 @@ export default function ObsPage() {
             setCommand((current) => current?.eventId === message.eventId ? null : current);
             const reply: ObsMessage = { ...message, type: "blip/status", status: "ended" };
             activeSocket?.send(JSON.stringify(reply));
+          } else if (message.type === "blip/action" && message.blip in OBS_BLIPS) {
+            if (commandRef.current?.blip === message.blip) {
+              setBlipAction((current) => ({
+                action: message.action,
+                requestId: (current?.requestId ?? 0) + 1,
+              }));
+            }
           } else if (message.type === "scene/show" && message.scene in OBS_SCENES) {
             setScene(message);
           } else if (message.type === "scene/hide" && message.scene in OBS_SCENES) {
@@ -119,6 +128,8 @@ export default function ObsPage() {
             endBlip={finishActiveBlip}
             variant={activeVariant?.variant}
             opts={activeVariant?.opts}
+            obsAction={blipAction?.action}
+            obsActionRequestId={blipAction?.requestId}
           />
         </div>
       )}

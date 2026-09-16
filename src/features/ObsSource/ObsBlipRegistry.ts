@@ -1,7 +1,9 @@
 import Egregore from "../Blip/Egregore";
 import HolyHonkers from "../Blip/HolyHonkers";
 import MammaMia from "../Blip/MammaMia";
+import OverAnalogy from "../Blip/OverAnalogy";
 import OverSnail from "../Blip/OverSnail";
+import OverOrchestra, { OverOrchestraAdmin } from "../Blip/OverOrchestra";
 import type { BlipProps, BlipVariant } from "../Blip/types";
 import type { ObsLayerConfig } from "./types";
 
@@ -10,9 +12,13 @@ export type ObsBlipConfig = ObsLayerConfig & {
   label?: string;
   variants?: BlipVariant[];
   defaultVariant?: string;
+  extendedComponent?: React.ComponentType<{ sendAction: (action: string) => void }>;
 };
 
 export const OBS_BLIPS = {
+  Analogy: {
+    component: OverAnalogy,
+  },
   Egregore: {
     component: Egregore,
   },
@@ -22,6 +28,10 @@ export const OBS_BLIPS = {
   },
   "Mamma Mia": {
     component: MammaMia,
+  },
+  Orchestra: {
+    component: OverOrchestra,
+    extendedComponent: OverOrchestraAdmin,
   },
   Snail: {
     component: OverSnail,
