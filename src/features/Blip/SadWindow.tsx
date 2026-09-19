@@ -37,11 +37,11 @@ export default function SadWindow({ source }: BlipProps) {
             <stop offset="0.52" stopColor="#75b9d2" stopOpacity=".31" />
             <stop offset="1" stopColor="#376f91" stopOpacity=".38" />
           </linearGradient>
-          <pattern id="sad-window-bricks" width="126" height="58" patternUnits="userSpaceOnUse" patternTransform="skewY(9)">
-            <rect width="126" height="58" fill="url(#sad-window-brick)" />
-            <path d="M0 1H126 M0 57H126 M63 1V29 M0 29H126 M0 29V57 M126 29V57" fill="none" stroke="#b28a72" strokeOpacity=".42" strokeWidth="5" />
-            <path d="M4 6H58 M68 6H122 M4 35H121" fill="none" stroke="#d5ad91" strokeOpacity=".12" strokeWidth="3" />
-            <path d="M5 52H58 M69 25H120" fill="none" stroke="#241714" strokeOpacity=".24" strokeWidth="3" />
+          <pattern id="sad-window-bricks" width="126" height="70" patternUnits="userSpaceOnUse" patternTransform="skewY(9)">
+            {/* Two equal-height courses in a true half-brick running bond. */}
+            <path d="M0 1H126 M0 35H126 M0 69H126 M63 1V35 M31.5 35V69 M94.5 35V69" fill="none" stroke="#b28a72" strokeOpacity=".42" strokeWidth="5" />
+            <path d="M4 7H58 M68 7H122 M4 42H27 M37 42H90 M100 42H122" fill="none" stroke="#d5ad91" strokeOpacity=".12" strokeWidth="3" />
+            <path d="M5 30H58 M68 30H121 M5 64H27 M37 64H90 M100 64H121" fill="none" stroke="#241714" strokeOpacity=".24" strokeWidth="3" />
           </pattern>
           <filter id="sad-window-shadow" x="-40%" y="-30%" width="190%" height="190%">
             <feGaussianBlur stdDeviation="14" />
@@ -64,6 +64,7 @@ export default function SadWindow({ source }: BlipProps) {
 
         {/* Wall with a true transparent opening cut out of it. */}
         <g clipPath="url(#sad-window-wall-clip)" filter="url(#sad-window-grain)">
+          <path d="M0 0H600V800H0Z" fill="url(#sad-window-brick)" />
           <path d="M0 0H600V800H0Z" fill="url(#sad-window-bricks)" />
           <path d="M516 0L600 0V800L548 800Z" fill="#241919" fillOpacity=".35" />
           <path d="M0 0H600V76C405 57 214 70 0 112Z" fill="#e8bd98" fillOpacity=".08" />
@@ -93,15 +94,15 @@ export default function SadWindow({ source }: BlipProps) {
         <g fill="none" stroke="#8a7865" strokeWidth="6" strokeLinecap="round">
           {/* upper-left pane */}
           <path d="M184 348V488" />
-          {/* <path d="M184 507L327 530" /> */}
+          <path d="M184 487L327 510" />
           {/* upper-right pane */}
           <path d="M346 373V514" />
-          {/* <path d="M346 535L486 557" /> */}
+          <path d="M346 515L486 537" />
           {/* lower-left pane */}
-          <path d="M184 516V648" />
+          <path d="M184 508V648" />
           <path d="M184 648L327 671" />
           {/* lower-right pane */}
-          <path d="M346 542V674" />
+          <path d="M346 534V674" />
           <path d="M346 674L486 696" />
         </g>
 
