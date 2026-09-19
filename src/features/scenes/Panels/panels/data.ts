@@ -121,5 +121,6 @@ export const christolyzerQuestions = [
     "Is it okay to pray for people when they ask you not to?",
     "Should a Christian approve generally of the work that the ICE agency is doing in America?",
     "When you refer to the son of God, should you use the name 'Jesus'?",
-    "Should you celebrate Easter?"
+    "Should you celebrate Easter?",
+    "Is there such a thing as a true Christian?"
 ]

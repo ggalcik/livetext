@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 import clsx from "clsx";
 import { MasterViewport } from "../../components/MasterViewport/MasterViewport";
+import { Button } from "../../components/Button";
 import spanishFlea from "./assets/spanish_flea.mp3";
 import type { BlipProps } from "./types";
 import "./Blip.css";
@@ -10,7 +11,14 @@ const EXIT_DURATION_MS = 3000;
 const EARLY_DEACTIVATION_WINDOW_MS = 10_000;
 const AUTO_DEACTIVATION_DELAY_MS = 44_000;
 
-export default function WhyDoThis({ endBlip, deactivateRequestId }: BlipProps) {
+export default function WhyDoThis({
+    endBlip,
+    deactivateRequestId,
+    source,
+    obsAction,
+    obsActionRequestId,
+}: BlipProps) {
+    const isObs = source === "OBS";
     const [isExiting, setIsExiting] = useState(false);
     const [internalDeactivateRequestId, setInternalDeactivateRequestId] = useState<number>();
     const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -29,6 +37,11 @@ export default function WhyDoThis({ endBlip, deactivateRequestId }: BlipProps) {
 
         return () => window.clearTimeout(timeoutId);
     }, []);
+
+    useEffect(() => {
+        if (obsAction !== "end" || obsActionRequestId === undefined) return;
+        setInternalDeactivateRequestId(Date.now());
+    }, [obsAction, obsActionRequestId]);
 
     useEffect(() => {
         const audio = new Audio(spanishFlea);
@@ -88,18 +101,17 @@ export default function WhyDoThis({ endBlip, deactivateRequestId }: BlipProps) {
         };
     }, [deactivateRequestId, internalDeactivateRequestId]);
 
-    return (
-        <div className="absolute h-full w-full text-white">
-            <MasterViewport name="blip_why_do_this">
-                <div
-                    style={isExiting ? {
-                        animationDuration: `${EXIT_DURATION_MS}ms`,
-                    } as CSSProperties : undefined}
-                    className={clsx(
-                        "why-do-this-crt relative flex h-full w-full flex-col overflow-hidden bg-[#00f] [container-type:size]",
-                        isExiting ? "animate-why-do-this-exit" : "animate-why-do-this-enter"
-                    )}
-                >
+    const presentation = (
+        <div
+            style={isExiting ? {
+                animationDuration: `${EXIT_DURATION_MS}ms`,
+            } as CSSProperties : undefined}
+            className={clsx(
+                "why-do-this-crt relative flex h-full w-full flex-col overflow-hidden bg-[#00f] [container-type:size]",
+                isExiting ? "animate-why-do-this-exit" : "animate-why-do-this-enter",
+                isObs && "scale-50"
+            )}
+        >
                     <div className="relative z-20 flex shrink-0 items-center justify-center p-[4cqw] text-center font-[Bahnschrift] text-[clamp(2rem,8cqh,6rem)] leading-none font-bold">
                         <div className="border-2 border-white  p-[2cqw]">
                         <div className="why-do-this-crt-text border-2 border-white bg-white text-blue-900 w-full  p-[6cqw]">Top Ten Reasons Why Greg Does These Lives:</div></div>
@@ -123,8 +135,24 @@ export default function WhyDoThis({ endBlip, deactivateRequestId }: BlipProps) {
                     <div className="pointer-events-none absolute inset-0 z-30 flex items-center justify-center px-[6cqw] text-center font-[Bahnschrift] text-[clamp(1.5rem,6cqh,5rem)] leading-tight font-bold text-yellow-400 animate-why-do-this-thanks">
                         <div className="why-do-this-crt-text">Thanks for watching!</div>
                     </div>
-                </div>
-            </MasterViewport>
         </div>
+    );
+
+    return (
+        <div className="absolute inset-0 text-white">
+            {isObs ? presentation : (
+                <MasterViewport name="blip_why_do_this">
+                    {presentation}
+                </MasterViewport>
+            )}
+        </div>
+    );
+}
+
+export function WhyDoThisAdmin({ sendAction }: { sendAction: (action: string) => void }) {
+    return (
+        <Button size="lg" variant="b" className="ring-black" onClick={() => sendAction("end")}>
+            end
+        </Button>
     );
 }

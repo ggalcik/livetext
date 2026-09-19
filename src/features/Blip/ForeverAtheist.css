@@ -1,0 +1,254 @@
+.forever-clock {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  font-family: Bahnschrift, "Arial Narrow", Arial, sans-serif;
+}
+
+.forever-clock__case {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 520px;
+  height: 520px;
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.04);
+  animation: forever-clock-bloom 6.5s linear both;
+}
+
+.forever-clock__face {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 50%;
+  background: #171b22;
+  box-shadow:
+    inset 0 0 0 5px #d7d9db,
+    inset 0 0 0 13px #343a42,
+    0 0 0 2px rgb(0 0 0 / 0.6),
+    0 12px 38px rgb(0 0 0 / 0.5);
+  animation: forever-clock-whiten 6.5s ease-in both;
+}
+
+.forever-clock__minute-marks,
+.forever-clock__hour-marks {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+}
+
+.forever-clock__minute-marks i,
+.forever-clock__hour-marks i {
+  position: absolute;
+  left: calc(50% - 1px);
+  top: 17px;
+  width: 2px;
+  height: 10px;
+  background: #89919a;
+  transform-origin: 1px 243px;
+  transform: rotate(calc(var(--mark) * 6deg));
+}
+
+.forever-clock__hour-marks i {
+  left: calc(50% - 3px);
+  top: 16px;
+  width: 6px;
+  height: 27px;
+  border-radius: 3px;
+  background: #f4f4f2;
+  transform-origin: 3px 244px;
+  transform: rotate(calc(var(--hour) * 30deg));
+}
+
+.forever-clock__number {
+  position: absolute;
+  z-index: 1;
+  color: #f4f4f2;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 38px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.forever-clock__number--12 { left: 50%; top: 52px; transform: translateX(-50%); }
+.forever-clock__number--3 { right: 59px; top: 50%; transform: translateY(-50%); }
+.forever-clock__number--6 { left: 50%; bottom: 49px; transform: translateX(-50%); }
+.forever-clock__number--9 { left: 59px; top: 50%; transform: translateY(-50%); }
+
+.forever-clock__hand {
+  position: absolute;
+  z-index: 2;
+  left: 50%;
+  bottom: 50%;
+  border-radius: 100% 100% 4px 4px;
+  transform-origin: 50% 100%;
+  box-shadow: 1px 2px 3px rgb(0 0 0 / 0.5);
+}
+
+.forever-clock__hand--hour {
+  width: 14px;
+  height: 137px;
+  margin-left: -7px;
+  background: #e7e7e3;
+  animation: forever-hour-hand 5.75s 0.55s cubic-bezier(0.86, 0, 1, 1) both;
+}
+
+.forever-clock__hand--minute {
+  width: 9px;
+  height: 190px;
+  margin-left: -4.5px;
+  background: #f7f7f4;
+  animation: forever-minute-hand 5.75s 0.55s cubic-bezier(0.86, 0, 1, 1) both;
+}
+
+.forever-clock__hand--second {
+  z-index: 4;
+  width: 3px;
+  height: 205px;
+  margin-left: -1.5px;
+  background: #ed3345;
+  box-shadow: none;
+  animation: forever-second-hand 5.75s 0.55s cubic-bezier(0.86, 0, 1, 1) both;
+}
+
+.forever-clock__symbol {
+  position: absolute;
+  z-index: 5;
+  left: 50%;
+  top: 50%;
+  width: 154px;
+  height: 154px;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  background: #171b22;
+}
+
+.forever-clock__symbol svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  fill: none;
+  stroke: #e7e7e3;
+  stroke-width: 4;
+}
+
+.forever-clock__symbol svg circle {
+  fill: #ed3345;
+  stroke: #171b22;
+  stroke-width: 3;
+}
+
+.forever-clock__symbol span {
+  position: absolute;
+  left: 50%;
+  top: 49%;
+  color: #ed3345;
+  font-size: 66px;
+  font-weight: 900;
+  line-height: 1;
+  transform: translate(-50%, -50%);
+}
+
+.forever-clock__title {
+  position: absolute;
+  z-index: 10;
+  left: 50%;
+  top: 50%;
+  width: 100%;
+  color: #fff1a8;
+  /* Change this line to try a different title font. */
+  font-family: Bahnschrift, "Arial Narrow", Arial, sans-serif;
+  text-align: center;
+  font-weight: 900;
+  line-height: 0.85;
+  letter-spacing: 0.055em;
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.78);
+  filter: blur(12px);
+  text-shadow: 0 3px 2px rgba(240, 232, 220, 0.85), 0 0 12px rgba(94, 90, 85, 0.45);
+  animation: forever-title-reveal 9s ease-in-out both;
+}
+
+.forever-clock__word {
+  font-size: 86px;
+  white-space: nowrap;
+}
+
+.forever-clock__word:last-child {
+  margin-top: 22px;
+  font-size: 73px;
+  letter-spacing: 0.15em;
+  padding-left: 0.15em;
+}
+
+@keyframes forever-clock-bloom {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.04);
+  }
+  15.4% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(0.216);
+  }
+  82% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(0.975);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(1.18);
+  }
+}
+
+@keyframes forever-clock-whiten {
+  0%, 52% {
+    filter: brightness(1);
+  }
+  73% {
+    filter: brightness(2.4);
+  }
+  88%, 100% {
+    filter: brightness(12);
+  }
+}
+
+@keyframes forever-hour-hand {
+  0% { transform: rotate(-35deg); }
+  100% { transform: rotate(1475deg); }
+}
+
+@keyframes forever-minute-hand {
+  0% { transform: rotate(25deg); }
+  100% { transform: rotate(7945deg); }
+}
+
+@keyframes forever-second-hand {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(15840deg); }
+}
+
+@keyframes forever-title-reveal {
+  0%, 50% {
+    opacity: 0;
+    filter: blur(12px);
+    transform: translate(-50%, -50%) scale(0.12);
+  }
+  58% {
+    opacity: 1;
+    filter: blur(0);
+    transform: translate(-50%, -50%) scale(0.88);
+  }
+  82.5% {
+    opacity: 1;
+    filter: blur(0);
+    transform: translate(-50%, -50%) scale(1.04);
+  }
+  100% {
+    opacity: 0;
+    filter: blur(4px);
+    transform: translate(-50%, -50%) scale(5);
+  }
+}
