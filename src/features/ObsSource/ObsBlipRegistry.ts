@@ -5,6 +5,7 @@ import MammaMia from "../Blip/MammaMia";
 import OverAnalogy from "../Blip/OverAnalogy";
 import OverSnail from "../Blip/OverSnail";
 import OverOrchestra, { OverOrchestraAdmin } from "../Blip/OverOrchestra";
+import SadWindow from "../Blip/SadWindow";
 import WhyDoThis, { WhyDoThisAdmin } from "../Blip/WhyDoThis";
 import type { BlipProps, BlipVariant } from "../Blip/types";
 import type { ObsLayerConfig } from "./types";
@@ -37,6 +38,10 @@ export const OBS_BLIPS = {
   Orchestra: {
     component: OverOrchestra,
     extendedComponent: OverOrchestraAdmin,
+  },
+  SadWindow: {
+    component: SadWindow,
+    label: "Sad Window",
   },
   Snail: {
     component: OverSnail,
