@@ -1,0 +1,128 @@
+.sad-window-container {
+  animation:
+    sad-window-fade-in 5s ease-out 1 both,
+    sad-window-settle 110s linear 1 both;
+  transform-origin: center;
+}
+
+.sad-window-scene {
+  filter: brightness(0.32) saturate(0.42) contrast(1.18);
+}
+
+.sad-window-lightning-glass {
+  opacity: 0;
+}
+
+.sad-window-lightning-flash {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.sad-window-lightning-strobe {
+  animation: sad-window-strobe 0.1s linear 1 forwards;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.sad-window-scene.is-lightning {
+  animation: sad-window-storm-light 2.2s linear 1;
+}
+
+.sad-window-scene.is-lightning .sad-window-lightning-glass {
+  animation: sad-window-glass-flash 2.2s linear 1;
+}
+
+.sad-window-scene.is-lightning .sad-window-lightning-flash {
+  animation: sad-window-sky-flash 2.2s linear 1;
+}
+
+@keyframes sad-window-storm-light {
+  0%, 100% {
+    filter: brightness(0.32) saturate(0.42) contrast(1.18);
+  }
+  14% {
+    filter: brightness(1.05) saturate(0.38) contrast(1.1);
+  }
+  32% {
+    filter: brightness(0.46) saturate(0.4) contrast(1.16);
+  }
+  55% {
+    filter: brightness(1.58) saturate(0.32) contrast(1.04);
+  }
+  73% {
+    filter: brightness(1.42) saturate(0.35) contrast(1.06);
+  }
+}
+
+@keyframes sad-window-glass-flash {
+  0%, 100% {
+    opacity: 0;
+  }
+  14% {
+    opacity: 0.58;
+  }
+  32% {
+    opacity: 0.12;
+  }
+  55% {
+    opacity: 0.9;
+  }
+  73% {
+    opacity: 0.78;
+  }
+}
+
+@keyframes sad-window-sky-flash {
+  0%, 100% {
+    opacity: 0;
+  }
+  14% {
+    opacity: 0.06;
+  }
+  32% {
+    opacity: 0.01;
+  }
+  55% {
+    opacity: 0.13;
+  }
+  73% {
+    opacity: 0.1;
+  }
+}
+
+@keyframes sad-window-settle {
+  0%, 18.1818% {
+    transform: scale(1.4);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes sad-window-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes sad-window-strobe {
+  0%, 99% {
+    opacity: 0.2;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sad-window-container,
+  .sad-window-scene,
+  .sad-window-lightning-glass,
+  .sad-window-lightning-flash,
+  .sad-window-lightning-strobe {
+    animation: none;
+  }
+}
