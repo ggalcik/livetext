@@ -122,5 +122,6 @@ export const christolyzerQuestions = [
     "Should a Christian approve generally of the work that the ICE agency is doing in America?",
     "When you refer to the son of God, should you use the name 'Jesus'?",
     "Should you celebrate Easter?",
-    "Is there such a thing as a true Christian?"
+    "Is there such a thing as a true Christian?",
+    "Do atheists actually know that god exists?",
 ]
