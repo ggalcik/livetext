@@ -5,7 +5,7 @@
   "type": "module",
   "main": "electron/main.cjs",
   "scripts": {
-    "dev": "vite",
+    "dev": "node scripts/dev.mjs",
     "relay": "node relay/server.cjs",
     "build": "tsc -b && vite build",
     "typecheck": "tsc -p tsconfig.app.json --noEmit",

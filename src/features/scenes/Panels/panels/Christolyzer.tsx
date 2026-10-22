@@ -22,13 +22,18 @@ import computerAmbient from './assets/computer_ambient2.ogg';
 import computerBeep from './assets/computer_beep.mp3';
 import computerClicks from './assets/computer_clicks.mp3';
 import clsx from 'clsx';
+import { z } from 'zod';
 
 import './Christolyzer.css';
 import { randomSample, textToHtmlBreaks } from '../../../../helpers/helpers';
 import { Button } from '../../../../components/Button';
 import { christolyzerQuestions } from './data';
+import { usePersistentState } from '../../../../hooks/usePersistentState';
 
 const VOLUME = 0.3;
+const ChristolyzerPanelSchema = z.object({
+    used: z.array(z.string()),
+});
 
 
 export function ChristolyzerAdmin() {
@@ -88,7 +93,12 @@ export function Christolyzer() {
     const [isSkipping, setIsSkipping] = useState(false);
     const isQuestion = typeof quizStage === 'number';
     const [chosen, setChosen] = useState<null | Choice>(null);
-    const [questionList, setQuestionList] = useState<string[]>(() => randomSample(christolyzerQuestions, 5));
+    const [questionList, setQuestionList] = useState<string[]>([]);
+    const [christolyzerPanel, setChristolyzerPanel] = usePersistentState({
+        storageKey: 'christolyzerPanel',
+        schema: ChristolyzerPanelSchema,
+        fallback: { used: [] },
+    });
 
     const beepboopRef = useRef<HTMLAudioElement | null>(null);
     const yesnoBeepRef = useRef<HTMLAudioElement | null>(null);
@@ -297,7 +307,7 @@ export function Christolyzer() {
         setChosen(null);
         setSkipUsed(false);
         setIsSkipping(false);
-        selectQuestions();
+        setQuestionList([]);
     }
 
     function handleChoice(choice: Choice) {
@@ -358,8 +368,13 @@ export function Christolyzer() {
     function handleAdvanceStage() {
         if (!pendingStage) return;
 
-        if (isSkipping && typeof quizStage === 'number') {
-            setQuestionList((questions) => questions.filter((_, index) => index !== quizStage - 1));
+        if (typeof pendingStage === 'number') {
+            const nextQuestion = selectQuestion();
+            setQuestionList((questions) => {
+                const nextQuestions = [...questions];
+                nextQuestions[pendingStage - 1] = nextQuestion;
+                return nextQuestions;
+            });
         }
 
         setChosen(null);
@@ -386,8 +401,18 @@ export function Christolyzer() {
         setIsSkipping(false);
     }
 
-    function selectQuestions() {
-        setQuestionList(randomSample(christolyzerQuestions, 5));
+    function selectQuestion() {
+        let used = christolyzerPanel.used;
+        let available = christolyzerQuestions.filter((question) => !used.includes(question));
+
+        if (available.length === 0) {
+            used = [];
+            available = christolyzerQuestions;
+        }
+
+        const [nextQuestion] = randomSample(available, 1);
+        setChristolyzerPanel((previous) => ({ ...previous, used: [...used, nextQuestion] }));
+        return nextQuestion;
     }
 
     let readoutStatus: string | null = null;
