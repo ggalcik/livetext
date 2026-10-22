@@ -3,7 +3,7 @@ import honkersAudio from './assets/honkers_in_2.mp3';
 import sailorAudio from './assets/sailor_in.mp3';
 import honkers from './assets/holy_honkers_blip.png';
 import sulfur from './assets/holy_sulfur_blip.png';
-import sailor from './assets/holy_sailor.png';
+import sailor from './assets/holy_sailor2.png';
 import type { BlipProps } from './types';
 import clsx from 'clsx';
 import { gGlobal } from '../Global/global';
