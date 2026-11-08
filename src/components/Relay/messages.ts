@@ -1,5 +1,5 @@
-import type { ObsBlipName } from "./ObsBlipRegistry";
-import type { ObsSceneName } from "./ObsSceneRegistry";
+import type { ObsBlipName } from "../../features/ObsSource/ObsBlipRegistry";
+import type { ObsSceneName } from "../../features/ObsSource/ObsSceneRegistry";
 
 export type ObsMessage =
   | {

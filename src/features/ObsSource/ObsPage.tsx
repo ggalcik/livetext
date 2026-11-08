@@ -1,5 +1,6 @@
-import { useCallback, useEffect, useRef, useState } from "react";
-import { getObsRelayUrl, type ObsMessage } from "./messages";
+import { useCallback, useRef, useState } from "react";
+import type { ObsMessage } from "../../components/Relay/messages";
+import { useRelay } from "../../components/Relay/useRelay";
 import { getObsVariant, OBS_BLIPS, type ObsBlipConfig } from "./ObsBlipRegistry";
 import { OBS_SCENES, type ObsSceneConfig } from "./ObsSceneRegistry";
 import type { ObsInsets } from "./types";
@@ -21,7 +22,6 @@ export default function ObsPage() {
   const [scene, setScene] = useState<Extract<ObsMessage, { type: "scene/show" }> | null>(null);
   const [blipAction, setBlipAction] = useState<{ action: string; requestId: number } | null>(null);
   const commandRef = useRef(command);
-  const socketRef = useRef<WebSocket | null>(null);
   const activeConfig = command ? OBS_BLIPS[command.blip] as ObsBlipConfig : null;
   const ActiveBlip = activeConfig?.component ?? null;
   const activeVariant = activeConfig
@@ -32,6 +32,39 @@ export default function ObsPage() {
     : null;
   const ActiveScene = activeSceneConfig?.component ?? null;
 
+  const { send } = useRelay({
+    onOpen(sendToRelay) {
+      sendToRelay({ type: "scene/request" });
+    },
+    onMessage(message, replyToRelay) {
+      if (message.type === "blip/play" && message.blip in OBS_BLIPS) {
+        setBlipAction(null);
+        commandRef.current = message;
+        setCommand(message);
+        const reply: ObsMessage = { ...message, type: "blip/status", status: "started" };
+        replyToRelay(reply);
+      } else if (message.type === "blip/stop" && message.blip in OBS_BLIPS) {
+        if (commandRef.current?.eventId === message.eventId) {
+          commandRef.current = null;
+        }
+        setCommand((current) => current?.eventId === message.eventId ? null : current);
+        const reply: ObsMessage = { ...message, type: "blip/status", status: "ended" };
+        replyToRelay(reply);
+      } else if (message.type === "blip/action" && message.blip in OBS_BLIPS) {
+        if (commandRef.current?.blip === message.blip) {
+          setBlipAction((current) => ({
+            action: message.action,
+            requestId: (current?.requestId ?? 0) + 1,
+          }));
+        }
+      } else if (message.type === "scene/show" && message.scene in OBS_SCENES) {
+        setScene(message);
+      } else if (message.type === "scene/hide" && message.scene in OBS_SCENES) {
+        setScene((current) => current?.scene === message.scene ? null : current);
+      }
+    },
+  });
+
   const finishActiveBlip = useCallback(() => {
     const finished = commandRef.current;
     if (!finished) return;
@@ -39,76 +72,13 @@ export default function ObsPage() {
     commandRef.current = null;
     setCommand(null);
 
-    const socket = socketRef.current;
-    if (socket?.readyState === WebSocket.OPEN) {
-      const reply: ObsMessage = {
-        type: "blip/status",
-        blip: finished.blip,
-        eventId: finished.eventId,
-        status: "ended",
-      };
-      socket.send(JSON.stringify(reply));
-    }
-  }, []);
-
-  useEffect(() => {
-    let activeSocket: WebSocket | null = null;
-    let reconnectTimer: number | null = null;
-    let disposed = false;
-
-    const connect = () => {
-      activeSocket = new WebSocket(getObsRelayUrl());
-      socketRef.current = activeSocket;
-      activeSocket.onopen = () => {
-        const request: ObsMessage = { type: "scene/request" };
-        activeSocket?.send(JSON.stringify(request));
-      };
-      activeSocket.onmessage = (event) => {
-        try {
-          const message = JSON.parse(event.data) as ObsMessage;
-          if (message.type === "blip/play" && message.blip in OBS_BLIPS) {
-            setBlipAction(null);
-            commandRef.current = message;
-            setCommand(message);
-            const reply: ObsMessage = { ...message, type: "blip/status", status: "started" };
-            activeSocket?.send(JSON.stringify(reply));
-          } else if (message.type === "blip/stop" && message.blip in OBS_BLIPS) {
-            if (commandRef.current?.eventId === message.eventId) {
-              commandRef.current = null;
-            }
-            setCommand((current) => current?.eventId === message.eventId ? null : current);
-            const reply: ObsMessage = { ...message, type: "blip/status", status: "ended" };
-            activeSocket?.send(JSON.stringify(reply));
-          } else if (message.type === "blip/action" && message.blip in OBS_BLIPS) {
-            if (commandRef.current?.blip === message.blip) {
-              setBlipAction((current) => ({
-                action: message.action,
-                requestId: (current?.requestId ?? 0) + 1,
-              }));
-            }
-          } else if (message.type === "scene/show" && message.scene in OBS_SCENES) {
-            setScene(message);
-          } else if (message.type === "scene/hide" && message.scene in OBS_SCENES) {
-            setScene((current) => current?.scene === message.scene ? null : current);
-          }
-        } catch {
-          console.warn("Ignored an invalid OBS relay message");
-        }
-      };
-      activeSocket.onclose = () => {
-        if (socketRef.current === activeSocket) socketRef.current = null;
-        if (!disposed) reconnectTimer = window.setTimeout(connect, 1500);
-      };
-      activeSocket.onerror = () => activeSocket?.close();
-    };
-
-    connect();
-    return () => {
-      disposed = true;
-      if (reconnectTimer !== null) window.clearTimeout(reconnectTimer);
-      activeSocket?.close();
-    };
-  }, []);
+    send({
+      type: "blip/status",
+      blip: finished.blip,
+      eventId: finished.eventId,
+      status: "ended",
+    });
+  }, [send]);
 
   return (
     <main className="relative  overflow-hidden bg-transparent w-[600px] h-[800px]">

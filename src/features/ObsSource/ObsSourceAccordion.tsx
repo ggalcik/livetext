@@ -1,69 +1,35 @@
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { Accordion } from "../Accordion/Accordion";
 import { Button } from "../../components/Button";
-import { getObsRelayUrl, type ObsMessage } from "./messages";
+import type { ObsMessage } from "../../components/Relay/messages";
+import { useRelay } from "../../components/Relay/useRelay";
 import { OBS_BLIPS, type ObsBlipConfig, type ObsBlipName } from "./ObsBlipRegistry";
 import type { BlipVariant } from "../Blip/types";
 
-type ConnectionStatus = "connecting" | "connected" | "disconnected";
-
 export default function ObsSourceAccordion() {
-  const socketRef = useRef<WebSocket | null>(null);
-  const reconnectRef = useRef<number | null>(null);
-  const [status, setStatus] = useState<ConnectionStatus>("connecting");
   const [activeBlip, setActiveBlip] = useState<{
     blip: ObsBlipName;
     eventId: string;
     variant?: string;
   } | null>(null);
 
-  useEffect(() => {
-    let disposed = false;
-
-    const connect = () => {
-      setStatus("connecting");
-      const socket = new WebSocket(getObsRelayUrl());
-      socketRef.current = socket;
-
-      socket.onopen = () => setStatus("connected");
-      socket.onmessage = (event) => {
-        try {
-          const message = JSON.parse(event.data) as ObsMessage;
-          if (message.type !== "blip/status") return;
-
-          if (message.status === "started") {
-            setActiveBlip({
-              blip: message.blip,
-              eventId: message.eventId,
-              variant: message.variant,
-            });
-          } else {
-            setActiveBlip((current) => current?.eventId === message.eventId ? null : current);
-          }
-        } catch {
-          console.warn("Ignored an invalid OBS relay message");
-        }
-      };
-      socket.onclose = () => {
-        if (disposed) return;
-        setStatus("disconnected");
-        reconnectRef.current = window.setTimeout(connect, 1500);
-      };
-      socket.onerror = () => socket.close();
-    };
-
-    connect();
-
-    return () => {
-      disposed = true;
-      if (reconnectRef.current !== null) window.clearTimeout(reconnectRef.current);
-      socketRef.current?.close();
-    };
-  }, []);
+  const { send, status } = useRelay({
+    onMessage(message) {
+      if (message.type !== "blip/status") return;
+      if (message.status === "started") {
+        setActiveBlip({
+          blip: message.blip,
+          eventId: message.eventId,
+          variant: message.variant,
+        });
+      } else {
+        setActiveBlip((current) => current?.eventId === message.eventId ? null : current);
+      }
+    },
+  });
 
   const toggleBlip = (blip: ObsBlipName, requestedVariant?: string) => {
-    const socket = socketRef.current;
-    if (!socket || socket.readyState !== WebSocket.OPEN) return;
+    if (status !== "connected") return;
 
     const config = OBS_BLIPS[blip] as ObsBlipConfig;
     const variant = requestedVariant ?? config.defaultVariant;
@@ -78,14 +44,13 @@ export default function ObsSourceAccordion() {
       eventId,
       variant,
     };
-    socket.send(JSON.stringify(command));
+    send(command);
   };
 
   const sendBlipAction = (blip: ObsBlipName, action: string) => {
-    const socket = socketRef.current;
-    if (!socket || socket.readyState !== WebSocket.OPEN) return;
+    if (status !== "connected") return;
     const message: ObsMessage = { type: "blip/action", blip, action };
-    socket.send(JSON.stringify(message));
+    send(message);
   };
 
   const activeConfig = activeBlip

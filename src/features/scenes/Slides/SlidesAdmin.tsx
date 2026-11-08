@@ -1,10 +1,10 @@
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo } from "react";
 import { SlidesSceneSchema, SlidesSceneFallback } from "./types";
 import { usePersistentState } from "../../../hooks/usePersistentState";
-import { getObsRelayUrl, type ObsMessage } from "../../ObsSource/messages";
+import type { ObsMessage } from "../../../components/Relay/messages";
+import { useRelay } from "../../../components/Relay/useRelay";
 
 export function SlidesAdmin() {
-    const obsSocketRef = useRef<WebSocket | null>(null);
     const [panelScene, setPanelScene] = usePersistentState({
         storageKey: "slidesScene",
         schema: SlidesSceneSchema,
@@ -51,50 +51,26 @@ export function SlidesAdmin() {
         }
     }, [availableFilenames, panelScene.slides, setPanelScene]);
 
+    const sceneMessage: ObsMessage = panelScene.obsVisible && panelScene.selected
+        ? {
+            type: "scene/show",
+            scene: "slides",
+            data: { filename: panelScene.selected },
+        }
+        : { type: "scene/hide", scene: "slides" };
+
+    const { send, status } = useRelay({
+        onMessage(message, reply) {
+            if (message.type === "scene/request") reply(sceneMessage);
+        },
+    });
+
     useEffect(() => {
-        let socket: WebSocket | null = null;
-        let reconnectTimer: number | null = null;
-        let disposed = false;
-
-        const sendSceneState = () => {
-            if (socket?.readyState !== WebSocket.OPEN) return;
-
-            const message: ObsMessage = panelScene.obsVisible && panelScene.selected
-                ? {
-                    type: "scene/show",
-                    scene: "slides",
-                    data: { filename: panelScene.selected },
-                }
-                : { type: "scene/hide", scene: "slides" };
-            socket.send(JSON.stringify(message));
-        };
-
-        const connect = () => {
-            socket = new WebSocket(getObsRelayUrl());
-            obsSocketRef.current = socket;
-            socket.onopen = sendSceneState;
-            socket.onmessage = (event) => {
-                try {
-                    const message = JSON.parse(event.data) as ObsMessage;
-                    if (message.type === "scene/request") sendSceneState();
-                } catch {
-                    console.warn("Ignored an invalid OBS relay message");
-                }
-            };
-            socket.onclose = () => {
-                if (obsSocketRef.current === socket) obsSocketRef.current = null;
-                if (!disposed) reconnectTimer = window.setTimeout(connect, 1500);
-            };
-            socket.onerror = () => socket?.close();
-        };
-
-        connect();
-        return () => {
-            disposed = true;
-            if (reconnectTimer !== null) window.clearTimeout(reconnectTimer);
-            socket?.close();
-        };
-    }, [panelScene.obsVisible, panelScene.selected]);
+        if (status !== "connected") return;
+        send(panelScene.obsVisible && panelScene.selected
+            ? { type: "scene/show", scene: "slides", data: { filename: panelScene.selected } }
+            : { type: "scene/hide", scene: "slides" });
+    }, [panelScene.obsVisible, panelScene.selected, send, status]);
 
     // --- Reorder functions ---
     const moveUp = (index: number) => {
