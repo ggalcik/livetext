@@ -16,10 +16,15 @@ export const VIDCLIPS:Record<string, VidSettings> = {
     "Sulfur.": {
         filename: 'sulfur.mp4',
     },
-    "intermission": {
-        filename: 'intermission.mp4',
+    // "intermission": {
+    //     filename: 'intermission.mp4',
+    //     loop: true,
+    // } ,  
+    "snailtermission": {
+        filename: 'Snail Intermission 1.mp4',
         loop: true,
-    } ,   "abiogenesis": {
+    } ,  
+     "abiogenesis": {
         filename: 'abiogenesis.mp4',
     }
 }

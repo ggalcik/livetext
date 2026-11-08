@@ -6,8 +6,13 @@ import egregore4 from "../../features/scenes/Panels/panels/assets/egregore4.png"
 import egregore_sound from "./assets/egregore 6.mp3"
 import './Blip.css';
 import { gGlobal } from "../Global/global";
+import Rhizigore from "./Rhizigore";
 
-export default function Egregore({ endBlip, source }: BlipProps) {
+export default function Egregore(props: BlipProps) {
+    return props.variant === "Rhizigore" ? <Rhizigore {...props} /> : <EgregoreDefault {...props} />;
+}
+
+function EgregoreDefault({ endBlip, source }: BlipProps) {
     const isObs = source === 'OBS';
 
     const audioRef = useRef<HTMLAudioElement | null>(null);

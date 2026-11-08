@@ -24,6 +24,7 @@ export const OBS_BLIPS = {
   },
   Egregore: {
     component: Egregore,
+    variants: ["Rhizigore"],
   },
   Forever: {
     component: ForeverAtheist,

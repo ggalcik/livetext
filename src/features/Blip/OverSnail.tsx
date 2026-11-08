@@ -5,6 +5,7 @@ import snailBackdrop from './assets/snail_backdrop.jpg';
 import snailIdol from './assets/Snail.png';
 import snailFart from './assets/Galaxy.png';
 import nyeh from './assets/nyeh.png';
+import nyehAudio from './assets/nyeh_me.mp3';
 import nyeh_xeno from './assets/nyeh_xeno.png';
 import type { BlipProps } from './types';
 import './Blip.css';
@@ -53,13 +54,20 @@ export function OverSnailDefault({ endBlip, variant }: BlipProps) {
     useEffect(() => {
         if (shell) return;
         const background = new Audio(snailUniverseOBS);
+        const nyehSound = !variant ? new Audio(nyehAudio) : undefined;
         const choir = variant && variantAudio[variant] && new Audio(variantAudio[variant]);
         playSound(background);
+        // NYEH starts becoming visible at 25% of its 10-second animation.
+        const nyehTimeout = nyehSound
+            ? setTimeout(() => playSound(nyehSound), 2500)
+            : undefined;
         const choirTimeout = choir
             ? setTimeout(() => playSound(choir, 0.5), variant === 'N' ? 2500 : 1000)
             : undefined;
 
         return () => {
+            if (nyehTimeout) clearTimeout(nyehTimeout);
+            if (nyehSound) stopSound(nyehSound);
             if (choirTimeout) clearTimeout(choirTimeout);
             stopSound(background);
             if (choir) stopSound(choir);

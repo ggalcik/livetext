@@ -1,0 +1,154 @@
+.rhizigore {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    isolation: isolate;
+    container-type: inline-size;
+    pointer-events: none;
+}
+
+.rhizigore-backdrop,
+.rhizigore-flash {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+}
+
+.rhizigore-backdrop {
+    background-repeat: repeat;
+    /* 5.8 seconds / 0.55 seconds: stop pulsing at 10 seconds. */
+    animation: rhizigore-drift 6.8s linear 4.2s forwards,
+        rhizigore-backdrop-opacity 6.8s linear 4.2s forwards,
+        rhizigore-brightness-pulse 0.55s linear 4.2s 10.5454545455;
+}
+
+.rhizigore-graphic {
+    position: absolute;
+    bottom: 0;
+    left: 10%;
+    width: 80%;
+    animation: rhizigore-rise 3s linear both,
+        rhizigore-fade 2s linear 8s forwards;
+}
+
+.rhizigore-graphic img {
+    display: block;
+    width: 100%;
+}
+
+.rhizigore-devo {
+    animation: rhizigore-devo-blink 1s steps(1, end) 3.2s forwards;
+}
+
+.rhizigore-king {
+    position: absolute;
+    bottom: 0;
+    opacity: 0;
+    animation: rhizigore-king-reveal 1s steps(1, end) 3.2s forwards;
+}
+
+.rhizigore-flash {
+    background: white;
+    animation: rhizigore-flash 0.1s steps(1, end) 3.2s 10;
+}
+
+.rhizigore-text-position {
+    position: absolute;
+    top: 45%;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    font-family: "Old English Text MT", serif;
+    font-size: 13cqw;
+    font-weight: bold;
+    letter-spacing: 0.1em;
+}
+
+.rhizigore-title {
+    color: #f97316;
+    opacity: 0;
+    mix-blend-mode: screen;
+    animation: rhizigore-title 8.8s linear 4.2s forwards;
+}
+
+.rhizigore-title-shadow {
+    position: absolute;
+    inset: 0;
+    color: black;
+    scale: 1.05;
+    mix-blend-mode: normal;
+}
+
+@keyframes rhizigore-title {
+    0% {
+        opacity: 1;
+        transform: scale(0.8);
+    }
+    80% { opacity: 1; }
+    100% {
+        opacity: 0;
+        transform: scale(1.4);
+    }
+}
+
+.rhizigore-glitch {
+    position: absolute;
+    width: 100%;
+    color: white;
+    opacity: 0;
+    animation: rhizigore-flash 0.1s steps(1, end) 3.2s 10;
+}
+
+.rhizigore-glitch span {
+    display: inline-block;
+    animation: rhizigore-letter-glitch 0.13s steps(1, end) infinite;
+    animation-delay: calc(var(--letter) * -0.037s);
+}
+
+@keyframes rhizigore-rise {
+    from { transform: translateY(70%); }
+    to { transform: translateY(0); }
+}
+
+@keyframes rhizigore-fade {
+    from { opacity: 1; }
+    to { opacity: 0; }
+}
+
+@keyframes rhizigore-devo-blink {
+    0%, 20%, 40%, 60%, 80% { opacity: 0; }
+    10%, 30%, 50%, 70%, 90% { opacity: 1; }
+    100% { opacity: 0; }
+}
+
+@keyframes rhizigore-king-reveal {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+}
+
+@keyframes rhizigore-flash {
+    0% { opacity: 0.5; }
+    50%, 100% { opacity: 0; }
+}
+
+@keyframes rhizigore-brightness-pulse {
+    from { filter: brightness(1.8); }
+    to { filter: brightness(1); }
+}
+
+@keyframes rhizigore-drift {
+    from { background-position: 0 0; }
+    to { background-position: 240px -240px; }
+}
+
+@keyframes rhizigore-backdrop-opacity {
+    0%, 70.588235% { opacity: 1; }
+    100% { opacity: 0; }
+}
+
+@keyframes rhizigore-letter-glitch {
+    0% { transform: translate(-8px, 12px) skewX(-15deg); }
+    25% { transform: translate(14px, -10px) scaleY(1.3); }
+    50% { transform: translate(-18px, -4px) skewX(20deg); }
+    75% { transform: translate(6px, 16px) scaleX(0.7); }
+}

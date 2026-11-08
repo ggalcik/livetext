@@ -34,7 +34,11 @@ export const BLIP_COMPONENTS: Record<IBlipType, BlipEntry> = {
     variants: ['sailor', 'sulfur'],
   },
   Orchestra,
-  Egregore,
+  Egregore: {
+    component: Egregore,
+    opts: {},
+    variants: ["Rhizigore"],
+  },
   "Fav names": {
     component: Names,
     opts: {},

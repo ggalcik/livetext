@@ -109,7 +109,7 @@ export default function WhyDoThis({
             className={clsx(
                 "why-do-this-crt relative flex h-full w-full flex-col overflow-hidden bg-[#00f] [container-type:size]",
                 isExiting ? "animate-why-do-this-exit" : "animate-why-do-this-enter",
-                isObs && "scale-50"
+                isObs && "scale-40"
             )}
         >
                     <div className="relative z-20 flex shrink-0 items-center justify-center p-[4cqw] text-center font-[Bahnschrift] text-[clamp(2rem,8cqh,6rem)] leading-none font-bold">
