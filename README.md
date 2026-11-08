@@ -1,5 +1,31 @@
 # React + TypeScript + Vite
 
+## OBS source visibility
+
+`src/helpers/obs.ts` exports `setCurrentSceneSourcesVisible(names, visible)`.
+It connects directly to OBS WebSocket, independently of the browser-overlay relay,
+and uses the current program (live) scene. Enable OBS's WebSocket server first.
+The default address is `ws://127.0.0.1:4455`; configure
+`VITE_OBS_WEBSOCKET_URL` and `VITE_OBS_WEBSOCKET_PASSWORD` in `.env.local` if needed,
+then restart the dev server. Vite environment values are included in the client bundle.
+
+```ts
+await setCurrentSceneSourcesVisible(["livetext capture"], false);
+await setCurrentSceneSourcesVisible(["Overlay group", "livetext capture"], true);
+// Restrict matches to direct children of a particular group:
+await setCurrentSceneSourcesVisible(["livetext capture"], false, "Basic");
+// Preferred shortcut for the main capture (used by Forever):
+await setLivetextCaptureVisible(false); // Basic → livetext capture
+```
+
+Sources inside groups are found automatically. Include the group name as well
+when its own visibility should change; showing a child alone does not show a hidden
+parent group. All occurrences with a matching name are affected. Nested scene
+sources are not traversed. Missing names and OBS errors reject the returned promise.
+Calls are serialized to preserve hide/show order.
+
+Run the helper checks with `node --test tests/obs.test.cjs`.
+
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
 Currently, two official plugins are available:

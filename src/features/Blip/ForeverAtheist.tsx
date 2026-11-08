@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import type { BlipProps } from "./types";
+import { setLivetextCaptureVisible } from "../../helpers/obs";
 import endingAudioUrl from "./assets/forever.mp3";
 import "./ForeverAtheist.css";
 
@@ -60,6 +61,15 @@ function playForeverAudio() {
 }
 
 export default function ForeverAtheist({ endBlip }: BlipProps) {
+  useEffect(() => {
+    void setLivetextCaptureVisible(false)
+      .catch(error => console.warn("Could not hide OBS capture for Forever:", error));
+    return () => {
+      void setLivetextCaptureVisible(true)
+        .catch(error => console.warn("Could not show OBS capture after Forever:", error));
+    };
+  }, []);
+
   useEffect(() => {
     const timeout = window.setTimeout(endBlip, 9000);
     return () => window.clearTimeout(timeout);
