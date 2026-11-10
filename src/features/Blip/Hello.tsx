@@ -531,6 +531,9 @@ export function HelloAdmin() {
                     onKeyDown={handleInputKeyDown}
                     className="h-9 rounded-lg border border-black px-3 text-black bg-white"
                 />
+                <span role="status" className="self-center whitespace-nowrap text-sm tabular-nums">
+                    Total {helloBlip.allNames.length} - Selected {helloBlip.selectedNames.length} - Waved {helloBlip.hellos?.length ?? 0}
+                </span>
                 <Button
                     type="button"
                     size="lg"
@@ -544,7 +547,7 @@ export function HelloAdmin() {
 
             </div>
 
-            <div className="columns-5">
+            <div className="columns-6 [&>button]:w-full [&>button]:break-inside-avoid">
                 {/* <div className="flex flex-wrap gap-2"> */}
                 {getAlphaSortedNames(helloBlip.allNames).map((name) => {
                     const isSelected = helloBlip.selectedNames.includes(name);
@@ -564,7 +567,7 @@ export function HelloAdmin() {
                             mode={!isDeleting && isSelected ? "activated" : "normal"}
                             // disabled={isRevealing}
                             className={clsx(
-                                "ring-black text-left mb-1 py-0.5 h-auto",
+                                "ring-black text-left h-auto",
                                 isDeleting && isMarkedForDelete && "bg-red-200 text-black ring-red-300 hover:bg-red-200 hover:text-black",
                                 !isDeleting && isSelected && "bg-amber-200 text-black ring-amber-300 hover:bg-amber-200 hover:text-black",
                                 !isDeleting && !isSelected && wasWaved && "bg-stone-200 text-black ring-stone-300 hover:bg-stone-200 hover:text-black",
