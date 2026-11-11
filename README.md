@@ -26,6 +26,23 @@ Calls are serialized to preserve hide/show order.
 
 Run the helper checks with `node --test tests/obs.test.cjs`.
 
+## Banner OBS output
+
+The OBS checkbox between the banner timers is saved in `liveData` (off by default).
+With the banner scene selected and OBS checked, the `/OBS` browser source receives
+only the visible banner and/or spot, including their text and combined CSS.
+Playback stays in the local display; the relay includes only the active wheel's
+interval and remaining seconds alongside the current content.
+The overlay requests the current presentation again when it reconnects.
+
+OBS routing hides `Basic`'s `livetext capture` while banner OBS output is active,
+and restores it when OBS is unchecked or another display scene is selected.
+Keep the `/OBS` browser source enabled in OBS. The overlay renders banners, spots,
+and their countdown wheels. Breaks show the fixed Angry graphic in both displays;
+the old background picker is no longer used.
+
+Run the banner routing and payload checks with `node --test tests/banner-obs.test.cjs`.
+
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
 Currently, two official plugins are available:

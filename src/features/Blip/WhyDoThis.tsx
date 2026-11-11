@@ -107,16 +107,16 @@ export default function WhyDoThis({
                 animationDuration: `${EXIT_DURATION_MS}ms`,
             } as CSSProperties : undefined}
             className={clsx(
-                "why-do-this-crt relative flex h-full w-full flex-col overflow-hidden bg-[#00f] [container-type:size]",
+                "why-do-this-crt relative flex w-full flex-col overflow-hidden bg-[#00f] [container-type:size]",
                 isExiting ? "animate-why-do-this-exit" : "animate-why-do-this-enter",
-                isObs && "scale-40"
+                isObs && "scale-40  h-5/6"
             )}
         >
-                    <div className="relative z-20 flex shrink-0 items-center justify-center p-[4cqw] text-center font-[Bahnschrift] text-[clamp(2rem,8cqh,6rem)] leading-none font-bold">
+                    <div className={clsx("relative z-20 flex shrink-0 items-center justify-center p-[4cqw] text-center font-[Bahnschrift] text-[clamp(2rem,5cqh,6rem)] leading-none font-bold")}>
                         <div className="border-2 border-white  p-[2cqw]">
                         <div className="why-do-this-crt-text border-2 border-white bg-white text-blue-900 w-full  p-[6cqw]">Top Ten Reasons Why Greg Does These Lives:</div></div>
                     </div>
-                    <div className="relative z-10 min-h-0 flex-1 overflow-hidden [container-type:size] font-[Bahnschrift] text-[clamp(1.5rem,6cqh,5rem)] leading-tight font-bold indent-[5cqh_hanging_each-line]">
+                    <div className="relative z-10 min-h-0 flex-1 overflow-hidden [container-type:size] font-[Bahnschrift] text-[clamp(1.5rem,5cqh,5rem)] leading-tight font-bold indent-[5cqh_hanging_each-line]">
                         <div className="absolute top-full left-0 flex w-full flex-col px-[6cqw] animate-why-do-this-scroll text-yellow-400">
                             <div className="why-do-this-crt-text flex flex-col">
                                 <div className="text-yellow-400 mb-4">1: To show by example that not all online atheists are angry and mean</div>

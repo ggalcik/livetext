@@ -1,6 +1,5 @@
 import clsx from "clsx";
 import type { LiveDataAction, Timer, TimerKey } from "../../context/LiveData/types";
-import RotateCountdown from "./RotateCountdown";
 
 interface ITimerOptsProps {
     timer: Timer;
@@ -9,7 +8,6 @@ interface ITimerOptsProps {
 }
 
 export default function TimerOpts({ timer, timerKey, dispatch }: ITimerOptsProps) {
-    const otherTimerKey = timerKey === 'timer' ? 'breakTimer' : 'timer';
 
     return <div className={clsx("relative gap-2 inline-flex align-baseline p-2 border-2 rounded-xl cursor-pointer hover:border-green-400",
         { "bg-amber-100": timer.on,
@@ -31,9 +29,8 @@ export default function TimerOpts({ timer, timerKey, dispatch }: ITimerOptsProps
                 payload: { interval: parseInt(e.target.value) || null, which: timerKey },
             })} />
 
-        <div>
-            {/* <DisplayCountdown timer={timer} /> */}
-             <RotateCountdown timerKey={timerKey} nextTimerKey={otherTimerKey} />
+        <div className="w-8 h-8 text-2xl text-center" aria-label={timer.on ? "Timer enabled" : "Timer stopped"}>
+            {timer.on ? "▶️" : "⏸️"}
         </div>
     </div>;
 }

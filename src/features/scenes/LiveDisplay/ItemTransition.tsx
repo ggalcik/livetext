@@ -4,26 +4,32 @@ import ItemDisplay from "./ItemDisplay";
 import { initialLiveDataState } from "../../../context/LiveData/LiveDataReducer";
 import type { Banner} from "../../../context/LiveData/types";
 
-type ItemTransitionProps =
+type ItemTransitionProps = {
+  in?: boolean;
+  appear?: boolean;
+  onExited?: () => void;
+} & (
   | {
       kind: "rotating";
       item: Banner;
-      isActive: boolean;
+      isActive?: boolean;
       defaultCSS: typeof initialLiveDataState.defaultBannerCSS;
     }
   | {
       kind: "spot";
       item: Banner;
-      isActive: boolean;
+      isActive?: boolean;
       defaultCSS: typeof initialLiveDataState.defaultSpotCSS;
-    };
+    });
 
-export function ItemTransition({ kind, item, isActive, defaultCSS }: ItemTransitionProps) {
+export function ItemTransition({ kind, item, isActive, defaultCSS, in: transitionIn, appear, onExited }: ItemTransitionProps) {
   const nodeRef = React.useRef<HTMLDivElement>(null);
 
   return (
     <CSSTransition
-      in={isActive}
+      in={isActive ?? transitionIn}
+      appear={appear}
+      onExited={onExited}
       timeout={kind === "rotating" ? 500 : 300}
       classNames={kind}
       nodeRef={nodeRef}

@@ -1,10 +1,12 @@
 @import "tailwindcss";
 
+.rotating-appear,
 .rotating-enter {
     @apply translate-x-full opacity-0;
 
 }
 
+.rotating-appear-active,
 .rotating-enter-active {
     @apply translate-x-0 opacity-90 transition-all duration-500 ease-out;
 }
@@ -33,10 +35,12 @@
     @apply -translate-x-full -translate-y-full opacity-0  scale-0 transition-all duration-500 ease-in;
 } */
 
+.spot-appear,
 .spot-enter {
     @apply opacity-0 scale-20;
 }
 
+.spot-appear-active,
 .spot-enter-active {
     @apply opacity-100 scale-100 transition duration-300 ease-out;
 }

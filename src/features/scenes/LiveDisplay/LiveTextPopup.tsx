@@ -3,9 +3,15 @@ import LiveText from "./LiveText";
 import {  type LiveDataState } from "../../../context/LiveData/types";
 import { loadInitialState } from "../../../context/LiveData/LiveDataReducer";
 import { addPersistentStateListener } from "../../../hooks/persistentEvents";
+import { useBannerPlayback } from "./useBannerPlayback";
+import { useObsBannerOutput } from "./useObsBannerOutput";
+import { useLiveData } from "../../../context/LiveData";
 
-export default function LiveTextPopup({ embedded = false }: { embedded?: boolean }) {
+export default function LiveTextPopup({ embedded = false, active = true }: { embedded?: boolean; active?: boolean }) {
   const [state, setState] = useState<LiveDataState>(loadInitialState());
+  const { state: adminState } = useLiveData();
+  const playback = useBannerPlayback(embedded ? adminState : state, active);
+  useObsBannerOutput(playback, active, embedded);
 
   useEffect(() => {
     const applySerializedState = (serializedState: string) => {
@@ -40,6 +46,6 @@ export default function LiveTextPopup({ embedded = false }: { embedded?: boolean
   }, [embedded]);
 
 
-  return  <LiveText state={state} />;
+  return active ? <LiveText state={playback} /> : null;
 
 }
