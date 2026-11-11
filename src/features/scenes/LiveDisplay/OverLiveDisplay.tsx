@@ -37,8 +37,8 @@ export default function OverLiveDisplay({ data }: ObsSceneProps) {
       </TransitionGroup>
       {countdown && (
         <div className={countdown.kind === "timer"
-          ? "absolute -top-24 -left-6 scale-80"
-          : "absolute top-0 right-1/6 scale-80"}>
+          ? "absolute -top-24 -left-6 scale-100"
+          : "absolute -bottom-10 right-0 scale-80"}>
           <ProgressWheel
             timer={{ on: true, waiting: false, interval: countdown.interval, countdown: countdown.seconds }}
             size={countdown.kind === "timer" ? 80 : 90}
