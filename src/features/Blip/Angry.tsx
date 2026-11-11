@@ -1,9 +1,12 @@
 import { format, parse } from "date-fns";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { z } from "zod";
 import { Button } from "../../components/Button";
 import { usePersistentState } from "../../hooks/usePersistentState";
 import type { BlipProps } from "./types";
+import "./Angry.css";
+import { AudioController } from "../../components/AudioController";
+import angerFlameAudio from "./assets/angerflame.mp3";
 
 const AngryBlipSchema = z.object({
   value: z.string(),
@@ -21,16 +24,8 @@ function AngryFlame({ color, mirrored = false }: { color: string; mirrored?: boo
           aria-hidden="true"
           viewBox="0 0 600 360"
           preserveAspectRatio="none"
-          style={{
-            color,
-            transform: mirrored ? "scaleX(-1)" : undefined,
-            position: "absolute",
-            top: -80,
-            left: 0,
-            width: "100%",
-            height: "calc(100% + 60px)",
-            pointerEvents: "none",
-          }}
+          className={`pointer-events-none absolute -top-20 left-0 h-[calc(100%+120px)] w-full ${mirrored ? "-scale-x-100" : ""}`}
+          style={{ color }}
         >
           <path
             d="M 100 344
@@ -64,32 +59,42 @@ function AngryFlame({ color, mirrored = false }: { color: string; mirrored?: boo
   );
 }
 
-export default function Angry({ obsAction }: BlipProps) {
+function AngryArtwork({ value }: { value: string }) {
+  return (
+    <div className="relative">
+      <AngryFlame color="#a80000" mirrored />
+      <AngryFlame color="red" />
+      <div className="relative leading-none">I am {value}% angy!!!@!</div>
+      <div className="relative translate-x-[10%] text-[40%]">
+        stats don't lie!
+      </div>
+    </div>
+  );
+}
+
+export default function Angry({ obsAction, obsActionRequestId }: BlipProps) {
+  useEffect(() => {
+    if (!obsAction?.startsWith(SHOW_ACTION_PREFIX)) return;
+    const audio = new AudioController();
+    void audio.playUrl(angerFlameAudio);
+    return () => audio.stop();
+  }, [obsAction, obsActionRequestId]);
+
   if (!obsAction?.startsWith(SHOW_ACTION_PREFIX)) return null;
   const value = obsAction.slice(SHOW_ACTION_PREFIX.length);
 
   return (
     <div className="relative h-full w-full">
       <div
-        style={{
-          position: "absolute",
-          top: "25%",
-          left: "50%",
-          transform: "translateX(-50%)",
-          boxSizing: "border-box",
-          width: "60%",
-          padding: "4 0px",
-          font: 'bold 60px/1.3 "Agency FB"',
-          color: "white",
-          textAlign: "center",
-          overflowWrap: "anywhere",
-        }}
+        className="absolute top-1/4 left-1/2 box-border w-3/5 -translate-x-1/2 text-center font-['Agency_FB'] text-[60px] leading-[1.3] font-bold text-white [overflow-wrap:anywhere]"
       >
-        <AngryFlame color="#a80000" mirrored />
-        <AngryFlame color="red" />
-        <div style={{ position: "relative", lineHeight: 1 }}>I am {value}% angy!!!@!</div>
-        <div style={{ position: "relative", fontSize: "40%", transform: "translate(10%)" }}>
-          stats don't lie!
+        <div key={obsActionRequestId} className="relative -mx-3 -mt-[90px] -mb-[50px]">
+          <div className="px-3 pt-[90px] pb-[50px] animate-[angry-reveal_500ms_linear_both]">
+            <AngryArtwork value={value} />
+          </div>
+          <div aria-hidden="true" className="pointer-events-none absolute inset-0 px-3 pt-[90px] pb-[50px] [filter:brightness(0)_saturate(100%)_invert(65%)_sepia(90%)_saturate(2400%)_hue-rotate(355deg)] animate-[angry-reveal-edge_500ms_linear_both]">
+            <AngryArtwork value={value} />
+          </div>
         </div>
       </div>
     </div>

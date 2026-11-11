@@ -1,0 +1,9 @@
+@keyframes angry-reveal {
+  from { clip-path: inset(100% 0 0); }
+  to { clip-path: inset(0); }
+}
+
+@keyframes angry-reveal-edge {
+  from { clip-path: inset(100% 0 -48px); }
+  to { clip-path: inset(-48px 0 100%); }
+}
