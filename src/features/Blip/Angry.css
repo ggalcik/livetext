@@ -1,9 +1,38 @@
 @keyframes angry-reveal {
   from { clip-path: inset(100% 0 0); }
-  to { clip-path: inset(0); }
+  99.99% { clip-path: inset(0); }
+  /* Let taller flame poses extend beyond the reveal bounds afterward. */
+  to { clip-path: none; }
 }
 
 @keyframes angry-reveal-edge {
   from { clip-path: inset(100% 0 -48px); }
   to { clip-path: inset(-48px 0 100%); }
+  /* The filled animation must not leave a filtered strip above the artwork. */
+  0%, 99.99% { visibility: visible; }
+  100% { visibility: hidden; }
+}
+
+/* Eight held poses, one every 500ms. Keep the base planted and text still.
+   Both artwork copies use the same timeline so the orange edge stays aligned. */
+@keyframes angry-flame-front {
+  0%, 100% { transform: scale(1, 1); }
+  12.5% { transform: scale(1.015, 1.035); }
+  25% { transform: scale(-0.99, 1.015); }
+  37.5% { transform: scale(-1.01, 0.985); }
+  50% { transform: scale(1.005, 1.04); }
+  62.5% { transform: scale(0.985, 1.01); }
+  75% { transform: scale(-1.015, 1.025); }
+  87.5% { transform: scale(1, 0.99); }
+}
+
+@keyframes angry-flame-back {
+  0%, 100% { transform: scale(1, 1); }
+  12.5% { transform: scale(-1.025, 0.99); }
+  25% { transform: scale(-1.01, 1.04); }
+  37.5% { transform: scale(0.99, 1.02); }
+  50% { transform: scale(1.02, 0.985); }
+  62.5% { transform: scale(-1.015, 1.035); }
+  75% { transform: scale(1.005, 1.01); }
+  87.5% { transform: scale(-1.02, 1.025); }
 }

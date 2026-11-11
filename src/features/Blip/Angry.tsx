@@ -18,13 +18,19 @@ const AngryBlipSchema = z.object({
 // with its own local storage.
 const SHOW_ACTION_PREFIX = "show:";
 
-function AngryFlame({ color, mirrored = false }: { color: string; mirrored?: boolean }) {
+function AngryFlame({ color, mirrored = false, className = "absolute -top-20 left-0 h-[calc(100%+120px)] w-full" }: {
+  color: string;
+  mirrored?: boolean;
+  className?: string;
+}) {
   return (
         <svg
           aria-hidden="true"
           viewBox="0 0 600 360"
           preserveAspectRatio="none"
-          className={`pointer-events-none absolute -top-20 left-0 h-[calc(100%+120px)] w-full ${mirrored ? "-scale-x-100" : ""}`}
+          className={`pointer-events-none origin-bottom motion-reduce:animate-none ${className} ${mirrored
+            ? "-scale-x-100 animate-[angry-flame-back_4s_steps(1,end)_500ms_infinite]"
+            : "animate-[angry-flame-front_4s_steps(1,end)_500ms_infinite]"}`}
           style={{ color }}
         >
           <path
@@ -62,7 +68,9 @@ function AngryFlame({ color, mirrored = false }: { color: string; mirrored?: boo
 function AngryArtwork({ value }: { value: string }) {
   return (
     <div className="relative">
-      <AngryFlame color="#a80000" mirrored />
+      <div className="pointer-events-none absolute -top-20 left-0 h-[calc(100%+120px)] w-full origin-bottom scale-x-[0.85] scale-y-[1.20]">
+        <AngryFlame color="#a80000" mirrored className="absolute inset-0 h-full w-full" />
+      </div>
       <AngryFlame color="red" />
       <div className="relative leading-none">I am {value}% angy!!!@!</div>
       <div className="relative translate-x-[10%] text-[40%]">
