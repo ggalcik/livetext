@@ -82,6 +82,10 @@ export const LiveDataStateSchema = z.object({
   spots: z.array(BannerSchema),
   defaultSpotCSS: BannerCSSSchema,
   displaySpots: z.boolean(),
+  obsVisible: z.boolean().default(false),
+  obsWidth: z.number().min(1).max(100).default(100),
+  obsTop: z.number().min(0).max(100).default(50),
+  obsScale: z.number().min(1).max(300).default(75),
   activeSpot: z.number().nullable(),
   timer: TimerSchema,
   breakTimer: TimerSchema,
@@ -104,6 +108,10 @@ export function makeInitialLiveDataState(): LiveDataState {
     spots: [],
     displayBanners: true,
     displaySpots: false,
+    obsVisible: false,
+    obsWidth: 100,
+    obsTop: 50,
+    obsScale: 75,
     activeBanner: NO_ACTIVE_BANNER,
     activeSpot: NO_ACTIVE_SPOT,
 
@@ -163,6 +171,8 @@ export function createSpot(defaultCSS = ""): Banner {
 export type TimerKey = "timer" | "breakTimer";
 
 export type LiveDataAction =
+  | { type: "obs/visible"; payload: { visible: boolean } }
+  | { type: "obs/layout"; payload: { obsWidth?: number; obsTop?: number; obsScale?: number } }
   | { type: "background/toggle" }
   | { type: "background/change"; payload: { which: BackgroundType } }
   | { type: "masterViewportCSS/padding"; payload: { padding: string } }

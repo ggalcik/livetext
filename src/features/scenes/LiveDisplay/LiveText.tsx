@@ -3,7 +3,7 @@ import { NO_ACTIVE_BANNER, NO_ACTIVE_SPOT } from "../../../context/LiveData/type
 import type { LiveDataState } from "../../../context/LiveData/types";
 import { initialLiveDataState } from "../../../context/LiveData/LiveDataReducer";
 
-import Background from "./Background";
+import BreakDisplay from "./BreakDisplay";
 import { MasterViewport } from "../../../components/MasterViewport/MasterViewport";
 
 import "./ItemTransitions.css";
@@ -37,21 +37,16 @@ export default function LiveText({ state }: { state: LiveDataState }) {
 
   const showSpot = activeSpotIndex !== NO_ACTIVE_SPOT && state.displaySpots;
 
-  // TODO: hack! fix this, for showing other backgrounds for banners off
-  const altBackground = !((state.backgroundImage === 'Angry' || state.backgroundImage === 'Christlessmas')
-    && (state.breakTimer.on && !state.breakTimer.waiting)
-    || !(state.displayBanners || state.displaySpots));
-
   return (
     <>
       <MasterViewport name="livetext" needCtrl>
 
-        <Background which={state.backgroundImage}
-          showAngerBits={state.backgroundImage === 'Angry' &&
-            !(state.displayBanners || state.displaySpots)
-          }
-          altBackground={altBackground}
-        />
+        {(!(state.displayBanners || state.displaySpots) ||
+          (state.displayBanners && state.breakTimer.on && !state.breakTimer.waiting)) && (
+          <div className="absolute inset-x-0 top-0">
+            <BreakDisplay />
+          </div>
+        )}
 
         <TransitionGroup component={null}>
           {state.banners.map((banner, i) => (
@@ -105,22 +100,6 @@ export default function LiveText({ state }: { state: LiveDataState }) {
         )} */}
          
       </MasterViewport>
-{/* <img src={egregore1} className="absolute -bottom-60"/> */}
-      {/* works but the admin needs to be properly hooked in to watching localStorage
-         also remove state being passed here
-<div className="absolute flex flex-nowrap top-4 left-4 gap-8 text-white leading-10 items-center">
-one two
- <RotateCountdown timerKey="timer" nextTimerKey="breakTimer" />
-<RotateCountdown timerKey="breakTimer" nextTimerKey="timer" /> 
-</div> */}
-      {/* <div className="absolute flex flex-nowrap top-4 left-4 gap-8 text-white leading-10 items-center">
-        <div className="flex flex-nowrap">
-          timer: <RotateCountdown timerKey="timer" nextTimerKey="breakTimer" />
-          </div>
-       <div className="flex flex-nowrap">
-       breakTimer:  <RotateCountdown timerKey="breakTimer" nextTimerKey="timer" /> 
-        </div>
-    </div> */}
     </>
   );
 }

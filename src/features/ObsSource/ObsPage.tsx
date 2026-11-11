@@ -60,7 +60,14 @@ export default function ObsPage() {
       } else if (message.type === "scene/show" && message.scene in OBS_SCENES) {
         setScene(message);
       } else if (message.type === "scene/hide" && message.scene in OBS_SCENES) {
-        setScene((current) => current?.scene === message.scene ? null : current);
+        setScene((current) => {
+          if (current?.scene !== message.scene) return current;
+          // Keep the banner renderer mounted long enough to finish item exits.
+          if (current.scene === "banners") {
+            return { ...current, data: { ...current.data, banner: null, spot: null, countdown: null, showAngry: false } };
+          }
+          return null;
+        });
       }
     },
   });

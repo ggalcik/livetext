@@ -108,6 +108,10 @@ export function liveDataReducer(state: LiveDataState, action: LiveDataAction): L
   }
 
   switch (action.type) {
+    case "obs/visible":
+      return { ...state, obsVisible: action.payload.visible };
+    case "obs/layout":
+      return { ...state, ...action.payload };
     case "background/toggle":
       return {
         ...state,

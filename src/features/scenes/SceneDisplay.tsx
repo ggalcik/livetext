@@ -21,7 +21,7 @@ export function SceneDisplay({
   return (
     <>
       <div className="absolute h-full w-full bg-black">
-        {sceneName === "banners" && <LiveTextPopup embedded={embedded} />}
+        <LiveTextPopup embedded={embedded} active={sceneName === "banners"} />
         {sceneName === "philbronium" && <Philbronium controls />}
         {sceneName === "video" && <Video />}
         {sceneName === "slides" && <Slides />}
