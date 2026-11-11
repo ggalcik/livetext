@@ -12,6 +12,7 @@ export const persistentDataKeys = [
     'blipData',
     'whySoAngryBlip',
     'NamesBlip',
+    'AngryBlip',
     'helloBlip',
     'winnerPanel',
     'christolyzerPanel'

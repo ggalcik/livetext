@@ -1,4 +1,5 @@
 import Egregore from "../Blip/Egregore";
+import Angry, { AngryAdmin } from "../Blip/Angry";
 import ForeverAtheist from "../Blip/ForeverAtheist";
 import HolyHonkers from "../Blip/HolyHonkers";
 import MammaMia from "../Blip/MammaMia";
@@ -19,6 +20,10 @@ export type ObsBlipConfig = ObsLayerConfig & {
 };
 
 export const OBS_BLIPS = {
+  "Angry %": {
+    component: Angry,
+    extendedComponent: AngryAdmin,
+  },
   Analogy: {
     component: OverAnalogy,
   },
