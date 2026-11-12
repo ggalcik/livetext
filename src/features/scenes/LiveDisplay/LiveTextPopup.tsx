@@ -46,6 +46,6 @@ export default function LiveTextPopup({ embedded = false, active = true }: { emb
   }, [embedded]);
 
 
-  return active ? <LiveText state={playback} /> : null;
+  return active && !playback.obsVisible ? <LiveText state={playback} /> : null;
 
 }

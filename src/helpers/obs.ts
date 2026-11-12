@@ -82,3 +82,53 @@ export function setCurrentSceneSourcesVisible(
 export function setLivetextCaptureVisible(visible: boolean): Promise<void> {
     return setCurrentSceneSourcesVisible(["livetext capture"], visible, "Basic");
 }
+
+/** Temporarily reveal the capture and hide overlays, restoring their original visibility.
+ * Queue restoration immediately, even if cleanup happens before OBS responds.
+ */
+export function temporarilyShowLivetextCapture(): () => void {
+    let changedItems: (LocatedItem & { originalVisible: boolean })[] = [];
+    const operation = pending.then(async () => {
+        const obs = await getClient();
+        const { currentProgramSceneName } = await obs.call("GetCurrentProgramScene");
+        const matches = await findItems(obs, currentProgramSceneName, new Set(["livetext capture", "livetext overlay"]));
+        const items = matches.filter(item => item.sourceName === "livetext overlay" || item.parent === "Basic");
+        if (!items.some(item => item.sourceName === "livetext capture")) {
+            throw new Error("OBS source not found: Basic / livetext capture");
+        }
+        for (const item of items) {
+            const { sceneItemEnabled } = await obs.call("GetSceneItemEnabled", {
+                sceneName: item.parent,
+                sceneItemId: item.sceneItemId,
+            });
+            const visible = item.sourceName === "livetext capture";
+            if (sceneItemEnabled !== visible) {
+                changedItems.push({ ...item, originalVisible: sceneItemEnabled });
+                await obs.call("SetSceneItemEnabled", {
+                    sceneName: item.parent,
+                    sceneItemId: item.sceneItemId,
+                    sceneItemEnabled: visible,
+                });
+            }
+        }
+    });
+    pending = operation.catch(error => console.warn("Could not set OBS visibility for blip:", error));
+    let released = false;
+    return () => {
+        if (released) return;
+        released = true;
+        const restoration = pending.then(async () => {
+            if (!changedItems.length) return;
+            const obs = await getClient();
+            for (const item of changedItems) {
+                await obs.call("SetSceneItemEnabled", {
+                    sceneName: item.parent,
+                    sceneItemId: item.sceneItemId,
+                    sceneItemEnabled: item.originalVisible,
+                });
+            }
+            changedItems = [];
+        });
+        pending = restoration.catch(error => console.warn("Could not restore OBS visibility after blip:", error));
+    };
+}

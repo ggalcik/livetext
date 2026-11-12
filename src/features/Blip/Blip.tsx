@@ -1,4 +1,6 @@
 import { produce } from "immer";
+import { useEffect } from "react";
+import { temporarilyShowLivetextCapture } from "../../helpers/obs";
 import { usePersistentState } from "../../hooks/usePersistentState"
 import { BLIP_COMPONENTS } from "./BlipRegistry"
 import { BlipDataSchema, type BlipConfig, type BlipEntry, type BlipProps, type BlipVariant } from "./types"
@@ -11,6 +13,11 @@ export default function Blip() {
     schema: BlipDataSchema,
     fallback: {}
   })
+
+  const hasActiveBlip = Boolean(blipData.showBlip);
+  useEffect(() => {
+    if (hasActiveBlip) return temporarilyShowLivetextCapture();
+  }, [hasActiveBlip]);
 
   if (!blipData.showBlip) return null;
 
