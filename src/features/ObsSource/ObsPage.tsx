@@ -3,6 +3,7 @@ import type { ObsMessage } from "../../components/Relay/messages";
 import { useRelay } from "../../components/Relay/useRelay";
 import { getObsVariant, OBS_BLIPS, type ObsBlipConfig } from "./ObsBlipRegistry";
 import { OBS_SCENES, type ObsSceneConfig } from "./ObsSceneRegistry";
+import ObsVidclipDisplay from "../Vidclips/ObsVidclipDisplay";
 import type { ObsInsets } from "./types";
 
 function layerStyle(insets?: ObsInsets): React.CSSProperties {
@@ -90,14 +91,15 @@ export default function ObsPage() {
   return (
     <main className="relative  overflow-hidden bg-transparent w-[600px] h-[800px]">
       {scene && ActiveScene && (
-        <div style={layerStyle(activeSceneConfig?.insets)}>
+        <div className="z-0 isolate" style={layerStyle(activeSceneConfig?.insets)}>
           <ActiveScene data={scene.data} />
         </div>
       )}
+      <ObsVidclipDisplay />
       {command && ActiveBlip && (
         <div
           key={command.eventId}
-          className="overflow-hidden"
+          className="z-20 isolate overflow-hidden"
           style={layerStyle(activeConfig?.insets)}
         >
           <ActiveBlip

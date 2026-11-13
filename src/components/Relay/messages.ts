@@ -1,7 +1,11 @@
 import type { ObsBlipName } from "../../features/ObsSource/ObsBlipRegistry";
 import type { ObsSceneName } from "../../features/ObsSource/ObsSceneRegistry";
+import type { VidSettings } from "../../features/Vidclips/types";
 
 export type ObsMessage =
+  | { type: "vidclip/request" }
+  | { type: "vidclip/state"; eventId: number; settings?: VidSettings; currentTime: number; paused: boolean }
+  | { type: "vidclip/ended"; eventId: number }
   | {
       type: "blip/play";
       blip: ObsBlipName;

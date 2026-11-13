@@ -17,7 +17,8 @@ const EXIT_DURATION_MS = 700;
 const WHY_SO_ANGRY_STORAGE_KEY = 'whySoAngryBlip';
 const PICK_VARIANT = "Pick";
 
-export function WhySoAngryPick() {
+export function WhySoAngryPick({ sendAction }: { sendAction?: (action: string) => void } = {}) {
+    const [obsSelectedIndex, setObsSelectedIndex] = useState<number>();
     const [whySoAngryBlip] = usePersistentState({
         storageKey: WHY_SO_ANGRY_STORAGE_KEY,
         schema: WhySoAngryBlipSchema,
@@ -29,11 +30,16 @@ export function WhySoAngryPick() {
         fallback: {}
     });
 
-    if (blipData.showBlip !== "Why Angry" || blipData.showBlipVariant !== PICK_VARIANT) {
+    if (!sendAction && (blipData.showBlip !== "Why Angry" || blipData.showBlipVariant !== PICK_VARIANT)) {
         return null;
     }
 
     function selectRheason(index: number) {
+        if (sendAction) {
+            sendAction(obsSelectedIndex === index ? "end" : `pick:${index}`);
+            setObsSelectedIndex(index);
+            return;
+        }
         setBlipData(produce((draft) => {
             if (draft.showBlip !== "Why Angry" || draft.showBlipVariant !== PICK_VARIANT) {
                 return;
@@ -52,7 +58,7 @@ export function WhySoAngryPick() {
     return (
         <div className="columns-3 gap-2">
             {rheazonsData.map((rheason, index) => {
-                const isSelected = blipData.showBlipSelection === index;
+                const isSelected = (sendAction ? obsSelectedIndex : blipData.showBlipSelection) === index;
                 const isUsed = whySoAngryBlip.used.some((usedRheason) => isSameRheazon(usedRheason, rheason));
 
                 return (
@@ -76,9 +82,27 @@ export function WhySoAngryPick() {
     );
 }
 
-export default function WhySoAngry({ endBlip, deactivateRequestId, variant, selection }: BlipProps) {
+export default function WhySoAngry({ endBlip, deactivateRequestId, variant, selection, source, obsAction, obsActionRequestId }: BlipProps) {
+    const [obsSelection, setObsSelection] = useState<number>();
+    const [obsDeactivateId, setObsDeactivateId] = useState<number>();
+    const selectedIndex = source === "OBS" ? obsSelection : selection;
+    const requestedDeactivateId = deactivateRequestId ?? obsDeactivateId;
+
+    useEffect(() => {
+        if (obsAction === "end") setObsDeactivateId(Date.now());
+        if (obsAction?.startsWith("pick:")) {
+            const index = Number(obsAction.slice(5));
+            if (Number.isInteger(index) && rheazonsData[index]) setObsSelection(index);
+        }
+    }, [obsAction, obsActionRequestId]);
+
     const audioInRef = useRef(new Audio(typewriter));
     const audioOutRef = useRef(new Audio(typewriterOut));
+    useEffect(() => {
+        const audioIn = audioInRef.current;
+        const audioOut = audioOutRef.current;
+        return () => { audioIn.pause(); audioOut.pause(); };
+    }, []);
     const year = new Date().getFullYear();
     const [whySoAngryBlip, setWhySoAngryBlip] = usePersistentState({
         storageKey: WHY_SO_ANGRY_STORAGE_KEY,
@@ -136,24 +160,24 @@ export default function WhySoAngry({ endBlip, deactivateRequestId, variant, sele
     }, [variant]);
 
     useEffect(() => {
-        if (variant !== PICK_VARIANT || selection == null) {
+        if ((source !== "OBS" && variant !== PICK_VARIANT) || selectedIndex == null) {
             return;
         }
 
-        const selectedRheason = rheazonsData[selection];
+        const selectedRheason = rheazonsData[selectedIndex];
         if (!selectedRheason) {
             return;
         }
 
         activateSpecificRheason(selectedRheason);
-    }, [selection, variant]);
+    }, [selectedIndex, source, variant]);
 
     useEffect(() => {
-        if (whySoAngryBlip.active) {
+        if (whySoAngryBlip.active && (variant !== PICK_VARIANT || selectedIndex != null)) {
             glog('WhoSoAngry - intro sound');
             playSound();
         }
-    }, [playSound, whySoAngryBlip.active]);
+    }, [playSound, selectedIndex, variant, whySoAngryBlip.active]);
 
     useEffect(() => {
         if (hasExitRequested && !whySoAngryBlip.active) {
@@ -162,11 +186,11 @@ export default function WhySoAngry({ endBlip, deactivateRequestId, variant, sele
     }, [endBlip, hasExitRequested, whySoAngryBlip.active]);
 
     useEffect(() => {
-        if (!deactivateRequestId || deactivateRequestId === lastHandledDeactivateId.current) {
+        if (!requestedDeactivateId || requestedDeactivateId === lastHandledDeactivateId.current) {
             return;
         }
 
-        lastHandledDeactivateId.current = deactivateRequestId;
+        lastHandledDeactivateId.current = requestedDeactivateId;
 
         if (!whySoAngryBlip.active) {
             endBlip();
@@ -184,9 +208,9 @@ export default function WhySoAngry({ endBlip, deactivateRequestId, variant, sele
         }, EXIT_DURATION_MS);
 
         return () => window.clearTimeout(timeoutId);
-    }, [deactivateRequestId, endBlip, playExitSound, whySoAngryBlip.active]);
+    }, [requestedDeactivateId, endBlip, playExitSound, whySoAngryBlip.active]);
 
-    if (!whySoAngryBlip.active) {
+    if (!whySoAngryBlip.active || (variant === PICK_VARIANT && selectedIndex == null)) {
         return null;
     }
 
@@ -194,7 +218,8 @@ export default function WhySoAngry({ endBlip, deactivateRequestId, variant, sele
 
     return (
         <div className={clsx(
-            'w-full h-full origin-top pt-8',
+            'w-full h-full  pt-8',
+            source === 'OBS' && 'scale-70',
             isExiting ? 'animate-whyangry-exit' : 'animate-whyangry'
         )}>
             <div className='absolute w-full h-full'>
@@ -214,4 +239,8 @@ export default function WhySoAngry({ endBlip, deactivateRequestId, variant, sele
 
 function isSameRheazon(left: Rheason, right: Rheason) {
     return left.person === right.person && left.saying === right.saying;
+}
+
+export function WhySoAngryAdmin({ sendAction }: { sendAction: (action: string) => void }) {
+    return <WhySoAngryPick sendAction={sendAction} />;
 }

@@ -43,7 +43,7 @@ const crampedStyle = gGlobal.layout.crampedPortrait ? 'bottom-4' : 'top-4';
 
     return (
 
-        <div className={`absolute w-11/12 ${crampedStyle} right-4 flex items-center gap-2`}>
+        <div className={`pointer-events-auto absolute w-11/12 ${crampedStyle} right-4 flex items-center gap-2`}>
             <button onClick={handlePlayPause} className="bg-blue-400 px-2 py-1 border rounded">
                 Play / Pause
             </button>

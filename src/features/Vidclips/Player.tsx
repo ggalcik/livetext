@@ -1,17 +1,17 @@
 import { useEffect, useRef, useState } from "react";
 
-// import noVideo from "../../../assets/media-player-svgrepo-com.png";
-import { MasterViewport } from "../../components/MasterViewport/MasterViewport";
 import { resolvePublicAssetPath } from "../../helpers/assetPaths";
 import type { VidSettings } from "./types";
 import PlayerControls from "./PlayerControls";
 
 interface IPlayer {
     vidSettings: VidSettings,
+    onPlaybackProgress?: (currentTime: number, paused: boolean) => void,
+    onPlaybackChange?: (currentTime: number, paused: boolean) => void,
     handleVidStop: () => void
 }
 
-export default function Player({ vidSettings, handleVidStop}: IPlayer) {
+export default function Player({ vidSettings, handleVidStop, onPlaybackChange, onPlaybackProgress }: IPlayer) {
     const [progress, setProgress] = useState(0);
     const videoRef = useRef<HTMLVideoElement>(null);
     const { filename, loop } = vidSettings;
@@ -36,21 +36,26 @@ export default function Player({ vidSettings, handleVidStop}: IPlayer) {
 
 
     return (
-        <div className="p-4 absolute w-full h-full">
+        <div className="pointer-events-none p-4 absolute w-full h-full">
 
             {filename &&
                 <>
-                    <MasterViewport name={`vidclips_${filename}`}>
                         <video
                             ref={videoRef}
+                            onTimeUpdate={(event) => onPlaybackProgress?.(event.currentTarget.currentTime, event.currentTarget.paused)}
+                            onPlay={(event) => onPlaybackChange?.(event.currentTarget.currentTime, false)}
+                            onPause={(event) => onPlaybackChange?.(event.currentTarget.currentTime, true)}
+                            onSeeked={(event) => onPlaybackChange?.(event.currentTarget.currentTime, event.currentTarget.paused)}
                             src={videoUrl}
                             loop={loop}
+                            // Keep a silent playback clock for the existing controls.
+                            // The visible and audible output is rendered only in OBS.
+                            muted
                             autoPlay={true}
                             onEnded={handleVidStop}
 
-                            className="max-w-full border max-h-full"
+                            className="hidden"
                         />
-                    </MasterViewport>
 
 
                     <PlayerControls 

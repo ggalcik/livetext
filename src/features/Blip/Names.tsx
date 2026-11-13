@@ -3,16 +3,17 @@ import { MasterViewport } from "../../components/MasterViewport/MasterViewport";
 import { Button } from "../../components/Button";
 import { gGlobal } from "../Global/global";
 import { format } from "date-fns";
-import { getDailyLineStyle, toDisplayDate } from "./helpers";
+import { toDisplayDate } from "./helpers";
 import { usePersistentState } from "../../hooks/usePersistentState";
-import { NamesBlipSchema, type BlipProps } from "./types";
+import { NamesBlipSchema, type BlipProps, type NamesDisplayData } from "./types";
 import clsx from "clsx";
+import NamesDisplay from "./NamesDisplay";
 import namesIn from "./assets/names_in3.mp3";
 import namesOut from "./assets/names_out.mp3";
 
-const EXIT_DURATION_MS = 500;
+const EXIT_DURATION_MS = 1000;
 
-export default function Names({ endBlip, deactivateRequestId }: BlipProps) {
+export default function Names({ endBlip, deactivateRequestId, sendAction }: BlipProps & { sendAction?: (action: string) => void }) {
     const [confirmReset, setConfirmReset] = useState(false);
     const [isExiting, setIsExiting] = useState(false);
     const [showNamesIndex, setShowNamesIndex] = useState(0);
@@ -29,6 +30,10 @@ export default function Names({ endBlip, deactivateRequestId }: BlipProps) {
     const historyDate = showNamesIndex ? historyEntries[showNamesIndex - 1] : undefined;
     const displayDate = historyDate ?? blip.currentDate;
     const displayNames = historyDate && blip.history ? blip.history[historyDate] : blip.names;
+
+    useEffect(() => {
+        if (sendAction) sendAction(`show:${JSON.stringify({ names: displayNames, currentDate: displayDate, historical: Boolean(historyDate) } satisfies NamesDisplayData)}`);
+    }, [sendAction, displayNames, displayDate, historyDate]);
     const lastHandledDeactivateId = useRef<number | undefined>(undefined);
 
     const playExitSound = useCallback(() => {
@@ -58,14 +63,12 @@ export default function Names({ endBlip, deactivateRequestId }: BlipProps) {
         setShowNamesIndex(0);
     }
 
-    const lines = displayNames
-        .split(/\r?\n/)
-        .map((line) => line.trim())
-        .filter((line) => line.length > 0);
-
     useEffect(() => {
-        playSound();
-    }, [playSound]);
+        if (!sendAction) playSound();
+        const audioIn = audioInRef.current;
+        const audioOut = audioOutRef.current;
+        return () => { audioIn.pause(); audioOut.pause(); };
+    }, [playSound, sendAction]);
 
     useEffect(() => {
         if (!deactivateRequestId || deactivateRequestId === lastHandledDeactivateId.current) {
@@ -83,13 +86,8 @@ export default function Names({ endBlip, deactivateRequestId }: BlipProps) {
         return () => window.clearTimeout(timeoutId);
     }, [deactivateRequestId, endBlip, playExitSound]);
 
-    return (
-        <div className="absolute w-full h-full text-white">
-            <MasterViewport name="blip_names" needCtrl>
-                <div className={clsx(
-                    "group/names w-full h-full backdrop-blur-sm bg-black/50 [container-type:size] text-center",
-                    isExiting ? "animate-names-exit" : "animate-names-enter"
-                )}>
+    const presentation = (
+        <NamesDisplay names={displayNames} currentDate={displayDate} historical={Boolean(historyDate)} isExiting={isExiting}>
                     {historyEntries.length > 0 && (
                         <input
                             type="range"
@@ -102,34 +100,23 @@ export default function Names({ endBlip, deactivateRequestId }: BlipProps) {
                             aria-label="Names history"
                         />
                     )}
+        </NamesDisplay>
+    );
 
-                    <div className={clsx(
-                        "font-[Carter_One] border border-black inline-block shadow-lg shadow-black -rotate-2 p-4 text-center text-4xl text-amber-200",
-                        showNamesIndex ? "bg-stone-700" : "bg-blue-800"
-                    )}>
-                        {showNamesIndex ? "My favorite names on:" : "My favorite names today"}
-                    </div>
-                    <div className="font-[Carter_One] border border-black inline-block shadow shadow-black rotate-1 translate-x-[70%] -translate-y-[30%] p-2 text-center text-md bg-blue-700 text-amber-200">{toDisplayDate(displayDate)}</div>
-
-                    <div className="flex flex-wrap justify-center gap-2 w-[80%] m-auto">
-                        {lines.map((line, index) => (
-                            <div
-                                key={`${index}-${line}`}
-                                className="font-[Candara] border border-black inline-block  shadow-lg shadow-black text-shadow p-2 px-8 text-2xl"
-                                style={getDailyLineStyle(displayDate, index)}
-                            >
-                                {line}
-                            </div>
-                        ))}
-                    </div>
-
-                </div>
-            </MasterViewport>
-            <div className={crampedStyle ? "absolute left-4 bottom-4 w-2/3" : "absolute left-4 top-4 w-2/3"}>
+    return (
+        <div className={sendAction ? "text-black" : "absolute w-full h-full text-white"}>
+            {!sendAction && <MasterViewport name="blip_names" needCtrl>{presentation}</MasterViewport>}
+            <div className={sendAction ? "" : crampedStyle ? "absolute left-4 bottom-4 w-2/3" : "absolute left-4 top-4 w-2/3"}>
                 <div className="flex flex-col gap-2">
+                    {sendAction && <>
+                        <select aria-label="Names history" value={showNamesIndex} onChange={(event) => setShowNamesIndex(Number(event.target.value))}>
+                            <option value={0}>Today</option>
+                            {historyEntries.map((date, index) => <option key={date} value={index + 1}>{toDisplayDate(date)}</option>)}
+                        </select>
+                    </>}
                     <textarea
                         rows={4}
-                        className=" w-full resize-none rounded border border-white/30 bg-black/20 p-2 text-white"
+                        className={clsx("w-full resize-none rounded border p-2", sendAction ? "border-black/30 bg-white text-black" : "border-white/30 bg-black/20 text-white")}
                         value={blip.names}
                         onChange={(e) => setBlip((prev) => ({ ...prev, names: e.target.value }))}
                     />
@@ -151,4 +138,8 @@ export default function Names({ endBlip, deactivateRequestId }: BlipProps) {
             </div>
         </div>
     );
+}
+
+export function NamesAdmin({ sendAction }: { sendAction: (action: string) => void }) {
+    return <Names endBlip={() => {}} sendAction={sendAction} />;
 }

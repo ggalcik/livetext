@@ -36,6 +36,12 @@ export const NamesBlipSchema = z.object({
 });
 export type NamesBlip = z.infer<typeof NamesBlipSchema>;
 
+export const NamesDisplaySchema = NamesBlipSchema.pick({ names: true, currentDate: true }).extend({
+    historical: z.boolean(),
+});
+export type NamesDisplayData = z.infer<typeof NamesDisplaySchema>;
+
+
 export const HelloBlipSchema = z.object({
     todayDate: z.string(),
     allNames: z.array(z.string()),

@@ -2,7 +2,10 @@ import Egregore from "../Blip/Egregore";
 import Angry, { AngryAdmin } from "../Blip/Angry";
 import ForeverAtheist from "../Blip/ForeverAtheist";
 import HolyHonkers from "../Blip/HolyHonkers";
+import { NamesAdmin } from "../Blip/Names";
+import WhySoAngry, { WhySoAngryAdmin } from "../Blip/WhySoAngry";
 import MammaMia from "../Blip/MammaMia";
+import OverNames from "../Blip/OverNames";
 import OverAnalogy from "../Blip/OverAnalogy";
 import OverSnail from "../Blip/OverSnail";
 import OverOrchestra, { OverOrchestraAdmin } from "../Blip/OverOrchestra";
@@ -16,6 +19,7 @@ export type ObsBlipConfig = ObsLayerConfig & {
   label?: string;
   variants?: BlipVariant[];
   defaultVariant?: string;
+  deactivateAction?: string;
   extendedComponent?: React.ComponentType<{ sendAction: (action: string) => void }>;
 };
 
@@ -30,6 +34,11 @@ export const OBS_BLIPS = {
   Egregore: {
     component: Egregore,
     variants: ["Rhizigore"],
+  },
+  "Fav names": {
+    component: OverNames,
+    deactivateAction: "end",
+    extendedComponent: NamesAdmin,
   },
   Forever: {
     component: ForeverAtheist,
@@ -52,6 +61,12 @@ export const OBS_BLIPS = {
   Snail: {
     component: OverSnail,
     variants: ["1a", "1b", "2", "3", "N", "Xeno"],
+  },
+  "Why Angry": {
+    component: WhySoAngry,
+    deactivateAction: "end",
+    variants: ["Pick"],
+    extendedComponent: WhySoAngryAdmin,
   },
   "Why Do This": {
     component: WhyDoThis,

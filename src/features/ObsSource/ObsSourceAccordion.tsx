@@ -37,6 +37,10 @@ export default function ObsSourceAccordion() {
     const isActive = activeBlip?.blip === blip && (
       isMainButton || activeBlip.variant === variant
     );
+    if (isActive && config.deactivateAction) {
+      send({ type: "blip/action", blip, action: config.deactivateAction });
+      return;
+    }
     const eventId = isActive ? activeBlip.eventId : crypto.randomUUID();
     const command: ObsMessage = {
       type: isActive ? "blip/stop" : "blip/play",
